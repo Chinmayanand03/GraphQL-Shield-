@@ -46,7 +46,7 @@ def normalize_query(query: str, variables: dict = None) -> dict | None:
                     path = f"{current_path}.{field_name}" if current_path else field_name
                     
                     obj_id = None
-                    for arg in node.arguments:
+                    for arg in (node.arguments or ()):
                         if arg.name.value == "id":
                             if isinstance(arg.value, VariableNode):
                                 var_name = arg.value.name.value

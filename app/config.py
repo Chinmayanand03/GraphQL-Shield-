@@ -1,14 +1,26 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "GraphQL Shield"
     VERSION: str = "0.1.0"
     API_PREFIX: str = "/api/v1"
     DATABASE_URL: str = "sqlite:///./shield.db"
-    JWT_SECRET: str = "super_secret_dev_key"
+
+    # Development-only fallback.
+    # Set a securely generated JWT_SECRET in your local .env file.
+    # Do not use this fallback secret in production.
+    JWT_SECRET: str = (
+        "dev-only-change-this-secret-in-env-use-32-random-bytes-minimum"
+    )
     JWT_ALGORITHM: str = "HS256"
 
-    class Config:
-        env_file = ".env"
+    # Pydantic v2 configuration replaces the deprecated inner Config class.
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+    )
+
 
 settings = Settings()
+

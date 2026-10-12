@@ -1,135 +1,903 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GraphQL Shield Dashboard</title>
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f7f6; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 1000px; margin: auto; }
-        h1 { text-align: center; color: #2c3e50; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
-        .stat-card { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; border-bottom: 4px solid #bdc3c7; }
-        .stat-card h3 { margin: 0 0 10px 0; font-size: 13px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 1px; }
-        .stat-card .value { font-size: 32px; font-weight: bold; color: #2c3e50; }
-        .stat-card.danger { border-bottom-color: #e74c3c; }
-        .stat-card.danger .value { color: #e74c3c; }
-        .stat-card.success { border-bottom-color: #27ae60; }
-        .stat-card.success .value { color: #27ae60; }
-        .table-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 14px; }
-        th { background: #f8f9fa; color: #333; font-weight: 600; }
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; color: #fff; display: inline-block; }
-        .badge.allow { background: #27ae60; }
-        .badge.deny { background: #e74c3c; }
-        .badge.high { background: #c0392b; }
-        .badge.low { background: #2ecc71; }
-        .badge.medium { background: #f39c12; }
-        code { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; color: #d35400; font-size: 13px; }
-        .live-indicator { display: inline-block; width: 10px; height: 10px; background-color: #2ecc71; border-radius: 50%; animation: pulse 2s infinite; margin-right: 10px; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); } 100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); } }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <title>GraphQL Shield Dashboard</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1220;
+      --panel: #111b2d;
+      --panel-2: #152238;
+      --panel-hover: #1b2b45;
+      --line: #26364d;
+      --text: #e7eef9;
+      --muted: #91a4bf;
+      --blue: #75a7ff;
+      --cyan: #57d7e8;
+      --green: #43d6a0;
+      --red: #ff7185;
+      --amber: #ffc66d;
+      --shadow: 0 18px 45px rgba(0,0,0,.20);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+      font: 14px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-image: radial-gradient(ellipse at 12% 0%, rgba(53,111,204,.15), transparent 35%), radial-gradient(ellipse at 100% 15%, rgba(44,198,190,.08), transparent 27%);
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    .app { display: grid; grid-template-columns: 238px minmax(0,1fr); min-height: 100vh; }
+    .sidebar { background: rgba(11,18,32,.83); border-right: 1px solid var(--line); padding: 24px 15px; display:flex; flex-direction:column; gap: 28px; }
+    .brand { display:flex; align-items:center; gap:12px; padding: 0 9px; }
+    .brand-mark { width:39px; height:39px; border-radius:13px; display:grid; place-items:center; background:linear-gradient(145deg,#3e7bea,#45cfdb); color:white; font-weight:900; box-shadow:0 8px 25px rgba(62,123,234,.23); }
+    .brand-title { font-weight:800; letter-spacing:.2px; font-size:15px; }
+    .brand-sub { color:var(--muted); font-size:11px; margin-top:1px; }
+    .nav-label { color:#687d9b; font-size:10px; text-transform:uppercase; letter-spacing:1.5px; padding: 0 12px; margin-bottom:8px; font-weight:800; }
+    .nav { display:grid; gap:6px; }
+    .nav a { color:var(--muted); padding:11px 12px; border-radius:11px; display:flex; gap:11px; align-items:center; font-weight:650; transition:.15s; }
+    .nav a:hover, .nav a.active { color:var(--text); background:var(--panel-hover); }
+    .nav a.active { box-shadow:inset 3px 0 var(--cyan); }
+    .nav-icon { display:inline-grid; place-items:center; width:20px; color:var(--blue); font-size:16px; }
+    .side-bottom { margin-top:auto; }
+    .protection-card { padding:15px; border:1px solid var(--line); background:linear-gradient(145deg,rgba(67,214,160,.09),rgba(87,215,232,.04)); border-radius:15px; }
+    .status-dot { width:8px; height:8px; display:inline-block; border-radius:50%; background:var(--green); box-shadow:0 0 0 4px rgba(67,214,160,.12); margin-right:8px; }
+    .protection-card strong { font-size:12px; }
+    .protection-card p { color:var(--muted); font-size:11px; margin:8px 0 0; }
+    main { min-width:0; padding:27px clamp(18px,3vw,42px) 38px; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:27px; }
+    .eyebrow { color:var(--cyan); font-weight:800; text-transform:uppercase; font-size:10px; letter-spacing:1.7px; }
+    h1 { margin:5px 0 0; font-size:clamp(24px,3vw,32px); letter-spacing:-.8px; line-height:1.15; }
+    .subtitle { color:var(--muted); margin:8px 0 0; font-size:13px; }
+    .top-actions { display:flex; gap:9px; align-items:center; flex-wrap:wrap; }
+    .api-status { color:var(--muted); font-size:11px; display:flex; align-items:center; gap:7px; border:1px solid var(--line); border-radius:999px; padding:8px 11px; white-space:nowrap; }
+    .api-status .status-dot { width:7px; height:7px; margin:0; }
+    .api-status.error .status-dot { background:var(--red); box-shadow:0 0 0 4px rgba(255,113,133,.12); }
+    .btn { border:1px solid var(--line); background:var(--panel); color:var(--text); border-radius:10px; padding:9px 12px; font-weight:700; font-size:12px; display:inline-flex; align-items:center; justify-content:center; gap:7px; transition:.15s; }
+    .btn:hover { background:var(--panel-hover); transform:translateY(-1px); }
+    .btn.primary { border-color:transparent; color:#061522; background:linear-gradient(100deg,var(--cyan),#8ae9d8); }
+    .btn:disabled { cursor:wait; opacity:.6; transform:none; }
+    .metrics { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; margin-bottom:18px; }
+    .metric, .panel { border:1px solid var(--line); background:linear-gradient(145deg,rgba(21,34,56,.96),rgba(16,26,43,.96)); border-radius:var(--radius); box-shadow:var(--shadow); }
+    .metric { min-height:142px; padding:18px; position:relative; overflow:hidden; }
+    .metric::after { content:""; position:absolute; right:-26px; top:-28px; width:90px; height:90px; border-radius:50%; background:var(--glow,rgba(117,167,255,.08)); }
+    .metric-head { display:flex; justify-content:space-between; gap:6px; align-items:center; color:var(--muted); font-size:11px; font-weight:750; }
+    .metric-icon { width:30px; height:30px; border-radius:10px; display:grid; place-items:center; color:var(--accent,var(--blue)); background:var(--glow,rgba(117,167,255,.11)); font-size:14px; }
+    .metric-value { font-weight:850; font-size:clamp(25px,2.5vw,32px); letter-spacing:-1px; margin-top:17px; line-height:1; }
+    .metric-foot { color:var(--muted); font-size:10px; margin-top:9px; }
+    .metric.blue { --accent:var(--blue); --glow:rgba(117,167,255,.12); }
+    .metric.green { --accent:var(--green); --glow:rgba(67,214,160,.10); }
+    .metric.red { --accent:var(--red); --glow:rgba(255,113,133,.10); }
+    .metric.cyan { --accent:var(--cyan); --glow:rgba(87,215,232,.10); }
+    .metric.amber { --accent:var(--amber); --glow:rgba(255,198,109,.10); }
+    .grid-two { display:grid; grid-template-columns:minmax(0,1.02fr) minmax(0,1.38fr); gap:16px; margin-bottom:18px; }
+    .panel { padding:20px; min-width:0; }
+    .panel-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:18px; }
+    .panel-title { font-size:14px; font-weight:800; }
+    .panel-subtitle { color:var(--muted); font-size:11px; margin-top:4px; }
+    .range-chip { border:1px solid var(--line); color:var(--muted); font-size:10px; border-radius:7px; padding:5px 8px; white-space:nowrap; }
+    .decision-visual { display:grid; grid-template-columns:160px minmax(0,1fr); align-items:center; gap:19px; }
+    .donut-wrap { position:relative; width:154px; height:154px; margin:auto; }
+    .donut-wrap svg { display:block; width:100%; height:100%; transform:rotate(-90deg); }
+    .donut-bg { fill:none; stroke:var(--line); stroke-width:14; }
+    .donut-allow { fill:none; stroke:var(--green); stroke-width:14; stroke-linecap:round; transition:stroke-dasharray .4s ease; }
+    .donut-deny { fill:none; stroke:var(--red); stroke-width:14; stroke-linecap:round; transition:stroke-dasharray .4s ease; }
+    .donut-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; pointer-events:none; }
+    .donut-center strong { font-size:27px; letter-spacing:-1px; }
+    .donut-center span { color:var(--muted); font-size:10px; }
+    .legend { display:grid; gap:17px; }
+    .legend-row { display:grid; grid-template-columns:9px 1fr auto; align-items:center; gap:8px; }
+    .legend-dot { width:8px; height:8px; border-radius:3px; }
+    .legend-label { color:var(--muted); font-size:11px; }
+    .legend-value { font-weight:800; font-size:15px; }
+    .legend-sub { color:var(--muted); font-size:10px; margin-top:2px; }
+    .bar-group { margin:23px 0 0; }
+    .bar-top { display:flex; justify-content:space-between; gap:10px; font-size:11px; margin-bottom:8px; }
+    .bar-top span:first-child { color:var(--muted); }
+    .bar-track { height:8px; background:#26364c; border-radius:999px; overflow:hidden; display:flex; }
+    .bar-fill { height:100%; border-radius:999px; transition:width .4s ease; }
+    .bar-fill.allow { background:linear-gradient(90deg,#2cae83,var(--green)); }
+    .bar-fill.deny { background:linear-gradient(90deg,#ec536d,var(--red)); }
+    .bar-fill.risk { background:linear-gradient(90deg,#e5a349,var(--amber)); }
+    .insight { border:1px solid rgba(87,215,232,.18); background:rgba(87,215,232,.05); border-radius:13px; padding:13px 14px; margin-top:18px; display:flex; gap:10px; align-items:flex-start; }
+    .insight-icon { color:var(--cyan); font-size:16px; }
+    .insight strong { font-size:11px; display:block; }
+    .insight p { margin:4px 0 0; color:var(--muted); font-size:10px; }
+    .logs-panel { scroll-margin-top:15px; }
+    .filters { display:flex; flex-wrap:wrap; gap:9px; margin:15px 0 14px; align-items:center; }
+    .input, .select { min-width:0; background:var(--bg); border:1px solid var(--line); color:var(--text); padding:9px 11px; border-radius:9px; outline:none; font-size:12px; }
+    .input { flex:1; min-width:200px; }
+    .input:focus, .select:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(117,167,255,.10); }
+    .select { min-width:130px; }
+    .table-wrap { overflow:auto; border:1px solid var(--line); border-radius:12px; }
+    table { width:100%; border-collapse:collapse; min-width:750px; text-align:left; }
+    thead { background:rgba(9,16,29,.5); }
+    th { color:#7f94b2; font-size:9px; text-transform:uppercase; letter-spacing:1px; font-weight:800; padding:12px 14px; white-space:nowrap; }
+    td { border-top:1px solid rgba(38,54,77,.7); padding:12px 14px; font-size:11px; vertical-align:middle; }
+    tbody tr:hover { background:rgba(117,167,255,.035); }
+    .primary-cell { font-weight:700; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .secondary-cell { color:var(--muted); font-size:10px; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:3px; }
+    .badge { display:inline-flex; align-items:center; border-radius:6px; padding:4px 7px; font-size:9px; font-weight:850; letter-spacing:.3px; white-space:nowrap; background:rgba(145,164,191,.10); color:var(--muted); }
+    .badge.allow { color:var(--green); background:rgba(67,214,160,.10); }
+    .badge.deny { color:var(--red); background:rgba(255,113,133,.10); }
+    .badge.high { color:var(--red); background:rgba(255,113,133,.10); }
+    .badge.medium { color:var(--amber); background:rgba(255,198,109,.10); }
+    .badge.low { color:var(--green); background:rgba(67,214,160,.10); }
+    .empty { text-align:center; color:var(--muted); padding:32px !important; }
+    .table-footer { display:flex; justify-content:space-between; gap:10px; color:var(--muted); font-size:10px; padding-top:12px; flex-wrap:wrap; }
+    .footer { color:#617692; font-size:10px; padding:19px 2px 0; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+    .toast { position:fixed; right:20px; bottom:20px; z-index:20; padding:12px 15px; background:var(--panel-2); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); color:var(--text); font-size:12px; max-width:min(360px,calc(100vw - 40px)); opacity:0; transform:translateY(8px); pointer-events:none; transition:.2s; }
+    .toast.show { opacity:1; transform:translateY(0); }
+    .loading { animation:pulse 1.1s ease-in-out infinite alternate; color:var(--muted); }
+    @keyframes pulse { from { opacity:.45; } to { opacity:1; } }
+    body.light { color-scheme:light; --bg:#f4f7fb; --panel:#fff; --panel-2:#fff; --panel-hover:#eaf1fb; --line:#dce5f0; --text:#18263c; --muted:#657992; --shadow:0 12px 32px rgba(24,52,88,.06); background-image:radial-gradient(ellipse at 12% 0%,rgba(53,111,204,.07),transparent 35%); }
+    body.light .sidebar { background:rgba(255,255,255,.9); }
+    body.light .metric, body.light .panel { background:linear-gradient(145deg,#fff,#f9fbff); }
+    body.light .bar-track { background:#e5ebf4; }
+    body.light .input, body.light .select { background:#fff; }
+    body.light thead { background:#f7f9fc; }
+    body.light .toast { background:#fff; }
+    @media (max-width:1240px) { .metrics { grid-template-columns:repeat(3,minmax(0,1fr)); } .grid-two { grid-template-columns:1fr; } }
+    @media (max-width:760px) { .app { grid-template-columns:1fr; } .sidebar { padding:13px 16px; border-right:0; border-bottom:1px solid var(--line); gap:14px; } .brand { padding:0; } .nav-label, .side-bottom { display:none; } .nav { display:flex; overflow:auto; } .nav a { flex:0 0 auto; padding:8px 10px; font-size:11px; } .nav a.active { box-shadow:inset 0 -2px var(--cyan); } main { padding:20px 14px 30px; } .topbar { align-items:flex-start; flex-direction:column; } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; } .metric { min-height:125px; padding:14px; } .metric-value { margin-top:15px; } .decision-visual { grid-template-columns:130px minmax(0,1fr); gap:8px; } .donut-wrap { width:125px; height:125px; } .donut-center strong { font-size:22px; } .panel { padding:15px; } .input { min-width:100%; } .select { flex:1; } }
+    @media (max-width:390px) { .decision-visual { grid-template-columns:1fr; } .legend { grid-template-columns:1fr 1fr; } .metric-value { font-size:25px; } }
+
+    .section-gap { margin-bottom:18px; }
+    .console-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:13px; }
+    .field { display:flex; flex-direction:column; gap:6px; min-width:0; }
+    .field label { color:var(--muted); font-size:11px; font-weight:750; }
+    .field .input, .field .select { width:100%; min-width:0; }
+    .console-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:15px; }
+    .console-note { color:var(--muted); font-size:11px; }
+    .console-result { margin-top:15px; border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+    .console-result-head { display:flex; justify-content:space-between; gap:10px; align-items:center; padding:10px 13px; background:rgba(9,16,29,.45); border-bottom:1px solid var(--line); font-size:11px; }
+    .console-result pre { margin:0; padding:14px; max-height:280px; overflow:auto; color:var(--text); font:11px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .taint-flow { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
+    .taint-step { border:1px solid var(--line); background:rgba(9,16,29,.25); border-radius:12px; padding:13px; min-height:122px; }
+    .taint-step b { display:block; font-size:12px; margin-bottom:7px; }
+    .taint-step p { margin:0; color:var(--muted); font-size:10px; }
+    .taint-step .step-number { display:inline-grid; place-items:center; width:24px; height:24px; border-radius:8px; background:rgba(87,215,232,.12); color:var(--cyan); font-weight:800; margin-bottom:10px; }
+    .role-pill { display:inline-flex; border-radius:999px; padding:4px 9px; font-size:10px; letter-spacing:.5px; font-weight:850; border:1px solid var(--line); }
+    .role-pill.admin { color:var(--amber); background:rgba(255,198,109,.10); border-color:rgba(255,198,109,.28); }
+    .role-pill.user { color:var(--green); background:rgba(67,214,160,.08); border-color:rgba(67,214,160,.22); }
+    .status-inline { font-size:11px; color:var(--muted); }
+    .status-inline.ok { color:var(--green); }
+    .status-inline.bad { color:var(--red); }
+    @media (max-width:1100px) { .console-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .taint-flow { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+    @media (max-width:760px) { .console-grid,.taint-flow { grid-template-columns:1fr; } }
+
+  /* REQUEST_SPECIFIC_TAINT_TRACE_CSS_BEGIN */
+    .request-explanation { border:1px solid var(--line); background:linear-gradient(145deg,rgba(21,34,56,.94),rgba(16,26,43,.94)); border-radius:14px; padding:16px; margin-top:15px; }
+    .request-explanation-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
+    .request-explanation-title { font-size:13px; font-weight:850; }
+    .request-explanation-subtitle { color:var(--muted); font-size:11px; margin-top:4px; }
+    .trace-outcome { border:1px solid var(--line); border-radius:999px; padding:5px 9px; font-size:10px; font-weight:850; white-space:nowrap; }
+    .trace-outcome.allowed { color:var(--green); border-color:rgba(67,214,160,.35); background:rgba(67,214,160,.08); }
+    .trace-outcome.denied { color:var(--red); border-color:rgba(255,113,133,.35); background:rgba(255,113,133,.08); }
+    .trace-outcome.warning { color:var(--amber); border-color:rgba(255,198,109,.35); background:rgba(255,198,109,.08); }
+    .trace-flow { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-top:14px; }
+    .trace-step { position:relative; border:1px solid var(--line); background:rgba(9,16,29,.24); border-radius:11px; padding:12px; min-height:140px; overflow-wrap:anywhere; }
+    .trace-step::after { content:'→'; position:absolute; right:-10px; top:45%; color:var(--muted); font-weight:900; z-index:2; }
+    .trace-step:last-child::after { content:''; }
+    .trace-step.allowed { border-color:rgba(67,214,160,.4); }
+    .trace-step.denied { border-color:rgba(255,113,133,.48); }
+    .trace-step.warning { border-color:rgba(255,198,109,.4); }
+    .trace-step-number { display:inline-grid; place-items:center; width:22px; height:22px; border-radius:7px; background:rgba(87,215,232,.12); color:var(--cyan); font-size:10px; font-weight:900; margin-bottom:9px; }
+    .trace-step-title { font-size:11px; font-weight:850; margin-bottom:6px; }
+    .trace-step-detail { color:var(--muted); font-size:10px; line-height:1.55; white-space:pre-wrap; }
+    .trace-notes { margin-top:12px; padding:11px 12px; border-radius:10px; background:rgba(87,215,232,.045); border:1px solid rgba(87,215,232,.16); color:var(--muted); font-size:10px; white-space:pre-wrap; }
+    body.light .request-explanation { background:linear-gradient(145deg,#fff,#f9fbff); }
+    body.light .trace-step { background:rgba(247,249,252,.8); }
+    @media (max-width:1100px) { .trace-flow { grid-template-columns:repeat(3,minmax(0,1fr)); } .trace-step:nth-child(3)::after { content:''; } }
+    @media (max-width:760px) { .trace-flow { grid-template-columns:1fr; } .trace-step::after { content:'↓'; right:50%; top:auto; bottom:-13px; } .trace-step:nth-child(3)::after { content:'↓'; } }
+    /* REQUEST_SPECIFIC_TAINT_TRACE_CSS_END */
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🛡️ GraphQL Shield Dashboard <span class="live-indicator"></span></h1>
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Total Requests</h3>
-                <div class="value" id="stat-total">-</div>
-            </div>
-            <div class="stat-card success">
-                <h3>Allowed</h3>
-                <div class="value" id="stat-allowed">-</div>
-            </div>
-            <div class="stat-card danger">
-                <h3>Blocked</h3>
-                <div class="value" id="stat-blocked">-</div>
-            </div>
-            <div class="stat-card danger">
-                <h3>BOLA Attempts</h3>
-                <div class="value" id="stat-bola">-</div>
-            </div>
-            <div class="stat-card danger">
-                <h3>High Risk</h3>
-                <div class="value" id="stat-high-risk">-</div>
-            </div>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">G</div>
+        <div><div class="brand-title">GraphQL Shield</div><div class="brand-sub">Security observability</div></div>
+      </div>
+      <div>
+        <div class="nav-label">Workspace</div>
+        <nav class="nav" aria-label="Main navigation">
+          <a class="active" href="#overview"><span class="nav-icon">▦</span>Overview</a>
+          <a href="#decisions"><span class="nav-icon">◉</span>Traffic decisions</a>
+          <a href="#demo-personas"><span class="nav-icon">♟</span>Demo users</a>
+          <a href="#audit-logs"><span class="nav-icon">≡</span>Audit events</a>
+        </nav>
+      </div>
+      <div class="side-bottom">
+        <div class="nav-label">Gateway status</div>
+        <div class="protection-card">
+          <div><span class="status-dot"></span><strong id="sideStatus">Protection enabled</strong></div>
+          <p>Dashboard figures reflect the data returned by the local audit API. This page does not change gateway enforcement.</p>
         </div>
+      </div>
+    </aside>
 
-        <div class="table-container">
-            <h2 style="margin-top: 0; color: #2c3e50; font-size: 18px;">Recent Audit Events</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Time</th>
-                        <th>User (Role)</th>
-                        <th>Path</th>
-                        <th>Decision</th>
-                        <th>Reason</th>
-                        <th>Risk</th>
-                        <th>Score</th>
-                    </tr>
-                </thead>
-                <tbody id="logs-body">
-                    <tr><td colspan="7" style="text-align: center;">Loading live data...</td></tr>
-                </tbody>
-            </table>
+    <main>
+      <header class="topbar" id="overview">
+        <div>
+          <div class="eyebrow">Security operations / Overview</div>
+          <h1>Security dashboard</h1>
+          <p class="subtitle">Monitor authorization decisions, BOLA signals, and recent audit activity.</p>
         </div>
-    </div>
+        <div class="top-actions">
+          <div class="api-status" id="apiStatus"><span class="status-dot"></span><span id="apiStatusText">Connecting to API…</span></div>
+          <button class="btn" id="themeButton" type="button" aria-label="Toggle color theme">☼ Theme</button>
+          <button class="btn" id="refreshButton" type="button">↻ Refresh</button>
+          <button class="btn primary" id="exportButtonTop" type="button">⇩ Export CSV</button>
+        </div>
+      </header>
 
-    <script>
-        async function fetchStats() {
-            try {
-                const response = await fetch('/api/v1/dashboard-stats');
-                const data = await response.json();
-                
-                // Update Stats
-                document.getElementById('stat-total').innerText = data.stats.total;
-                document.getElementById('stat-allowed').innerText = data.stats.allowed;
-                document.getElementById('stat-blocked').innerText = data.stats.blocked;
-                document.getElementById('stat-bola').innerText = data.stats.bola;
-                document.getElementById('stat-high-risk').innerText = data.stats.high_risk;
-                
-                // Update Table
-                const tbody = document.getElementById('logs-body');
-                tbody.innerHTML = '';
-                
-                if (data.recent_logs.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No audit logs found.</td></tr>';
-                    return;
-                }
-                
-                data.recent_logs.forEach(log => {
-                    const tr = document.createElement('tr');
-                    
-                    const decisionBadge = `<span class="badge ${log.decision.toLowerCase()}">${log.decision}</span>`;
-                    const riskBadge = `<span class="badge ${log.risk_level.toLowerCase()}">${log.risk_level}</span>`;
-                    
-                    // Format timestamp slightly better if possible
-                    let time = log.timestamp;
-                    if(time.includes('.')) time = time.split('.')[0];
-                    
-                    tr.innerHTML = `
-                        <td>${time}</td>
-                        <td>${log.user_id || 'Anon'} (${log.role || '-'})</td>
-                        <td><code>${log.path || '-'}</code></td>
-                        <td>${decisionBadge}</td>
-                        <td>${log.reason}</td>
-                        <td>${riskBadge}</td>
-                        <td><strong>${log.risk_score || 0}</strong></td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            } catch (error) {
-                console.error('Error fetching dashboard data:', error);
-            }
+      <section class="metrics" aria-label="Security key performance indicators">
+        <article class="metric blue"><div class="metric-head"><span>Total requests</span><span class="metric-icon">↗</span></div><div class="metric-value" id="totalValue">—</div><div class="metric-foot">Recorded in audit log</div></article>
+        <article class="metric green"><div class="metric-head"><span>Allowed</span><span class="metric-icon">✓</span></div><div class="metric-value" id="allowedValue">—</div><div class="metric-foot" id="allowedFoot">Authorized decisions</div></article>
+        <article class="metric red"><div class="metric-head"><span>Blocked</span><span class="metric-icon">⊘</span></div><div class="metric-value" id="blockedValue">—</div><div class="metric-foot" id="blockedFoot">Denied decisions</div></article>
+        <article class="metric cyan"><div class="metric-head"><span>BOLA signals</span><span class="metric-icon">⌁</span></div><div class="metric-value" id="bolaValue">—</div><div class="metric-foot">Ownership / nested authorization events</div></article>
+        <article class="metric amber"><div class="metric-head"><span>High risk</span><span class="metric-icon">!</span></div><div class="metric-value" id="highRiskValue">—</div><div class="metric-foot">High-risk audit entries</div></article>
+      </section>
+
+      <section class="panel section-gap" id="demo-personas">
+        <div class="panel-head">
+          <div><div class="panel-title">Demo users and roles</div><div class="panel-subtitle">Named local test accounts. Select an account to fill the test-console username; enter its demo password yourself.</div></div>
+          <span class="range-chip">LOCAL DEMO ACCOUNTS</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Display name</th><th>User ID</th><th>Role</th><th>Login username</th><th>Action</th></tr></thead>
+            <tbody id="demoUsersBody"><tr><td class="empty" colspan="5">Loading demo accounts…</td></tr></tbody>
+          </table>
+        </div>
+        <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Demo identity note</strong><p>These are local demonstration accounts. Existing passwords for the original accounts are preserved. Sakthivel's development-only password is sakthivel123; do not reuse it outside local testing.</p></div></div>
+      </section>
+
+      <section class="panel section-gap" id="test-console">
+        <div class="panel-head">
+          <div><div class="panel-title">GraphQL test console</div><div class="panel-subtitle">Choose a scenario and run it from this page. Successful or denied protected requests should create audit events.</div></div>
+          <span class="range-chip">LOCAL DEMO</span>
+        </div>
+        <div class="console-grid">
+          <div class="field"><label for="testUsername">Login username</label><input class="input" id="testUsername" autocomplete="username" placeholder="e.g. alice"></div>
+          <div class="field"><label for="testPassword">Login password</label><input class="input" id="testPassword" type="password" autocomplete="current-password" placeholder="Enter seeded demo password"></div>
+          <div class="field"><label for="testEndpoint">Endpoint</label><select class="select" id="testEndpoint"><option value="/graphql">Protected GraphQL Shield</option><option value="/graphql-insecure">Insecure baseline (intentionally vulnerable)</option></select></div>
+          <div class="field"><label for="testScenario">Scenario</label><select class="select" id="testScenario"><option value="direct">Direct resource lookup</option><option value="nested">Nested user → resource lookup</option><option value="relationship">Implicit children relationship</option></select></div>
+          <div class="field" id="userIdField"><label for="testUserId">User ID (for nested query)</label><input class="input" id="testUserId" inputmode="numeric" type="number" min="1" value="101"></div>
+          <div class="field" id="resourceIdField"><label for="testResourceId">Resource ID (direct / nested)</label><input class="input" id="testResourceId" inputmode="numeric" type="number" min="1" value="102"></div>
+          <div class="field" id="parentIdField"><label for="testParentId">Parent/folder ID (relationship query)</label><input class="input" id="testParentId" inputmode="numeric" type="number" min="1" value="201"></div>
+        </div>
+        <div class="console-actions">
+          <button class="btn primary" id="runTestButton" type="button">▶ Run selected test</button>
+          <button class="btn" id="clearResultButton" type="button">Clear result</button>
+          <span class="console-note">Credentials are submitted only to the local login endpoint. The token is kept in memory and not saved in browser storage.</span>
+        </div>
+        <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Use responsibly</strong><p>The insecure baseline is intentionally vulnerable and is for local research demonstrations only. Keep this dashboard on your local machine and use seeded test accounts, not real users or production data.</p></div></div>
+        <div class="console-result" aria-live="polite"><div class="console-result-head"><strong id="testResultTitle">No test run yet</strong><span id="testResultStatus" class="status-inline">Choose a scenario above</span></div><pre id="testResultBody">The selected request response will appear here. After a run, the dashboard refreshes its audit counters and recent events.</pre></div>
+        <!-- REQUEST_SPECIFIC_TAINT_TRACE_PANEL_BEGIN -->
+        <div class="request-explanation section-gap" id="requestExplanation" aria-live="polite">
+          <div class="request-explanation-head">
+            <div><div class="request-explanation-title">Per-request taint → authorization flow</div><div class="request-explanation-subtitle">Shows the tracked ID source, object path, policy explanation, and actual response for the test you just ran.</div></div>
+            <span class="trace-outcome warning" id="traceOutcome">WAITING FOR REQUEST</span>
+          </div>
+          <div class="request-explanation-subtitle" id="traceIntro">Run a direct, nested, or relationship test above to build an evidence-based explanation.</div>
+          <div class="trace-flow" id="traceFlow"><div class="trace-step"><span class="trace-step-number">1</span><div class="trace-step-title">Request input</div><div class="trace-step-detail">Waiting for a test request.</div></div></div>
+          <div class="trace-notes" id="traceNotes">The source tracker and policy replay will populate this area after a request. A tainted input is not automatically an attack.</div>
+        </div>
+        <!-- REQUEST_SPECIFIC_TAINT_TRACE_PANEL_END -->
+      </section>
+
+      <section class="panel section-gap" id="taint-explainer">
+        <div class="panel-head"><div><div class="panel-title">Where taint analysis fits</div><div class="panel-subtitle">Analysis/detection and runtime enforcement are related but distinct stages.</div></div><span class="range-chip">PIPELINE EXPLAINER</span></div>
+        <div class="taint-flow">
+          <div class="taint-step"><span class="step-number">1</span><b>Taint sources</b><p>GraphQL variables and object identifiers are treated as attacker-controllable inputs when the source model marks them untrusted.</p></div>
+          <div class="taint-step"><span class="step-number">2</span><b>Propagation</b><p>The analysis follows tainted values through parsed arguments, variables and nested query paths.</p></div>
+          <div class="taint-step"><span class="step-number">3</span><b>Relationship / graph</b><p>Transfer and security-graph logic represent how an input reaches an object or relationship being accessed.</p></div>
+          <div class="taint-step"><span class="step-number">4</span><b>Authorization reasoning</b><p>The authorization-aware candidate checks ownership and role context; taint alone is not proof of BOLA.</p></div>
+          <div class="taint-step"><span class="step-number">5</span><b>Runtime enforcement</b><p>The security middleware and resolver-level ownership checks allow, deny or filter access. Audit records summarize these decisions.</p></div>
+        </div>
+        <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Data source clarification</strong><p>The per-request flow above uses the actual taint source tracker, parsed object paths, ownership lookup, the existing policy engine in read-only replay, and the observed HTTP/GraphQL response. It does not claim to be a whole-program taint trace or to reveal child objects the resolver deliberately omitted.</p></div></div>
+      </section>
+
+      <section class="grid-two" id="decisions">
+        <article class="panel">
+          <div class="panel-head"><div><div class="panel-title">Request decision mix</div><div class="panel-subtitle">Aggregate counts from the audit API</div></div><span class="range-chip">ALL RECORDED</span></div>
+          <div class="decision-visual">
+            <div class="donut-wrap" role="img" aria-label="Allowed and denied requests chart">
+              <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="donut-bg" cx="60" cy="60" r="45"></circle><circle class="donut-allow" id="allowArc" cx="60" cy="60" r="45" stroke-dasharray="0 283"></circle><circle class="donut-deny" id="denyArc" cx="60" cy="60" r="45" stroke-dasharray="0 283"></circle></svg>
+              <div class="donut-center"><strong id="decisionTotal">—</strong><span>decisions</span></div>
+            </div>
+            <div class="legend">
+              <div><div class="legend-row"><span class="legend-dot" style="background:var(--green)"></span><span class="legend-label">Allowed</span><span class="legend-value" id="allowLegend">—</span></div><div class="legend-sub" id="allowPercent">— of recorded decisions</div></div>
+              <div><div class="legend-row"><span class="legend-dot" style="background:var(--red)"></span><span class="legend-label">Denied</span><span class="legend-value" id="denyLegend">—</span></div><div class="legend-sub" id="denyPercent">— of recorded decisions</div></div>
+            </div>
+          </div>
+          <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Interpretation</strong><p>The chart shows audit decision counts, not a standalone measure of detection accuracy. A denied request and a field-level omission may be recorded differently.</p></div></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head"><div><div class="panel-title">Authorization overview</div><div class="panel-subtitle">Compare allow and deny counts and review risk activity</div></div><span class="range-chip">LIVE API DATA</span></div>
+          <div class="bar-group"><div class="bar-top"><span>Allowed decisions</span><strong id="allowBarLabel">—</strong></div><div class="bar-track"><div class="bar-fill allow" id="allowBar" style="width:0%"></div></div></div>
+          <div class="bar-group"><div class="bar-top"><span>Denied decisions</span><strong id="denyBarLabel">—</strong></div><div class="bar-track"><div class="bar-fill deny" id="denyBar" style="width:0%"></div></div></div>
+          <div class="bar-group"><div class="bar-top"><span>High-risk records vs. total requests</span><strong id="riskBarLabel">—</strong></div><div class="bar-track"><div class="bar-fill risk" id="riskBar" style="width:0%"></div></div></div>
+          <div class="insight"><div class="insight-icon">⌕</div><div><strong id="riskInsightTitle">Risk overview</strong><p id="riskInsightText">Risk indicators will appear when the API returns audit statistics.</p></div></div>
+        </article>
+      </section>
+
+      <section class="panel logs-panel" id="audit-logs">
+        <div class="panel-head"><div><div class="panel-title">Recent audit events</div><div class="panel-subtitle">Search and filter the latest records returned by the API. Timestamps are stored in UTC and displayed in IST (Asia/Kolkata).</div></div><span class="range-chip" id="recordChip">LATEST RECORDS</span></div>
+        <div class="filters">
+          <input class="input" id="searchInput" type="search" placeholder="Search user, action, reason, or ID…" aria-label="Search audit records">
+          <select class="select" id="decisionFilter" aria-label="Filter by decision"><option value="all">All decisions</option><option value="allow">Allowed</option><option value="deny">Denied</option><option value="other">Other / unknown</option></select>
+          <select class="select" id="riskFilter" aria-label="Filter by risk"><option value="all">All risk levels</option><option value="high">High risk</option><option value="medium">Medium risk</option><option value="low">Low risk</option><option value="unknown">Unknown risk</option></select>
+          <button class="btn" id="clearFiltersButton" type="button">Clear filters</button>
+          <button class="btn" id="exportButton" type="button">⇩ Export visible</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Time (IST)</th><th>Actor</th><th>Decision</th><th>Risk</th><th>Reason</th><th>Operation / details</th></tr></thead>
+            <tbody id="logsBody"><tr><td class="empty" colspan="6">Loading audit events…</td></tr></tbody>
+          </table>
+        </div>
+        <div class="table-footer"><span id="tableCount">Waiting for audit records…</span><span id="lastUpdated">Last updated: —</span></div>
+      </section>
+
+      <footer class="footer"><span>GraphQL Shield · Local security observability</span><span>Dashboard data is read from <code>/api/v1/dashboard-stats</code>.</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      'use strict';
+      const API_URL = '/api/v1/dashboard-stats';
+      const HEALTH_URL = '/health';
+      const REFRESH_MS = 30000;
+      const $ = (id) => document.getElementById(id);
+      const state = { stats: null, logs: [], filtered: [], loading: false, timer: null, lastUpdate: null };
+      const decisionFields = ['decision', 'action_decision', 'authorization_decision', 'status'];
+      const riskFields = ['risk_level', 'risk', 'severity'];
+      const reasonFields = ['reason', 'message', 'description', 'detail'];
+      const operationFields = ['operation_name', 'operation', 'query_name', 'query_hash', 'path', 'endpoint', 'details'];
+      const actorFields = ['actor_name', 'display_name', 'username', 'user_name', 'principal_id', 'user_id', 'subject_id', 'actor'];
+
+      function firstValue(row, fields, fallback = '—') {
+        for (const field of fields) {
+          const value = row && row[field];
+          if (value !== undefined && value !== null && String(value).trim() !== '') return String(value);
+        }
+        return fallback;
+      }
+      function asNumber(value) { const n = Number(value); return Number.isFinite(n) ? n : 0; }
+      function formatNumber(value) { return asNumber(value).toLocaleString(); }
+      function normalizeDecision(row) {
+        const value = firstValue(row, decisionFields, '').toLowerCase();
+        if (['allow', 'allowed', 'permit', 'permitted', 'success', 'approved'].includes(value)) return 'allow';
+        if (['deny', 'denied', 'block', 'blocked', 'reject', 'rejected', 'forbidden'].includes(value)) return 'deny';
+        return 'other';
+      }
+      function normalizeRisk(row) {
+        const value = firstValue(row, riskFields, '').toLowerCase();
+        if (value.includes('high') || value.includes('critical')) return 'high';
+        if (value.includes('medium') || value.includes('moderate')) return 'medium';
+        if (value.includes('low') || value.includes('info')) return 'low';
+        return 'unknown';
+      }
+      function safeText(value) { return value === undefined || value === null || value === '' ? '—' : String(value); }
+      function setText(id, value) { $(id).textContent = value; }
+      function setBar(id, count, total) { $(id).style.width = (total > 0 ? Math.max(0, Math.min(100, count / total * 100)) : 0) + '%'; }
+      function setApiStatus(healthy, text) {
+        $('apiStatus').classList.toggle('error', !healthy);
+        setText('apiStatusText', text);
+        setText('sideStatus', healthy ? 'API reachable' : 'API unavailable');
+        const dot = $('sideStatus').previousElementSibling;
+        if (dot) { dot.style.background = healthy ? 'var(--green)' : 'var(--red)'; dot.style.boxShadow = healthy ? '0 0 0 4px rgba(67,214,160,.12)' : '0 0 0 4px rgba(255,113,133,.12)'; }
+      }
+      let toastTimer;
+      function showToast(message) {
+        const toast = $('toast'); toast.textContent = message; toast.classList.add('show');
+        window.clearTimeout(toastTimer); toastTimer = window.setTimeout(() => toast.classList.remove('show'), 3200);
+      }
+      function renderDemoUsers(users) {
+        const body = $('demoUsersBody');
+        if (!body) return;
+        body.replaceChildren();
+        if (!Array.isArray(users) || users.length === 0) {
+          const tr = document.createElement('tr');
+          const td = document.createElement('td');
+          td.colSpan = 5;
+          td.className = 'empty';
+          td.textContent = 'No demo accounts were returned by the API.';
+          tr.appendChild(td);
+          body.appendChild(tr);
+          return;
+        }
+        for (const user of users) {
+          const tr = document.createElement('tr');
+          const nameCell = document.createElement('td');
+          const nameMain = document.createElement('div');
+          nameMain.className = 'primary-cell';
+          nameMain.textContent = user.display_name || user.username || 'Unknown user';
+          const nameSub = document.createElement('div');
+          nameSub.className = 'secondary-cell';
+          nameSub.textContent = 'Demo account';
+          nameCell.append(nameMain, nameSub);
+
+          const idCell = document.createElement('td');
+          idCell.textContent = user.id == null ? '—' : String(user.id);
+
+          const roleCell = document.createElement('td');
+          const rolePill = document.createElement('span');
+          const role = String(user.role || 'USER').toUpperCase();
+          rolePill.className = 'role-pill ' + (role === 'ADMIN' ? 'admin' : 'user');
+          rolePill.textContent = role;
+          roleCell.appendChild(rolePill);
+
+          const usernameCell = document.createElement('td');
+          usernameCell.textContent = user.username || '—';
+
+          const actionCell = document.createElement('td');
+          const selectButton = document.createElement('button');
+          selectButton.type = 'button';
+          selectButton.className = 'btn';
+          selectButton.textContent = 'Use account';
+          selectButton.dataset.demoUsername = user.username || '';
+          selectButton.disabled = !user.username;
+          actionCell.appendChild(selectButton);
+
+          tr.append(nameCell, idCell, roleCell, usernameCell, actionCell);
+          body.appendChild(tr);
+        }
+      }
+
+      function renderStats(stats) {
+        const total = asNumber(stats.total);
+        const allowed = asNumber(stats.allowed);
+        const blocked = asNumber(stats.blocked);
+        const bola = asNumber(stats.bola);
+        const highRisk = asNumber(stats.high_risk);
+        setText('totalValue', formatNumber(total)); setText('allowedValue', formatNumber(allowed));
+        setText('blockedValue', formatNumber(blocked)); setText('bolaValue', formatNumber(bola));
+        setText('highRiskValue', formatNumber(highRisk));
+        setText('decisionTotal', formatNumber(allowed + blocked));
+        setText('allowLegend', formatNumber(allowed)); setText('denyLegend', formatNumber(blocked));
+        const decisions = allowed + blocked;
+        const allowPct = decisions > 0 ? allowed / decisions * 100 : 0;
+        const denyPct = decisions > 0 ? blocked / decisions * 100 : 0;
+        setText('allowPercent', allowPct.toFixed(1) + '% of recorded allow/deny decisions');
+        setText('denyPercent', denyPct.toFixed(1) + '% of recorded allow/deny decisions');
+        const circumference = 2 * Math.PI * 45;
+        const allowedArc = decisions > 0 ? allowed / decisions * circumference : 0;
+        const deniedArc = decisions > 0 ? blocked / decisions * circumference : 0;
+        $('allowArc').setAttribute('stroke-dasharray', `${allowedArc} ${circumference}`);
+        $('allowArc').setAttribute('stroke-dashoffset', '0');
+        $('denyArc').setAttribute('stroke-dasharray', `${deniedArc} ${circumference}`);
+        $('denyArc').setAttribute('stroke-dashoffset', String(-allowedArc));
+        setText('allowBarLabel', `${formatNumber(allowed)} (${allowPct.toFixed(1)}%)`);
+        setText('denyBarLabel', `${formatNumber(blocked)} (${denyPct.toFixed(1)}%)`);
+        setText('riskBarLabel', `${formatNumber(highRisk)} (${total > 0 ? (highRisk / total * 100).toFixed(1) : '0.0'}%)`);
+        setBar('allowBar', allowed, decisions); setBar('denyBar', blocked, decisions); setBar('riskBar', highRisk, total);
+        setText('riskInsightTitle', bola > 0 ? `${formatNumber(bola)} BOLA-related audit signal${bola === 1 ? '' : 's'}` : 'No BOLA signals recorded');
+        setText('riskInsightText', highRisk > 0 ? `${formatNumber(highRisk)} high-risk entries were reported by the API. Review recent events below; only the latest records returned by the endpoint are shown.` : 'No high-risk entries are reported in the aggregate counters. This is an audit summary, not proof that the system is free of attacks.');
+      }
+      function addCell(tr, content, className) {
+        const td = document.createElement('td');
+        if (className) td.className = className;
+        if (content instanceof Node) td.appendChild(content); else td.textContent = safeText(content);
+        tr.appendChild(td); return td;
+      }
+      function makeBadge(value, kind) {
+        const el = document.createElement('span'); el.className = 'badge' + (kind ? ' ' + kind : ''); el.textContent = value; return el;
+      }
+      function formatTime(value) {
+        if (!value || value === '—') return '—';
+        const raw = String(value).trim();
+        let date;
+        // SQLite audit timestamps are stored as UTC strings without a zone suffix,
+        // for example: 2026-10-12 15:58:41. Interpret those strings as UTC explicitly.
+        const naiveUtc = /^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?$/.test(raw);
+        if (naiveUtc) {
+          date = new Date(raw.replace(' ', 'T') + 'Z');
+        } else {
+          // ISO values with Z or an explicit offset already identify their timezone.
+          date = new Date(raw);
+        }
+        if (Number.isNaN(date.getTime())) return raw;
+        return new Intl.DateTimeFormat('en-IN', {
+          timeZone: 'Asia/Kolkata',
+          day: '2-digit', month: 'short', year: 'numeric',
+          hour: '2-digit', minute: '2-digit', second: '2-digit',
+          hour12: true
+        }).format(date);
+      }
+      function renderLogs(logs) {
+        const body = $('logsBody'); body.replaceChildren();
+        if (!logs.length) {
+          const tr = document.createElement('tr'); const td = document.createElement('td');
+          td.className = 'empty'; td.colSpan = 6; td.textContent = state.logs.length ? 'No audit events match the selected filters.' : 'No audit events were returned by the API.';
+          tr.appendChild(td); body.appendChild(tr); return;
+        }
+        for (const row of logs) {
+          const tr = document.createElement('tr');
+          const time = firstValue(row, ['timestamp', 'created_at', 'time', 'datetime']);
+          addCell(tr, formatTime(time));
+          const actorCell = document.createElement('td');
+          const actorMain = document.createElement('div'); actorMain.className = 'primary-cell'; actorMain.textContent = firstValue(row, actorFields);
+          const actorSub = document.createElement('div'); actorSub.className = 'secondary-cell'; actorSub.textContent = firstValue(row, ['ip_address', 'client_ip', 'request_id'], '');
+          actorCell.append(actorMain); if (actorSub.textContent) actorCell.append(actorSub); tr.appendChild(actorCell);
+          const decision = normalizeDecision(row); const decisionRaw = firstValue(row, decisionFields, 'UNKNOWN').toUpperCase();
+          addCell(tr, makeBadge(decisionRaw, decision === 'allow' ? 'allow' : decision === 'deny' ? 'deny' : ''));
+          const risk = normalizeRisk(row); const riskRaw = firstValue(row, riskFields, 'UNKNOWN').toUpperCase();
+          addCell(tr, makeBadge(riskRaw, ['high','medium','low'].includes(risk) ? risk : ''));
+          const reasonCell = document.createElement('td');
+          const reasonMain = document.createElement('div'); reasonMain.className = 'primary-cell'; reasonMain.textContent = firstValue(row, reasonFields);
+          const reasonSub = document.createElement('div'); reasonSub.className = 'secondary-cell'; reasonSub.textContent = firstValue(row, ['reason_code', 'rule', 'policy'], '');
+          reasonCell.append(reasonMain); if (reasonSub.textContent) reasonCell.append(reasonSub); tr.appendChild(reasonCell);
+          const operationCell = document.createElement('td');
+          const operationMain = document.createElement('div'); operationMain.className = 'primary-cell';
+          operationMain.textContent = firstValue(row, ['operation_name', 'query_name', 'operation'], '—');
+          const operationSub = document.createElement('div'); operationSub.className = 'secondary-cell';
+          const pathValue = firstValue(row, ['path', 'endpoint', 'details'], '');
+          const objectType = firstValue(row, ['object_type'], '');
+          const objectId = firstValue(row, ['object_id'], '');
+          const objectValue = objectType ? `${objectType}${objectId ? ' #' + objectId : ''}` : (objectId ? `Object #${objectId}` : '');
+          operationSub.textContent = [pathValue, objectValue].filter(Boolean).join(' · ');
+          operationCell.append(operationMain); if (operationSub.textContent) operationCell.append(operationSub);
+          operationCell.title = [operationMain.textContent, operationSub.textContent].filter(Boolean).join(' | ');
+          tr.appendChild(operationCell);
+          body.appendChild(tr);
+        }
+      }
+      function applyFilters() {
+        const query = $('searchInput').value.trim().toLowerCase();
+        const decision = $('decisionFilter').value;
+        const risk = $('riskFilter').value;
+        state.filtered = state.logs.filter(row => {
+          const decisionValue = normalizeDecision(row); const riskValue = normalizeRisk(row);
+          const searchable = Object.values(row || {}).map(v => String(v ?? '')).join(' ').toLowerCase();
+          return (!query || searchable.includes(query)) && (decision === 'all' || decisionValue === decision) && (risk === 'all' || riskValue === risk);
+        });
+        renderLogs(state.filtered);
+        setText('tableCount', `Showing ${state.filtered.length.toLocaleString()} of ${state.logs.length.toLocaleString()} returned records (API supplies recent records only).`);
+        setText('recordChip', `${state.filtered.length} SHOWN`);
+      }
+      function csvEscape(value) { const text = String(value ?? ''); return '"' + text.replace(/"/g, '""') + '"'; }
+      function exportCsv() {
+        const rows = state.filtered;
+        if (!rows.length) { showToast('No visible rows to export.'); return; }
+        const headers = ['timestamp_utc','actor','decision','risk_level','reason','operation_or_details','raw_record_json'];
+        const lines = [headers.map(csvEscape).join(',')];
+        for (const row of rows) {
+          lines.push([
+            firstValue(row, ['timestamp','created_at','time','datetime'], ''),
+            firstValue(row, actorFields, ''),
+            firstValue(row, decisionFields, ''),
+            firstValue(row, riskFields, ''),
+            firstValue(row, reasonFields, ''),
+            firstValue(row, operationFields, ''),
+            JSON.stringify(row),
+          ].map(csvEscape).join(','));
+        }
+        const blob = new Blob(['\ufeff' + lines.join('\r\n')], {type:'text/csv;charset=utf-8;'});
+        const url = URL.createObjectURL(blob); const link = document.createElement('a');
+        link.href = url; link.download = `graphql-shield-audit-${new Date().toISOString().replace(/[:.]/g,'-')}.csv`;
+        document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
+        showToast(`Exported ${rows.length} visible audit records.`);
+      }
+      async function checkHealth() {
+        try { const response = await fetch(HEALTH_URL, {cache:'no-store'}); if (!response.ok) throw new Error('Health check failed'); return true; }
+        catch (_) { return false; }
+      }
+      async function refresh({quiet=false} = {}) {
+        if (state.loading) return;
+        state.loading = true; $('refreshButton').disabled = true; $('refreshButton').textContent = '↻ Loading…';
+        try {
+          const response = await fetch(API_URL, {headers:{'Accept':'application/json'}, cache:'no-store'});
+          if (!response.ok) throw new Error(`Dashboard API returned HTTP ${response.status}`);
+          const payload = await response.json();
+          if (!payload || typeof payload !== 'object' || !payload.stats || !Array.isArray(payload.recent_logs)) {
+            throw new Error('Unexpected response shape. Expected stats and recent_logs.');
+          }
+          state.stats = payload.stats; state.logs = payload.recent_logs;
+          renderDemoUsers(payload.demo_users || []);
+          renderStats(state.stats); applyFilters();
+          state.lastUpdate = new Date();
+          const istNow = new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).format(state.lastUpdate);
+          setText('lastUpdated', 'Last updated (IST): ' + istNow);
+          const healthy = await checkHealth();
+          setApiStatus(healthy, healthy ? 'API connected' : 'Stats loaded · health check unavailable');
+          if (!quiet) showToast('Dashboard data refreshed.');
+        } catch (error) {
+          setApiStatus(false, 'API unavailable');
+          if (!state.logs.length) renderLogs([]);
+          if (!quiet) showToast(error.message || 'Unable to refresh dashboard.');
+          console.error('GraphQL Shield dashboard refresh failed:', error);
+        } finally {
+          state.loading = false; $('refreshButton').disabled = false; $('refreshButton').textContent = '↻ Refresh';
+        }
+      }
+      function setScenarioFields() {
+        const scenario = $('testScenario').value;
+        $('userIdField').style.display = scenario === 'nested' ? '' : 'none';
+        $('resourceIdField').style.display = scenario === 'relationship' ? 'none' : '';
+        $('parentIdField').style.display = scenario === 'relationship' ? '' : 'none';
+      }
+      function positiveInteger(id, label) {
+        const raw = $(id).value.trim();
+        const value = Number(raw);
+        if (!raw || !Number.isInteger(value) || value < 1) throw new Error(`${label} must be a positive integer.`);
+        return value;
+      }
+      function buildSelectedRequest() {
+        const scenario = $('testScenario').value;
+        if (scenario === 'direct') {
+          const resourceId = positiveInteger('testResourceId', 'Resource ID');
+          return {
+            query: 'query DashboardDirectResource($resourceId: Int!) { resource(id: $resourceId) { id name ownerId objectType parentId } }',
+            variables: { resourceId }
+          };
+        }
+        if (scenario === 'nested') {
+          const userId = positiveInteger('testUserId', 'User ID');
+          const resourceId = positiveInteger('testResourceId', 'Resource ID');
+          return {
+            query: 'query DashboardNestedResource($userId: Int!, $resourceId: Int!) { user(id: $userId) { id username role resource(id: $resourceId) { id name ownerId objectType parentId } } }',
+            variables: { userId, resourceId }
+          };
+        }
+        const parentId = positiveInteger('testParentId', 'Parent/folder ID');
+        return {
+          query: 'query DashboardImplicitRelationship($parentId: Int!) { resource(id: $parentId) { id name ownerId children { id name ownerId parentId } } }',
+          variables: { parentId }
+        };
+      }
+
+// REQUEST_SPECIFIC_TAINT_TRACE_JS_BEGIN
+      function traceStep(title, detail, state = '') {
+        const node = document.createElement('div');
+        node.className = 'trace-step' + (state ? ' ' + state : '');
+        const number = document.createElement('span');
+        number.className = 'trace-step-number';
+        number.textContent = String($('traceFlow').children.length + 1);
+        const heading = document.createElement('div');
+        heading.className = 'trace-step-title';
+        heading.textContent = title;
+        const body = document.createElement('div');
+        body.className = 'trace-step-detail';
+        body.textContent = detail;
+        node.append(number, heading, body);
+        $('traceFlow').appendChild(node);
+      }
+
+      function findVisibleObjectIds(value, output = []) {
+        if (!value || typeof value !== 'object' || output.length >= 50) return output;
+        if (!Array.isArray(value) && value.id !== undefined && value.id !== null) {
+          output.push({id:String(value.id), ownerId:value.ownerId ?? value.owner_id ?? null, name:value.name ?? null});
+        }
+        if (Array.isArray(value)) value.forEach(item => findVisibleObjectIds(item, output));
+        else Object.values(value).forEach(item => findVisibleObjectIds(item, output));
+        return output;
+      }
+
+      function renderTaintTrace({analysis, analysisError, query, variables, endpoint, httpStatus, response}) {
+        const flow = $('traceFlow');
+        flow.replaceChildren();
+        const sources = analysis && Array.isArray(analysis.taint_sources) ? analysis.taint_sources : [];
+        const objects = analysis && Array.isArray(analysis.objects) ? analysis.objects : [];
+        const relationshipPaths = analysis && Array.isArray(analysis.relationship_paths) ? analysis.relationship_paths : [];
+        const principal = analysis && analysis.principal ? analysis.principal : {};
+        const visible = findVisibleObjectIds(response);
+        const denied = objects.filter(item => item.authorization && item.authorization.decision === 'DENY');
+        const allowed = objects.filter(item => item.authorization && item.authorization.decision === 'ALLOW');
+        const visibleDenied = denied.filter(item => visible.some(obj => obj.id === String(item.object_id)));
+        const gqlErrors = Boolean(response && typeof response === 'object' && Array.isArray(response.errors) && response.errors.length);
+        let summary = 'ANALYSIS INCOMPLETE';
+        let summaryClass = 'warning';
+        let intro = 'This trace describes observed request evidence; it does not decide access by itself.';
+
+        traceStep('1 · Authenticated principal', `User ID: ${principal.user_id ?? 'not available'}\nRole: ${principal.role ?? 'not available'}\nThe principal comes from the validated login token.`, '');
+
+        if (sources.length) {
+          const sourceLines = sources.slice(0, 5).map(source => {
+            const variable = source.variable_name ? ` variable $${source.variable_name}` : '';
+            return `${source.source_kind}${variable} = ${String(source.value)}\nArgument: ${source.field_name}.${source.argument_name}\nPath: ${source.graphql_path}`;
+          });
+          traceStep(`2 · Taint source tracked (${sources.length})`, sourceLines.join('\n\n'), '');
+        } else {
+          traceStep('2 · Taint source', 'The source tracker did not identify an ID-like input for this query. This is incomplete evidence, not proof that the request is safe.', 'warning');
         }
 
-        // Fetch immediately and poll every 2 seconds
-        fetchStats();
-        setInterval(fetchStats, 2000);
-    </script>
+        if (objects.length) {
+          const objectLines = objects.slice(0, 4).map(item => {
+            const auth = item.authorization || {};
+            return `${item.object_type} #${item.object_id}\nPath: ${item.graphql_path}\nOwner ID: ${item.owner_id ?? 'unknown'}\nPolicy: ${auth.decision ?? 'INCONCLUSIVE'}`;
+          });
+          traceStep(`3 · Object/path analysis (${objects.length})`, objectLines.join('\n\n'), objects.some(item => item.authorization && item.authorization.decision === 'INCONCLUSIVE') ? 'warning' : '');
+          const policyLines = objects.slice(0, 4).map(item => {
+            const auth = item.authorization || {};
+            return `${item.graphql_path}: ${auth.reason ?? 'UNKNOWN'}\n${auth.explanation ?? 'No explanation supplied.'}`;
+          });
+          traceStep('4 · Authorization reasoning', policyLines.join('\n\n'), denied.length ? 'denied' : allowed.length === objects.length ? 'allowed' : 'warning');
+        } else {
+          traceStep('3 · Object/path analysis', 'No explicit object ID was extracted. This trace cannot make an object-level authorization claim.', 'warning');
+          traceStep('4 · Authorization reasoning', 'No object policy decision is available for this query.', 'warning');
+        }
+
+        if (Number(httpStatus) === 403) {
+          const detail = response && response.detail ? response.detail : {};
+          const reason = detail.reason || (denied[0] && denied[0].authorization && denied[0].authorization.reason) || 'HTTP 403';
+          summary = 'DENIED · HTTP 403'; summaryClass = 'denied';
+          intro = `The request was rejected by the protected endpoint. Reason: ${reason}. The taint source shows which user-controlled ID/path was evaluated; the policy result explains why access was denied.`;
+          traceStep('5 · Observed enforcement', `HTTP ${httpStatus}\nDecision: ${detail.decision || 'DENY'}\nReason: ${reason}\nRisk: ${detail.risk_level || 'see response details'} ${detail.risk_score !== undefined ? '(' + detail.risk_score + '/100)' : ''}`, 'denied');
+        } else if (Number(httpStatus) >= 200 && Number(httpStatus) < 300 && !gqlErrors && endpoint.includes('graphql-insecure') && visibleDenied.length) {
+          summary = 'POTENTIAL BOLA EXPOSURE'; summaryClass = 'denied';
+          intro = 'The policy replay says this principal should not access the object, but the intentionally vulnerable endpoint returned an object with that ID.';
+          traceStep('5 · Observed enforcement', `HTTP ${httpStatus}\nWARNING: unauthorized target ID(s) visible in response: ${visibleDenied.map(item => '#' + item.object_id).join(', ')}\nThis is a confirmed exposure in this test response.`, 'denied');
+        } else if (Number(httpStatus) >= 200 && Number(httpStatus) < 300 && !gqlErrors && objects.length && denied.length && !visibleDenied.length) {
+          summary = 'TARGET NOT OBSERVED'; summaryClass = 'warning';
+          intro = 'The policy replay says at least one object should be denied, but the returned response did not visibly contain its ID. This may be field-level filtering; do not treat HTTP 200 alone as proof of access.';
+          traceStep('5 · Observed enforcement', `HTTP ${httpStatus}\nTarget IDs not found in the response body.\nCheck resolver filtering and the raw GraphQL response before concluding that data was protected.`, 'warning');
+        } else if (Number(httpStatus) >= 200 && Number(httpStatus) < 300 && !gqlErrors && objects.length && allowed.length === objects.length) {
+          summary = 'ACCEPTED · POLICY ALLOWS'; summaryClass = 'allowed';
+          intro = 'The request was accepted and the policy replay allowed every extracted object. The explanation below identifies the configured reason, such as OWNER_MATCH or ADMIN_OVERRIDE.';
+          traceStep('5 · Observed enforcement', `HTTP ${httpStatus}\nGraphQL errors: none reported\nPolicy reason: ${allowed.map(item => item.authorization.reason).filter(Boolean).join(', ') || 'ALLOW'}`, 'allowed');
+        } else if (gqlErrors) {
+          summary = `GRAPHQL ERROR · HTTP ${httpStatus}`; summaryClass = 'warning';
+          intro = 'The HTTP request completed, but GraphQL returned errors. This is not automatically an accepted or denied authorization result.';
+          traceStep('5 · Observed response', `HTTP ${httpStatus}\nGraphQL errors: ${response.errors.length}\nInspect the actual error messages and policy decisions.`, 'warning');
+        } else {
+          summary = `HTTP ${httpStatus} · REVIEW`; summaryClass = 'warning';
+          traceStep('5 · Observed response', `HTTP ${httpStatus}\nNo conclusive allow/deny explanation can be inferred from the available evidence.`, 'warning');
+        }
+
+        if (relationshipPaths.length) {
+          const returnedChildren = visible.filter(item => item.ownerId !== null && item.ownerId !== undefined);
+          const relationshipSummary = relationshipPaths.join(', ');
+          $('traceNotes').textContent = `Nested selection paths in query: ${relationshipSummary}. ` +
+            (returnedChildren.length ? `Objects visible in response with owner fields: ${returnedChildren.slice(0, 10).map(item => `#${item.id} (owner ${item.ownerId})`).join(', ')}. ` : '') +
+            'The source tracker identifies the parent ID source; this report does not claim to enumerate hidden children unless the resolver/analysis explicitly reports them. ' +
+            (analysis && analysis.notes ? analysis.notes.join(' ') : '');
+        } else {
+          $('traceNotes').textContent = (analysis && analysis.notes ? analysis.notes.join(' ') : 'No additional analysis notes available.') +
+            (analysisError ? ` Explanation API unavailable: ${analysisError}` : '');
+        }
+        $('traceOutcome').textContent = summary;
+        $('traceOutcome').className = 'trace-outcome ' + summaryClass;
+        $('traceIntro').textContent = intro;
+      }
+
+      function resetTaintTrace() {
+        $('traceOutcome').textContent = 'WAITING FOR REQUEST';
+        $('traceOutcome').className = 'trace-outcome warning';
+        $('traceIntro').textContent = 'Run a direct, nested, or relationship test above to build an evidence-based explanation.';
+        $('traceFlow').replaceChildren();
+        traceStep('Request input', 'Waiting for a test request.');
+        $('traceNotes').textContent = 'Taint source data and policy replay will populate this area after a request. A tainted input is not automatically an attack.';
+      }
+      // REQUEST_SPECIFIC_TAINT_TRACE_JS_END
+
+      async function runSelectedTest() {
+        const button = $('runTestButton');
+        const username = $('testUsername').value.trim();
+        const password = $('testPassword').value;
+        if (!username || !password) {
+          showToast('Enter a seeded demo username and password first.');
+          $('testResultTitle').textContent = 'Login credentials required';
+          $('testResultStatus').textContent = 'Not started';
+          $('testResultStatus').className = 'status-inline bad';
+          return;
+        }
+        let query;
+        let variables;
+        try { const requestSpec = buildSelectedRequest(); query = requestSpec.query; variables = requestSpec.variables; }
+        catch (error) { showToast(error.message); return; }
+        button.disabled = true; button.textContent = 'Running…';
+        $('testResultTitle').textContent = 'Executing selected GraphQL request';
+        $('testResultStatus').textContent = 'Logging in…';
+        $('testResultStatus').className = 'status-inline';
+        $('testResultBody').textContent = `Endpoint: ${$('testEndpoint').value}\nScenario: ${$('testScenario').selectedOptions[0].text}\nQuery:\n${query}\n\nWaiting for response…`;
+        try {
+          const loginResponse = await fetch('/api/v1/auth/login', {
+            method: 'POST', headers: {'Content-Type':'application/json','Accept':'application/json'},
+            body: JSON.stringify({username, password}), cache:'no-store'
+          });
+          const loginPayload = await loginResponse.json().catch(() => ({}));
+          if (!loginResponse.ok || !loginPayload.access_token) {
+            throw new Error(`Login failed (HTTP ${loginResponse.status}): ${JSON.stringify(loginPayload)}`);
+          }
+          const token = loginPayload.access_token;
+          $('testResultStatus').textContent = 'Sending GraphQL request…';
+          const graphqlResponse = await fetch($('testEndpoint').value, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json','Accept':'application/json','Authorization':`Bearer ${token}`},
+            body: JSON.stringify({query, variables}), cache:'no-store'
+          });
+          const rawBody = await graphqlResponse.text();
+          let parsedBody;
+          try { parsedBody = JSON.parse(rawBody); } catch (_) { parsedBody = rawBody; }
+          $('testResultTitle').textContent = 'GraphQL request completed';
+          $('testResultStatus').textContent = `HTTP ${graphqlResponse.status}${parsedBody && parsedBody.errors ? ' · GraphQL errors returned' : ''}`;
+          $('testResultStatus').className = 'status-inline ' + (graphqlResponse.ok && !(parsedBody && parsedBody.errors) ? 'ok' : 'bad');
+          $('testResultBody').textContent = JSON.stringify({endpoint:$('testEndpoint').value, scenario:$('testScenario').value, query, variables, http_status:graphqlResponse.status, response:parsedBody}, null, 2);
+          let analysis = null;
+          let analysisError = '';
+          try {
+            const explainResponse = await fetch('/api/v1/taint-explain', {
+              method: 'POST',
+              headers: {'Content-Type':'application/json','Accept':'application/json','Authorization':`Bearer ${token}`},
+              body: JSON.stringify({query, variables}), cache:'no-store'
+            });
+            const explainPayload = await explainResponse.json().catch(() => ({}));
+            if (!explainResponse.ok) throw new Error(`Explanation API returned HTTP ${explainResponse.status}: ${JSON.stringify(explainPayload)}`);
+            analysis = explainPayload;
+          } catch (explainError) {
+            analysisError = explainError && explainError.message ? explainError.message : String(explainError);
+          }
+          renderTaintTrace({analysis, analysisError, query, variables, endpoint:$('testEndpoint').value, httpStatus:graphqlResponse.status, response:parsedBody});
+          $('testPassword').value = '';
+          await refresh({quiet:true});
+          showToast('Test completed. Audit metrics refreshed.');
+        } catch (error) {
+          $('testResultTitle').textContent = 'Test failed';
+          $('testResultStatus').textContent = 'Request error';
+          $('testResultStatus').className = 'status-inline bad';
+          $('testResultBody').textContent = String(error && error.message ? error.message : error);
+          showToast('Test failed. Review the result panel.');
+        } finally {
+          button.disabled = false; button.textContent = '▶ Run selected test';
+        }
+      }
+      function toggleTheme() {
+        document.body.classList.toggle('light');
+        const light = document.body.classList.contains('light');
+        $('themeButton').textContent = light ? '☾ Dark mode' : '☼ Light mode';
+        try { localStorage.setItem('graphql-shield-dashboard-theme', light ? 'light' : 'dark'); } catch (_) { /* storage can be disabled */ }
+      }
+      function initTheme() {
+        try { if (localStorage.getItem('graphql-shield-dashboard-theme') === 'light') document.body.classList.add('light'); } catch (_) { /* storage can be disabled */ }
+        $('themeButton').textContent = document.body.classList.contains('light') ? '☾ Dark mode' : '☼ Light mode';
+      }
+      function init() {
+        initTheme();
+        $('demoUsersBody').addEventListener('click', (event) => {
+          const button = event.target.closest('button[data-demo-username]');
+          if (!button || !button.dataset.demoUsername) return;
+          $('testUsername').value = button.dataset.demoUsername;
+          $('testPassword').focus();
+          $('test-console').scrollIntoView({behavior:'smooth', block:'start'});
+          showToast('Account selected. Enter its demo password to run a test.');
+        });
+        $('runTestButton').addEventListener('click', runSelectedTest);
+        $('clearResultButton').addEventListener('click', () => {
+          $('testResultTitle').textContent = 'No test run yet';
+          $('testResultStatus').textContent = 'Choose a scenario above';
+          $('testResultStatus').className = 'status-inline';
+          $('testResultBody').textContent = 'The selected request response will appear here.';
+          resetTaintTrace();
+        });
+        $('testScenario').addEventListener('change', setScenarioFields);
+        setScenarioFields();
+        $('refreshButton').addEventListener('click', () => refresh());
+        $('themeButton').addEventListener('click', toggleTheme);
+        $('exportButton').addEventListener('click', exportCsv);
+        $('exportButtonTop').addEventListener('click', exportCsv);
+        $('searchInput').addEventListener('input', applyFilters);
+        $('decisionFilter').addEventListener('change', applyFilters);
+        $('riskFilter').addEventListener('change', applyFilters);
+        $('clearFiltersButton').addEventListener('click', () => { $('searchInput').value = ''; $('decisionFilter').value = 'all'; $('riskFilter').value = 'all'; applyFilters(); });
+        refresh({quiet:true});
+        state.timer = window.setInterval(() => refresh({quiet:true}), REFRESH_MS);
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh({quiet:true}); });
+      }
+      document.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
 </body>
 </html>
+

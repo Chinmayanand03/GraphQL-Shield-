@@ -1,144 +1,34 @@
-# GraphQL Shield: Schema-Aware Security Gateway 🛡️
+# Per-request Taint & Authorization Flow
 
-**Project Title:** GraphQL Shield: Schema-Aware Security Gateway for Preventing GraphQL BOLA Vulnerabilities  
-**Course/Domain:** Computer Communication and Network Security  
-**Team:** Agnihotram Chinmayanand, B.V.Balanilavan, Kapilesh.N, Sakthivel  
-**Status:** ✅ 100% Complete (Phases 1-12)
+This patch replaces the static-only explanation with a request-specific flow. After each dashboard test it displays:
 
----
+1. The authenticated principal and role from the validated JWT.
+2. Actual ID taint sources returned by `app.security.taint_sources.track_sources()`.
+3. Parsed GraphQL object paths and ownership lookups.
+4. A read-only re-evaluation by the project's existing `PolicyEngine`.
+5. The actual HTTP / GraphQL outcome, distinguished from the policy replay.
 
-## 📖 1. Architecture Overview
-GraphQL Shield is a dedicated security gateway designed to intercept, parse, and enforce zero-trust authorization policies on GraphQL traffic *before* it reaches backend resolvers. 
+For successful requests, the flow explains `OWNER_MATCH` or `ADMIN_OVERRIDE` from the configured engine. For HTTP 403, it shows the observed denial reason and risk data. For the intentionally vulnerable baseline, it warns if the same policy replay says DENY and the response visibly contains the target ID.
 
-Traditional GraphQL implementations struggle with **Broken Object Level Authorization (BOLA)** because resolvers are executed natively via depth-first graph traversal, making centralized security hard to enforce. GraphQL Shield abstracts this by using Pre-Execution AST Parsing to map all requested objects and enforcing strict contextual authorization.
+Relationship queries additionally show parsed nested selection paths and owner fields visible in the response. The tool does NOT invent hidden child IDs or claim that all internal propagation edges were dynamically observed. The API explicitly labels its policy check as a read-only replay, not the enforcement event itself.
 
-**Data Flow:**
-1. **Client** sends GraphQL Query + JWT.
-2. **FastAPI Middleware** intercepts the request.
-3. **JWT Extractor** resolves user identity and roles.
-4. **AST Normalizer** traverses the syntax tree, resolving variables and fragment spreads, extracting requested `types` and `IDs`.
-5. **Ownership Engine** queries the database to establish the true object owner.
-6. **Policy Engine** evaluates the contextual request against zero-trust rules.
-7. **Risk Engine** computes a deterministic risk score (0-100).
-8. **Audit Logger** persists the exact decision context to SQLite.
-9. **Enforcement Block**:
-    - If `ALLOW` -> execution is handed over to the Strawberry GraphQL Engine.
-    - If `DENY` -> execution is halted instantly, returning `HTTP 403 Forbidden` and preventing backend processing.
+## Install
 
----
+1. Extract this ZIP into the GraphQL-Shield project root; `apply_taint_trace_dashboard.py`, `payload/`, and `tests/` should sit beside the project's `app/` folder.
+2. From a PowerShell terminal in the project root, run:
 
-## 📡 2. API Documentation
-
-### **Authentication**
-- `POST /api/v1/auth/login`
-  - Body: `{"username": "alice", "password": "alice123"}`
-  - Returns: `{"access_token": "...", "token_type": "bearer"}`
-
-### **GraphQL Endpoints**
-- `POST /graphql`
-  - The secured endpoint. All requests must carry an `Authorization: Bearer <token>` header.
-- `POST /graphql-insecure`
-  - A strictly unprotected replica of the endpoint used *only* for the Phase 11 Latency Benchmarks.
-
-### **Monitoring & Dashboards**
-- `GET /dashboard`
-  - Serves the live, professional HTML statistics UI.
-- `GET /api/v1/dashboard-stats`
-  - Public data aggregation endpoint for the dashboard UI.
-- `GET /api/v1/audit-logs`
-  - Secured audit feed. **Requires `ADMIN` JWT role.** Returns recent security events.
-
----
-
-## 🚀 3. Setup Instructions
-
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/FURYBALA/GraphQL-Shield.git
-   cd GraphQL-Shield
+   ```powershell
+   python .\apply_taint_trace_dashboard.py
    ```
 
-2. **Setup Virtual Environment**
-   ```bash
-   python -m venv venv
-   # Windows:
-   venv\Scripts\activate
-   # Mac/Linux:
-   source venv/bin/activate
-   ```
+3. Run `python -m pytest -q`.
+4. Restart FastAPI if needed and hard-refresh `/dashboard` with Ctrl+F5.
+5. Try a foreign object ID on `/graphql` (expected 403) and an owned object ID. Inspect the new per-request flow panel.
 
-3. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+The installer creates timestamped backups of `app/main.py` and `app/static/dashboard.html` to `backups/taint_request_trace_before_patch_<timestamp>/` before writing. It is idempotent and stops if required source anchors are absent. If a test file or module with the same name already exists, it backs it up first.
 
-4. **Initialize Database**
-   ```bash
-   python -m app.seed
-   ```
-   *(This creates `shield.db` and populates `users`, `objects`, and ownership structures).*
+The new authenticated route `POST /api/v1/taint-explain` invokes the existing `track_sources`, `normalize_query`, `get_object_owner`, and `PolicyEngine`. It does not execute the GraphQL query or make an enforcement decision. It is a read-only explanation endpoint using the same policy engine to explain the request.
 
-5. **Run the Server**
-   ```bash
-   uvicorn app.main:app --reload
-   ```
+For implicit relationship queries, the flow displays nested selection paths and owner fields actually visible in the response. It does not claim to know hidden child IDs unless a resolver/analysis API explicitly exposes that evidence.
 
----
-
-## 🧪 4. Test Instructions
-
-The system features an automated, highly comprehensive test suite (36 tests) covering 21 distinct scenarios (including multi-ID sneaking, variable injection, and fragment spread BOLA).
-
-To execute the test suite:
-```bash
-python -m pytest tests/test_phase_10_comprehensive.py -v
-```
-To run the entire suite across all system modules:
-```bash
-python -m pytest tests/
-```
-
-To run the Phase 11 Latency Benchmark (Comparing protected vs unprotected overheads):
-```bash
-python -m scripts.evaluate_performance
-```
-
----
-
-## 🎯 5. Quick Start & Demonstration
-
-To best evaluate this project, we highly recommend a **Live Manual Demonstration** where you interact with the running server using real HTTP requests. This proves that the Gateway is dynamically intercepting traffic in real-time.
-
-**Terminal 1 (The Server):**
-```bash
-# Seed the database and start the FastAPI security server
-python -m app.seed
-uvicorn app.main:app --reload
-```
-*(As you send requests, you will see a detailed, live Security Trace output here showing the exact Ownership, Risk, and Policy Evaluation decisions).*
-
-**Terminal 2 (The Client):**
-Follow the **[`LIVE_DEMONSTRATION_GUIDE.md`](./LIVE_DEMONSTRATION_GUIDE.md)** for the exact `curl` commands to authenticate and execute:
-1. Legitimate GraphQL Access
-2. Direct BOLA Attacks
-3. Nested BOLA Attacks
-4. Invalid JWT Rejections
-
-**Browser (The Dashboard):**
-Navigate to `http://localhost:8000/dashboard` to view the live GUI reflecting your manual attacks.
-
-*(Note: We have also provided `python scripts/run_demo.py` as an automated, deterministic regression utility, but the live manual interaction is the primary evaluation method).*
-
----
-
-## ⚠️ 6. Known Limitations
-- **Type Inference:** The AST parser infers Object Types based directly on field names (e.g., `resource` -> `Resource`) rather than utilizing full internal schema reflection. Highly complex polymorphic GraphQL schemas may bypass this.
-- **Role-Based Limitations:** The system currently relies strictly on Ownership matching and a global `ADMIN` override. Fine-grained RBAC per-field is not supported in this prototype.
-- **Database Overhead:** Ownership lookup queries the SQLite database directly per requested object. In a massive production system, this would require Redis/Memcached caching to maintain low latency.
-
----
-
-## 🔮 7. Future Work
-- **Machine Learning Integration:** Replace the deterministic rule-based Risk Engine with an ML anomaly detection model to catch slow, highly distributed reconnaissance attacks.
-- **Rate Limiting Engine:** Add a strict rate-limiting gateway specifically for high-risk IP addresses or users exhibiting medium-risk querying patterns.
-- **Full Schema Introspection Validation:** Integrate the Gateway directly with the Strawberry Schema registry to perfectly map all incoming aliases and unions to their exact Database tables without relying on inference.
+The added regression tests cover foreign-owner denial, legitimate owner access, and administrator access under the configured policy.

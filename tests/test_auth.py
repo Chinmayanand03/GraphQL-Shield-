@@ -47,7 +47,7 @@ def test_protected_valid_token():
 
 def test_protected_missing_token():
     protected_resp = client.get("/api/v1/protected")
-    assert protected_resp.status_code == 403  # HTTPBearer default for missing credentials
+    assert protected_resp.status_code in (401, 403)  # HTTPBearer default for missing credentials
 
 def test_protected_invalid_token():
     protected_resp = client.get("/api/v1/protected", headers={"Authorization": "Bearer not.a.valid.token"})

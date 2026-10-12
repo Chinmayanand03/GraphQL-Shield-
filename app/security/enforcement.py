@@ -9,6 +9,7 @@ from .audit import log_decision
 policy_engine = PolicyEngine()
 
 async def bola_enforcement_middleware(request: Request, current_user: dict = Depends(get_current_user)):
+    request.state.current_user = current_user
     """
     Centralized Security Gateway dependency.
     Runs BEFORE the GraphQL backend, blocking BOLA attacks at the edge.

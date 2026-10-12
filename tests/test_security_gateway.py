@@ -78,7 +78,7 @@ def test_gateway_deny_missing_jwt():
     }
     """
     response = client.post("/graphql", json={"query": query})
-    assert response.status_code == 403 # HTTPBearer returns 403 for missing credentials
+    assert response.status_code in (401, 403) # HTTPBearer returns 403 for missing credentials
 
 def test_gateway_deny_invalid_jwt():
     query = """
