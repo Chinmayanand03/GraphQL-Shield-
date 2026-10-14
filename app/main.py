@@ -53,13 +53,19 @@ class LoginRequest(BaseModel):
 
 
 LOGIN_USERNAME_ALIASES = {
-    "alice": "bala",
-    "bala": "alice",
-    "bob": "kapilesh",
-    "kapilesh": "bob",
-    "charlie": "chinmay",
-    "chinmay": "charlie",
+    "balanilavan": "bala",
+    "bala": "balanilavan",
+
+    "kapilesh": "kapil",
+    "kapil": "kapilesh",
+
+    "chinmayanand": "chinmay",
+    "chinmay": "chinmayanand",
+
+    "sakthivel": "sakthi",
+    "sakthi": "sakthivel",
 }
+
 
 
 @app.post("/api/v1/auth/login")
@@ -169,13 +175,14 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
                    COALESCE(
                        NULLIF(u.display_name, ''),
                        CASE u.username
+                           WHEN 'chinmayanand' THEN 'Agnihotram Chinmayanand'
                            WHEN 'chinmay' THEN 'Agnihotram Chinmayanand'
-                           WHEN 'charlie' THEN 'Agnihotram Chinmayanand'
+                           WHEN 'balanilavan' THEN 'B.V. Balanilavan'
                            WHEN 'bala' THEN 'B.V. Balanilavan'
-                           WHEN 'alice' THEN 'B.V. Balanilavan'
                            WHEN 'kapilesh' THEN 'Kapilesh N'
-                           WHEN 'bob' THEN 'Kapilesh N'
+                           WHEN 'kapil' THEN 'Kapilesh N'
                            WHEN 'sakthivel' THEN 'Sakthivel B'
+                           WHEN 'sakthi' THEN 'Sakthivel B'
                            ELSE u.username
                        END,
                        CAST(a.user_id AS TEXT)
@@ -193,24 +200,26 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
             SELECT a.*,
                    u.username AS username,
                    CASE u.username
+                       WHEN 'chinmayanand' THEN 'Agnihotram Chinmayanand'
                        WHEN 'chinmay' THEN 'Agnihotram Chinmayanand'
-                       WHEN 'charlie' THEN 'Agnihotram Chinmayanand'
+                       WHEN 'balanilavan' THEN 'B.V. Balanilavan'
                        WHEN 'bala' THEN 'B.V. Balanilavan'
-                       WHEN 'alice' THEN 'B.V. Balanilavan'
                        WHEN 'kapilesh' THEN 'Kapilesh N'
-                       WHEN 'bob' THEN 'Kapilesh N'
+                       WHEN 'kapil' THEN 'Kapilesh N'
                        WHEN 'sakthivel' THEN 'Sakthivel B'
+                       WHEN 'sakthi' THEN 'Sakthivel B'
                        ELSE u.username
                    END AS display_name,
                    COALESCE(
                        CASE u.username
+                           WHEN 'chinmayanand' THEN 'Agnihotram Chinmayanand'
                            WHEN 'chinmay' THEN 'Agnihotram Chinmayanand'
-                           WHEN 'charlie' THEN 'Agnihotram Chinmayanand'
+                           WHEN 'balanilavan' THEN 'B.V. Balanilavan'
                            WHEN 'bala' THEN 'B.V. Balanilavan'
-                           WHEN 'alice' THEN 'B.V. Balanilavan'
                            WHEN 'kapilesh' THEN 'Kapilesh N'
-                           WHEN 'bob' THEN 'Kapilesh N'
+                           WHEN 'kapil' THEN 'Kapilesh N'
                            WHEN 'sakthivel' THEN 'Sakthivel B'
+                           WHEN 'sakthi' THEN 'Sakthivel B'
                            ELSE u.username
                        END,
                        CAST(a.user_id AS TEXT)
@@ -226,14 +235,43 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
 
     demo_users = []
     for persona in (
-        {"username": "chinmay", "legacy_username": "charlie", "display_name": "Agnihotram Chinmayanand", "role": "ADMIN"},
-        {"username": "bala", "legacy_username": "alice", "display_name": "B.V. Balanilavan", "role": "USER"},
-        {"username": "kapilesh", "legacy_username": "bob", "display_name": "Kapilesh N", "role": "USER"},
-        {"username": "sakthivel", "legacy_username": None, "display_name": "Sakthivel B", "role": "USER"},
+        {
+            "username": "chinmayanand",
+            "legacy_username": "chinmay",
+            "display_name": "Agnihotram Chinmayanand",
+            "role": "ADMIN",
+        },
+        {
+            "username": "balanilavan",
+            "legacy_username": "bala",
+            "display_name": "B.V. Balanilavan",
+            "role": "USER",
+        },
+        {
+            "username": "kapilesh",
+            "legacy_username": "kapil",
+            "display_name": "Kapilesh N",
+            "role": "USER",
+        },
+        {
+            "username": "sakthivel",
+            "legacy_username": "sakthi",
+            "display_name": "Sakthivel B",
+            "role": "USER",
+        },
     ):
         candidates = [persona["username"]]
         if persona["legacy_username"]:
             candidates.append(persona["legacy_username"])
+        legacy_lookup = {
+            "balanilavan": ["bala"],
+            "kapilesh": ["kapil"],
+            "chinmayanand": ["chinmay"],
+            "sakthivel": ["sakthi"],
+        }
+        for extra in legacy_lookup.get(persona["username"], []):
+            if extra not in candidates:
+                candidates.append(extra)
         placeholders = ", ".join("?" for _ in candidates)
         if "display_name" in user_columns:
             cursor.execute(

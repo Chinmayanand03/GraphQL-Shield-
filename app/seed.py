@@ -20,9 +20,10 @@ def seed_database():
     
     # Seed Users
     users = [
-        (101, 'alice', 'hash_alice123', 'user'),
-        (102, 'bob', 'hash_bob123', 'user'),
-        (103, 'charlie', 'hash_charlie123', 'admin')
+        (101, "balanilavan", "hash_balanilavan123", "user"),
+        (102, "kapilesh", "hash_kapilesh123", "user"),
+        (103, "sakthivel", "hash_sakthivel123", "user"),
+        (104, "chinmayanand", "hash_chinmayanand123", "admin"),
     ]
     cursor.executemany(
         "INSERT INTO users (id, username, password_hash, role) VALUES (?, ?, ?, ?)",
@@ -32,13 +33,13 @@ def seed_database():
     # Seed Objects (with some nested relationships)
     objects = [
         # (id, object_type, owner_id, name, parent_id)
-        (101, 'document', 101, "Alice's Secret Note", None),
-        (102, 'document', 102, "Bob's Financial Record", None),
-        (103, 'document', 103, "Charlie's Admin Log", None),
-        # Nested relationship: Alice has a folder that contains another document
-        (201, 'folder', 101, "Alice's Projects", None),
-        (202, 'document', 101, "Project Alpha Plan", 201),
-        (203, 'document', 101, "Project Beta Plan", 201)
+        (101, "document", 101, "Balanilavan's Secret Note", None),
+        (102, "document", 102, "Kapilesh's Financial Record", None),
+        (103, "document", 103, "Sakthivel B's Research Note", None),
+        (104, "document", 104, "Chinmayanand's Admin Log", None),
+        (201, "folder", 101, "Balanilavan's Projects", None),
+        (202, "document", 101, "Project Alpha Plan", 201),
+        (203, "document", 101, "Project Beta Plan", 201),
     ]
     cursor.executemany(
         "INSERT INTO objects (id, object_type, owner_id, name, parent_id) VALUES (?, ?, ?, ?, ?)",
