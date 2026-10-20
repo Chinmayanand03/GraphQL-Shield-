@@ -66,6 +66,22 @@ def init_db():
         )
     ''')
     
+    # layer_events table: what each defense layer did, including the cases where
+    # Layer 2 caught an object that Layer 1 never evaluated (a Layer 1 blind spot).
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS layer_events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            layer TEXT NOT NULL,
+            event TEXT NOT NULL,
+            object_type TEXT,
+            object_id INTEGER,
+            path TEXT,
+            detail TEXT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+
     conn.commit()
     conn.close()
 

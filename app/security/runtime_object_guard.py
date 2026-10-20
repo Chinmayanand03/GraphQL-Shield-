@@ -5,11 +5,20 @@ import logging
 from typing import Any
 from unittest.mock import MagicMock
 
+from graphql import GraphQLError
 from strawberry.extensions import SchemaExtension
 
-from app.graphql.types import ResourceType
+from app.graphql.types import ResourceType, UserType
 from app.security.audit import log_decision
 from app.security.authorization import AuthorizationContext, PolicyEngine
+from app.security.layers import (
+    EVENT_L1_BLIND_SPOT,
+    EVENT_L2_FILTERED,
+    EVENT_L2_MUTATION_BLOCKED,
+    is_enabled,
+    layer1_saw,
+    record_layer_event,
+)
 from app.security.ownership import get_object_owner
 
 logger = logging.getLogger(__name__)
@@ -109,6 +118,11 @@ def make_info(
     return info
 
 
+# Owned GraphQL object types guarded at execution time, and the ownership-table type
+# name used for each. A UserType is owned by the user it describes.
+GUARDED_TYPES = {ResourceType: "Resource", UserType: "User"}
+
+
 class RuntimeObjectAuthorizationExtension(SchemaExtension):
     """
     Prototype runtime guard for ResourceType objects.
@@ -131,6 +145,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
         self._request = request
 
     def resolve(self, _next, root, info, *args, **kwargs):
+        self._guard_mutation_arguments(info, kwargs)
         result = _next(root, info, *args, **kwargs)
 
         # Support synchronous and asynchronous resolvers.
@@ -173,7 +188,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
         if path == "/graphql-insecure":
             return False
 
-        return path == "/graphql"
+        return path == "/graphql" and is_enabled("layer2")
 
     @staticmethod
     def _format_path(path) -> str:
@@ -195,8 +210,9 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
 
     def _check_resource_authorization(
         self,
-        resource: ResourceType,
+        resource: Any,
         info: Any,
+        object_type: str = "Resource",
     ) -> tuple[bool, dict[str, Any]]:
         request = self._get_request(info)
 
@@ -234,7 +250,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
             role = str(current_user.get("role", "user"))
 
             # Never trust the returned object's owner_id as the authority.
-            owner_id = get_object_owner("Resource", object_id)
+            owner_id = get_object_owner(object_type, object_id)
 
             operation_node = getattr(info, "operation", None)
             operation_value = getattr(
@@ -249,7 +265,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
                 user_id=user_id,
                 role=role,
                 operation=str(operation_value),
-                object_type="Resource",
+                object_type=object_type,
                 object_id=object_id,
                 path=path_str,
                 owner_id=owner_id,
@@ -267,7 +283,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
                     user_id=user_id,
                     role=role,
                     operation=str(operation_value),
-                    object_type="Resource",
+                    object_type=object_type,
                     object_id=object_id,
                     path=path_str,
                     decision=decision.get("decision", "DENY"),
@@ -325,19 +341,19 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
     def _record_evidence_and_provenance(
         self,
         sec_state: RequestSecurityState,
-        resource: ResourceType,
+        resource: Any,
         root: Any,
         field_name: str,
         decision_info: dict[str, Any],
         enforcement: str,
         emitted_path: list[Any] | None,
+        object_type: str = "Resource",
     ) -> None:
         principal_id = decision_info.get("user_id")
         owner_id = decision_info.get("owner_id")
         decision = decision_info.get("decision", "DENY")
         reason = decision_info.get("reason", "UNKNOWN")
         object_id = int(resource.id)
-        object_type = "Resource"
 
         evidence_entry = {
             "object_id": object_id,
@@ -391,8 +407,9 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
         base_path_list = self._format_path_list(path_node)
         field_name = str(getattr(info, "field_name", None) or (path_node.key if path_node else "children"))
 
-        if isinstance(result, ResourceType):
-            is_auth, decision_info = self._check_resource_authorization(result, info)
+        object_type = GUARDED_TYPES.get(type(result))
+        if object_type is not None:
+            is_auth, decision_info = self._check_resource_authorization(result, info, object_type)
             if is_auth:
                 emitted_path = list(base_path_list)
                 self._record_evidence_and_provenance(
@@ -403,6 +420,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
                     decision_info=decision_info,
                     enforcement="allowed",
                     emitted_path=emitted_path,
+                    object_type=object_type,
                 )
                 return result
             else:
@@ -414,14 +432,17 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
                     decision_info=decision_info,
                     enforcement="denied",
                     emitted_path=None,
+                    object_type=object_type,
                 )
+                self._record_denial(request, decision_info, object_type, result, base_path_list)
                 return None
 
         if isinstance(result, list):
             filtered_result = []
             for item in result:
-                if isinstance(item, ResourceType):
-                    is_auth, decision_info = self._check_resource_authorization(item, info)
+                item_type = GUARDED_TYPES.get(type(item))
+                if item_type is not None:
+                    is_auth, decision_info = self._check_resource_authorization(item, info, item_type)
                     if is_auth:
                         emitted_idx = len(filtered_result)
                         emitted_path = list(base_path_list) + [emitted_idx]
@@ -433,6 +454,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
                             decision_info=decision_info,
                             enforcement="allowed",
                             emitted_path=emitted_path,
+                            object_type=item_type,
                         )
                         filtered_result.append(item)
                     else:
@@ -444,11 +466,71 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
                             decision_info=decision_info,
                             enforcement="filtered",
                             emitted_path=None,
+                            object_type=item_type,
                         )
+                        self._record_denial(request, decision_info, item_type, item, base_path_list)
                 else:
                     filtered_result.append(item)
             return filtered_result
 
-        # Scalars and non-resource objects are outside this prototype's scope.
+        # Scalars and non-owned objects are outside this prototype's scope.
         return result
+
+    # ------------------------------------------------------------------ mutation argument guard
+    def _guard_mutation_arguments(self, info: Any, kwargs: dict) -> None:
+        """Block a root mutation that targets an object the caller does not own.
+
+        Uses the engine-coerced `id` argument, so it is unaffected by how the client
+        spelled the request (variables, aliases, fragments, directives).
+        """
+        parent_type = getattr(getattr(info, "parent_type", None), "name", None)
+        if parent_type != "Mutation" or "id" not in kwargs:
+            return
+        if not self._should_enforce(info):
+            return
+
+        target = _OwnedRef(kwargs["id"])
+        is_auth, decision_info = self._check_resource_authorization(target, info, "Resource")
+        if is_auth:
+            return
+
+        request = self._get_request(info)
+        path = self._format_path_list(getattr(info, "path", None))
+        record_layer_event(decision_info.get("user_id"), "L2", EVENT_L2_MUTATION_BLOCKED, "Resource",
+                           target.id, ".".join(map(str, path)), decision_info.get("reason", "DENY"))
+        self._record_blind_spot(request, decision_info, "Resource", target.id, path)
+        raise GraphQLError(
+            "GraphQL Shield: mutation blocked, caller does not own the target object.",
+            extensions={
+                "code": "MUTATION_AUTHORIZATION_DENIED",
+                "layer": "L2_EXECUTION_TIME",
+                "object_id": target.id,
+                "reason": decision_info.get("reason", "DENY"),
+                "risk_level": decision_info.get("risk_level", "HIGH"),
+            },
+        )
+
+    # ------------------------------------------------------------------ cross-layer evidence
+    def _record_denial(self, request: Any, decision_info: dict, object_type: str, obj: Any, path: list) -> None:
+        record_layer_event(decision_info.get("user_id"), "L2", EVENT_L2_FILTERED, object_type,
+                           int(obj.id), ".".join(map(str, path)), decision_info.get("reason", "DENY"))
+        self._record_blind_spot(request, decision_info, object_type, int(obj.id), path)
+
+    @staticmethod
+    def _record_blind_spot(request: Any, decision_info: dict, object_type: str, object_id: int, path: list) -> None:
+        """Layer 2 denied an object Layer 1 never evaluated: a Layer 1 blind spot."""
+        if not is_enabled("layer1") or request is None or layer1_saw(request, object_type, object_id):
+            return
+        if getattr(getattr(request, "state", None), "layer1_checked", None) is None:
+            return
+        record_layer_event(decision_info.get("user_id"), "L2", EVENT_L1_BLIND_SPOT, object_type, object_id,
+                           ".".join(map(str, path)),
+                           "object reached without an ID Layer 1 could see (relationship traversal or unparsed query shape)")
+
+
+class _OwnedRef:
+    """Minimal object carrying the id of a mutation target for the ownership check."""
+
+    def __init__(self, raw_id: Any):
+        self.id = int(raw_id)
 

@@ -1,19 +1,29 @@
 import json
 from fastapi import Request, HTTPException, Depends
+from app.config import settings
 from app.core.dependencies import get_current_user
 from .object_extractor import normalize_query
 from .ownership import get_object_owner
 from .authorization import AuthorizationContext, PolicyEngine
 from .audit import log_decision
+from .layers import EVENT_L1_BLOCKED, is_enabled, mark_layer1_checked, record_layer_event
 
 policy_engine = PolicyEngine()
 
 async def bola_enforcement_middleware(request: Request, current_user: dict = Depends(get_current_user)):
-    request.state.current_user = current_user
     """
-    Centralized Security Gateway dependency.
+    Layer 1: centralized pre-execution gate.
     Runs BEFORE the GraphQL backend, blocking BOLA attacks at the edge.
+    Layer 2 (runtime_object_guard) re-checks everything at execution time, so a
+    query shape this gate cannot parse is still never answered with foreign objects.
     """
+    request.state.current_user = current_user
+    request.state.layer1_checked = set()
+
+    if not is_enabled("layer1"):
+        return
+
+    # Queries over GET are disabled on the protected router (allow_queries_via_get=False).
     if request.method != "POST":
         return
 
@@ -21,12 +31,34 @@ async def bola_enforcement_middleware(request: Request, current_user: dict = Dep
         body = await request.body()
         data = json.loads(body)
     except Exception:
+        # Fail closed: a body this gate cannot read is not forwarded unchecked.
+        raise HTTPException(status_code=400, detail={"error": "MALFORMED_REQUEST", "reason": "Request body is not valid JSON."})
+
+    # Query batching: a JSON array of operations is checked operation by operation.
+    if isinstance(data, list):
+        if len(data) > settings.MAX_BATCH_OPERATIONS:
+            raise HTTPException(
+                status_code=400,
+                detail={"error": "BATCH_SIZE_EXCEEDED",
+                        "reason": f"At most {settings.MAX_BATCH_OPERATIONS} operations per batch, received {len(data)}."},
+            )
+        for index, operation in enumerate(data):
+            if not isinstance(operation, dict):
+                raise HTTPException(status_code=400, detail={"error": "MALFORMED_REQUEST", "batch_index": index})
+            _enforce_operation(request, current_user, operation, batch_index=index)
         return
 
-    query = data.get("query", "")
-    variables = data.get("variables", {})
+    if not isinstance(data, dict):
+        raise HTTPException(status_code=400, detail={"error": "MALFORMED_REQUEST", "reason": "Expected a JSON object or array."})
 
-    normalized = normalize_query(query, variables)
+    _enforce_operation(request, current_user, data)
+
+
+def _enforce_operation(request: Request, current_user: dict, data: dict, batch_index: int | None = None) -> None:
+    query = data.get("query", "")
+    variables = data.get("variables") or {}
+
+    normalized = normalize_query(query, variables if isinstance(variables, dict) else {})
     
     if not normalized or not normalized["objects"]:
         return
@@ -42,6 +74,7 @@ async def bola_enforcement_middleware(request: Request, current_user: dict = Dep
         
         # Look up true ownership
         owner_id = get_object_owner(object_type, object_id)
+        mark_layer1_checked(request, object_type, object_id)
         
         # Assemble structured context
         context = AuthorizationContext(
@@ -95,9 +128,13 @@ async def bola_enforcement_middleware(request: Request, current_user: dict = Dep
         if result["decision"] == "DENY":
             print("[ENFORCEMENT]\nHTTP 403 Forbidden - Request Dropped.")
             print("="*50 + "\n")
+            record_layer_event(user_id, "L1", EVENT_L1_BLOCKED, object_type, object_id, path,
+                               result["reason"] if batch_index is None else f"{result['reason']} (batch index {batch_index})")
             raise HTTPException(
                 status_code=403, 
                 detail={
+                    "layer": "L1_PRE_EXECUTION",
+                    "batch_index": batch_index,
                     "decision": result["decision"],
                     "user_id": user_id,
                     "object_id": object_id,

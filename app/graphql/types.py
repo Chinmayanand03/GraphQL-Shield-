@@ -2,6 +2,7 @@ import strawberry
 from typing import List, Optional
 from strawberry.types import Info
 from app.database import get_db_connection
+from app.security.layers import is_enabled
 
 @strawberry.type
 class HealthCheckType:
@@ -18,51 +19,18 @@ class ResourceType:
 
     @strawberry.field
     def children(self, info: Info) -> List["ResourceType"]:
-        """Return child objects, applying per-child ownership on the protected API.
+        """Return child objects of this folder.
 
-        The insecure benchmark endpoint intentionally retains the unfiltered behavior.
-        The protected endpoint filters each child independently: owning a folder does
-        not grant access to a child owned by another subject. Administrators may read
-        all children, consistent with the gateway's admin policy.
+        Ownership is NOT checked here. On the protected endpoint the Layer 2 runtime
+        object guard filters every returned child independently: owning a folder does
+        not grant access to a child owned by another subject (administrators may read
+        all children). The insecure benchmark endpoint keeps the unfiltered behavior.
         """
         conn = get_db_connection()
         try:
-            cursor = conn.cursor()
-            cursor.execute("SELECT * FROM objects WHERE parent_id = ?", (self.id,))
-            rows = cursor.fetchall()
+            rows = conn.execute("SELECT * FROM objects WHERE parent_id = ?", (self.id,)).fetchall()
         finally:
             conn.close()
-
-        context = getattr(info, "context", None)
-        request = None
-        if isinstance(context, dict):
-            request = context.get("request")
-        elif context is not None:
-            request = getattr(context, "request", None)
-            if request is None:
-                getter = getattr(context, "get", None)
-                if callable(getter):
-                    try:
-                        request = getter("request")
-                    except Exception:
-                        request = None
-
-        # /graphql-insecure is the intentionally vulnerable benchmark baseline.
-        # Only filter the protected route; never use the client-supplied parent
-        # object's ownership as a substitute for checking each returned child.
-        path = str(getattr(getattr(request, "url", None), "path", "")).rstrip("/")
-        if path == "/graphql":
-            current_user = getattr(getattr(request, "state", None), "current_user", None)
-            if not isinstance(current_user, dict):
-                # Fail closed if the protected route somehow lacks authenticated context.
-                return []
-
-            role = str(current_user.get("role", "user")).upper()
-            if role != "ADMIN":
-                requester_id = current_user.get("user_id")
-                if requester_id is None:
-                    return []
-                rows = [row for row in rows if str(row["owner_id"]) == str(requester_id)]
 
         return [
             ResourceType(
@@ -104,8 +72,9 @@ class ResourceType:
             getattr(getattr(request, "url", None), "path", "")
         ).rstrip("/")
 
-        # Preserve intentionally vulnerable baseline behaviour.
-        if path == "/graphql-insecure":
+        # Preserve intentionally vulnerable baseline behaviour (also when Layer 2 is
+        # switched off for the layer ablation).
+        if path == "/graphql-insecure" or not is_enabled("layer2"):
             return len(rows)
 
         # On the protected endpoint, fail closed if context is absent.

@@ -1,3 +1,4 @@
+import json
 import os
 import sqlite3
 from contextlib import asynccontextmanager
@@ -16,10 +17,7 @@ from app.core.security import create_access_token
 from app.core.dependencies import get_current_user
 from app.security.taint_request_explainer import router as taint_explainer_router
 from app.security.enforcement import bola_enforcement_middleware
-from app.security.model_service import (
-    get_research_evaluation_summary,
-    score_session_telemetry,
-)
+from app.security.layers import layer_summary, set_layers
 
 
 @asynccontextmanager
@@ -341,7 +339,7 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
         },
         "recent_logs": recent_logs,
         "demo_users": demo_users,
-        "research_evaluation": get_research_evaluation_summary(db),
+        "research_evaluation": _research_evaluation_or_unavailable(db),
     }
 
 
@@ -358,16 +356,69 @@ class SessionScoreRequest(BaseModel):
     request_burst_rate: float = 2.5
 
 
+def _model_service():
+    """Import the ML service lazily so the security gateway starts even when the
+    optional ML packages (pandas, scikit-learn, xgboost) are not installed."""
+    try:
+        from app.security import model_service
+    except ImportError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Behavioral ML service unavailable: {exc}. Install requirements.txt to enable it.",
+        )
+    return model_service
+
+
+def _research_evaluation_or_unavailable(db):
+    try:
+        return _model_service().get_research_evaluation_summary(db)
+    except HTTPException as exc:
+        return {"available": False, "reason": exc.detail}
+
+
 @app.get("/api/v1/research-evaluation")
 def get_research_evaluation(db: sqlite3.Connection = Depends(get_db)):
     """Return empirical research evaluation metrics, provenance evidence, and model limits."""
-    return get_research_evaluation_summary(db)
+    return _model_service().get_research_evaluation_summary(db)
 
 
 @app.post("/api/v1/telemetry/score-session")
 def score_session(request: SessionScoreRequest):
-    """Offline telemetry scoring for behavioural anomaly detection using rule baseline and XGBoost."""
-    return score_session_telemetry(request.model_dump())
+    """Offline telemetry scoring for behavioural anomaly detection using rule baseline and XGBoost.
+
+    Advisory only: this score never changes a Layer 1 / Layer 2 authorization decision."""
+    return _model_service().score_session_telemetry(request.model_dump())
+
+
+class LayerToggleRequest(BaseModel):
+    layer1: bool | None = None
+    layer2: bool | None = None
+
+
+@app.get("/api/v1/security/layers")
+def get_layers():
+    """Current Layer 1 / Layer 2 state, per-layer event counts and recent layer events."""
+    return layer_summary()
+
+
+@app.post("/api/v1/security/layers")
+def toggle_layers(body: LayerToggleRequest, current_user: dict = Depends(get_current_user)):
+    """ADMIN only: switch enforcement layers on/off to demonstrate the layer ablation live."""
+    if not settings.ENABLE_LAYER_TOGGLE:
+        raise HTTPException(status_code=403, detail="Layer toggling is disabled (ENABLE_LAYER_TOGGLE=false)")
+    if current_user.get("role", "").upper() != "ADMIN":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    return {"layers": set_layers(body.layer1, body.layer2)}
+
+
+@app.get("/api/v1/security/layer-ablation")
+def get_layer_ablation():
+    """Results of scripts/run_layer_ablation.py (the dual-layer ablation experiment)."""
+    path = os.path.join("results", "layer_ablation", "results.json")
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail="Run `python -m scripts.run_layer_ablation` first")
+    with open(path, encoding="utf-8") as file:
+        return json.load(file)
 
 
 @app.get("/dashboard", response_class=HTMLResponse)
@@ -377,19 +428,32 @@ def read_dashboard():
         return file.read()
 
 
-# Protected Strawberry GraphQL router
+# Protected Strawberry GraphQL router.
+# Queries over GET are disabled so every operation passes through the Layer 1 gate
+# (Layer 2 would still filter foreign objects, but GET gives no reason to exist here).
 graphql_app = GraphQLRouter(
     schema,
     context_getter=None,
     dependencies=[Depends(bola_enforcement_middleware)],
+    allow_queries_via_get=False,
 )
 app.include_router(graphql_app, prefix="/graphql")
+
+
+def require_insecure_baseline(current_user: dict = Depends(get_current_user)):
+    """The vulnerable baseline is for benchmarking only: it needs a valid token and can be
+    switched off completely with ENABLE_INSECURE_BASELINE=false."""
+    if not settings.ENABLE_INSECURE_BASELINE:
+        raise HTTPException(status_code=404, detail="Insecure benchmark baseline is disabled")
+    return current_user
 
 
 # Intentionally vulnerable endpoint for benchmark comparison
 insecure_graphql_app = GraphQLRouter(
     schema,
     context_getter=None,
+    dependencies=[Depends(require_insecure_baseline)],
+    allow_queries_via_get=False,
 )
 app.include_router(
     insecure_graphql_app,

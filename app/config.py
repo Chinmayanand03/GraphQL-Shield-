@@ -15,6 +15,16 @@ class Settings(BaseSettings):
     )
     JWT_ALGORITHM: str = "HS256"
 
+    # Defense-in-depth controls.
+    # The vulnerable /graphql-insecure baseline exists only for benchmarking; it still
+    # requires a valid token and can be switched off entirely (e.g. for deployment).
+    ENABLE_INSECURE_BASELINE: bool = True
+    # Allows an ADMIN to switch Layer 1 / Layer 2 on and off from the dashboard so the
+    # layer ablation can be demonstrated live. Disable outside demos.
+    ENABLE_LAYER_TOGGLE: bool = True
+    # Maximum operations accepted in one batched (JSON array) request.
+    MAX_BATCH_OPERATIONS: int = 5
+
     # Pydantic v2 configuration replaces the deprecated inner Config class.
     model_config = SettingsConfigDict(
         env_file=".env",

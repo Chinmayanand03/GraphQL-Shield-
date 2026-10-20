@@ -49,6 +49,29 @@ def seed_database():
     conn.commit()
     conn.close()
 
+SHARED_FOLDER_OBJECT = (204, "document", 102, "Kapilesh's Shared Draft", 201)
+
+
+def add_shared_folder_scenario():
+    """Relationship-BOLA demo data: Kapilesh's document filed inside Balanilavan's folder.
+
+    Owning the folder must NOT grant access to this child. Kept out of the default
+    seed so existing tests keep their exact fixtures.
+    """
+    conn = get_db_connection()
+    try:
+        conn.execute(
+            "INSERT OR REPLACE INTO objects (id, object_type, owner_id, name, parent_id) VALUES (?, ?, ?, ?, ?)",
+            SHARED_FOLDER_OBJECT,
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+
 if __name__ == "__main__":
     seed_database()
+    if "--with-shared-folder" in sys.argv:
+        add_shared_folder_scenario()
+        print("Added shared-folder scenario (object 204 owned by Kapilesh inside folder 201).")
     print("Database successfully seeded.")
