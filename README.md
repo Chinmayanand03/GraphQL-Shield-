@@ -1,4 +1,4 @@
-# 🛡️ GraphQL-Shield: Autonomous AST-Level Runtime Object Guard & Behavioral Defense Framework
+# GraphQL-Shield: Autonomous Dual-Layer Runtime Object Guard & Behavioral Defense Framework
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
@@ -7,144 +7,133 @@
 [![Security Standard](https://img.shields.io/badge/OWASP-API1%3A2023%20BOLA-red.svg)](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **A dual-engine security framework providing AST-level deterministic object authorization, dynamic taint tracking, and XGBoost-driven behavioral anomaly detection to eliminate Broken Object Level Authorization (BOLA / IDOR) in GraphQL APIs.**
+> **A production-grade dual-layer security framework providing pre-execution AST gating, execution-time runtime object & mutation interception, and XGBoost-driven behavioral anomaly detection to eliminate Broken Object Level Authorization (BOLA / IDOR) in GraphQL APIs.**
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
-- [Overview & Motivation](#-overview--motivation)
-- [Key Features](#-key-features)
-- [Architecture & Threat Model](#-architecture--threat-model)
-  - [1. AST Runtime Object Guard](#1-ast-runtime-object-guard)
-  - [2. Dynamic Taint Tracking & Boundary Engine](#2-dynamic-taint-tracking--boundary-engine)
-  - [3. Behavioral Machine Learning Engine (XGBoost)](#3-behavioral-machine-learning-engine-xgboost)
-  - [4. Non-Interference & Field-Level Sanitization](#4-non-interference--field-level-sanitization)
-- [Interactive Research & Security Dashboard](#-interactive-research--security-dashboard)
-- [Quickstart Guide](#-quickstart-guide)
+- [Overview & Motivation](#overview--motivation)
+- [Key Features](#key-features)
+- [Dual-Layer Defense Architecture](#dual-layer-defense-architecture)
+  - [Layer 1: Centralized Pre-Execution Gate](#layer-1-centralized-pre-execution-gate)
+  - [Layer 2: Execution-Time Object & Mutation Guard](#layer-2-execution-time-object--mutation-guard)
+  - [Cross-Layer Evidence & Blind Spot Auditing](#cross-layer-evidence--blind-spot-auditing)
+  - [Behavioral Machine Learning Engine (XGBoost)](#behavioral-machine-learning-engine-xgboost)
+- [Interactive Research & Security Dashboard](#interactive-research--security-dashboard)
+- [Quickstart Guide](#quickstart-guide)
   - [Prerequisites](#prerequisites)
   - [Installation & Setup](#installation--setup)
   - [Running the Server](#running-the-server)
-- [Live Interactive Attack Demonstrations](#-live-interactive-attack-demonstrations)
+- [Live Interactive Attack Demonstrations](#live-interactive-attack-demonstrations)
   - [Demo Personas](#demo-personas)
   - [Demo 1: Legitimate Resource Access (200 OK)](#demo-1-legitimate-resource-access)
   - [Demo 2: Direct Root BOLA Attack (403 Forbidden)](#demo-2-direct-root-bola-attack)
   - [Demo 3: Nested Object BOLA Attack (403 Forbidden)](#demo-3-nested-object-bola-attack)
-  - [Demo 4: Implicit Relationship Traversal Probe](#demo-4-implicit-relationship-traversal-probe)
-  - [Demo 5: Administrative Policy Override](#demo-5-administrative-policy-override)
-- [Academic Research & Benchmarking Suite](#-academic-research--benchmarking-suite)
+  - [Demo 4: Unauthorized Mutation Blocked (Execution-Time Guard)](#demo-4-unauthorized-mutation-blocked)
+  - [Demo 5: Implicit Relationship Traversal Probe](#demo-5-implicit-relationship-traversal-probe)
+  - [Demo 6: Administrative Policy Override](#demo-6-administrative-policy-override)
+- [Academic Research & Benchmarking Suite](#academic-research--benchmarking-suite)
   - [Comparative Dual-Endpoint Architecture](#comparative-dual-endpoint-architecture)
-  - [Executing Research Benchmarks](#executing-research-benchmarks)
+  - [Layer Ablation Experiments](#layer-ablation-experiments)
   - [Training the Behavioral XGBoost Model](#training-the-behavioral-xgboost-model)
-- [Verification & Test Suite](#-verification--test-suite)
-- [API Reference](#-api-reference)
-- [Directory Structure](#-directory-structure)
-- [License](#-license)
+- [Verification & Test Suite](#verification--test-suite)
+- [API Reference](#api-reference)
+- [Directory Structure](#directory-structure)
+- [License](#license)
 
 ---
 
-## 🔍 Overview & Motivation
+## Overview & Motivation
 
 **Broken Object Level Authorization (BOLA / IDOR)** consistently ranks as the **#1 vulnerability in OWASP API Security Top 10 (API1:2023)**. 
 
 While REST architectures feature rigid, predictable resource hierarchies (e.g. `/users/101/orders/501`), **GraphQL introduces unique, critical security challenges**:
-1. **Dynamic Selection Sets & Unbounded Depth**: Clients construct custom queries with arbitrary nesting.
-2. **Disconnected Resolvers**: Field-level resolvers execute independently; parent authorization checks rarely propagate automatically to child resolvers.
-3. **Implicit Relationship Traversal**: Attackers traverse graph edges (e.g. `user -> organization -> projects -> sensitive_document`) to access foreign objects without specifying their IDs directly.
-4. **Perimeter Blindness**: Traditional Web Application Firewalls (WAFs) and perimeter API Gateways cannot inspect deep GraphQL ASTs or establish ownership boundaries before database queries execute.
+1. **Dynamic Selection Sets & Unbounded Depth**: Clients construct custom queries with arbitrary nesting, fragments, and aliases.
+2. **Disconnected Resolvers**: Field-level resolvers execute independently; parent authorization checks do not automatically protect child resolvers.
+3. **Implicit Relationship Traversal**: Attackers traverse graph edges (e.g. `user -> organization -> projects -> sensitive_document`) to reach foreign objects without declaring their IDs directly.
+4. **Mutations Without Ownership Checks**: Graph mutations (`update`, `delete`, `transfer`) can alter unauthorized data unless strictly intercepted before resolver execution.
+5. **Perimeter Blindness**: Traditional Web Application Firewalls (WAFs) cannot inspect deep GraphQL ASTs or establish ownership boundaries before queries execute.
 
-**GraphQL-Shield** addresses these challenges by embedding an autonomous **Runtime Object Guard directly into the execution lifecycle**. It combines formal AST traversal, dynamic data-flow taint tracking, and machine learning behavioral scoring to guarantee zero unauthorized data access while preserving legitimate query flexibility.
-
----
-
-## ⚡ Key Features
-
-- 🛡️ **Deterministic AST Runtime Object Guard**: Pre-execution AST inspection and argument extraction prevent unauthorized database fetches before resolvers are invoked.
-- 🧬 **Dynamic Taint Tracking & Boundary Engine**: Models query arguments and path identifiers as taint sources, tracking propagation through graph edges with zero execution side-effects.
-- 🌳 **Multi-Level BOLA Interception**:
-  - **Direct Root BOLA**: Stops explicit ID tampering at root fields (`resource(id: 102)`).
-  - **Nested Object BOLA**: Identifies unauthorized objects injected into deeply nested queries.
-  - **Implicit Relationship BOLA**: Sanitizes child collections beneath authorized parent containers.
-- 🤖 **Behavioral ML Anomaly Engine (XGBoost)**: Analyzes request velocity, path entropy, traversal patterns, and role-distance vectors to detect automated ID harvesting and zero-day traversal anomalies.
-- 📊 **Interactive Research Security Dashboard (`/dashboard`)**:
-  - Live console stream of decision traces (`AUTH`, `GRAPHQL`, `OWNERSHIP`, `AUTHORIZATION`, `ENFORCEMENT`).
-  - Interactive Query Tester with instant visual Taint & Policy Flow (`/api/v1/taint-explain`).
-  - Real-time audit logs and statistical metrics.
-- 🔬 **Academic Benchmark & Evaluation Suite**: Built-in ground-truth labeling oracles, automated attack variant generators, and dual-endpoint comparison (`/graphql` vs `/graphql-insecure`).
-- ✅ **100% Validated & Non-Interference Proven**: 238 comprehensive unit, integration, and security regression tests guaranteeing zero side-channel leaks.
+**GraphQL-Shield** addresses these challenges by embedding an autonomous **Dual-Layer Runtime Object Guard directly into the request and execution lifecycles**.
 
 ---
 
-## 🏗️ Architecture & Threat Model
+## Key Features
+
+- **Layer 1 Pre-Execution Gate**:
+  - Intercepts requests before any resolver runs.
+  - Inspects AST nodes, inline fragments (`... on Query`), fragment spreads, and list IDs (`[101, 102]`).
+  - Strict query batching enforcement (`MAX_BATCH_OPERATIONS`).
+  - Fails closed on malformed or non-JSON payloads.
+  - Blocks entire requests on direct BOLA attempts, preventing state mutation.
+- **Layer 2 Execution-Time Guard**:
+  - Embedded inside the GraphQL execution pipeline as a Strawberry schema extension.
+  - **Mutation Argument Guard**: Inspects engine-coerced arguments before root mutations (`updateResource`, `deleteResource`, `transferOwnership`) execute.
+  - **Guarded Types**: Secures both `ResourceType` and `UserType` models.
+  - **Non-Interference Sanitization**: Filters collection fields item-by-item without leaking foreign object existence.
+- **Layer 1 Blind Spot Auditing**:
+  - Automatically identifies and logs when Layer 2 catches an unauthorized object that Layer 1 could not parse from raw query text.
+  - Emits telemetry events to `layer_events` table for forensic analysis.
+- **Runtime Layer Toggling & Ablation**:
+  - Dedicated admin API (`/api/v1/security/layers`) to toggle Layer 1 and Layer 2 on/off for empirical ablation demonstrations.
+- **Behavioral ML Anomaly Engine (XGBoost)**:
+  - Evaluates traversal velocity, ID entropy, and role-resource vectors to detect horizontal privilege escalation.
+- **Interactive Security Dashboard (`/dashboard`)**:
+  - Real-time audit stream, visual taint tracer, layer event logs, and comparative evaluation metrics.
+
+---
+
+## Dual-Layer Defense Architecture
 
 ```mermaid
 flowchart TD
-    Client([HTTP Client / Attacker]) -->|GraphQL Query + JWT| Gateway[FastAPI Security Gateway]
+    Client([HTTP Client / Attacker]) -->|POST /graphql + JWT| Gateway[FastAPI Security Gateway]
     
-    subgraph Security_Perimeter [GraphQL-Shield Defense Pipeline]
+    subgraph Layer1 [Layer 1: Pre-Execution Gate]
         Gateway --> Auth[JWT Authentication & Principal Extraction]
-        Auth --> AST[AST Parser & Object Extractor]
-        AST --> Taint[Dynamic Taint Tracker & Boundary Engine]
-        
-        Taint --> Guard{Runtime Object Guard}
-        Guard -->|Direct / Nested Check| PolicyEngine[Policy Conformance Engine]
-        Guard -->|Behavioral Telemetry| ML[XGBoost Anomaly Scorer]
-        
-        PolicyEngine -->|Ownership Match / Admin| Allow[ALLOW Decision]
-        PolicyEngine -->|Ownership Mismatch| Deny[DENY Decision]
-        ML -->|High Anomaly Threshold| Deny
+        Auth --> L1Check{Layer 1 Enabled?}
+        L1Check -->|Yes| AST[AST Parser: Inspect Inline Fragments, Lists & Batching]
+        L1Check -->|No / Bypassed| Strawberry
+        AST --> PolicyL1[Policy Conformance Engine]
+        PolicyL1 -->|Mismatch on Known ID| L1Block[HTTP 403 Forbidden: L1_PRE_EXECUTION Block]
+        PolicyL1 -->|Clean Query| Strawberry[Strawberry GraphQL Engine]
     end
 
-    Deny -->|Fast-Fail Security Fault| Block[HTTP 403 Forbidden + Audit Log]
-    Allow --> Strawberry[Strawberry GraphQL Engine]
-    
-    subgraph Data_Layer [Data & Resolver Layer]
-        Strawberry --> Resolver[Protected Resolvers]
-        Resolver --> Filter[Field-Level Sanitizer & Non-Interference]
-        Filter --> DB[(SQLite Database)]
+    subgraph Layer2 [Layer 2: Execution-Time Guard]
+        Strawberry --> MutGuard{Mutation Resolver?}
+        MutGuard -->|Yes| ArgGuard[Engine-Coerced ID Ownership Check]
+        ArgGuard -->|Unauthorized Target| L2MutBlock[GraphQLError: MUTATION_AUTHORIZATION_DENIED]
+        ArgGuard -->|Authorized Target| ExecMut[Execute Mutation Resolver]
+        
+        MutGuard -->|No (Query)| Resolvers[Object Resolvers]
+        Resolvers --> TypeFilter{Guarded Type? User/Resource}
+        TypeFilter -->|Yes| ItemGuard[Per-Item DB Ownership Oracle]
+        ItemGuard -->|Owned by Principal| Emit[Emit Object]
+        ItemGuard -->|Foreign Object| Scrub[Scrub & Log L1 Blind Spot]
     end
     
-    Filter -->|Sanitized Result| Response([HTTP 200 OK Response])
+    Emit --> Response([HTTP 200 OK Sanitized Response])
 ```
 
-### 1. AST Runtime Object Guard
-Before any query reaches Strawberry GraphQL or hits the database:
-- The AST is recursively parsed using GraphQL core visitors.
-- Every targeted object type and identifier is extracted (`resource_id`, `user_id`, `parent_id`).
-- Identifiers are validated against the authenticated principal via the database ownership oracle.
-- If any object fails ownership authorization and the user lacks `ADMIN` privileges, execution halts immediately with `HTTP 403 Forbidden` (`OWNERSHIP_MISMATCH` or `NESTED_AUTHORIZATION_VIOLATION`).
+### Layer 1: Centralized Pre-Execution Gate
+- Evaluates raw POST requests before GraphQL execution starts.
+- Handles operation batches (JSON arrays up to `MAX_BATCH_OPERATIONS`).
+- Recursively expands inline fragments (`InlineFragmentNode`) and fragment spreads (`FragmentSpreadNode`), with recursion loop guards.
+- Inspects both scalar IDs (`id: 101`) and list arguments (`id: [101, 102]`).
+- Records every evaluated object ID on `request.state.layer1_checked`.
 
-### 2. Dynamic Taint Tracking & Boundary Engine
-- Input IDs are tagged as tainted sources at the API boundary.
-- Taint propagation rules track IDs through selection sets and nested aliases.
-- An explainability endpoint (`POST /api/v1/taint-explain`) exposes the exact taint flow, ownership metadata, and read-only policy evaluation in real time.
+### Layer 2: Execution-Time Object & Mutation Guard
+- Operates inside the GraphQL engine via `RuntimeObjectAuthorizationExtension`.
+- Intercepts root mutations **before** execution: checks the coerced `id` argument against the database ownership oracle. If unauthorized, raises `MUTATION_AUTHORIZATION_DENIED` and prevents database writes.
+- Sanitizes query responses: protects `ResourceType` and `UserType` instances, scrubbing foreign objects from lists and returning `None` for single object violations.
 
-### 3. Behavioral Machine Learning Engine (XGBoost)
-- Complements deterministic rules by monitoring query cadence, ID incrementation velocity, traversal breadth, and role-resource distance.
-- Pre-trained XGBoost classifiers evaluate session telemetry (`/api/v1/telemetry/score-session`) to proactively score risk and flag brute-force horizontal privilege escalation.
-
-### 4. Non-Interference & Field-Level Sanitization
-- For relationship queries like `{ resource(id: 201) { children { id name } } }`, the parent folder may belong to the user while some child documents belong to other users.
-- Rather than crashing or leaking foreign child existence, the resolver applies transparent field-level filtering:
-  - Legitimate owned children are returned normally.
-  - Foreign children are scrubbed from the response collection.
-  - No side-channel timing leaks or metadata footprints are exposed.
+### Cross-Layer Evidence & Blind Spot Auditing
+When Layer 2 denies an object that Layer 1 never checked (e.g. an object reached through complex relationship traversal or unparsed dynamic syntax), it logs an `L1_BLIND_SPOT_CAUGHT_BY_L2` event into `layer_events`. This provides verifiable evidence of defense-in-depth efficacy.
 
 ---
 
-## 🖥️ Interactive Research & Security Dashboard
-
-GraphQL-Shield includes a full-featured, dark-mode research console accessible at **`http://localhost:8000/dashboard`**.
-
-Features:
-- **Interactive Query Sandbox**: Execute custom GraphQL operations as any persona.
-- **Per-Request Taint Flow**: Visual breakdown of authenticated principal, tainted source arguments, database ownership lookups, and policy rules.
-- **Comparative Research Evaluation**: Run side-by-side verification between the protected endpoint (`/graphql`) and the vulnerable baseline (`/graphql-insecure`).
-- **Live Security Audit Stream**: Real-time inspection of authorization outcomes with latency benchmarks.
-
----
-
-## 🚀 Quickstart Guide
+## Quickstart Guide
 
 ### Prerequisites
 - **Python 3.10+** (Tested on Python 3.10, 3.11, 3.12)
@@ -176,29 +165,32 @@ Features:
 
 4. **Initialize & Seed the Database**:
    ```bash
+   # Standard seed
    python -m app.seed
+
+   # Or seed with the relationship-BOLA shared folder scenario
+   python -m app.seed --with-shared-folder
    ```
-   *This initializes the SQLite database with users, roles, documents, and hierarchical folder relationships.*
 
 ### Running the Server
 
-Start the FastAPI application with live security tracing:
+Start FastAPI with Uvicorn:
 ```bash
 uvicorn app.main:app --reload --port 8000
 ```
 
 - **Protected GraphQL Gateway**: `http://localhost:8000/graphql`
-- **Intentionally Vulnerable Baseline**: `http://localhost:8000/graphql-insecure`
+- **Insecure Benchmark Baseline**: `http://localhost:8000/graphql-insecure`
 - **Interactive Security Dashboard**: `http://localhost:8000/dashboard`
 - **Swagger API Documentation**: `http://localhost:8000/docs`
 
 ---
 
-## 🧪 Live Interactive Attack Demonstrations
+## Live Interactive Attack Demonstrations
 
 Open two terminal windows:
-- **Terminal 1**: Running the server (`uvicorn app.main:app --reload`). Watch the live trace logs print in real time!
-- **Terminal 2**: Execute the `curl` commands below.
+- **Terminal 1**: Running the server (`uvicorn app.main:app --reload`).
+- **Terminal 2**: Execute the commands below.
 
 ### Demo Personas
 | User ID | Username | Password | Role | Description |
@@ -213,210 +205,160 @@ Open two terminal windows:
 ### Step 1: Obtain JWT Token (User 101)
 
 ```bash
-curl -s -X POST "http://localhost:8000/api/v1/auth/login"   -H "Content-Type: application/json"   -d "{"username":"balanilavan","password":"balanilavan123"}"
+curl -s -X POST "http://localhost:8000/api/v1/auth/login"   -H "Content-Type: application/json"   -d '{"username":"balanilavan","password":"balanilavan123"}'
 ```
-*Extract the `access_token` from the JSON response and set it as an environment variable:*
-```bash
-# Linux/macOS:
-export TOKEN="<YOUR_ACCESS_TOKEN>"
-
-# Windows PowerShell:
-$TOKEN="<YOUR_ACCESS_TOKEN>"
-```
+*Save the `access_token` to variable `TOKEN`.*
 
 ---
 
-### Demo 1: Legitimate Resource Access
-User `101` requests their own document (`id: 101`).
+### Demo 1: Legitimate Resource Access (200 OK)
+User `101` queries their own document (`id: 101`).
 
 ```bash
 curl -X POST "http://localhost:8000/graphql"   -H "Authorization: Bearer $TOKEN"   -H "Content-Type: application/json"   -d '{"query": "{ resource(id: 101) { id name } }"}'
 ```
-
-**Result**:
-- **HTTP Status**: `200 OK`
-- **Response**: `{"data":{"resource":{"id":"101","name":"Balanilavan's Secret Note"}}}`
-- **Server Trace**: `[AUTHORIZATION] Decision: ALLOW | Reason: OWNER_MATCH`
+**Outcome**: `200 OK` | `[AUTHORIZATION] Decision: ALLOW | Reason: OWNER_MATCH`
 
 ---
 
-### Demo 2: Direct Root BOLA Attack
-User `101` attempts to access Kapilesh's document (`id: 102`) by tampering with the root argument.
+### Demo 2: Direct Root BOLA Attack (403 Forbidden)
+User `101` attempts to read Kapilesh's document (`id: 102`).
 
 ```bash
 curl -X POST "http://localhost:8000/graphql"   -H "Authorization: Bearer $TOKEN"   -H "Content-Type: application/json"   -d '{"query": "{ resource(id: 102) { id name } }"}'
 ```
-
-**Result**:
-- **HTTP Status**: `403 Forbidden`
-- **Response**: `{"detail": "Forbidden: OWNERSHIP_MISMATCH"}`
-- **Server Trace**:
-  ```text
-  [GRAPHQL] Parsed Objects: [('resource', 102)]
-  [OWNERSHIP] Target ID: 102 | True Owner: 102 | Requester: 101
-  [AUTHORIZATION] Decision: DENY | Reason: OWNERSHIP_MISMATCH
-  [ENFORCEMENT] Action: BLOCK | Code: 403
-  ```
+**Outcome**: `403 Forbidden` | Blocked at **Layer 1 Pre-Execution Gate** (`OWNERSHIP_MISMATCH`).
 
 ---
 
-### Demo 3: Nested Object BOLA Attack
-User `101` queries their own user profile, but nests an unauthorized query targeting Kapilesh's document (`id: 102`).
+### Demo 3: Nested Object BOLA Attack (403 Forbidden)
+User `101` queries their own profile but nests a foreign resource request inside it.
 
 ```bash
 curl -X POST "http://localhost:8000/graphql"   -H "Authorization: Bearer $TOKEN"   -H "Content-Type: application/json"   -d '{"query": "{ user(id: 101) { username resource(id: 102) { name } } }"}'
 ```
-
-**Result**:
-- **HTTP Status**: `403 Forbidden`
-- **Server Trace**: `[AUTHORIZATION] Decision: DENY | Reason: NESTED_AUTHORIZATION_VIOLATION`
-- *The recursive AST inspector catches the nested violation and aborts before resolver dispatch.*
+**Outcome**: `403 Forbidden` | Blocked at **Layer 1** (`NESTED_AUTHORIZATION_VIOLATION`).
 
 ---
 
-### Demo 4: Implicit Relationship Traversal Probe
-User `101` queries their authorized folder (`id: 201`) to inspect child objects.
+### Demo 4: Unauthorized Mutation Blocked (Execution-Time Guard)
+User `101` attempts to modify Kapilesh's resource (`id: 102`) using the `updateResource` mutation.
+
+```bash
+curl -X POST "http://localhost:8000/graphql"   -H "Authorization: Bearer $TOKEN"   -H "Content-Type: application/json"   -d '{"query": "mutation { updateResource(id: 102, name: "Hacked Note") { id name } }"}'
+```
+**Outcome**: Blocked by **Layer 2 Mutation Guard** (`MUTATION_AUTHORIZATION_DENIED`). Resolver never executes; database remains unmodified.
+
+---
+
+### Demo 5: Implicit Relationship Traversal Probe
+User `101` queries folder `201` with child records (when seeded with `--with-shared-folder`, child `204` belongs to Kapilesh).
 
 ```bash
 curl -X POST "http://localhost:8000/graphql"   -H "Authorization: Bearer $TOKEN"   -H "Content-Type: application/json"   -d '{"query": "{ resource(id: 201) { id name children { id name } childrenCount } }"}'
 ```
-
-**Result**:
-- **HTTP Status**: `200 OK`
-- **Non-Interference Guarantee**: Returns only items owned by User `101` (`id: 202`, `id: 203`). Any foreign child linked under folder 201 is silently omitted without error leakage.
-- Contrast this with `/graphql-insecure`, which inadvertently leaks foreign children in collection results!
+**Outcome**: `200 OK` | **Layer 2** transparently filters out Kapilesh's document `204`. Balanilavan only receives documents `202` and `203`. Zero information leak.
 
 ---
 
-### Demo 5: Administrative Policy Override
-Authenticate as administrator (`chinmayanand` / `chinmayanand123`):
+### Demo 6: Administrative Policy Override
+Admin (`chinmayanand` / `chinmayanand123`) accesses any object:
 
 ```bash
 ADMIN_TOKEN=$(curl -s -X POST "http://localhost:8000/api/v1/auth/login"   -H "Content-Type: application/json"   -d '{"username":"chinmayanand","password":"chinmayanand123"}' | jq -r .access_token)
 
 curl -X POST "http://localhost:8000/graphql"   -H "Authorization: Bearer $ADMIN_TOKEN"   -H "Content-Type: application/json"   -d '{"query": "{ resource(id: 102) { id name } }"}'
 ```
-
-**Result**:
-- **HTTP Status**: `200 OK`
-- **Server Trace**: `[AUTHORIZATION] Decision: ALLOW | Reason: ADMIN_OVERRIDE`
+**Outcome**: `200 OK` | `[AUTHORIZATION] Decision: ALLOW | Reason: ADMIN_OVERRIDE`
 
 ---
 
-## 🔬 Academic Research & Benchmarking Suite
+## Academic Research & Benchmarking Suite
 
 ### Comparative Dual-Endpoint Architecture
-For rigorous empirical research, GraphQL-Shield hosts two parallel endpoints:
-1. **`/graphql`**: Hardened with the AST Runtime Object Guard and Taint Boundary Engine.
-2. **`/graphql-insecure`**: Standard GraphQL baseline without object-level guards.
+GraphQL-Shield hosts dual endpoints for scientific rigor:
+- **`/graphql`**: Hardened with dual-layer defense.
+- **`/graphql-insecure`**: Vulnerable baseline for comparative metrics (requires authenticated token; can be toggled via `ENABLE_INSECURE_BASELINE`).
 
-This enables direct, head-to-head evaluation of accuracy, latency overhead, and mitigation efficacy on identical workloads.
-
-### Executing Research Benchmarks
-
-Run the automated scientific benchmark runner:
-```bash
-python scripts/run_research_benchmark.py --count 100 --seed 20261011 --output-dir results/benchmark_run
-```
-
-Key outputs generated in `results/benchmark_run/`:
-- `benchmark_report.json`: Metrics including Precision, Recall, F1-Score, FPR, and FNR.
-- `research_hardening_verification.json`: Oracle-verified ground truth comparisons across both endpoints.
-- `research_hardening_verification_raw.csv`: Raw query-by-query traces for statistical analysis.
+### Layer Ablation Experiments
+Admins can evaluate Layer 1 vs Layer 2 independently:
+- Check current layer status: `GET /api/v1/security/layers`
+- Toggle layers dynamically: `POST /api/v1/security/layers` with `{"layer1": false, "layer2": true}`
+- View empirical ablation results: `GET /api/v1/security/layer-ablation`
 
 ### Training the Behavioral XGBoost Model
-
-To retrain the machine learning anomaly detector on behavioral graph session data:
 ```bash
-# 1. Generate behavioral training dataset
 python scripts/generate_behavioral_dataset.py
-
-# 2. Train XGBoost BOLA classifier
 python scripts/train_behavioral_xgboost.py
 ```
 
 ---
 
-## 🧪 Verification & Test Suite
+## Verification & Test Suite
 
-The repository contains an exhaustive test suite covering AST parsing, taint tracking, relationship verification, database models, ML models, and security regressions.
-
-Execute the full test suite:
+Run the complete test suite:
 ```bash
 python -m pytest -v
 ```
 
-Expected result:
+Expected output:
 ```text
-======================= 238 passed in 90.10s =======================
+======================= 238 passed in 43.60s =======================
 ```
-
-### Test Coverage Highlights
-- `tests/test_runtime_object_guard_unit.py`: Direct unit tests for AST object extraction and guard decisions.
-- `tests/test_non_interference.py`: Formal verification that security sanitization introduces zero side-channels.
-- `tests/test_implicit_relationship_bola.py`: Probes edge cases in nested graph relationships.
-- `tests/test_taint_*.py`: Multi-stage verification of taint sources, boundaries, and propagation.
-- `tests/test_behavioral_dataset.py`: Validates synthetic session feature generation for XGBoost training.
-- `tests/test_dashboard.py`: Regression coverage for telemetry and explainability endpoints.
 
 ---
 
-## 📖 API Reference
+## API Reference
 
 | Endpoint | Method | Auth | Description |
 | :--- | :--- | :--- | :--- |
-| `/graphql` | `POST` | Bearer JWT | **Protected GraphQL Endpoint** with AST Runtime Object Guard |
+| `/graphql` | `POST` | Bearer JWT | **Protected GraphQL Gateway** with Dual-Layer AST & Mutation Guard |
 | `/graphql-insecure` | `POST` | Bearer JWT | **Vulnerable Baseline Endpoint** for comparative evaluation |
 | `/dashboard` | `GET` | Public | Real-time Interactive Research & Security Console |
-| `/api/v1/auth/login` | `POST` | Public | Authenticate user and issue JWT access token |
+| `/api/v1/auth/login` | `POST` | Public | User authentication and JWT issuance |
+| `/api/v1/security/layers` | `GET/POST` | Admin for POST | Inspect or toggle Layer 1 / Layer 2 state |
+| `/api/v1/security/layer-ablation` | `GET` | Public | View results from empirical layer ablation experiments |
 | `/api/v1/taint-explain` | `POST` | Bearer JWT | Read-only Taint & Policy evaluation explainer |
-| `/api/v1/audit-logs` | `GET` | Bearer JWT | Fetch recent authorization audit trail |
-| `/api/v1/dashboard-stats` | `GET` | Public | Aggregated system metrics (Requests, Blocks, Latency) |
-| `/api/v1/research-evaluation`| `GET` | Public | Live empirical metrics comparing protected vs insecure |
-| `/api/v1/telemetry/score-session` | `POST` | Bearer JWT | Score session telemetry using the ML anomaly engine |
-| `/health` | `GET` | Public | Healthcheck and service readiness probe |
+| `/api/v1/audit-logs` | `GET` | Bearer JWT | Fetch recent authorization audit logs |
+| `/api/v1/dashboard-stats` | `GET` | Public | Aggregated security and telemetry metrics |
+| `/api/v1/research-evaluation` | `GET` | Public | Empirical comparison stats (Protected vs Insecure) |
+| `/api/v1/telemetry/score-session` | `POST` | Bearer JWT | Offline behavioral scoring using XGBoost |
+| `/health` | `GET` | Public | Service health and readiness probe |
 
 ---
 
-## 📁 Directory Structure
+## Directory Structure
 
 ```text
 GraphQL-Shield/
 ├── app/
 │   ├── benchmarks/           # Ground truth oracles & evaluation datasets
-│   │   ├── dataset.py
-│   │   ├── runner.py
-│   │   └── behavioral_dataset.py
-│   ├── core/                 # Core security primitives & JWT utilities
-│   ├── graphql/              # GraphQL schema definitions & resolvers
-│   │   ├── schema.py
-│   │   ├── types.py          # Field-level sanitization & relationship resolvers
-│   │   └── extensions.py
-│   ├── security/             # Defense engine implementation
-│   │   ├── runtime_object_guard.py   # Primary AST Runtime Object Guard
-│   │   ├── taint_sources.py          # Taint tracking & boundary analysis
-│   │   ├── policy_rules.py           # Formal authorization policy engine
-│   │   ├── model_service.py          # XGBoost ML behavioral service
-│   │   ├── attack_generator.py       # Automated mutation & attack fuzzer
-│   │   └── dynamic_verifier.py       # Dual-endpoint verification engine
+│   ├── core/                 # JWT security primitives & FastAPI dependencies
+│   ├── graphql/              # Schema, queries, mutations, and types
+│   │   ├── mutations.py      # Resource write operations (update, delete, transfer)
+│   │   ├── queries.py
+│   │   ├── schema.py         # Strawberry schema with BatchingConfig
+│   │   └── types.py          # ResourceType & UserType resolvers
+│   ├── security/             # Dual-layer defense implementation
+│   │   ├── enforcement.py    # Layer 1: Centralized pre-execution gate
+│   │   ├── runtime_object_guard.py  # Layer 2: Execution-time object & mutation guard
+│   │   ├── layers.py         # Dual-layer state, layer events & blind-spot recorder
+│   │   ├── object_extractor.py # AST traversal with inline fragments & list IDs
+│   │   ├── model_service.py  # Lazy-loaded XGBoost ML behavioral service
+│   │   └── policy_rules.py   # Formal authorization policy rules
 │   ├── static/
-│   │   └── dashboard.html    # Full-featured research dashboard UI
-│   ├── database.py           # SQLite connection manager
-│   ├── main.py               # FastAPI application entrypoint & gateway
-│   └── seed.py               # Seed data generator for users and resources
-├── scripts/
-│   ├── run_research_benchmark.py     # Scientific benchmark runner
-│   ├── train_behavioral_xgboost.py   # ML training pipeline
-│   ├── live_demo.py                  # Automated demonstration script
-│   └── evaluate_performance.py       # Latency & throughput profiler
-├── tests/                    # 238 unit and integration tests
-├── LIVE_DEMONSTRATION_GUIDE.md
+│   │   └── dashboard.html    # Interactive research console UI
+│   ├── database.py           # SQLite connection & layer_events table
+│   ├── main.py               # FastAPI entrypoint, layer APIs, and routers
+│   └── seed.py               # Database seeder with optional shared-folder scenario
+├── scripts/                  # Benchmarking, training, and demo scripts
+├── tests/                    # 238 unit, integration, and security tests
 ├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## 📜 License
+## License
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
