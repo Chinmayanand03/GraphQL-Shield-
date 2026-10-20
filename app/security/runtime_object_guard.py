@@ -533,4 +533,3 @@ class _OwnedRef:
 
     def __init__(self, raw_id: Any):
         self.id = int(raw_id)
-
