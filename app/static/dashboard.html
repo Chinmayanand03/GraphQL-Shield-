@@ -143,6 +143,8 @@
     .metric.red { --accent:var(--red); --glow:rgba(255,113,133,.10); }
     .metric.cyan { --accent:var(--cyan); --glow:rgba(87,215,232,.10); }
     .metric.amber { --accent:var(--amber); --glow:rgba(255,198,109,.10); }
+    .metrics.four { grid-template-columns:repeat(4,minmax(0,1fr)); }
+    .layer-actions { display:flex; gap:8px; align-items:flex-end; flex-wrap:wrap; }
 
     .grid-two { display:grid; grid-template-columns:minmax(0,1.02fr) minmax(0,1.38fr); gap:16px; margin-bottom:18px; }
     .panel { padding:20px; min-width:0; }
@@ -302,6 +304,7 @@
     /* RESPONSIVE LAYOUT */
     @media (max-width:1240px) {
       .metrics { grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .metrics.four { grid-template-columns:repeat(2,minmax(0,1fr)); }
       .grid-two { grid-template-columns:1fr; }
     }
     @media (max-width:1100px) {
@@ -435,7 +438,7 @@
             <div class="field"><label for="testUsername">Login username</label><input class="input" id="testUsername" autocomplete="username" placeholder="e.g. balanilavan"></div>
             <div class="field"><label for="testPassword">Login password</label><input class="input" id="testPassword" type="password" autocomplete="current-password" placeholder="Enter seeded demo password"></div>
             <div class="field"><label for="testEndpoint">Endpoint</label><select class="select" id="testEndpoint"><option value="/graphql">Protected GraphQL Shield</option><option value="/graphql-insecure">Insecure baseline (intentionally vulnerable)</option></select></div>
-            <div class="field"><label for="testScenario">Scenario</label><select class="select" id="testScenario"><option value="direct">Direct resource lookup</option><option value="nested">Nested user → resource lookup</option><option value="relationship">Implicit children relationship</option></select></div>
+            <div class="field"><label for="testScenario">Scenario</label><select class="select" id="testScenario"><option value="direct">Direct resource lookup</option><option value="nested">Nested user → resource lookup</option><option value="relationship">Implicit children relationship</option><option value="inline_fragment">Inline fragment user lookup (Layer 1 bypass attempt)</option><option value="batch">Batched request (2 operations)</option><option value="mutation_update">Mutation: rename resource</option><option value="mutation_delete">Mutation: delete resource (destructive)</option></select></div>
             <div class="field" id="userIdField"><label for="testUserId">User ID (nested query)</label><input class="input" id="testUserId" inputmode="numeric" type="number" min="1" value="101"></div>
             <div class="field" id="resourceIdField"><label for="testResourceId">Resource ID (direct / nested)</label><input class="input" id="testResourceId" inputmode="numeric" type="number" min="1" value="102"></div>
             <div class="field" id="parentIdField"><label for="testParentId">Parent/folder ID (relationship)</label><input class="input" id="testParentId" inputmode="numeric" type="number" min="1" value="201"></div>
@@ -462,6 +465,34 @@
             <div class="request-explanation-subtitle" id="traceIntro">Run a direct, nested, or relationship test above to build an evidence-based explanation.</div>
             <div class="trace-flow" id="traceFlow"><div class="trace-step"><span class="trace-step-number">1</span><div class="trace-step-title">Request input</div><div class="trace-step-detail">Waiting for a test request.</div></div></div>
             <div class="trace-notes" id="traceNotes">The source tracker and policy replay will populate this area after a request. A tainted input is not automatically an attack.</div>
+          </div>
+        </section>
+
+        <!-- Dual-Layer Defense -->
+        <section class="panel section-gap" id="layer-defense">
+          <div class="panel-head">
+            <div><div class="panel-title">Dual-layer defense</div><div class="panel-subtitle">Layer 1 checks object IDs before execution. Layer 2 checks every returned object and every mutation target at execution time. A blind spot is an object Layer 2 denied that Layer 1 never evaluated.</div></div>
+            <span class="range-chip" id="layerStateChip">LOADING…</span>
+          </div>
+          <section class="metrics four" aria-label="Per-layer enforcement counters">
+            <article class="metric red"><div class="metric-head"><span>Layer 1 blocked</span><span class="metric-icon">⊘</span></div><div class="metric-value" id="layerL1Blocked">—</div><div class="metric-foot">Rejected before execution</div></article>
+            <article class="metric amber"><div class="metric-head"><span>Layer 2 filtered</span><span class="metric-icon">⌁</span></div><div class="metric-value" id="layerL2Filtered">—</div><div class="metric-foot">Foreign objects removed at runtime</div></article>
+            <article class="metric cyan"><div class="metric-head"><span>Layer 2 mutations blocked</span><span class="metric-icon">✎</span></div><div class="metric-value" id="layerL2Mutations">—</div><div class="metric-foot">Stopped before the resolver ran</div></article>
+            <article class="metric blue"><div class="metric-head"><span>Layer 1 blind spots</span><span class="metric-icon">◎</span></div><div class="metric-value" id="layerBlindSpots">—</div><div class="metric-foot">Caught by Layer 2 only</div></article>
+          </section>
+          <div class="console-grid">
+            <div class="field"><label for="layerAdminUsername">Admin username</label><input class="input" id="layerAdminUsername" autocomplete="username" value="chinmayanand"></div>
+            <div class="field"><label for="layerAdminPassword">Admin password</label><input class="input" id="layerAdminPassword" type="password" autocomplete="current-password" placeholder="Required to switch layers"></div>
+            <div class="layer-actions">
+              <button class="btn" id="toggleLayer1Button" type="button">Toggle Layer 1</button>
+              <button class="btn" id="toggleLayer2Button" type="button">Toggle Layer 2</button>
+            </div>
+          </div>
+          <div class="table-wrap section-gap">
+            <table>
+              <thead><tr><th>Time (IST)</th><th>Layer</th><th>Event</th><th>Object</th><th>Path</th><th>Detail</th></tr></thead>
+              <tbody id="layerEventsBody"><tr><td class="empty" colspan="6">No layer events yet. Run an attack in the test console above.</td></tr></tbody>
+            </table>
           </div>
         </section>
 
@@ -1146,6 +1177,7 @@
           state.stats = payload.stats; state.logs = payload.recent_logs;
           renderDemoUsers(payload.demo_users || []);
           renderStats(state.stats); applyFilters();
+          loadLayerPanel();
           if (payload.research_evaluation) {
             renderResearchEvaluation(payload.research_evaluation);
           }
@@ -1165,10 +1197,87 @@
         }
       }
 
+      /* DUAL-LAYER DEFENSE PANEL */
+      const layerState = { layer1: true, layer2: true };
+
+      function layerCell(text) {
+        const td = document.createElement('td');
+        td.textContent = text === null || text === undefined || text === '' ? '—' : String(text);
+        return td;
+      }
+
+      async function loadLayerPanel() {
+        try {
+          const response = await fetch('/api/v1/security/layers', {headers:{'Accept':'application/json'}, cache:'no-store'});
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = await response.json();
+          const counts = data.counts || {};
+          layerState.layer1 = !!(data.layers && data.layers.layer1);
+          layerState.layer2 = !!(data.layers && data.layers.layer2);
+          setText('layerL1Blocked', formatNumber(counts.L1_BLOCKED || 0));
+          setText('layerL2Filtered', formatNumber(counts.L2_FILTERED || 0));
+          setText('layerL2Mutations', formatNumber(counts.L2_MUTATION_BLOCKED || 0));
+          setText('layerBlindSpots', formatNumber(counts.L1_BLIND_SPOT_CAUGHT_BY_L2 || 0));
+          setText('layerStateChip', `LAYER 1 ${layerState.layer1 ? 'ON' : 'OFF'} · LAYER 2 ${layerState.layer2 ? 'ON' : 'OFF'}`);
+          setText('toggleLayer1Button', layerState.layer1 ? 'Turn Layer 1 OFF' : 'Turn Layer 1 ON');
+          setText('toggleLayer2Button', layerState.layer2 ? 'Turn Layer 2 OFF' : 'Turn Layer 2 ON');
+          const body = $('layerEventsBody');
+          const events = Array.isArray(data.recent) ? data.recent : [];
+          if (!events.length) {
+            const row = document.createElement('tr');
+            const cell = layerCell('No layer events yet. Run an attack in the test console above.');
+            cell.className = 'empty'; cell.colSpan = 6; row.appendChild(cell);
+            body.replaceChildren(row);
+            return;
+          }
+          body.replaceChildren(...events.map(event => {
+            const row = document.createElement('tr');
+            row.append(
+              layerCell(formatTime(event.timestamp)),
+              layerCell(event.layer),
+              layerCell(event.event),
+              layerCell(`${event.object_type || ''} ${event.object_id ?? ''}`.trim()),
+              layerCell(event.path),
+              layerCell(event.detail)
+            );
+            return row;
+          }));
+        } catch (error) {
+          setText('layerStateChip', 'LAYER API UNAVAILABLE');
+        }
+      }
+
+      async function toggleLayer(layer) {
+        const username = $('layerAdminUsername').value.trim();
+        const password = $('layerAdminPassword').value;
+        if (!username || !password) { showToast('Enter the admin username and password to switch layers.'); return; }
+        try {
+          const loginResponse = await fetch('/api/v1/auth/login', {
+            method: 'POST', headers: {'Content-Type':'application/json','Accept':'application/json'},
+            body: JSON.stringify({username, password}), cache:'no-store'
+          });
+          const loginPayload = await loginResponse.json().catch(() => ({}));
+          if (!loginResponse.ok || !loginPayload.access_token) throw new Error(`Login failed (HTTP ${loginResponse.status})`);
+          const response = await fetch('/api/v1/security/layers', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json','Accept':'application/json','Authorization':`Bearer ${loginPayload.access_token}`},
+            body: JSON.stringify({[layer]: !layerState[layer]}), cache:'no-store'
+          });
+          const payload = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(payload.detail || `HTTP ${response.status}`);
+          showToast(`${layer === 'layer1' ? 'Layer 1' : 'Layer 2'} is now ${payload.layers[layer] ? 'ON' : 'OFF'}.`);
+        } catch (error) {
+          showToast(`Could not switch layer: ${error.message || error}`);
+        } finally {
+          $('layerAdminPassword').value = '';
+          await loadLayerPanel();
+        }
+      }
+
       function setScenarioFields() {
         const scenario = $('testScenario').value;
-        $('userIdField').style.display = scenario === 'nested' ? '' : 'none';
-        $('resourceIdField').style.display = scenario === 'relationship' ? 'none' : '';
+        $('userIdField').style.display = (scenario === 'nested' || scenario === 'inline_fragment') ? '' : 'none';
+        $('resourceIdField').style.display = (scenario === 'relationship' || scenario === 'inline_fragment') ? 'none' : '';
         $('parentIdField').style.display = scenario === 'relationship' ? '' : 'none';
       }
 
@@ -1194,6 +1303,36 @@
           return {
             query: 'query DashboardNestedResource($userId: Int!, $resourceId: Int!) { user(id: $userId) { id username role resource(id: $resourceId) { id name ownerId objectType parentId } } }',
             variables: { userId, resourceId }
+          };
+        }
+        if (scenario === 'inline_fragment') {
+          const userId = positiveInteger('testUserId', 'User ID');
+          return {
+            query: 'query DashboardInlineFragmentUser($userId: Int!) { ... on Query { user(id: $userId) { id username role } } }',
+            variables: { userId }
+          };
+        }
+        if (scenario === 'batch') {
+          const resourceId = positiveInteger('testResourceId', 'Resource ID');
+          const query = 'query DashboardBatchResource($resourceId: Int!) { resource(id: $resourceId) { id name ownerId } }';
+          return {
+            query,
+            variables: { resourceId },
+            batch: [{ query: 'query DashboardBatchHealth { health { status } }' }, { query, variables: { resourceId } }]
+          };
+        }
+        if (scenario === 'mutation_update') {
+          const resourceId = positiveInteger('testResourceId', 'Resource ID');
+          return {
+            query: 'mutation DashboardRenameResource($resourceId: Int!) { updateResource(id: $resourceId, name: "Renamed from dashboard") { id name ownerId } }',
+            variables: { resourceId }
+          };
+        }
+        if (scenario === 'mutation_delete') {
+          const resourceId = positiveInteger('testResourceId', 'Resource ID');
+          return {
+            query: 'mutation DashboardDeleteResource($resourceId: Int!) { deleteResource(id: $resourceId) }',
+            variables: { resourceId }
           };
         }
         const parentId = positiveInteger('testParentId', 'Parent/folder ID');
@@ -1341,7 +1480,8 @@
         }
         let query;
         let variables;
-        try { const requestSpec = buildSelectedRequest(); query = requestSpec.query; variables = requestSpec.variables; }
+        let batch;
+        try { const requestSpec = buildSelectedRequest(); query = requestSpec.query; variables = requestSpec.variables; batch = requestSpec.batch; }
         catch (error) { showToast(error.message); return; }
         button.disabled = true; button.textContent = 'Running…';
         $('testResultTitle').textContent = 'Executing selected GraphQL request';
@@ -1362,7 +1502,7 @@
           const graphqlResponse = await fetch($('testEndpoint').value, {
             method: 'POST',
             headers: {'Content-Type':'application/json','Accept':'application/json','Authorization':`Bearer ${token}`},
-            body: JSON.stringify({query, variables}), cache:'no-store'
+            body: JSON.stringify(batch || {query, variables}), cache:'no-store'
           });
           const rawBody = await graphqlResponse.text();
           let parsedBody;
@@ -1370,7 +1510,7 @@
           $('testResultTitle').textContent = 'GraphQL request completed';
           $('testResultStatus').textContent = `HTTP ${graphqlResponse.status}${parsedBody && parsedBody.errors ? ' · GraphQL errors returned' : ''}`;
           $('testResultStatus').className = 'status-inline ' + (graphqlResponse.ok && !(parsedBody && parsedBody.errors) ? 'ok' : 'bad');
-          $('testResultBody').textContent = JSON.stringify({endpoint:$('testEndpoint').value, scenario:$('testScenario').value, query, variables, http_status:graphqlResponse.status, response:parsedBody}, null, 2);
+          $('testResultBody').textContent = JSON.stringify({endpoint:$('testEndpoint').value, scenario:$('testScenario').value, query: batch ? undefined : query, variables: batch ? undefined : variables, batch, http_status:graphqlResponse.status, response:parsedBody}, null, 2);
           
           let analysis = null;
           let analysisError = '';
@@ -1661,6 +1801,8 @@
           showToast('Account selected. Enter its demo password to run a test.');
         });
         $('runTestButton').addEventListener('click', runSelectedTest);
+        $('toggleLayer1Button').addEventListener('click', () => toggleLayer('layer1'));
+        $('toggleLayer2Button').addEventListener('click', () => toggleLayer('layer2'));
         $('clearResultButton').addEventListener('click', () => {
           $('testResultTitle').textContent = 'No test run yet';
           $('testResultStatus').textContent = 'Choose a scenario above';

@@ -69,8 +69,10 @@ def normalize_query(query: str, variables: dict = None) -> dict | None:
                         except (ValueError, TypeError):
                             pass
 
-                        # Infer object type directly from field name for this prototype
-                        inferred_type = "User" if field_name.lower() == "user" else field_name.capitalize()
+                        # Infer object type from the field name for this prototype: `user` targets a
+                        # User; every other id-taking field (resource, updateResource, deleteResource,
+                        # transferOwnership) targets a Resource.
+                        inferred_type = "User" if field_name.lower() == "user" else "Resource"
 
                         result["objects"].append({
                             "type": inferred_type,
