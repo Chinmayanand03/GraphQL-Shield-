@@ -388,16 +388,16 @@ def run_research_benchmark(
         from app.database import get_db_connection
         fixture_connection = get_db_connection()
         try:
-            # A foreign-owned child under Alice's folder is the vulnerable
-            # relationship fixture. Bob's separate folder has only Bob-owned
+            # A foreign-owned child under Balanilavan's folder is the vulnerable
+            # relationship fixture. Kapilesh's separate folder has only Kapilesh-owned
             # children, providing a clean legitimate relationship control.
             fixture_connection.executemany(
                 "INSERT OR REPLACE INTO objects (id, object_type, owner_id, name, parent_id) "
                 "VALUES (?, ?, ?, ?, ?)",
                 [
-                    (204, "folder", 102, "Bob's Workspace", None),
-                    (205, "document", 102, "Bob's Project Draft", 204),
-                    (206, "document", 102, "Bob's Meeting Notes", 204),
+                    (204, "folder", 102, "Kapilesh's Workspace", None),
+                    (205, "document", 102, "Kapilesh's Project Draft", 204),
+                    (206, "document", 102, "Kapilesh's Meeting Notes", 204),
                 ],
             )
             fixture_connection.execute(
@@ -413,8 +413,10 @@ def run_research_benchmark(
         tokens = {
             101: create_access_token(user_id=101, role="user"),
             102: create_access_token(user_id=102, role="user"),
-            103: create_access_token(user_id=103, role="admin"),
+            103: create_access_token(user_id=103, role="user"),
+            104: create_access_token(user_id=104, role="admin"),
         }
+
 
         with TestClient(app) as client:
             tracemalloc.start()

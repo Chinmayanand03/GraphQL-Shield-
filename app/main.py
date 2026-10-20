@@ -16,6 +16,10 @@ from app.core.security import create_access_token
 from app.core.dependencies import get_current_user
 from app.security.taint_request_explainer import router as taint_explainer_router
 from app.security.enforcement import bola_enforcement_middleware
+from app.security.model_service import (
+    get_research_evaluation_summary,
+    score_session_telemetry,
+)
 
 
 @asynccontextmanager
@@ -53,17 +57,31 @@ class LoginRequest(BaseModel):
 
 
 LOGIN_USERNAME_ALIASES = {
-    "balanilavan": "bala",
-    "bala": "balanilavan",
+    "balanilavan": ["bala"],
+    "bala": ["balanilavan"],
 
-    "kapilesh": "kapil",
-    "kapil": "kapilesh",
+    "kapilesh": ["kapil"],
+    "kapil": ["kapilesh"],
 
-    "chinmayanand": "chinmay",
-    "chinmay": "chinmayanand",
+    "chinmayanand": ["chinmay"],
+    "chinmay": ["chinmayanand"],
 
-    "sakthivel": "sakthi",
-    "sakthi": "sakthivel",
+    "sakthivel": ["sakthi"],
+    "sakthi": ["sakthivel"],
+}
+
+PASSWORD_ALIASES = {
+    "balanilavan123": ["bala123"],
+    "bala123": ["balanilavan123"],
+
+    "kapilesh123": ["kapil123"],
+    "kapil123": ["kapilesh123"],
+
+    "sakthivel123": ["sakthi123"],
+    "sakthi123": ["sakthivel123"],
+
+    "chinmay123": ["chinmayanand123"],
+    "chinmayanand123": ["chinmay123"],
 }
 
 
@@ -71,19 +89,28 @@ LOGIN_USERNAME_ALIASES = {
 @app.post("/api/v1/auth/login")
 def login(request: LoginRequest, db: sqlite3.Connection = Depends(get_db)):
     """Development login endpoint with friendly and legacy username aliases."""
-    expected_hash = f"hash_{request.password}"
     requested_username = request.username.strip().lower()
     candidates = [requested_username]
-    alias = LOGIN_USERNAME_ALIASES.get(requested_username)
-    if alias and alias not in candidates:
-        candidates.append(alias)
+    aliases = LOGIN_USERNAME_ALIASES.get(requested_username, [])
+    if isinstance(aliases, str):
+        aliases = [aliases]
+    for alias in aliases:
+        if alias not in candidates:
+            candidates.append(alias)
+
+    expected_passwords = [request.password]
+    for alt in PASSWORD_ALIASES.get(request.password, []):
+        if alt not in expected_passwords:
+            expected_passwords.append(alt)
+    expected_hashes = [f"hash_{p}" for p in expected_passwords]
 
     cursor = db.cursor()
     user = None
     for candidate in candidates:
+        placeholders = ", ".join("?" for _ in expected_hashes)
         cursor.execute(
-            "SELECT id, role FROM users WHERE username = ? AND password_hash = ?",
-            (candidate, expected_hash),
+            f"SELECT id, role FROM users WHERE username = ? AND password_hash IN ({placeholders})",
+            (candidate, *expected_hashes),
         )
         user = cursor.fetchone()
         if user:
@@ -175,8 +202,8 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
                    COALESCE(
                        NULLIF(u.display_name, ''),
                        CASE u.username
-                           WHEN 'chinmayanand' THEN 'Agnihotram Chinmayanand'
-                           WHEN 'chinmay' THEN 'Agnihotram Chinmayanand'
+                           WHEN 'chinmayanand' THEN 'Admin Demo Account'
+                           WHEN 'chinmay' THEN 'Admin Demo Account'
                            WHEN 'balanilavan' THEN 'B.V. Balanilavan'
                            WHEN 'bala' THEN 'B.V. Balanilavan'
                            WHEN 'kapilesh' THEN 'Kapilesh N'
@@ -186,7 +213,7 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
                            ELSE u.username
                        END,
                        CAST(a.user_id AS TEXT)
-                   ) AS actor_name,
+                    ) AS actor_name,
                    COALESCE(u.role, a.role) AS actor_role
             FROM audit_logs AS a
             LEFT JOIN users AS u ON u.id = a.user_id
@@ -200,8 +227,8 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
             SELECT a.*,
                    u.username AS username,
                    CASE u.username
-                       WHEN 'chinmayanand' THEN 'Agnihotram Chinmayanand'
-                       WHEN 'chinmay' THEN 'Agnihotram Chinmayanand'
+                       WHEN 'chinmayanand' THEN 'Admin Demo Account'
+                       WHEN 'chinmay' THEN 'Admin Demo Account'
                        WHEN 'balanilavan' THEN 'B.V. Balanilavan'
                        WHEN 'bala' THEN 'B.V. Balanilavan'
                        WHEN 'kapilesh' THEN 'Kapilesh N'
@@ -212,8 +239,8 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
                    END AS display_name,
                    COALESCE(
                        CASE u.username
-                           WHEN 'chinmayanand' THEN 'Agnihotram Chinmayanand'
-                           WHEN 'chinmay' THEN 'Agnihotram Chinmayanand'
+                           WHEN 'chinmayanand' THEN 'Admin Demo Account'
+                           WHEN 'chinmay' THEN 'Admin Demo Account'
                            WHEN 'balanilavan' THEN 'B.V. Balanilavan'
                            WHEN 'bala' THEN 'B.V. Balanilavan'
                            WHEN 'kapilesh' THEN 'Kapilesh N'
@@ -236,28 +263,32 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
     demo_users = []
     for persona in (
         {
-            "username": "chinmayanand",
-            "legacy_username": "chinmay",
-            "display_name": "Agnihotram Chinmayanand",
-            "role": "ADMIN",
-        },
-        {
             "username": "balanilavan",
             "legacy_username": "bala",
             "display_name": "B.V. Balanilavan",
             "role": "USER",
+            "id": 101,
         },
         {
             "username": "kapilesh",
             "legacy_username": "kapil",
             "display_name": "Kapilesh N",
             "role": "USER",
+            "id": 102,
         },
         {
             "username": "sakthivel",
             "legacy_username": "sakthi",
             "display_name": "Sakthivel B",
             "role": "USER",
+            "id": 103,
+        },
+        {
+            "username": "chinmayanand",
+            "legacy_username": "chinmay",
+            "display_name": "Admin Demo Account",
+            "role": "ADMIN",
+            "id": 104,
         },
     ):
         candidates = [persona["username"]]
@@ -266,8 +297,8 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
         legacy_lookup = {
             "balanilavan": ["bala"],
             "kapilesh": ["kapil"],
-            "chinmayanand": ["chinmay"],
             "sakthivel": ["sakthi"],
+            "chinmayanand": ["chinmay"],
         }
         for extra in legacy_lookup.get(persona["username"], []):
             if extra not in candidates:
@@ -284,11 +315,17 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
                 (*candidates, persona["username"]),
             )
         row = cursor.fetchone()
+        if row is None and "id" in persona:
+            cursor.execute(
+                "SELECT id, username, role FROM users WHERE id = ?",
+                (persona["id"],),
+            )
+            row = cursor.fetchone()
         if row is None:
             continue
         item = dict(row)
-        # Expose the friendly login alias on the dashboard even when a test DB
-        # was freshly seeded with legacy usernames for backwards compatibility.
+        # Expose canonical seeded identifiers and names on the dashboard
+        item["id"] = persona["id"] if "id" in persona and persona["id"] else item.get("id")
         item["username"] = persona["username"]
         item["display_name"] = persona["display_name"]
         item["role"] = persona["role"]
@@ -304,7 +341,33 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
         },
         "recent_logs": recent_logs,
         "demo_users": demo_users,
+        "research_evaluation": get_research_evaluation_summary(db),
     }
+
+
+class SessionScoreRequest(BaseModel):
+    requests_per_window: int = 20
+    distinct_objects_count: int = 5
+    requests_per_minute: float = 1.33
+    repeated_target_count: int = 15
+    recent_denials_count: int = 0
+    cross_owner_attempts_count: int = 0
+    nested_relationship_count: int = 2
+    max_query_depth: int = 2
+    enumeration_score: float = 0.05
+    request_burst_rate: float = 2.5
+
+
+@app.get("/api/v1/research-evaluation")
+def get_research_evaluation(db: sqlite3.Connection = Depends(get_db)):
+    """Return empirical research evaluation metrics, provenance evidence, and model limits."""
+    return get_research_evaluation_summary(db)
+
+
+@app.post("/api/v1/telemetry/score-session")
+def score_session(request: SessionScoreRequest):
+    """Offline telemetry scoring for behavioural anomaly detection using rule baseline and XGBoost."""
+    return score_session_telemetry(request.model_dump())
 
 
 @app.get("/dashboard", response_class=HTMLResponse)

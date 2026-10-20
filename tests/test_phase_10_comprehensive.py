@@ -70,7 +70,7 @@ def test_08_unauthorized_role_access():
 # ================= BOLA =================
 def test_09_direct_object_id_manipulation():
     token = create_access_token(user_id=101, role="user")
-    query = "{ resource(id: 103) { name } }" # Charlie's resource
+    query = "{ resource(id: 103) { name } }" # Sakthivel's resource
     res = client.post("/graphql", json={"query": query}, headers={"Authorization": f"Bearer {token}"})
     assert res.status_code in (401, 403)
     assert res.json()["detail"]["reason"] == "OWNERSHIP_MISMATCH"

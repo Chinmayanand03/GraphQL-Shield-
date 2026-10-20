@@ -23,10 +23,10 @@ def setup_test_db():
     settings.DATABASE_URL = original_url
 
 def test_nested_authorization_violation_deny():
-    # User 101 (Alice) logs in
+    # User 101 (Balanilavan) logs in
     token = create_access_token(user_id=101, role="user")
     
-    # Alice requests her own user, but attempts to fetch Bob's resource (102) through it
+    # Balanilavan requests his own user, but attempts to fetch Kapilesh's resource (102) through it
     query = """
     query {
         user(id: 101) {
@@ -53,10 +53,10 @@ def test_nested_authorization_violation_deny():
     assert data["detail"]["object_id"] == 102
 
 def test_nested_authorization_allow():
-    # User 101 (Alice) logs in
+    # User 101 (Balanilavan) logs in
     token = create_access_token(user_id=101, role="user")
     
-    # Alice requests her own user, and her own resource (101) through it
+    # Balanilavan requests his own user, and his own resource (101) through it
     query = """
     query {
         user(id: 101) {
@@ -77,5 +77,5 @@ def test_nested_authorization_allow():
     # Expected: ALLOW, HTTP 200, Backend Resolves properly
     assert response.status_code == 200
     data = response.json()
-    assert data["data"]["user"]["username"] == "alice"
-    assert data["data"]["user"]["resource"]["name"] == "Alice's Secret Note"
+    assert data["data"]["user"]["username"] == "balanilavan"
+    assert data["data"]["user"]["resource"]["name"] == "Balanilavan's Secret Note"

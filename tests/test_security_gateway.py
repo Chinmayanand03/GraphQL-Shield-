@@ -42,7 +42,7 @@ def test_gateway_allow_own_object():
     
     assert response.status_code == 200
     data = response.json()
-    assert data["data"]["resource"]["name"] == "Alice's Secret Note"
+    assert data["data"]["resource"]["name"] == "Balanilavan's Secret Note"
 
 def test_gateway_deny_other_user_object():
     # User 101 logs in

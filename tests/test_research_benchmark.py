@@ -54,13 +54,14 @@ def test_dataset_targets_are_seeded_objects():
     cases = generate_dataset(250, seed=7)
 
     assert all(
-        case.target_id in {101, 102, 103, 201, 202, 203, 204, 205, 206}
+        case.target_id in {101, 102, 103, 104, 201, 202, 203, 204, 205, 206}
         for case in cases
     )
     assert all(
-        case.target_owner_id in {101, 102, 103}
+        case.target_owner_id in {101, 102, 103, 104}
         for case in cases
     )
+
 
 
 def test_dataset_rejects_count_over_limit():

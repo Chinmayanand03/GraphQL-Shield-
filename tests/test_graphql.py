@@ -36,7 +36,7 @@ def test_graphql_user_query():
     assert response.status_code == 200
     data = response.json()
     assert data["data"]["user"]["id"] == 101
-    assert data["data"]["user"]["username"] == "alice"
+    assert data["data"]["user"]["username"] == "balanilavan"
 
 def test_graphql_resource_query():
     token = create_access_token(user_id=102, role="user")
@@ -54,7 +54,7 @@ def test_graphql_resource_query():
     data = response.json()
     assert data["data"]["resource"]["id"] == 102
     assert data["data"]["resource"]["ownerId"] == 102
-    assert data["data"]["resource"]["name"] == "Bob's Financial Record"
+    assert data["data"]["resource"]["name"] == "Kapilesh's Financial Record"
 
 def test_graphql_nested_relationship():
     token = create_access_token(user_id=101, role="user")
@@ -76,15 +76,15 @@ def test_graphql_nested_relationship():
     response = client.post("/graphql", json={"query": query}, headers={"Authorization": f"Bearer {token}"})
     assert response.status_code == 200
     data = response.json()["data"]["user"]
-    assert data["username"] == "alice"
+    assert data["username"] == "balanilavan"
     
-    # Alice should have multiple resources. One of them is a folder (id: 201) with children.
+    # Balanilavan should have multiple resources. One of them is a folder (id: 201) with children.
     resources = data["resources"]
     assert len(resources) > 0
     
     folder = next((r for r in resources if r["id"] == 201), None)
     assert folder is not None
-    assert folder["name"] == "Alice's Projects"
+    assert folder["name"] == "Balanilavan's Projects"
     
     # Check children inside folder
     children = folder["children"]

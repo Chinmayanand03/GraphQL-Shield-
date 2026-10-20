@@ -75,6 +75,67 @@ class ResourceType:
             for row in rows
         ]
 
+    @strawberry.field
+    def children_count(self, info: Info) -> int:
+        """
+        Count children visible to the current requester on the
+        protected endpoint.
+
+        The insecure endpoint deliberately counts all children
+        so it remains useful as a vulnerable benchmark baseline.
+        """
+        conn = get_db_connection()
+        try:
+            rows = conn.execute(
+                "SELECT owner_id FROM objects WHERE parent_id = ?",
+                (self.id,),
+            ).fetchall()
+        finally:
+            conn.close()
+
+        context = getattr(info, "context", None)
+
+        if isinstance(context, dict):
+            request = context.get("request")
+        else:
+            request = getattr(context, "request", None)
+
+        path = str(
+            getattr(getattr(request, "url", None), "path", "")
+        ).rstrip("/")
+
+        # Preserve intentionally vulnerable baseline behaviour.
+        if path == "/graphql-insecure":
+            return len(rows)
+
+        # On the protected endpoint, fail closed if context is absent.
+        current_user = getattr(
+            getattr(request, "state", None),
+            "current_user",
+            None,
+        )
+
+        if not isinstance(current_user, dict):
+            return 0
+
+        role = str(current_user.get("role", "user")).upper()
+
+        # Administrators may count all children under the current policy.
+        if role == "ADMIN":
+            return len(rows)
+
+        requester_id = current_user.get("user_id")
+        if requester_id is None:
+            return 0
+
+        # Count only children the requester owns.
+        return sum(
+            1
+            for row in rows
+            if str(row["owner_id"]) == str(requester_id)
+        )
+
+
 @strawberry.type
 class UserType:
     id: int

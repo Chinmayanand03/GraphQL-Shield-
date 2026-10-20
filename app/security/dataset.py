@@ -9,34 +9,37 @@ from dataclasses import asdict, dataclass, replace
 from pathlib import Path
 from typing import Any, Iterable
 
-DATASET_VERSION = "1.1"
+DATASET_VERSION = "1.3"
 
-# Keep these values synchronized with app/seed.py.
 OBJECTS: dict[int, dict[str, Any]] = {
     101: {
         "owner_id": 101,
         "object_type": "document",
-        "name": "Alice's Secret Note",
+        "name": "Balanilavan's Secret Note",
         "parent_id": None,
     },
     102: {
         "owner_id": 102,
         "object_type": "document",
-        "name": "Bob's Financial Record",
-        # Research fixture: a foreign-owned child inside Alice's folder.
-        # runner.py applies this parent link only to its temporary benchmark DB.
+        "name": "Kapilesh's Financial Record",
         "parent_id": 201,
     },
     103: {
         "owner_id": 103,
         "object_type": "document",
-        "name": "Charlie's Admin Log",
+        "name": "Sakthivel B's Research Note",
+        "parent_id": None,
+    },
+    104: {
+        "owner_id": 104,
+        "object_type": "document",
+        "name": "Chinmayanand's Admin Log",
         "parent_id": None,
     },
     201: {
         "owner_id": 101,
         "object_type": "folder",
-        "name": "Alice's Projects",
+        "name": "Balanilavan's Projects",
         "parent_id": None,
     },
     202: {
@@ -51,12 +54,31 @@ OBJECTS: dict[int, dict[str, Any]] = {
         "name": "Project Beta Plan",
         "parent_id": 201,
     },
+    204: {
+        "owner_id": 102,
+        "object_type": "folder",
+        "name": "Kapilesh's Workspace",
+        "parent_id": None,
+    },
+    205: {
+        "owner_id": 102,
+        "object_type": "document",
+        "name": "Kapilesh's Project Draft",
+        "parent_id": 204,
+    },
+    206: {
+        "owner_id": 102,
+        "object_type": "document",
+        "name": "Kapilesh's Meeting Notes",
+        "parent_id": 204,
+    },
 }
 
 USERS: dict[int, dict[str, Any]] = {
-    101: {"username": "alice", "role": "user"},
-    102: {"username": "bob", "role": "user"},
-    103: {"username": "charlie", "role": "admin"},
+    101: {"username": "balanilavan", "role": "user"},
+    102: {"username": "kapilesh", "role": "user"},
+    103: {"username": "sakthivel", "role": "user"},
+    104: {"username": "chinmayanand", "role": "admin"},
 }
 
 SCENARIO_WEIGHTS: dict[str, int] = {
@@ -96,7 +118,7 @@ class BenchmarkCase:
 def _pick_direct_legitimate(
     rng: random.Random,
 ) -> tuple[int, int, str, int, bool]:
-    principal_id = rng.choice([101, 102])
+    principal_id = rng.choice([101, 102, 103])
     owned_ids = [
         object_id
         for object_id, obj in OBJECTS.items()
@@ -116,7 +138,7 @@ def _pick_direct_legitimate(
 def _pick_direct_bola(
     rng: random.Random,
 ) -> tuple[int, int, str, int, bool]:
-    principal_id = rng.choice([101, 102])
+    principal_id = rng.choice([101, 102, 103])
     foreign_ids = [
         object_id
         for object_id, obj in OBJECTS.items()
@@ -151,7 +173,7 @@ def _pick_nested_legitimate(
 def _pick_nested_bola(
     rng: random.Random,
 ) -> tuple[int, int, int, str, int, bool]:
-    principal_id = rng.choice([101, 102])
+    principal_id = rng.choice([101, 102, 103])
     foreign_ids = [
         object_id
         for object_id, obj in OBJECTS.items()
@@ -259,16 +281,19 @@ def _build_case(
         sink = "user.resource.name"
 
     elif scenario in {"relationship_legitimate", "relationship_bola"}:
-        # The parent (Alice's folder) is authorized for Alice. The query
-        # traverses children without supplying each child's ID. Object 102 is
-        # Bob-owned but is linked beneath parent 201 in the temporary benchmark
-        # database, allowing a real implicit-relationship BOLA test.
-        principal_id = 101
-        parent_id = 201
+        # BOLA probes use Balanilavan's folder 201, whose child 102 is Kapilesh-owned in
+        # the temporary benchmark database. Legitimate controls use Kapilesh's
+        # distinct folder 204 and Kapilesh-owned children 205/206, so the same query
+        # shape cannot leak an unrelated foreign child.
         if scenario == "relationship_bola":
+            principal_id = 101
+            parent_id = 201
             target_id = 102
         else:
-            target_id = rng.choice([202, 203])
+            principal_id = 102
+            parent_id = 204
+            target_id = rng.choice([205, 206])
+
         owner_id = OBJECTS[target_id]["owner_id"]
         expected = owner_id == principal_id
 
@@ -283,7 +308,7 @@ def _build_case(
         sink = "resource.children.name"
 
     elif scenario == "admin_access":
-        principal_id = 103
+        principal_id = 104
         target_id = rng.choice(list(OBJECTS))
         owner_id = OBJECTS[target_id]["owner_id"]
         expected = True

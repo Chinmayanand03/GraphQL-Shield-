@@ -21,7 +21,7 @@ def verify():
         return
 
     # Check Login
-    r = httpx.post(f"{BASE_URL}/api/v1/auth/login", json={"username": "alice", "password": "alice123"})
+    r = httpx.post(f"{BASE_URL}/api/v1/auth/login", json={"username": "balanilavan", "password": "balanilavan123"})
     if r.status_code == 200 and "access_token" in r.json():
         print("Login: PASS")
         token = r.json()["access_token"]

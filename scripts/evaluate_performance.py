@@ -18,14 +18,14 @@ def run_evaluation():
     
     client = TestClient(app)
     
-    # Using User 101 (Alice)
+    # Using User 101 (Balanilavan)
     token = create_access_token(user_id=101, role="user")
     headers = {"Authorization": f"Bearer {token}"}
     
     # Test Queries
-    # Legitimate: Alice asks for her own resource
+    # Legitimate: Balanilavan asks for his own resource
     legit_query = {"query": "{ resource(id: 101) { name } }"}
-    # BOLA: Alice asks for Bob's resource
+    # BOLA: Balanilavan asks for Kapilesh's resource
     bola_query = {"query": "{ resource(id: 102) { name } }"}
     
     ITERATIONS = 500

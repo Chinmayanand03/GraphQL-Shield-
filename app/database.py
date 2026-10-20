@@ -27,6 +27,7 @@ def init_db():
             username TEXT UNIQUE NOT NULL,
             password_hash TEXT NOT NULL,
             role TEXT DEFAULT 'user',
+            display_name TEXT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
     ''')

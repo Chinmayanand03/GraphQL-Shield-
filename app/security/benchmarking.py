@@ -1,4 +1,4 @@
-﻿"""Synthetic GraphQL BOLA research benchmarking utilities."""
+"""Synthetic GraphQL BOLA research benchmarking utilities."""
 from __future__ import annotations
 
 import hashlib
@@ -16,25 +16,31 @@ OBJECTS: dict[int, dict[str, Any]] = {
     101: {
         "owner_id": 101,
         "object_type": "document",
-        "name": "Alice's Secret Note",
+        "name": "Balanilavan's Secret Note",
         "parent_id": None,
     },
     102: {
         "owner_id": 102,
         "object_type": "document",
-        "name": "Bob's Financial Record",
+        "name": "Kapilesh's Financial Record",
         "parent_id": None,
     },
     103: {
         "owner_id": 103,
         "object_type": "document",
-        "name": "Charlie's Admin Log",
+        "name": "Sakthivel B's Research Note",
+        "parent_id": None,
+    },
+    104: {
+        "owner_id": 104,
+        "object_type": "document",
+        "name": "Chinmayanand's Admin Log",
         "parent_id": None,
     },
     201: {
         "owner_id": 101,
         "object_type": "folder",
-        "name": "Alice's Projects",
+        "name": "Balanilavan's Projects",
         "parent_id": None,
     },
     202: {
@@ -52,9 +58,10 @@ OBJECTS: dict[int, dict[str, Any]] = {
 }
 
 USERS: dict[int, dict[str, Any]] = {
-    101: {"username": "alice", "role": "user"},
-    102: {"username": "bob", "role": "user"},
-    103: {"username": "charlie", "role": "admin"},
+    101: {"username": "balanilavan", "role": "user"},
+    102: {"username": "kapilesh", "role": "user"},
+    103: {"username": "sakthivel", "role": "user"},
+    104: {"username": "chinmayanand", "role": "admin"},
 }
 
 SCENARIO_WEIGHTS: dict[str, int] = {

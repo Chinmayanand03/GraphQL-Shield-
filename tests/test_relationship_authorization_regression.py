@@ -23,7 +23,7 @@ query RelationshipBOLA {
 
 @pytest.fixture
 def relationship_client(tmp_path, monkeypatch):
-    """Seed a foreign-owned child beneath Alice's otherwise authorized folder."""
+    """Seed a foreign-owned child beneath Balanilavan's otherwise authorized folder."""
     db_path = tmp_path / "relationship_auth_regression.db"
     monkeypatch.setattr(settings, "DATABASE_URL", f"sqlite:///{db_path}")
     seed_database()

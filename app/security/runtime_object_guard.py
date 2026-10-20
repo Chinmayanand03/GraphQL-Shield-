@@ -3,10 +3,12 @@ from __future__ import annotations
 import inspect
 import logging
 from typing import Any
+from unittest.mock import MagicMock
 
 from strawberry.extensions import SchemaExtension
 
 from app.graphql.types import ResourceType
+from app.security.audit import log_decision
 from app.security.authorization import AuthorizationContext, PolicyEngine
 from app.security.ownership import get_object_owner
 
@@ -16,12 +18,105 @@ logger = logging.getLogger(__name__)
 _policy_engine = PolicyEngine()
 
 
+class RequestSecurityState:
+    """Stores authorization decisions, evidence, and data provenance per request."""
+
+    def __init__(self):
+        self.authorization_evidence: list[dict[str, Any]] = []
+        self.provenance: list[dict[str, Any]] = []
+
+
+def get_request_security_state(context: Any = None) -> RequestSecurityState:
+    """
+    Retrieve or initialize the RequestSecurityState associated with the request context.
+    """
+    request = None
+    if isinstance(context, dict):
+        request = context.get("request")
+    elif context is not None:
+        request = getattr(context, "request", context)
+
+    if request is not None and hasattr(request, "state"):
+        sec_state = getattr(request.state, "security_state", None)
+        if isinstance(sec_state, RequestSecurityState):
+            return sec_state
+        sec_state = RequestSecurityState()
+        try:
+            setattr(request.state, "security_state", sec_state)
+        except Exception:
+            pass
+        return sec_state
+
+    return RequestSecurityState()
+
+
+def make_request(user_id: int = 1, role: str = "USER") -> Any:
+    """Helper to create a mock request with security state for unit testing."""
+    request = MagicMock()
+    request.url.path = "/graphql"
+    request.state = MagicMock()
+    request.state.current_user = {"user_id": user_id, "role": role}
+    sec_state = RequestSecurityState()
+    request.state.security_state = sec_state
+    return request
+
+
+def make_extension(request: Any = None) -> RuntimeObjectAuthorizationExtension:
+    """Helper to instantiate RuntimeObjectAuthorizationExtension with optional request."""
+    ext = RuntimeObjectAuthorizationExtension()
+    if request is not None:
+        ext._request = request
+    return ext
+
+
+def make_resource(
+    id: int,
+    owner_id: int,
+    parent_id: int | None = None,
+    name: str | None = None,
+    object_type: str = "Resource",
+) -> ResourceType:
+    """Helper to instantiate ResourceType objects for testing."""
+    return ResourceType(
+        id=id,
+        name=name if name is not None else f"Resource {id}",
+        owner_id=owner_id,
+        object_type=object_type,
+        parent_id=parent_id,
+    )
+
+
+def make_info(
+    request: Any,
+    path_name: str = "resource",
+    field_name: str = "children",
+) -> Any:
+    """Helper to create mock GraphQL info context with path linked list."""
+    info = MagicMock()
+    info.operation.operation.value = "query"
+
+    p1 = MagicMock()
+    p1.key = path_name
+    p1.prev = None
+
+    p2 = MagicMock()
+    p2.key = field_name
+    p2.prev = p1
+
+    info.path = p2
+    info.field_name = field_name
+    info.context = {"request": request}
+    return info
+
+
 class RuntimeObjectAuthorizationExtension(SchemaExtension):
     """
     Prototype runtime guard for ResourceType objects.
 
     It checks actual resolver results before GraphQL resolves the
     object's nested fields. Lists are filtered item by item.
+    Enforcement decisions, audit logs, authorization evidence, and
+    object provenance graphs are recorded on request security state.
 
     Scope:
       - Protected /graphql endpoint only.
@@ -31,6 +126,10 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
     This is a prototype, not a universal GraphQL security guarantee.
     """
 
+    def __init__(self, execution_context=None, request: Any = None):
+        super().__init__(execution_context=execution_context)
+        self._request = request
+
     def resolve(self, _next, root, info, *args, **kwargs):
         result = _next(root, info, *args, **kwargs)
 
@@ -39,20 +138,25 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
 
             async def resolve_and_check():
                 resolved = await result
-                return self._authorize_result(resolved, info)
+                return self._guard_result(resolved, root, info)
 
             return resolve_and_check()
 
-        return self._authorize_result(result, info)
+        return self._guard_result(result, root, info)
 
-    @staticmethod
-    def _get_request(info):
-        context = info.context
+    def _get_request(self, info):
+        context = getattr(info, "context", None)
 
         if isinstance(context, dict):
-            return context.get("request")
+            req = context.get("request")
+            if req is not None:
+                return req
 
-        return getattr(context, "request", None)
+        req = getattr(context, "request", None)
+        if req is not None:
+            return req
+
+        return getattr(self, "_request", None)
 
     def _should_enforce(self, info) -> bool:
         request = self._get_request(info)
@@ -71,40 +175,41 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
 
         return path == "/graphql"
 
-    def _authorize_result(self, result: Any, info):
-        if not self._should_enforce(info):
-            return result
-
-        if isinstance(result, ResourceType):
-            return result if self._is_authorized(result, info) else None
-
-        if isinstance(result, list):
-            # Preserve authorized siblings when one child is denied.
-            return [
-                item
-                for item in result
-                if not isinstance(item, ResourceType)
-                or self._is_authorized(item, info)
-            ]
-
-        # Scalars and non-resource objects are outside this prototype's scope.
-        return result
-
     @staticmethod
     def _format_path(path) -> str:
         parts = []
-
-        while path is not None:
-            parts.append(str(path.key))
-            path = path.prev
-
+        curr = path
+        while curr is not None:
+            parts.append(str(curr.key))
+            curr = curr.prev
         return ".".join(reversed(parts))
 
-    def _is_authorized(self, resource: ResourceType, info) -> bool:
+    @staticmethod
+    def _format_path_list(path) -> list[Any]:
+        parts = []
+        curr = path
+        while curr is not None:
+            parts.append(curr.key)
+            curr = curr.prev
+        return list(reversed(parts))
+
+    def _check_resource_authorization(
+        self,
+        resource: ResourceType,
+        info: Any,
+    ) -> tuple[bool, dict[str, Any]]:
         request = self._get_request(info)
 
         if request is None:
-            return False
+            return False, {
+                "user_id": None,
+                "role": "unknown",
+                "owner_id": None,
+                "decision": "DENY",
+                "reason": "MISSING_REQUEST",
+                "risk_score": 100,
+                "risk_level": "CRITICAL",
+            }
 
         current_user = getattr(
             getattr(request, "state", None),
@@ -113,7 +218,15 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
         )
 
         if not isinstance(current_user, dict):
-            return False
+            return False, {
+                "user_id": None,
+                "role": "unknown",
+                "owner_id": None,
+                "decision": "DENY",
+                "reason": "MISSING_USER",
+                "risk_score": 100,
+                "risk_level": "CRITICAL",
+            }
 
         try:
             user_id = int(current_user["user_id"])
@@ -130,21 +243,50 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
                 "query",
             )
 
+            path_str = self._format_path(getattr(info, "path", None))
+
             context = AuthorizationContext(
                 user_id=user_id,
                 role=role,
                 operation=str(operation_value),
                 object_type="Resource",
                 object_id=object_id,
-                path=self._format_path(info.path),
+                path=path_str,
                 owner_id=owner_id,
                 metadata={
                     "source": "runtime_object_guard",
-                    "response_path": self._format_path(info.path),
+                    "response_path": path_str,
                 },
             )
 
             decision = _policy_engine.evaluate(context)
+
+            # Audit log the decision
+            try:
+                log_decision(
+                    user_id=user_id,
+                    role=role,
+                    operation=str(operation_value),
+                    object_type="Resource",
+                    object_id=object_id,
+                    path=path_str,
+                    decision=decision.get("decision", "DENY"),
+                    reason=decision.get("reason", "UNKNOWN"),
+                    risk_score=decision.get("risk_score", 0),
+                    risk_level=decision.get("risk_level", "LOW"),
+                )
+            except Exception:
+                logger.debug("Audit logging skipped or suppressed in runtime guard")
+
+            decision_info = {
+                "user_id": user_id,
+                "role": role,
+                "owner_id": owner_id,
+                "decision": decision.get("decision", "DENY"),
+                "reason": decision.get("reason", "UNKNOWN"),
+                "risk_score": decision.get("risk_score", 0),
+                "risk_level": decision.get("risk_level", "LOW"),
+            }
 
             if decision.get("decision") != "ALLOW":
                 logger.info(
@@ -154,14 +296,159 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
                     object_id,
                     decision.get("reason", "UNKNOWN"),
                 )
-                return False
+                return False, decision_info
 
-            return True
+            return True, decision_info
 
         except Exception:
-            # Missing identity, database failure, or policy failure
-            # must not silently allow the protected resource.
             logger.exception(
                 "Runtime object authorization failed; denying resource"
             )
-            return False
+            decision_info = {
+                "user_id": current_user.get("user_id") if isinstance(current_user, dict) else None,
+                "role": current_user.get("role", "user") if isinstance(current_user, dict) else "user",
+                "owner_id": None,
+                "decision": "DENY",
+                "reason": "INTERNAL_ERROR",
+                "risk_score": 100,
+                "risk_level": "CRITICAL",
+            }
+            return False, decision_info
+
+    def _is_authorized(self, resource: ResourceType, info: Any) -> bool:
+        is_auth, _ = self._check_resource_authorization(resource, info)
+        return is_auth
+
+    def _authorize_result(self, result: Any, info: Any) -> Any:
+        return self._guard_result(result, None, info)
+
+    def _record_evidence_and_provenance(
+        self,
+        sec_state: RequestSecurityState,
+        resource: ResourceType,
+        root: Any,
+        field_name: str,
+        decision_info: dict[str, Any],
+        enforcement: str,
+        emitted_path: list[Any] | None,
+    ) -> None:
+        principal_id = decision_info.get("user_id")
+        owner_id = decision_info.get("owner_id")
+        decision = decision_info.get("decision", "DENY")
+        reason = decision_info.get("reason", "UNKNOWN")
+        object_id = int(resource.id)
+        object_type = "Resource"
+
+        evidence_entry = {
+            "object_id": object_id,
+            "decision": decision,
+            "principal_id": principal_id,
+            "owner_id": owner_id,
+            "reason": reason,
+            "enforcement": enforcement,
+            "emitted_path": emitted_path,
+        }
+        sec_state.authorization_evidence.append(evidence_entry)
+
+        edges = []
+        if root is not None:
+            parent_id = str(getattr(root, "id", ""))
+            parent_type = "Resource"
+            edges.append({
+                "parent_id": parent_id,
+                "parent_type": parent_type,
+                "field": str(field_name),
+                "child_id": str(object_id),
+                "child_type": object_type,
+            })
+
+        provenance_entry = {
+            "object_id": object_id,
+            "object_type": object_type,
+            "owner_id": owner_id,
+            "source": {
+                "table": "objects",
+                "primary_key": str(object_id),
+            },
+            "provenance": {
+                "rows": [
+                    {"table": "objects", "id": str(object_id)}
+                ],
+                "edges": edges,
+            },
+            "emitted_path": emitted_path,
+        }
+        sec_state.provenance.append(provenance_entry)
+
+    def _guard_result(self, result: Any, root: Any, info: Any) -> Any:
+        if not self._should_enforce(info):
+            return result
+
+        request = self._get_request(info)
+        sec_state = get_request_security_state({"request": request})
+
+        path_node = getattr(info, "path", None)
+        base_path_list = self._format_path_list(path_node)
+        field_name = str(getattr(info, "field_name", None) or (path_node.key if path_node else "children"))
+
+        if isinstance(result, ResourceType):
+            is_auth, decision_info = self._check_resource_authorization(result, info)
+            if is_auth:
+                emitted_path = list(base_path_list)
+                self._record_evidence_and_provenance(
+                    sec_state=sec_state,
+                    resource=result,
+                    root=root,
+                    field_name=field_name,
+                    decision_info=decision_info,
+                    enforcement="allowed",
+                    emitted_path=emitted_path,
+                )
+                return result
+            else:
+                self._record_evidence_and_provenance(
+                    sec_state=sec_state,
+                    resource=result,
+                    root=root,
+                    field_name=field_name,
+                    decision_info=decision_info,
+                    enforcement="denied",
+                    emitted_path=None,
+                )
+                return None
+
+        if isinstance(result, list):
+            filtered_result = []
+            for item in result:
+                if isinstance(item, ResourceType):
+                    is_auth, decision_info = self._check_resource_authorization(item, info)
+                    if is_auth:
+                        emitted_idx = len(filtered_result)
+                        emitted_path = list(base_path_list) + [emitted_idx]
+                        self._record_evidence_and_provenance(
+                            sec_state=sec_state,
+                            resource=item,
+                            root=root,
+                            field_name=field_name,
+                            decision_info=decision_info,
+                            enforcement="allowed",
+                            emitted_path=emitted_path,
+                        )
+                        filtered_result.append(item)
+                    else:
+                        self._record_evidence_and_provenance(
+                            sec_state=sec_state,
+                            resource=item,
+                            root=root,
+                            field_name=field_name,
+                            decision_info=decision_info,
+                            enforcement="filtered",
+                            emitted_path=None,
+                        )
+                else:
+                    filtered_result.append(item)
+            return filtered_result
+
+        # Scalars and non-resource objects are outside this prototype's scope.
+        return result
+

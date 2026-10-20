@@ -20,13 +20,13 @@ def seed_database():
     
     # Seed Users
     users = [
-        (101, "balanilavan", "hash_balanilavan123", "user"),
-        (102, "kapilesh", "hash_kapilesh123", "user"),
-        (103, "sakthivel", "hash_sakthivel123", "user"),
-        (104, "chinmayanand", "hash_chinmayanand123", "admin"),
+        (101, "balanilavan", "hash_balanilavan123", "user", "B.V. Balanilavan"),
+        (102, "kapilesh", "hash_kapilesh123", "user", "Kapilesh N"),
+        (103, "sakthivel", "hash_sakthivel123", "user", "Sakthivel B"),
+        (104, "chinmayanand", "hash_chinmayanand123", "admin", "Admin Demo Account"),
     ]
     cursor.executemany(
-        "INSERT INTO users (id, username, password_hash, role) VALUES (?, ?, ?, ?)",
+        "INSERT INTO users (id, username, password_hash, role, display_name) VALUES (?, ?, ?, ?, ?)",
         users
     )
     

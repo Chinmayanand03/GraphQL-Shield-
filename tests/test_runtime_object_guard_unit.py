@@ -7,6 +7,11 @@ import pytest
 from app.graphql.types import ResourceType
 from app.security.runtime_object_guard import (
     RuntimeObjectAuthorizationExtension,
+    get_request_security_state,
+    make_request,
+    make_extension,
+    make_resource,
+    make_info,
 )
 
 
@@ -56,7 +61,7 @@ def test_insecure_endpoint_bypasses_guard():
     info = _make_mock_info(url_path="/graphql-insecure")
     resource = ResourceType(
         id=102,
-        name="Bob's Note",
+        name="Kapilesh's Note",
         owner_id=102,
         object_type="document",
         parent_id=None,
@@ -71,7 +76,7 @@ def test_missing_request_fails_closed():
     info = _make_mock_info(with_request=False)
     resource = ResourceType(
         id=101,
-        name="Alice Note",
+        name="Balanilavan Note",
         owner_id=101,
         object_type="document",
         parent_id=None,
@@ -85,7 +90,7 @@ def test_missing_user_fails_closed():
     info = _make_mock_info(user_id=None)
     resource = ResourceType(
         id=101,
-        name="Alice Note",
+        name="Balanilavan Note",
         owner_id=101,
         object_type="document",
         parent_id=None,
@@ -99,7 +104,7 @@ def test_owner_match_is_authorized():
     info = _make_mock_info(user_id=101, role="user")
     resource = ResourceType(
         id=101,
-        name="Alice Note",
+        name="Balanilavan Note",
         owner_id=101,
         object_type="document",
         parent_id=None,
@@ -119,7 +124,7 @@ def test_foreign_owner_is_denied():
     info = _make_mock_info(user_id=101, role="user")
     resource = ResourceType(
         id=102,
-        name="Bob Note",
+        name="Kapilesh Note",
         owner_id=102,
         object_type="document",
         parent_id=None,
@@ -136,10 +141,10 @@ def test_foreign_owner_is_denied():
 
 def test_admin_is_authorized_for_foreign_object():
     ext = RuntimeObjectAuthorizationExtension()
-    info = _make_mock_info(user_id=103, role="admin")
+    info = _make_mock_info(user_id=104, role="admin")
     resource = ResourceType(
         id=102,
-        name="Bob Note",
+        name="Kapilesh Note",
         owner_id=102,
         object_type="document",
         parent_id=None,
@@ -158,16 +163,16 @@ def test_list_filters_foreign_objects_and_preserves_authorized():
     ext = RuntimeObjectAuthorizationExtension()
     info = _make_mock_info(user_id=101, role="user")
 
-    alice_res = ResourceType(
+    balanilavan_res = ResourceType(
         id=101,
-        name="Alice Note",
+        name="Balanilavan Note",
         owner_id=101,
         object_type="document",
         parent_id=None,
     )
-    bob_res = ResourceType(
+    kapilesh_res = ResourceType(
         id=102,
-        name="Bob Note",
+        name="Kapilesh Note",
         owner_id=102,
         object_type="document",
         parent_id=None,
@@ -180,11 +185,11 @@ def test_list_filters_foreign_objects_and_preserves_authorized():
         "app.security.runtime_object_guard.get_object_owner",
         side_effect=mock_get_owner,
     ):
-        items = [alice_res, bob_res, "unrelated_scalar"]
+        items = [balanilavan_res, kapilesh_res, "unrelated_scalar"]
         result = ext._authorize_result(items, info)
 
-        assert alice_res in result
-        assert bob_res not in result
+        assert balanilavan_res in result
+        assert kapilesh_res not in result
         assert "unrelated_scalar" in result
 
 
@@ -193,7 +198,7 @@ def test_database_exception_fails_closed():
     info = _make_mock_info(user_id=101, role="user")
     resource = ResourceType(
         id=101,
-        name="Alice Note",
+        name="Balanilavan Note",
         owner_id=101,
         object_type="document",
         parent_id=None,
@@ -231,7 +236,7 @@ async def test_async_resolver_execution():
     info = _make_mock_info(user_id=101, role="user")
     resource = ResourceType(
         id=101,
-        name="Alice Note",
+        name="Balanilavan Note",
         owner_id=101,
         object_type="document",
         parent_id=None,
@@ -248,3 +253,110 @@ async def test_async_resolver_execution():
         res_coro = ext.resolve(async_resolver, None, info)
         resolved = await res_coro
         assert resolved is resource
+
+
+def test_nested_foreign_owned_child_is_filtered(monkeypatch):
+    """Prove that runtime enforcement records object provenance and denial evidence."""
+    request = make_request(user_id=1, role="USER")
+    extension = make_extension(request)
+
+    # Simulate authoritative owner lookup from the database.
+    monkeypatch.setattr(
+        "app.security.runtime_object_guard.get_object_owner",
+        lambda object_type, object_id: {
+            102: 2,  # Foreign-owned document
+            202: 1,  # Authorized child
+        }.get(object_id),
+    )
+    monkeypatch.setattr(
+        "app.security.runtime_object_guard.log_decision",
+        lambda **kwargs: None,
+    )
+
+    parent = make_resource(201, 1)
+
+    result = extension._guard_result(
+        [
+            make_resource(102, 2, 201),
+            make_resource(202, 1, 201),
+        ],
+        parent,
+        make_info(request),
+    )
+
+    # 1. Verify enforcement: preserve authorized child; filter foreign child.
+    assert [item.id for item in result] == [202]
+
+    state = get_request_security_state({"request": request})
+
+    # 2. Verify DENY evidence for the foreign-owned document.
+    denied_evidence = next(
+        evidence
+        for evidence in state.authorization_evidence
+        if evidence["object_id"] == 102
+        and evidence["decision"] == "DENY"
+    )
+
+    assert denied_evidence["principal_id"] == 1
+    assert denied_evidence["owner_id"] == 2
+    assert denied_evidence["reason"] == "NESTED_AUTHORIZATION_VIOLATION"
+    assert denied_evidence["enforcement"] == "filtered"
+    assert denied_evidence["emitted_path"] is None
+
+    # 3. Verify provenance identifies the trusted source row.
+    denied_provenance = next(
+        record
+        for record in state.provenance
+        if record["object_id"] == 102
+    )
+
+    assert denied_provenance["object_type"] == "Resource"
+    assert denied_provenance["owner_id"] == 2
+    assert denied_provenance["source"] == {
+        "table": "objects",
+        "primary_key": "102",
+    }
+    assert denied_provenance["provenance"]["rows"] == [
+        {"table": "objects", "id": "102"}
+    ]
+
+    # 4. Verify how the denied document entered the response graph.
+    edge = denied_provenance["provenance"]["edges"][0]
+
+    assert edge["parent_id"] == "201"
+    assert edge["parent_type"] == "Resource"
+    assert edge["field"] == "children"
+    assert edge["child_id"] == "102"
+    assert edge["child_type"] == "Resource"
+
+    # The object was examined but must not have an emitted output path.
+    assert denied_provenance["emitted_path"] is None
+
+    # 5. Verify the authorized sibling is preserved and traced.
+    allowed_provenance = next(
+        record
+        for record in state.provenance
+        if record["object_id"] == 202
+    )
+
+    assert allowed_provenance["owner_id"] == 1
+    assert allowed_provenance["provenance"]["edges"][0]["parent_id"] == "201"
+    assert allowed_provenance["provenance"]["edges"][0]["child_id"] == "202"
+    assert allowed_provenance["provenance"]["edges"][0]["field"] == "children"
+    assert allowed_provenance["emitted_path"] == [
+        "resource", "children", 0
+    ]
+
+    allowed_evidence = next(
+        evidence
+        for evidence in state.authorization_evidence
+        if evidence["object_id"] == 202
+        and evidence["decision"] == "ALLOW"
+    )
+
+    assert allowed_evidence["principal_id"] == 1
+    assert allowed_evidence["owner_id"] == 1
+    assert allowed_evidence["emitted_path"] == [
+        "resource", "children", 0
+    ]
+

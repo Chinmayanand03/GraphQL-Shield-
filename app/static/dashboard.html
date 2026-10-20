@@ -21,7 +21,7 @@
       --red: #ff7185;
       --amber: #ffc66d;
       --shadow: 0 18px 45px rgba(0,0,0,.20);
-      --radius: 18px;
+      --radius: 16px;
     }
     * { box-sizing: border-box; }
     body {
@@ -32,109 +32,256 @@
     button, input, select { font: inherit; }
     button { cursor: pointer; }
     a { color: inherit; text-decoration: none; }
-    .app { display: grid; grid-template-columns: 238px minmax(0,1fr); min-height: 100vh; }
-    .sidebar { background: rgba(11,18,32,.83); border-right: 1px solid var(--line); padding: 24px 15px; display:flex; flex-direction:column; gap: 28px; }
-    .brand { display:flex; align-items:center; gap:12px; padding: 0 9px; }
-    .brand-mark { width:39px; height:39px; border-radius:13px; display:grid; place-items:center; background:linear-gradient(145deg,#3e7bea,#45cfdb); color:white; font-weight:900; box-shadow:0 8px 25px rgba(62,123,234,.23); }
+    .app { display: grid; grid-template-columns: 240px minmax(0,1fr); min-height: 100vh; }
+    .sidebar { background: rgba(11,18,32,.85); border-right: 1px solid var(--line); padding: 24px 16px; display:flex; flex-direction:column; gap: 26px; }
+    .brand { display:flex; align-items:center; gap:12px; padding: 0 8px; }
+    .brand-mark { width:38px; height:38px; border-radius:12px; display:grid; place-items:center; background:linear-gradient(145deg,#3e7bea,#45cfdb); color:white; font-weight:900; box-shadow:0 8px 25px rgba(62,123,234,.23); }
     .brand-title { font-weight:800; letter-spacing:.2px; font-size:15px; }
     .brand-sub { color:var(--muted); font-size:11px; margin-top:1px; }
     .nav-label { color:#687d9b; font-size:10px; text-transform:uppercase; letter-spacing:1.5px; padding: 0 12px; margin-bottom:8px; font-weight:800; }
     .nav { display:grid; gap:6px; }
-    .nav a { color:var(--muted); padding:11px 12px; border-radius:11px; display:flex; gap:11px; align-items:center; font-weight:650; transition:.15s; }
+    .nav a { color:var(--muted); padding:10px 12px; border-radius:10px; display:flex; gap:11px; align-items:center; font-weight:650; font-size:13px; transition:.15s; }
     .nav a:hover, .nav a.active { color:var(--text); background:var(--panel-hover); }
-    .nav a.active { box-shadow:inset 3px 0 var(--cyan); }
-    .nav-icon { display:inline-grid; place-items:center; width:20px; color:var(--blue); font-size:16px; }
+    .nav a.active { box-shadow:inset 3px 0 var(--cyan); color:#fff; }
+    .nav-icon { display:inline-grid; place-items:center; width:20px; color:var(--blue); font-size:15px; }
     .side-bottom { margin-top:auto; }
-    .protection-card { padding:15px; border:1px solid var(--line); background:linear-gradient(145deg,rgba(67,214,160,.09),rgba(87,215,232,.04)); border-radius:15px; }
+    .protection-card { padding:14px; border:1px solid var(--line); background:linear-gradient(145deg,rgba(67,214,160,.09),rgba(87,215,232,.04)); border-radius:14px; }
     .status-dot { width:8px; height:8px; display:inline-block; border-radius:50%; background:var(--green); box-shadow:0 0 0 4px rgba(67,214,160,.12); margin-right:8px; }
     .protection-card strong { font-size:12px; }
-    .protection-card p { color:var(--muted); font-size:11px; margin:8px 0 0; }
-    main { min-width:0; padding:27px clamp(18px,3vw,42px) 38px; }
-    .topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:27px; }
+    .protection-card p { color:var(--muted); font-size:11px; margin:7px 0 0; line-height:1.45; }
+    
+    main { min-width:0; padding:24px clamp(18px,2.8vw,38px) 36px; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:20px; }
     .eyebrow { color:var(--cyan); font-weight:800; text-transform:uppercase; font-size:10px; letter-spacing:1.7px; }
-    h1 { margin:5px 0 0; font-size:clamp(24px,3vw,32px); letter-spacing:-.8px; line-height:1.15; }
-    .subtitle { color:var(--muted); margin:8px 0 0; font-size:13px; }
+    h1 { margin:4px 0 0; font-size:clamp(22px,2.6vw,30px); letter-spacing:-.7px; line-height:1.18; }
+    .subtitle { color:var(--muted); margin:6px 0 0; font-size:13px; }
     .top-actions { display:flex; gap:9px; align-items:center; flex-wrap:wrap; }
-    .api-status { color:var(--muted); font-size:11px; display:flex; align-items:center; gap:7px; border:1px solid var(--line); border-radius:999px; padding:8px 11px; white-space:nowrap; }
+    .api-status { color:var(--muted); font-size:11px; display:flex; align-items:center; gap:7px; border:1px solid var(--line); border-radius:999px; padding:7px 11px; white-space:nowrap; background:rgba(17,27,45,.5); }
     .api-status .status-dot { width:7px; height:7px; margin:0; }
     .api-status.error .status-dot { background:var(--red); box-shadow:0 0 0 4px rgba(255,113,133,.12); }
-    .btn { border:1px solid var(--line); background:var(--panel); color:var(--text); border-radius:10px; padding:9px 12px; font-weight:700; font-size:12px; display:inline-flex; align-items:center; justify-content:center; gap:7px; transition:.15s; }
+    .btn { border:1px solid var(--line); background:var(--panel); color:var(--text); border-radius:10px; padding:8px 12px; font-weight:700; font-size:12px; display:inline-flex; align-items:center; justify-content:center; gap:7px; transition:.15s; }
     .btn:hover { background:var(--panel-hover); transform:translateY(-1px); }
     .btn.primary { border-color:transparent; color:#061522; background:linear-gradient(100deg,var(--cyan),#8ae9d8); }
     .btn:disabled { cursor:wait; opacity:.6; transform:none; }
-    .metrics { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; margin-bottom:18px; }
+
+    /* TAB NAVIGATION BAR */
+    .dashboard-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 22px;
+      padding: 6px;
+      background: rgba(9, 16, 29, 0.45);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .dashboard-tabs::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: all .16s ease;
+      user-select: none;
+    }
+    .tab-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .tab-btn:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 2px;
+    }
+    .tab-btn.active {
+      color: #fff;
+      background: linear-gradient(135deg, rgba(87,215,232,0.18), rgba(117,167,255,0.12));
+      border-color: rgba(87,215,232,0.45);
+      box-shadow: 0 4px 16px rgba(87,215,232,0.12), inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+    .tab-icon {
+      font-size: 14px;
+      color: var(--cyan);
+      display: inline-grid;
+      place-items: center;
+    }
+    .tab-btn.active .tab-icon {
+      color: #8ae9d8;
+      filter: drop-shadow(0 0 6px rgba(87,215,232,0.5));
+    }
+    .tab-panel {
+      display: block;
+      animation: tabFadeIn .2s ease-out;
+    }
+    .tab-panel[hidden] {
+      display: none !important;
+    }
+    @keyframes tabFadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* METRICS & CARDS */
+    .metrics { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:12px; margin-bottom:18px; }
     .metric, .panel { border:1px solid var(--line); background:linear-gradient(145deg,rgba(21,34,56,.96),rgba(16,26,43,.96)); border-radius:var(--radius); box-shadow:var(--shadow); }
-    .metric { min-height:142px; padding:18px; position:relative; overflow:hidden; }
-    .metric::after { content:""; position:absolute; right:-26px; top:-28px; width:90px; height:90px; border-radius:50%; background:var(--glow,rgba(117,167,255,.08)); }
+    .metric { min-height:112px; padding:15px; position:relative; overflow:hidden; }
+    .metric::after { content:""; position:absolute; right:-24px; top:-24px; width:80px; height:80px; border-radius:50%; background:var(--glow,rgba(117,167,255,.08)); }
     .metric-head { display:flex; justify-content:space-between; gap:6px; align-items:center; color:var(--muted); font-size:11px; font-weight:750; }
-    .metric-icon { width:30px; height:30px; border-radius:10px; display:grid; place-items:center; color:var(--accent,var(--blue)); background:var(--glow,rgba(117,167,255,.11)); font-size:14px; }
-    .metric-value { font-weight:850; font-size:clamp(25px,2.5vw,32px); letter-spacing:-1px; margin-top:17px; line-height:1; }
-    .metric-foot { color:var(--muted); font-size:10px; margin-top:9px; }
+    .metric-icon { width:26px; height:26px; border-radius:8px; display:grid; place-items:center; color:var(--accent,var(--blue)); background:var(--glow,rgba(117,167,255,.11)); font-size:13px; }
+    .metric-value { font-weight:850; font-size:clamp(22px,2.2vw,28px); letter-spacing:-.8px; margin-top:12px; line-height:1; }
+    .metric-foot { color:var(--muted); font-size:10px; margin-top:8px; }
     .metric.blue { --accent:var(--blue); --glow:rgba(117,167,255,.12); }
     .metric.green { --accent:var(--green); --glow:rgba(67,214,160,.10); }
     .metric.red { --accent:var(--red); --glow:rgba(255,113,133,.10); }
     .metric.cyan { --accent:var(--cyan); --glow:rgba(87,215,232,.10); }
     .metric.amber { --accent:var(--amber); --glow:rgba(255,198,109,.10); }
+
     .grid-two { display:grid; grid-template-columns:minmax(0,1.02fr) minmax(0,1.38fr); gap:16px; margin-bottom:18px; }
     .panel { padding:20px; min-width:0; }
-    .panel-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:18px; }
+    .panel-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:16px; }
     .panel-title { font-size:14px; font-weight:800; }
-    .panel-subtitle { color:var(--muted); font-size:11px; margin-top:4px; }
+    .panel-subtitle { color:var(--muted); font-size:11px; margin-top:4px; line-height:1.45; }
     .range-chip { border:1px solid var(--line); color:var(--muted); font-size:10px; border-radius:7px; padding:5px 8px; white-space:nowrap; }
-    .decision-visual { display:grid; grid-template-columns:160px minmax(0,1fr); align-items:center; gap:19px; }
-    .donut-wrap { position:relative; width:154px; height:154px; margin:auto; }
+
+    /* CHARTS & BARS */
+    .decision-visual { display:grid; grid-template-columns:154px minmax(0,1fr); align-items:center; gap:18px; }
+    .donut-wrap { position:relative; width:146px; height:146px; margin:auto; }
     .donut-wrap svg { display:block; width:100%; height:100%; transform:rotate(-90deg); }
     .donut-bg { fill:none; stroke:var(--line); stroke-width:14; }
     .donut-allow { fill:none; stroke:var(--green); stroke-width:14; stroke-linecap:round; transition:stroke-dasharray .4s ease; }
     .donut-deny { fill:none; stroke:var(--red); stroke-width:14; stroke-linecap:round; transition:stroke-dasharray .4s ease; }
     .donut-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; pointer-events:none; }
-    .donut-center strong { font-size:27px; letter-spacing:-1px; }
+    .donut-center strong { font-size:25px; letter-spacing:-1px; }
     .donut-center span { color:var(--muted); font-size:10px; }
-    .legend { display:grid; gap:17px; }
+    .legend { display:grid; gap:16px; }
     .legend-row { display:grid; grid-template-columns:9px 1fr auto; align-items:center; gap:8px; }
     .legend-dot { width:8px; height:8px; border-radius:3px; }
     .legend-label { color:var(--muted); font-size:11px; }
     .legend-value { font-weight:800; font-size:15px; }
     .legend-sub { color:var(--muted); font-size:10px; margin-top:2px; }
-    .bar-group { margin:23px 0 0; }
-    .bar-top { display:flex; justify-content:space-between; gap:10px; font-size:11px; margin-bottom:8px; }
+    .bar-group { margin:20px 0 0; }
+    .bar-top { display:flex; justify-content:space-between; gap:10px; font-size:11px; margin-bottom:7px; }
     .bar-top span:first-child { color:var(--muted); }
     .bar-track { height:8px; background:#26364c; border-radius:999px; overflow:hidden; display:flex; }
     .bar-fill { height:100%; border-radius:999px; transition:width .4s ease; }
     .bar-fill.allow { background:linear-gradient(90deg,#2cae83,var(--green)); }
     .bar-fill.deny { background:linear-gradient(90deg,#ec536d,var(--red)); }
     .bar-fill.risk { background:linear-gradient(90deg,#e5a349,var(--amber)); }
-    .insight { border:1px solid rgba(87,215,232,.18); background:rgba(87,215,232,.05); border-radius:13px; padding:13px 14px; margin-top:18px; display:flex; gap:10px; align-items:flex-start; }
+    .insight { border:1px solid rgba(87,215,232,.18); background:rgba(87,215,232,.05); border-radius:12px; padding:12px 14px; margin-top:16px; display:flex; gap:10px; align-items:flex-start; }
     .insight-icon { color:var(--cyan); font-size:16px; }
     .insight strong { font-size:11px; display:block; }
-    .insight p { margin:4px 0 0; color:var(--muted); font-size:10px; }
-    .logs-panel { scroll-margin-top:15px; }
-    .filters { display:flex; flex-wrap:wrap; gap:9px; margin:15px 0 14px; align-items:center; }
+    .insight p { margin:3px 0 0; color:var(--muted); font-size:10px; line-height:1.45; }
+
+    /* FILTERS & TABLES */
+    .filters { display:flex; flex-wrap:wrap; gap:9px; margin:14px 0 14px; align-items:center; }
     .input, .select { min-width:0; background:var(--bg); border:1px solid var(--line); color:var(--text); padding:9px 11px; border-radius:9px; outline:none; font-size:12px; }
     .input { flex:1; min-width:200px; }
     .input:focus, .select:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(117,167,255,.10); }
     .select { min-width:130px; }
     .table-wrap { overflow:auto; border:1px solid var(--line); border-radius:12px; }
-    table { width:100%; border-collapse:collapse; min-width:750px; text-align:left; }
+    table { width:100%; border-collapse:collapse; min-width:720px; text-align:left; }
     thead { background:rgba(9,16,29,.5); }
-    th { color:#7f94b2; font-size:9px; text-transform:uppercase; letter-spacing:1px; font-weight:800; padding:12px 14px; white-space:nowrap; }
-    td { border-top:1px solid rgba(38,54,77,.7); padding:12px 14px; font-size:11px; vertical-align:middle; }
+    th { color:#7f94b2; font-size:9px; text-transform:uppercase; letter-spacing:1px; font-weight:800; padding:11px 14px; white-space:nowrap; }
+    td { border-top:1px solid rgba(38,54,77,.7); padding:11px 14px; font-size:11px; vertical-align:middle; }
     tbody tr:hover { background:rgba(117,167,255,.035); }
     .primary-cell { font-weight:700; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .secondary-cell { color:var(--muted); font-size:10px; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:3px; }
-    .badge { display:inline-flex; align-items:center; border-radius:6px; padding:4px 7px; font-size:9px; font-weight:850; letter-spacing:.3px; white-space:nowrap; background:rgba(145,164,191,.10); color:var(--muted); }
+    .secondary-cell { color:var(--muted); font-size:10px; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:2px; }
+    .badge { display:inline-flex; align-items:center; border-radius:6px; padding:3px 7px; font-size:9px; font-weight:850; letter-spacing:.3px; white-space:nowrap; background:rgba(145,164,191,.10); color:var(--muted); }
     .badge.allow { color:var(--green); background:rgba(67,214,160,.10); }
     .badge.deny { color:var(--red); background:rgba(255,113,133,.10); }
     .badge.high { color:var(--red); background:rgba(255,113,133,.10); }
     .badge.medium { color:var(--amber); background:rgba(255,198,109,.10); }
     .badge.low { color:var(--green); background:rgba(67,214,160,.10); }
-    .empty { text-align:center; color:var(--muted); padding:32px !important; }
+    .empty { text-align:center; color:var(--muted); padding:28px !important; }
     .table-footer { display:flex; justify-content:space-between; gap:10px; color:var(--muted); font-size:10px; padding-top:12px; flex-wrap:wrap; }
-    .footer { color:#617692; font-size:10px; padding:19px 2px 0; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+    .footer { color:#617692; font-size:10px; padding:22px 2px 0; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; border-top:1px solid rgba(38,54,77,.4); margin-top:28px; }
     .toast { position:fixed; right:20px; bottom:20px; z-index:20; padding:12px 15px; background:var(--panel-2); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); color:var(--text); font-size:12px; max-width:min(360px,calc(100vw - 40px)); opacity:0; transform:translateY(8px); pointer-events:none; transition:.2s; }
     .toast.show { opacity:1; transform:translateY(0); }
-    .loading { animation:pulse 1.1s ease-in-out infinite alternate; color:var(--muted); }
-    @keyframes pulse { from { opacity:.45; } to { opacity:1; } }
+
+    /* TEST CONSOLE & SECURITY TESTING */
+    .section-gap { margin-bottom:18px; }
+    .console-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px; }
+    .field { display:flex; flex-direction:column; gap:5px; min-width:0; }
+    .field label { color:var(--muted); font-size:11px; font-weight:750; }
+    .field .input, .field .select { width:100%; min-width:0; }
+    .console-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:14px; }
+    .console-note { color:var(--muted); font-size:11px; }
+    .console-result { margin-top:14px; border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+    .console-result-head { display:flex; justify-content:space-between; gap:10px; align-items:center; padding:10px 13px; background:rgba(9,16,29,.45); border-bottom:1px solid var(--line); font-size:11px; }
+    .console-result pre { margin:0; padding:14px; max-height:260px; overflow:auto; color:var(--text); font:11px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .taint-flow { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
+    .taint-step { border:1px solid var(--line); background:rgba(9,16,29,.25); border-radius:12px; padding:12px; min-height:120px; }
+    .taint-step b { display:block; font-size:12px; margin-bottom:6px; }
+    .taint-step p { margin:0; color:var(--muted); font-size:10px; line-height:1.45; }
+    .taint-step .step-number { display:inline-grid; place-items:center; width:22px; height:22px; border-radius:7px; background:rgba(87,215,232,.12); color:var(--cyan); font-weight:800; margin-bottom:8px; font-size:11px; }
+    .role-pill { display:inline-flex; border-radius:999px; padding:3px 8px; font-size:10px; letter-spacing:.5px; font-weight:850; border:1px solid var(--line); }
+    .role-pill.admin { color:var(--amber); background:rgba(255,198,109,.10); border-color:rgba(255,198,109,.28); }
+    .role-pill.user { color:var(--green); background:rgba(67,214,160,.08); border-color:rgba(67,214,160,.22); }
+    .status-inline { font-size:11px; color:var(--muted); }
+    .status-inline.ok { color:var(--green); }
+    .status-inline.bad { color:var(--red); }
+
+    /* REQUEST TAINT TRACE */
+    .request-explanation { border:1px solid var(--line); background:linear-gradient(145deg,rgba(21,34,56,.94),rgba(16,26,43,.94)); border-radius:13px; padding:15px; margin-top:14px; }
+    .request-explanation-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
+    .request-explanation-title { font-size:13px; font-weight:850; }
+    .request-explanation-subtitle { color:var(--muted); font-size:11px; margin-top:3px; }
+    .trace-outcome { border:1px solid var(--line); border-radius:999px; padding:4px 9px; font-size:10px; font-weight:850; white-space:nowrap; }
+    .trace-outcome.allowed { color:var(--green); border-color:rgba(67,214,160,.35); background:rgba(67,214,160,.08); }
+    .trace-outcome.denied { color:var(--red); border-color:rgba(255,113,133,.35); background:rgba(255,113,133,.08); }
+    .trace-outcome.warning { color:var(--amber); border-color:rgba(255,198,109,.35); background:rgba(255,198,109,.08); }
+    .trace-flow { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-top:13px; }
+    .trace-step { position:relative; border:1px solid var(--line); background:rgba(9,16,29,.24); border-radius:11px; padding:11px; min-height:136px; overflow-wrap:anywhere; }
+    .trace-step::after { content:'→'; position:absolute; right:-9px; top:45%; color:var(--muted); font-weight:900; z-index:2; }
+    .trace-step:last-child::after { content:''; }
+    .trace-step.allowed { border-color:rgba(67,214,160,.4); }
+    .trace-step.denied { border-color:rgba(255,113,133,.48); }
+    .trace-step.warning { border-color:rgba(255,198,109,.4); }
+    .trace-step-number { display:inline-grid; place-items:center; width:22px; height:22px; border-radius:7px; background:rgba(87,215,232,.12); color:var(--cyan); font-size:10px; font-weight:900; margin-bottom:8px; }
+    .trace-step-title { font-size:11px; font-weight:850; margin-bottom:5px; }
+    .trace-step-detail { color:var(--muted); font-size:10px; line-height:1.55; white-space:pre-wrap; }
+    .trace-notes { margin-top:11px; padding:10px 12px; border-radius:10px; background:rgba(87,215,232,.045); border:1px solid rgba(87,215,232,.16); color:var(--muted); font-size:10px; white-space:pre-wrap; }
+
+    /* RESEARCH & ML EVALUATION */
+    .research-grid-two { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:16px; margin-bottom:16px; }
+    .research-status-bar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; padding:12px 16px; border:1px solid var(--line); border-radius:12px; background:rgba(9,16,29,.35); margin-bottom:16px; }
+    .research-status-pill { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; border-radius:999px; padding:4px 11px; border:1px solid var(--line); }
+    .research-status-pill.loaded { color:var(--green); background:rgba(67,214,160,.09); border-color:rgba(67,214,160,.28); }
+    .research-status-pill.fallback { color:var(--amber); background:rgba(255,198,109,.09); border-color:rgba(255,198,109,.28); }
+    .comparison-table { width:100%; border-collapse:collapse; font-size:11px; }
+    .comparison-table th { background:rgba(9,16,29,.45); padding:10px 12px; text-transform:uppercase; font-size:9px; letter-spacing:1px; color:#7f94b2; text-align:left; }
+    .comparison-table td { padding:10px 12px; border-top:1px solid rgba(38,54,77,.7); }
+    .val-pill { font-weight:800; padding:3px 7px; border-radius:6px; font-size:10px; display:inline-block; }
+    .val-pill.best { color:var(--green); background:rgba(67,214,160,.12); }
+    .val-pill.sub { color:var(--cyan); background:rgba(87,215,232,.10); }
+    .val-pill.amber { color:var(--amber); background:rgba(255,198,109,.10); }
+    .limits-card { border:1px solid rgba(255,198,109,.25); background:rgba(255,198,109,.04); border-radius:12px; padding:14px; margin-top:12px; }
+    .limits-card strong { color:var(--amber); font-size:12px; display:flex; align-items:center; gap:6px; }
+    .limits-card p { margin:6px 0 0; color:var(--muted); font-size:11px; line-height:1.55; }
+    .property-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:12px; }
+    .property-card { border:1px solid var(--line); background:rgba(9,16,29,.22); border-radius:11px; padding:12px; }
+    .property-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+    .property-title { font-weight:800; font-size:11px; color:var(--text); }
+    .property-desc { color:var(--muted); font-size:10px; margin:0; line-height:1.45; }
+    .scorer-presets { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+    .btn-preset { border:1px solid var(--line); background:rgba(9,16,29,.4); color:var(--muted); border-radius:8px; padding:5px 9px; font-size:10px; font-weight:700; transition:.15s; }
+    .btn-preset:hover { color:var(--text); background:var(--panel-hover); border-color:var(--cyan); }
+    .alert-badge { display:inline-flex; border-radius:6px; padding:3px 8px; font-size:9px; font-weight:850; letter-spacing:.4px; }
+    .alert-badge.critical { color:var(--red); background:rgba(255,113,133,.12); border:1px solid rgba(255,113,133,.3); }
+    .alert-badge.high { color:#ff8b54; background:rgba(255,139,84,.12); border:1px solid rgba(255,139,84,.3); }
+    .alert-badge.medium { color:var(--amber); background:rgba(255,198,109,.12); border:1px solid rgba(255,198,109,.3); }
+    .alert-badge.low { color:var(--green); background:rgba(67,214,160,.10); border:1px solid rgba(67,214,160,.25); }
+    .prov-node { display:inline-flex; align-items:center; gap:4px; font-family:ui-monospace,SFMono-Regular,Consolas,monospace; font-size:10px; color:var(--cyan); background:rgba(87,215,232,.07); padding:2px 6px; border-radius:5px; border:1px solid rgba(87,215,232,.18); }
+
+    /* LIGHT THEME */
     body.light { color-scheme:light; --bg:#f4f7fb; --panel:#fff; --panel-2:#fff; --panel-hover:#eaf1fb; --line:#dce5f0; --text:#18263c; --muted:#657992; --shadow:0 12px 32px rgba(24,52,88,.06); background-image:radial-gradient(ellipse at 12% 0%,rgba(53,111,204,.07),transparent 35%); }
     body.light .sidebar { background:rgba(255,255,255,.9); }
     body.light .metric, body.light .panel { background:linear-gradient(145deg,#fff,#f9fbff); }
@@ -142,59 +289,57 @@
     body.light .input, body.light .select { background:#fff; }
     body.light thead { background:#f7f9fc; }
     body.light .toast { background:#fff; }
-    @media (max-width:1240px) { .metrics { grid-template-columns:repeat(3,minmax(0,1fr)); } .grid-two { grid-template-columns:1fr; } }
-    @media (max-width:760px) { .app { grid-template-columns:1fr; } .sidebar { padding:13px 16px; border-right:0; border-bottom:1px solid var(--line); gap:14px; } .brand { padding:0; } .nav-label, .side-bottom { display:none; } .nav { display:flex; overflow:auto; } .nav a { flex:0 0 auto; padding:8px 10px; font-size:11px; } .nav a.active { box-shadow:inset 0 -2px var(--cyan); } main { padding:20px 14px 30px; } .topbar { align-items:flex-start; flex-direction:column; } .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; } .metric { min-height:125px; padding:14px; } .metric-value { margin-top:15px; } .decision-visual { grid-template-columns:130px minmax(0,1fr); gap:8px; } .donut-wrap { width:125px; height:125px; } .donut-center strong { font-size:22px; } .panel { padding:15px; } .input { min-width:100%; } .select { flex:1; } }
-    @media (max-width:390px) { .decision-visual { grid-template-columns:1fr; } .legend { grid-template-columns:1fr 1fr; } .metric-value { font-size:25px; } }
-
-    .section-gap { margin-bottom:18px; }
-    .console-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:13px; }
-    .field { display:flex; flex-direction:column; gap:6px; min-width:0; }
-    .field label { color:var(--muted); font-size:11px; font-weight:750; }
-    .field .input, .field .select { width:100%; min-width:0; }
-    .console-actions { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:15px; }
-    .console-note { color:var(--muted); font-size:11px; }
-    .console-result { margin-top:15px; border:1px solid var(--line); border-radius:12px; overflow:hidden; }
-    .console-result-head { display:flex; justify-content:space-between; gap:10px; align-items:center; padding:10px 13px; background:rgba(9,16,29,.45); border-bottom:1px solid var(--line); font-size:11px; }
-    .console-result pre { margin:0; padding:14px; max-height:280px; overflow:auto; color:var(--text); font:11px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace; white-space:pre-wrap; overflow-wrap:anywhere; }
-    .taint-flow { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
-    .taint-step { border:1px solid var(--line); background:rgba(9,16,29,.25); border-radius:12px; padding:13px; min-height:122px; }
-    .taint-step b { display:block; font-size:12px; margin-bottom:7px; }
-    .taint-step p { margin:0; color:var(--muted); font-size:10px; }
-    .taint-step .step-number { display:inline-grid; place-items:center; width:24px; height:24px; border-radius:8px; background:rgba(87,215,232,.12); color:var(--cyan); font-weight:800; margin-bottom:10px; }
-    .role-pill { display:inline-flex; border-radius:999px; padding:4px 9px; font-size:10px; letter-spacing:.5px; font-weight:850; border:1px solid var(--line); }
-    .role-pill.admin { color:var(--amber); background:rgba(255,198,109,.10); border-color:rgba(255,198,109,.28); }
-    .role-pill.user { color:var(--green); background:rgba(67,214,160,.08); border-color:rgba(67,214,160,.22); }
-    .status-inline { font-size:11px; color:var(--muted); }
-    .status-inline.ok { color:var(--green); }
-    .status-inline.bad { color:var(--red); }
-    @media (max-width:1100px) { .console-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .taint-flow { grid-template-columns:repeat(3,minmax(0,1fr)); } }
-    @media (max-width:760px) { .console-grid,.taint-flow { grid-template-columns:1fr; } }
-
-  /* REQUEST_SPECIFIC_TAINT_TRACE_CSS_BEGIN */
-    .request-explanation { border:1px solid var(--line); background:linear-gradient(145deg,rgba(21,34,56,.94),rgba(16,26,43,.94)); border-radius:14px; padding:16px; margin-top:15px; }
-    .request-explanation-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:8px; }
-    .request-explanation-title { font-size:13px; font-weight:850; }
-    .request-explanation-subtitle { color:var(--muted); font-size:11px; margin-top:4px; }
-    .trace-outcome { border:1px solid var(--line); border-radius:999px; padding:5px 9px; font-size:10px; font-weight:850; white-space:nowrap; }
-    .trace-outcome.allowed { color:var(--green); border-color:rgba(67,214,160,.35); background:rgba(67,214,160,.08); }
-    .trace-outcome.denied { color:var(--red); border-color:rgba(255,113,133,.35); background:rgba(255,113,133,.08); }
-    .trace-outcome.warning { color:var(--amber); border-color:rgba(255,198,109,.35); background:rgba(255,198,109,.08); }
-    .trace-flow { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-top:14px; }
-    .trace-step { position:relative; border:1px solid var(--line); background:rgba(9,16,29,.24); border-radius:11px; padding:12px; min-height:140px; overflow-wrap:anywhere; }
-    .trace-step::after { content:'→'; position:absolute; right:-10px; top:45%; color:var(--muted); font-weight:900; z-index:2; }
-    .trace-step:last-child::after { content:''; }
-    .trace-step.allowed { border-color:rgba(67,214,160,.4); }
-    .trace-step.denied { border-color:rgba(255,113,133,.48); }
-    .trace-step.warning { border-color:rgba(255,198,109,.4); }
-    .trace-step-number { display:inline-grid; place-items:center; width:22px; height:22px; border-radius:7px; background:rgba(87,215,232,.12); color:var(--cyan); font-size:10px; font-weight:900; margin-bottom:9px; }
-    .trace-step-title { font-size:11px; font-weight:850; margin-bottom:6px; }
-    .trace-step-detail { color:var(--muted); font-size:10px; line-height:1.55; white-space:pre-wrap; }
-    .trace-notes { margin-top:12px; padding:11px 12px; border-radius:10px; background:rgba(87,215,232,.045); border:1px solid rgba(87,215,232,.16); color:var(--muted); font-size:10px; white-space:pre-wrap; }
+    body.light .dashboard-tabs { background:#eef3f9; border-color:#dce5f0; }
+    body.light .tab-btn { color:var(--muted); }
+    body.light .tab-btn:hover { background:rgba(0,0,0,.04); color:var(--text); }
+    body.light .tab-btn.active { color:#0b1a2f; background:#fff; border-color:#c0d4ec; box-shadow:0 4px 14px rgba(0,0,0,.06); }
+    body.light .comparison-table th { background:#f7f9fc; }
+    body.light .research-status-bar { background:#fff; }
+    body.light .property-card { background:#f7f9fc; }
     body.light .request-explanation { background:linear-gradient(145deg,#fff,#f9fbff); }
     body.light .trace-step { background:rgba(247,249,252,.8); }
-    @media (max-width:1100px) { .trace-flow { grid-template-columns:repeat(3,minmax(0,1fr)); } .trace-step:nth-child(3)::after { content:''; } }
-    @media (max-width:760px) { .trace-flow { grid-template-columns:1fr; } .trace-step::after { content:'↓'; right:50%; top:auto; bottom:-13px; } .trace-step:nth-child(3)::after { content:'↓'; } }
-    /* REQUEST_SPECIFIC_TAINT_TRACE_CSS_END */
+
+    /* RESPONSIVE LAYOUT */
+    @media (max-width:1240px) {
+      .metrics { grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .grid-two { grid-template-columns:1fr; }
+    }
+    @media (max-width:1100px) {
+      .console-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .taint-flow { grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .trace-flow { grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .trace-step:nth-child(3)::after { content:''; }
+      .research-grid-two { grid-template-columns:1fr; }
+      .property-cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width:760px) {
+      .app { grid-template-columns:1fr; }
+      .sidebar { padding:13px 16px; border-right:0; border-bottom:1px solid var(--line); gap:14px; }
+      .brand { padding:0; }
+      .nav-label, .side-bottom { display:none; }
+      .nav { display:flex; overflow:auto; }
+      .nav a { flex:0 0 auto; padding:8px 10px; font-size:11px; }
+      .nav a.active { box-shadow:inset 0 -2px var(--cyan); }
+      main { padding:18px 14px 28px; }
+      .topbar { align-items:flex-start; flex-direction:column; }
+      .dashboard-tabs { gap:4px; padding:4px; }
+      .tab-btn { padding:8px 12px; font-size:12px; gap:6px; }
+      .metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+      .metric { min-height:104px; padding:12px; }
+      .metric-value { font-size:20px; margin-top:8px; }
+      .console-grid, .taint-flow, .trace-flow, .property-cards { grid-template-columns:1fr; }
+      .decision-visual { grid-template-columns:130px minmax(0,1fr); gap:8px; }
+      .donut-wrap { width:125px; height:125px; }
+      .donut-center strong { font-size:22px; }
+      .panel { padding:15px; }
+      .input { min-width:100%; }
+      .select { flex:1; }
+    }
+    @media (max-width:390px) {
+      .decision-visual { grid-template-columns:1fr; }
+      .legend { grid-template-columns:1fr 1fr; }
+      .metric-value { font-size:19px; }
+    }
   </style>
 </head>
 <body>
@@ -205,19 +350,18 @@
         <div><div class="brand-title">GraphQL Shield</div><div class="brand-sub">Security observability</div></div>
       </div>
       <div>
-        <div class="nav-label">Workspace</div>
+        <div class="nav-label">Dashboard Views</div>
         <nav class="nav" aria-label="Main navigation">
-          <a class="active" href="#overview"><span class="nav-icon">▦</span>Overview</a>
-          <a href="#decisions"><span class="nav-icon">◉</span>Traffic decisions</a>
-          <a href="#demo-personas"><span class="nav-icon">♟</span>Demo users</a>
-          <a href="#audit-logs"><span class="nav-icon">≡</span>Audit events</a>
+          <a class="active" href="#testing" id="side-testing" data-tab="tab-testing"><span class="nav-icon">⚡</span>Security Testing</a>
+          <a href="#research" id="side-research" data-tab="tab-research"><span class="nav-icon">🔬</span>Research & ML</a>
+          <a href="#audit" id="side-audit" data-tab="tab-audit"><span class="nav-icon">🛡</span>Audit & Verification</a>
         </nav>
       </div>
       <div class="side-bottom">
         <div class="nav-label">Gateway status</div>
         <div class="protection-card">
           <div><span class="status-dot"></span><strong id="sideStatus">Protection enabled</strong></div>
-          <p>Dashboard figures reflect the data returned by the local audit API. This page does not change gateway enforcement.</p>
+          <p>Dashboard figures reflect live local audit API data. This page does not change gateway enforcement.</p>
         </div>
       </div>
     </aside>
@@ -227,7 +371,7 @@
         <div>
           <div class="eyebrow">Security operations / Overview</div>
           <h1>Security dashboard</h1>
-          <p class="subtitle">Monitor authorization decisions, BOLA signals, and recent audit activity.</p>
+          <p class="subtitle">Monitor authorization decisions, BOLA signals, and behavioural audit activity.</p>
         </div>
         <div class="top-actions">
           <div class="api-status" id="apiStatus"><span class="status-dot"></span><span id="apiStatusText">Connecting to API…</span></div>
@@ -237,116 +381,403 @@
         </div>
       </header>
 
-      <section class="metrics" aria-label="Security key performance indicators">
-        <article class="metric blue"><div class="metric-head"><span>Total requests</span><span class="metric-icon">↗</span></div><div class="metric-value" id="totalValue">—</div><div class="metric-foot">Recorded in audit log</div></article>
-        <article class="metric green"><div class="metric-head"><span>Allowed</span><span class="metric-icon">✓</span></div><div class="metric-value" id="allowedValue">—</div><div class="metric-foot" id="allowedFoot">Authorized decisions</div></article>
-        <article class="metric red"><div class="metric-head"><span>Blocked</span><span class="metric-icon">⊘</span></div><div class="metric-value" id="blockedValue">—</div><div class="metric-foot" id="blockedFoot">Denied decisions</div></article>
-        <article class="metric cyan"><div class="metric-head"><span>BOLA signals</span><span class="metric-icon">⌁</span></div><div class="metric-value" id="bolaValue">—</div><div class="metric-foot">Ownership / nested authorization events</div></article>
-        <article class="metric amber"><div class="metric-head"><span>High risk</span><span class="metric-icon">!</span></div><div class="metric-value" id="highRiskValue">—</div><div class="metric-foot">High-risk audit entries</div></article>
-      </section>
+      <!-- NAVIGATION TABS -->
+      <nav class="dashboard-tabs" role="tablist" aria-label="Dashboard primary views">
+        <button role="tab" id="tab-testing" class="tab-btn active" aria-selected="true" aria-controls="panel-testing" tabindex="0">
+          <span class="tab-icon">⚡</span>
+          <span class="tab-label">Security Testing</span>
+        </button>
+        <button role="tab" id="tab-research" class="tab-btn" aria-selected="false" aria-controls="panel-research" tabindex="-1">
+          <span class="tab-icon">🔬</span>
+          <span class="tab-label">Research & ML Evaluation</span>
+        </button>
+        <button role="tab" id="tab-audit" class="tab-btn" aria-selected="false" aria-controls="panel-audit" tabindex="-1">
+          <span class="tab-icon">🛡</span>
+          <span class="tab-label">Audit & Security Verification</span>
+        </button>
+      </nav>
 
-      <section class="panel section-gap" id="demo-personas">
-        <div class="panel-head">
-          <div><div class="panel-title">Demo users and roles</div><div class="panel-subtitle">Named local test accounts. Select an account to fill the test-console username; enter its demo password yourself.</div></div>
-          <span class="range-chip">LOCAL DEMO ACCOUNTS</span>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Display name</th><th>User ID</th><th>Role</th><th>Login username</th><th>Action</th></tr></thead>
-            <tbody id="demoUsersBody"><tr><td class="empty" colspan="5">Loading demo accounts…</td></tr></tbody>
-          </table>
-        </div>
-        <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Demo identity note</strong><p>These are local demonstration accounts. Existing passwords for the original accounts are preserved. Sakthivel's development-only password is sakthivel123; do not reuse it outside local testing.</p></div></div>
-      </section>
+      <!-- =============================================================== -->
+      <!-- TAB 1: SECURITY TESTING                                        -->
+      <!-- =============================================================== -->
+      <div id="panel-testing" role="tabpanel" aria-labelledby="tab-testing" class="tab-panel active">
+        <!-- Compact KPI Summary Counters -->
+        <section class="metrics" aria-label="Security key performance indicators">
+          <article class="metric blue"><div class="metric-head"><span>Total requests</span><span class="metric-icon">↗</span></div><div class="metric-value" id="totalValue">—</div><div class="metric-foot">Recorded in audit log</div></article>
+          <article class="metric green"><div class="metric-head"><span>Allowed</span><span class="metric-icon">✓</span></div><div class="metric-value" id="allowedValue">—</div><div class="metric-foot" id="allowedFoot">Authorized decisions</div></article>
+          <article class="metric red"><div class="metric-head"><span>Blocked</span><span class="metric-icon">⊘</span></div><div class="metric-value" id="blockedValue">—</div><div class="metric-foot" id="blockedFoot">Denied decisions</div></article>
+          <article class="metric cyan"><div class="metric-head"><span>BOLA signals</span><span class="metric-icon">⌁</span></div><div class="metric-value" id="bolaValue">—</div><div class="metric-foot">Ownership / nested events</div></article>
+          <article class="metric amber"><div class="metric-head"><span>High risk</span><span class="metric-icon">!</span></div><div class="metric-value" id="highRiskValue">—</div><div class="metric-foot">High-risk audit entries</div></article>
+        </section>
 
-      <section class="panel section-gap" id="test-console">
-        <div class="panel-head">
-          <div><div class="panel-title">GraphQL test console</div><div class="panel-subtitle">Choose a scenario and run it from this page. Successful or denied protected requests should create audit events.</div></div>
-          <span class="range-chip">LOCAL DEMO</span>
-        </div>
-        <div class="console-grid">
-          <div class="field"><label for="testUsername">Login username</label><input class="input" id="testUsername" autocomplete="username" placeholder="e.g. alice"></div>
-          <div class="field"><label for="testPassword">Login password</label><input class="input" id="testPassword" type="password" autocomplete="current-password" placeholder="Enter seeded demo password"></div>
-          <div class="field"><label for="testEndpoint">Endpoint</label><select class="select" id="testEndpoint"><option value="/graphql">Protected GraphQL Shield</option><option value="/graphql-insecure">Insecure baseline (intentionally vulnerable)</option></select></div>
-          <div class="field"><label for="testScenario">Scenario</label><select class="select" id="testScenario"><option value="direct">Direct resource lookup</option><option value="nested">Nested user → resource lookup</option><option value="relationship">Implicit children relationship</option></select></div>
-          <div class="field" id="userIdField"><label for="testUserId">User ID (for nested query)</label><input class="input" id="testUserId" inputmode="numeric" type="number" min="1" value="101"></div>
-          <div class="field" id="resourceIdField"><label for="testResourceId">Resource ID (direct / nested)</label><input class="input" id="testResourceId" inputmode="numeric" type="number" min="1" value="102"></div>
-          <div class="field" id="parentIdField"><label for="testParentId">Parent/folder ID (relationship query)</label><input class="input" id="testParentId" inputmode="numeric" type="number" min="1" value="201"></div>
-        </div>
-        <div class="console-actions">
-          <button class="btn primary" id="runTestButton" type="button">▶ Run selected test</button>
-          <button class="btn" id="clearResultButton" type="button">Clear result</button>
-          <span class="console-note">Credentials are submitted only to the local login endpoint. The token is kept in memory and not saved in browser storage.</span>
-        </div>
-        <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Use responsibly</strong><p>The insecure baseline is intentionally vulnerable and is for local research demonstrations only. Keep this dashboard on your local machine and use seeded test accounts, not real users or production data.</p></div></div>
-        <div class="console-result" aria-live="polite"><div class="console-result-head"><strong id="testResultTitle">No test run yet</strong><span id="testResultStatus" class="status-inline">Choose a scenario above</span></div><pre id="testResultBody">The selected request response will appear here. After a run, the dashboard refreshes its audit counters and recent events.</pre></div>
-        <!-- REQUEST_SPECIFIC_TAINT_TRACE_PANEL_BEGIN -->
-        <div class="request-explanation section-gap" id="requestExplanation" aria-live="polite">
-          <div class="request-explanation-head">
-            <div><div class="request-explanation-title">Per-request taint → authorization flow</div><div class="request-explanation-subtitle">Shows the tracked ID source, object path, policy explanation, and actual response for the test you just ran.</div></div>
-            <span class="trace-outcome warning" id="traceOutcome">WAITING FOR REQUEST</span>
+        <!-- Demo Accounts and Roles -->
+        <section class="panel section-gap" id="demo-personas">
+          <div class="panel-head">
+            <div><div class="panel-title">Demo users and roles</div><div class="panel-subtitle">Named local test accounts. Select an account to populate the test-console username; enter its demo password to test.</div></div>
+            <span class="range-chip">LOCAL DEMO ACCOUNTS</span>
           </div>
-          <div class="request-explanation-subtitle" id="traceIntro">Run a direct, nested, or relationship test above to build an evidence-based explanation.</div>
-          <div class="trace-flow" id="traceFlow"><div class="trace-step"><span class="trace-step-number">1</span><div class="trace-step-title">Request input</div><div class="trace-step-detail">Waiting for a test request.</div></div></div>
-          <div class="trace-notes" id="traceNotes">The source tracker and policy replay will populate this area after a request. A tainted input is not automatically an attack.</div>
-        </div>
-        <!-- REQUEST_SPECIFIC_TAINT_TRACE_PANEL_END -->
-      </section>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Display name</th><th>User ID</th><th>Role</th><th>Login username</th><th>Action</th></tr></thead>
+              <tbody id="demoUsersBody"><tr><td class="empty" colspan="5">Loading demo accounts…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Demo identity note</strong><p>These are local demonstration accounts. Sakthivel's development-only password is <code>sakthivel123</code>; do not reuse it outside local testing.</p></div></div>
+        </section>
 
-      <section class="panel section-gap" id="taint-explainer">
-        <div class="panel-head"><div><div class="panel-title">Where taint analysis fits</div><div class="panel-subtitle">Analysis/detection and runtime enforcement are related but distinct stages.</div></div><span class="range-chip">PIPELINE EXPLAINER</span></div>
-        <div class="taint-flow">
-          <div class="taint-step"><span class="step-number">1</span><b>Taint sources</b><p>GraphQL variables and object identifiers are treated as attacker-controllable inputs when the source model marks them untrusted.</p></div>
-          <div class="taint-step"><span class="step-number">2</span><b>Propagation</b><p>The analysis follows tainted values through parsed arguments, variables and nested query paths.</p></div>
-          <div class="taint-step"><span class="step-number">3</span><b>Relationship / graph</b><p>Transfer and security-graph logic represent how an input reaches an object or relationship being accessed.</p></div>
-          <div class="taint-step"><span class="step-number">4</span><b>Authorization reasoning</b><p>The authorization-aware candidate checks ownership and role context; taint alone is not proof of BOLA.</p></div>
-          <div class="taint-step"><span class="step-number">5</span><b>Runtime enforcement</b><p>The security middleware and resolver-level ownership checks allow, deny or filter access. Audit records summarize these decisions.</p></div>
-        </div>
-        <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Data source clarification</strong><p>The per-request flow above uses the actual taint source tracker, parsed object paths, ownership lookup, the existing policy engine in read-only replay, and the observed HTTP/GraphQL response. It does not claim to be a whole-program taint trace or to reveal child objects the resolver deliberately omitted.</p></div></div>
-      </section>
+        <!-- GraphQL Test Console -->
+        <section class="panel section-gap" id="test-console">
+          <div class="panel-head">
+            <div><div class="panel-title">GraphQL test console</div><div class="panel-subtitle">Select a scenario and endpoint to execute live protected or insecure queries and observe gateway enforcement.</div></div>
+            <span class="range-chip">INTERACTIVE DEMO</span>
+          </div>
+          <div class="console-grid">
+            <div class="field"><label for="testUsername">Login username</label><input class="input" id="testUsername" autocomplete="username" placeholder="e.g. balanilavan"></div>
+            <div class="field"><label for="testPassword">Login password</label><input class="input" id="testPassword" type="password" autocomplete="current-password" placeholder="Enter seeded demo password"></div>
+            <div class="field"><label for="testEndpoint">Endpoint</label><select class="select" id="testEndpoint"><option value="/graphql">Protected GraphQL Shield</option><option value="/graphql-insecure">Insecure baseline (intentionally vulnerable)</option></select></div>
+            <div class="field"><label for="testScenario">Scenario</label><select class="select" id="testScenario"><option value="direct">Direct resource lookup</option><option value="nested">Nested user → resource lookup</option><option value="relationship">Implicit children relationship</option></select></div>
+            <div class="field" id="userIdField"><label for="testUserId">User ID (nested query)</label><input class="input" id="testUserId" inputmode="numeric" type="number" min="1" value="101"></div>
+            <div class="field" id="resourceIdField"><label for="testResourceId">Resource ID (direct / nested)</label><input class="input" id="testResourceId" inputmode="numeric" type="number" min="1" value="102"></div>
+            <div class="field" id="parentIdField"><label for="testParentId">Parent/folder ID (relationship)</label><input class="input" id="testParentId" inputmode="numeric" type="number" min="1" value="201"></div>
+          </div>
+          <div class="console-actions">
+            <button class="btn primary" id="runTestButton" type="button">▶ Run selected test</button>
+            <button class="btn" id="clearResultButton" type="button">Clear result</button>
+            <span class="console-note">Credentials are submitted only to local login. The token is stored in-memory during request execution.</span>
+          </div>
+          <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Research endpoint note</strong><p>The insecure baseline is intentionally vulnerable and is for local research demonstrations only. Keep this dashboard on your local machine and use seeded test accounts.</p></div></div>
+          
+          <!-- Test Result and Error Output -->
+          <div class="console-result" aria-live="polite">
+            <div class="console-result-head"><strong id="testResultTitle">No test run yet</strong><span id="testResultStatus" class="status-inline">Choose a scenario above</span></div>
+            <pre id="testResultBody">The selected request response will appear here. After a run, the dashboard refreshes its audit counters and recent events.</pre>
+          </div>
 
-      <section class="grid-two" id="decisions">
-        <article class="panel">
-          <div class="panel-head"><div><div class="panel-title">Request decision mix</div><div class="panel-subtitle">Aggregate counts from the audit API</div></div><span class="range-chip">ALL RECORDED</span></div>
-          <div class="decision-visual">
-            <div class="donut-wrap" role="img" aria-label="Allowed and denied requests chart">
-              <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="donut-bg" cx="60" cy="60" r="45"></circle><circle class="donut-allow" id="allowArc" cx="60" cy="60" r="45" stroke-dasharray="0 283"></circle><circle class="donut-deny" id="denyArc" cx="60" cy="60" r="45" stroke-dasharray="0 283"></circle></svg>
-              <div class="donut-center"><strong id="decisionTotal">—</strong><span>decisions</span></div>
+          <!-- Per-request Taint Trace -->
+          <div class="request-explanation section-gap" id="requestExplanation" aria-live="polite">
+            <div class="request-explanation-head">
+              <div><div class="request-explanation-title">Per-request taint → authorization flow</div><div class="request-explanation-subtitle">Shows tracked ID source, object path, policy explanation, and response for the test you just executed.</div></div>
+              <span class="trace-outcome warning" id="traceOutcome">WAITING FOR REQUEST</span>
             </div>
-            <div class="legend">
-              <div><div class="legend-row"><span class="legend-dot" style="background:var(--green)"></span><span class="legend-label">Allowed</span><span class="legend-value" id="allowLegend">—</span></div><div class="legend-sub" id="allowPercent">— of recorded decisions</div></div>
-              <div><div class="legend-row"><span class="legend-dot" style="background:var(--red)"></span><span class="legend-label">Denied</span><span class="legend-value" id="denyLegend">—</span></div><div class="legend-sub" id="denyPercent">— of recorded decisions</div></div>
+            <div class="request-explanation-subtitle" id="traceIntro">Run a direct, nested, or relationship test above to build an evidence-based explanation.</div>
+            <div class="trace-flow" id="traceFlow"><div class="trace-step"><span class="trace-step-number">1</span><div class="trace-step-title">Request input</div><div class="trace-step-detail">Waiting for a test request.</div></div></div>
+            <div class="trace-notes" id="traceNotes">The source tracker and policy replay will populate this area after a request. A tainted input is not automatically an attack.</div>
+          </div>
+        </section>
+
+        <!-- Pipeline Explainer -->
+        <section class="panel section-gap" id="taint-explainer">
+          <div class="panel-head"><div><div class="panel-title">Where taint analysis fits</div><div class="panel-subtitle">Analysis/detection and runtime enforcement are related but distinct stages.</div></div><span class="range-chip">PIPELINE EXPLAINER</span></div>
+          <div class="taint-flow">
+            <div class="taint-step"><span class="step-number">1</span><b>Taint sources</b><p>GraphQL variables and object identifiers are treated as attacker-controllable inputs when the source model marks them untrusted.</p></div>
+            <div class="taint-step"><span class="step-number">2</span><b>Propagation</b><p>The analysis follows tainted values through parsed arguments, variables and nested query paths.</p></div>
+            <div class="taint-step"><span class="step-number">3</span><b>Relationship / graph</b><p>Transfer and security-graph logic represent how an input reaches an object or relationship being accessed.</p></div>
+            <div class="taint-step"><span class="step-number">4</span><b>Authorization reasoning</b><p>The authorization-aware candidate checks ownership and role context; taint alone is not proof of BOLA.</p></div>
+            <div class="taint-step"><span class="step-number">5</span><b>Runtime enforcement</b><p>The security middleware and resolver-level ownership checks allow, deny or filter access. Audit records summarize these decisions.</p></div>
+          </div>
+          <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Data source clarification</strong><p>The per-request flow above uses the actual taint source tracker, parsed object paths, ownership lookup, the existing policy engine in read-only replay, and the observed HTTP/GraphQL response. It does not claim to be a whole-program taint trace or to reveal child objects the resolver deliberately omitted.</p></div></div>
+        </section>
+      </div>
+
+      <!-- =============================================================== -->
+      <!-- TAB 2: RESEARCH & ML EVALUATION                                -->
+      <!-- =============================================================== -->
+      <div id="panel-research" role="tabpanel" aria-labelledby="tab-research" class="tab-panel" hidden>
+        <section class="panel section-gap" id="research-evaluation">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">Phase 5 Empirical Research & ML Telemetry Evaluation</div>
+              <div class="panel-subtitle">Comparative assessment of XGBoost versus deterministic rule-based behavioural anomaly detection across held-out GraphQL relationship sessions.</div>
+            </div>
+            <span class="range-chip" id="researchEvalChip">HELD-OUT FAMILY: NESTED_RELATIONAL</span>
+          </div>
+
+          <!-- Model Loading Status -->
+          <div class="research-status-bar">
+            <div>
+              <span style="font-size:12px; font-weight:750; color:var(--text);">Model Loading Status:</span>
+              <span class="research-status-pill loaded" id="modelStatusPill"><span class="status-dot"></span><span id="modelStatusText">Loading XGBoost Model…</span></span>
+            </div>
+            <div style="font-size:11px; color:var(--muted);">
+              Artifact: <code id="modelPathText" style="color:var(--cyan); font-size:10px;">results/research_benchmark/behavioral_xgboost/behavioral_xgboost_model.json</code>
             </div>
           </div>
-          <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Interpretation</strong><p>The chart shows audit decision counts, not a standalone measure of detection accuracy. A denied request and a field-level omission may be recorded differently.</p></div></div>
-        </article>
 
-        <article class="panel">
-          <div class="panel-head"><div><div class="panel-title">Authorization overview</div><div class="panel-subtitle">Compare allow and deny counts and review risk activity</div></div><span class="range-chip">LIVE API DATA</span></div>
-          <div class="bar-group"><div class="bar-top"><span>Allowed decisions</span><strong id="allowBarLabel">—</strong></div><div class="bar-track"><div class="bar-fill allow" id="allowBar" style="width:0%"></div></div></div>
-          <div class="bar-group"><div class="bar-top"><span>Denied decisions</span><strong id="denyBarLabel">—</strong></div><div class="bar-track"><div class="bar-fill deny" id="denyBar" style="width:0%"></div></div></div>
-          <div class="bar-group"><div class="bar-top"><span>High-risk records vs. total requests</span><strong id="riskBarLabel">—</strong></div><div class="bar-track"><div class="bar-fill risk" id="riskBar" style="width:0%"></div></div></div>
-          <div class="insight"><div class="insight-icon">⌕</div><div><strong id="riskInsightTitle">Risk overview</strong><p id="riskInsightText">Risk indicators will appear when the API returns audit statistics.</p></div></div>
-        </article>
-      </section>
+          <!-- Benchmark Metrics & Limitations -->
+          <div class="research-grid-two">
+            <article class="panel" style="padding:16px; background:rgba(9,16,29,.28);">
+              <div class="panel-head">
+                <div>
+                  <div class="panel-title" style="font-size:13px;">Benchmark Metric Comparison</div>
+                  <div class="panel-subtitle" style="font-size:10px;">1,000 held-out relationship sessions (500 Normal, 500 Suspicious)</div>
+                </div>
+                <span class="val-pill best" style="font-size:9px;">RULE BASELINE OUTPERFORMED ML</span>
+              </div>
+              <div class="table-wrap">
+                <table class="comparison-table">
+                  <thead>
+                    <tr>
+                      <th>Evaluation Metric</th>
+                      <th>XGBoost Model (Offline)</th>
+                      <th>Deterministic Rule Baseline</th>
+                    </tr>
+                  </thead>
+                  <tbody id="metricsComparisonBody">
+                    <tr>
+                      <td><b>Accuracy</b></td>
+                      <td><span class="val-pill sub" id="xgbAccuracy">0.9920 (99.20%)</span></td>
+                      <td><span class="val-pill best" id="ruleAccuracy">1.0000 (100.0%)</span></td>
+                    </tr>
+                    <tr>
+                      <td><b>Precision</b></td>
+                      <td><span class="val-pill best" id="xgbPrecision">1.0000 (100.0%)</span></td>
+                      <td><span class="val-pill best" id="rulePrecision">1.0000 (100.0%)</span></td>
+                    </tr>
+                    <tr>
+                      <td><b>Recall</b></td>
+                      <td><span class="val-pill sub" id="xgbRecall">0.9840 (98.40%)</span></td>
+                      <td><span class="val-pill best" id="ruleRecall">1.0000 (100.0%)</span></td>
+                    </tr>
+                    <tr>
+                      <td><b>F1-Score</b></td>
+                      <td><span class="val-pill sub" id="xgbF1">0.9919</span></td>
+                      <td><span class="val-pill best" id="ruleF1">1.0000</span></td>
+                    </tr>
+                    <tr>
+                      <td><b>PR-AUC (Avg Precision)</b></td>
+                      <td><span class="val-pill sub" id="xgbPrAuc">0.9970</span></td>
+                      <td><span class="val-pill best" id="rulePrAuc">1.0000</span></td>
+                    </tr>
+                    <tr>
+                      <td><b>False Positive Rate</b></td>
+                      <td><span class="val-pill best" id="xgbFpr">0.0000 (0.0%)</span></td>
+                      <td><span class="val-pill best" id="ruleFpr">0.0000 (0.0%)</span></td>
+                    </tr>
+                    <tr>
+                      <td><b>Confusion Matrix (TN / FP / FN / TP)</b></td>
+                      <td><span id="xgbCm" style="font-family:monospace; font-size:10px;">500 / 0 / 8 / 492</span></td>
+                      <td><span id="ruleCm" style="font-family:monospace; font-size:10px; color:var(--green);">500 / 0 / 0 / 500</span></td>
+                    </tr>
+                    <tr>
+                      <td><b>Inference Latency</b></td>
+                      <td><span id="xgbLatency" style="color:var(--cyan); font-size:10px;">3.14 ms / batch (~3.14 μs / session)</span></td>
+                      <td><span id="ruleLatency" style="color:var(--green); font-size:10px;">~0.15 ms / batch (~0.15 μs / session)</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
 
-      <section class="panel logs-panel" id="audit-logs">
-        <div class="panel-head"><div><div class="panel-title">Recent audit events</div><div class="panel-subtitle">Search and filter the latest records returned by the API. Timestamps are stored in UTC and displayed in IST (Asia/Kolkata).</div></div><span class="range-chip" id="recordChip">LATEST RECORDS</span></div>
-        <div class="filters">
-          <input class="input" id="searchInput" type="search" placeholder="Search user, action, reason, or ID…" aria-label="Search audit records">
-          <select class="select" id="decisionFilter" aria-label="Filter by decision"><option value="all">All decisions</option><option value="allow">Allowed</option><option value="deny">Denied</option><option value="other">Other / unknown</option></select>
-          <select class="select" id="riskFilter" aria-label="Filter by risk"><option value="all">All risk levels</option><option value="high">High risk</option><option value="medium">Medium risk</option><option value="low">Low risk</option><option value="unknown">Unknown risk</option></select>
-          <button class="btn" id="clearFiltersButton" type="button">Clear filters</button>
-          <button class="btn" id="exportButton" type="button">⇩ Export visible</button>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Time (IST)</th><th>Actor</th><th>Decision</th><th>Risk</th><th>Reason</th><th>Operation / details</th></tr></thead>
-            <tbody id="logsBody"><tr><td class="empty" colspan="6">Loading audit events…</td></tr></tbody>
-          </table>
-        </div>
-        <div class="table-footer"><span id="tableCount">Waiting for audit records…</span><span id="lastUpdated">Last updated: —</span></div>
-      </section>
+            <article class="panel" style="padding:16px; background:rgba(9,16,29,.28); display:flex; flex-direction:column;">
+              <div class="panel-head">
+                <div>
+                  <div class="panel-title" style="font-size:13px;">Evaluation Limitations & Findings</div>
+                  <div class="panel-subtitle" style="font-size:10px;">Strict boundary definition and empirical findings</div>
+                </div>
+                <span class="range-chip">CRITICAL SCIENTIFIC NOTICE</span>
+              </div>
+
+              <div class="limits-card">
+                <strong>⚠ No ML Superiority Claim</strong>
+                <p>
+                  In synthetic benchmarks where authorization denials and cross-owner attempts are observable by the gateway, the multi-factor <b>deterministic rule baseline achieved 100% accuracy, outperforming the XGBoost classifier (99.20% accuracy with 8 false negatives)</b>. Machine learning models should not be deployed as replacements for authoritative policy checks.
+                </p>
+              </div>
+
+              <div class="limits-card" style="border-color:rgba(87,215,232,.25); background:rgba(87,215,232,.04); margin-top:10px;">
+                <strong style="color:var(--cyan);">🛡 Strict Zero-Trust Enforcement Boundary</strong>
+                <p>
+                  The behavioural ML model is strictly an <b>offline telemetry observer</b> and <b>NEVER overrides PolicyEngine or RuntimeObjectAuthorizationExtension allow/deny decisions</b>. The vulnerable <code>/graphql-insecure</code> endpoint is isolated for controlled comparison only.
+                </p>
+              </div>
+
+              <div class="limits-card" style="border-color:rgba(117,167,255,.25); background:rgba(117,167,255,.04); margin-top:10px;">
+                <strong style="color:var(--blue);">🔬 Held-out Family Isolation</strong>
+                <p>
+                  Evaluated on 1,000 sessions belonging to the <code>nested_relational</code> family (500 <code>legitimate_nested</code> and 500 <code>suspicious_nested_probing</code>). Neither template was seen during training.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <!-- Suspicious Behavioural Sessions -->
+          <div style="margin-top:20px;">
+            <div class="panel-head" style="margin-bottom:10px;">
+              <div>
+                <div class="panel-title" style="font-size:13px;">Suspicious Behavioural Sessions & Active Telemetry Alerts</div>
+                <div class="panel-subtitle" style="font-size:10px;">Sample session observation windows evaluated by XGBoost and Deterministic Rule Baseline</div>
+              </div>
+              <span class="range-chip">SESSION TELEMETRY ALERTS</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Session ID / Scenario</th>
+                    <th>Alert Level</th>
+                    <th>XGBoost Probability</th>
+                    <th>Rule Score</th>
+                    <th>Req/Min</th>
+                    <th>Denials</th>
+                    <th>Cross-Owner</th>
+                    <th>Enum Score</th>
+                    <th>Burst Rate</th>
+                  </tr>
+                </thead>
+                <tbody id="behavioralAlertsBody">
+                  <tr><td class="empty" colspan="9">Loading behavioural alerts…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Interactive Session Telemetry Scorer -->
+          <div style="margin-top:24px; padding:16px; border:1px solid var(--line); border-radius:12px; background:rgba(9,16,29,.25);">
+            <div class="panel-head" style="margin-bottom:10px;">
+              <div>
+                <div class="panel-title" style="font-size:13px;">Interactive Session Telemetry Scorer</div>
+                <div class="panel-subtitle" style="font-size:10px;">Invoke offline behavioural scoring on synthetic session metrics using both the rule baseline and XGBoost.</div>
+              </div>
+              <span class="range-chip">POST /api/v1/telemetry/score-session</span>
+            </div>
+
+            <div class="scorer-presets">
+              <span style="font-size:11px; color:var(--muted); align-self:center;">Load Scenario Preset:</span>
+              <button class="btn-preset" type="button" data-preset="normal_steady">Normal Steady Access</button>
+              <button class="btn-preset" type="button" data-preset="legitimate_high_activity">Legitimate High Activity</button>
+              <button class="btn-preset" type="button" data-preset="rapid_enumeration">Rapid Enumeration Attack</button>
+              <button class="btn-preset" type="button" data-preset="suspicious_nested_probing">Suspicious Nested Probing</button>
+            </div>
+
+            <form id="telemetryScorerForm" style="display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-bottom:14px;">
+              <div class="field"><label>Requests / Window</label><input class="input" type="number" id="scRequestsWindow" value="20" min="1"></div>
+              <div class="field"><label>Distinct Objects</label><input class="input" type="number" id="scDistinctObjects" value="4" min="1"></div>
+              <div class="field"><label>Requests / Minute</label><input class="input" type="number" step="0.1" id="scRequestsMinute" value="1.33" min="0"></div>
+              <div class="field"><label>Recent Denials</label><input class="input" type="number" id="scRecentDenials" value="0" min="0"></div>
+              <div class="field"><label>Cross-Owner Attempts</label><input class="input" type="number" id="scCrossOwner" value="0" min="0"></div>
+              <div class="field"><label>Nested Rel. Queries</label><input class="input" type="number" id="scNestedCount" value="2" min="0"></div>
+              <div class="field"><label>Max Query Depth</label><input class="input" type="number" id="scMaxDepth" value="2" min="1"></div>
+              <div class="field"><label>Enumeration Score</label><input class="input" type="number" step="0.01" id="scEnumScore" value="0.05" min="0" max="1"></div>
+              <div class="field"><label>Burst Rate (req/min)</label><input class="input" type="number" step="0.1" id="scBurstRate" value="2.5" min="0"></div>
+              <div class="field" style="justify-content:flex-end;">
+                <button class="btn primary" id="scoreTelemetryButton" type="submit" style="width:100%; height:37px;">⚡ Score Telemetry</button>
+              </div>
+            </form>
+
+            <div id="telemetryScoreResult" style="display:none; padding:12px; border:1px solid var(--line); border-radius:10px; background:rgba(9,16,29,.45);">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <div>
+                  <span id="scoreResultAlertBadge" class="alert-badge low">NORMAL</span>
+                  <span style="font-size:12px; font-weight:800; margin-left:8px;" id="scoreResultSummary">Session evaluated as Benign</span>
+                </div>
+                <div style="font-size:11px; display:flex; gap:12px;">
+                  <span>XGBoost Probability: <b id="scoreResultXgbProb" style="color:var(--cyan);">0.0000</b></span>
+                  <span>Rule Baseline Score: <b id="scoreResultRuleScore" style="color:var(--green);">0.00</b></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- =============================================================== -->
+      <!-- TAB 3: AUDIT & SECURITY VERIFICATION                           -->
+      <!-- =============================================================== -->
+      <div id="panel-audit" role="tabpanel" aria-labelledby="tab-audit" class="tab-panel" hidden>
+        <!-- Authorization Decisions Charts & Mix -->
+        <section class="grid-two" id="decisions">
+          <article class="panel">
+            <div class="panel-head"><div><div class="panel-title">Request decision mix</div><div class="panel-subtitle">Aggregate counts from the audit API</div></div><span class="range-chip">ALL RECORDED</span></div>
+            <div class="decision-visual">
+              <div class="donut-wrap" role="img" aria-label="Allowed and denied requests chart">
+                <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="donut-bg" cx="60" cy="60" r="45"></circle><circle class="donut-allow" id="allowArc" cx="60" cy="60" r="45" stroke-dasharray="0 283"></circle><circle class="donut-deny" id="denyArc" cx="60" cy="60" r="45" stroke-dasharray="0 283"></circle></svg>
+                <div class="donut-center"><strong id="decisionTotal">—</strong><span>decisions</span></div>
+              </div>
+              <div class="legend">
+                <div><div class="legend-row"><span class="legend-dot" style="background:var(--green)"></span><span class="legend-label">Allowed</span><span class="legend-value" id="allowLegend">—</span></div><div class="legend-sub" id="allowPercent">— of recorded decisions</div></div>
+                <div><div class="legend-row"><span class="legend-dot" style="background:var(--red)"></span><span class="legend-label">Denied</span><span class="legend-value" id="denyLegend">—</span></div><div class="legend-sub" id="denyPercent">— of recorded decisions</div></div>
+              </div>
+            </div>
+            <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Interpretation</strong><p>The chart shows audit decision counts, not a standalone measure of detection accuracy. A denied request and a field-level omission may be recorded differently.</p></div></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head"><div><div class="panel-title">Authorization overview</div><div class="panel-subtitle">Compare allow and deny counts and review risk activity</div></div><span class="range-chip">LIVE API DATA</span></div>
+            <div class="bar-group"><div class="bar-top"><span>Allowed decisions</span><strong id="allowBarLabel">—</strong></div><div class="bar-track"><div class="bar-fill allow" id="allowBar" style="width:0%"></div></div></div>
+            <div class="bar-group"><div class="bar-top"><span>Denied decisions</span><strong id="denyBarLabel">—</strong></div><div class="bar-track"><div class="bar-fill deny" id="denyBar" style="width:0%"></div></div></div>
+            <div class="bar-group"><div class="bar-top"><span>High-risk records vs. total requests</span><strong id="riskBarLabel">—</strong></div><div class="bar-track"><div class="bar-fill risk" id="riskBar" style="width:0%"></div></div></div>
+            <div class="insight"><div class="insight-icon">⌕</div><div><strong id="riskInsightTitle">Risk overview</strong><p id="riskInsightText">Risk indicators will appear when the API returns audit statistics.</p></div></div>
+          </article>
+        </section>
+
+        <!-- Verified Non-Interference Property Tests -->
+        <section class="panel section-gap">
+          <div class="panel-head" style="margin-bottom:10px;">
+            <div>
+              <div class="panel-title" style="font-size:13px;">Verified Non-Interference Property Tests</div>
+              <div class="panel-subtitle" style="font-size:10px;">Property tests verified passing in <code>tests/test_non_interference.py</code> for information flow security and isolation</div>
+            </div>
+            <span class="val-pill best" id="nonInterferenceBadge">6/6 PROPERTY TESTS PASSING</span>
+          </div>
+          <div class="property-cards" id="nonInterferenceGrid">
+            <div class="property-card"><div class="property-head"><span class="property-title">Single Resource Access</span><span class="val-pill best">PASS</span></div><p class="property-desc">Authorized single-object queries succeed without interference or false positives.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">Nested Hierarchy Access</span><span class="val-pill best">PASS</span></div><p class="property-desc">Authorized traversals across user-owned folders and children are preserved.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">Insecure Endpoint Isolation</span><span class="val-pill best">PASS</span></div><p class="property-desc">Controlled endpoint /graphql-insecure bypasses gateway for research baseline.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">High-to-Low Confidentiality</span><span class="val-pill best">PASS</span></div><p class="property-desc">Unowned confidential records cannot be accessed via low-security traversals.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">Secret Mutation Independence</span><span class="val-pill best">PASS</span></div><p class="property-desc">Observable client responses are invariant to unowned high-security mutations.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">Derived-Value Independence</span><span class="val-pill best">PASS</span></div><p class="property-desc">Aggregate fields (children_count) filter unowned child nodes defense-in-depth.</p></div>
+          </div>
+        </section>
+
+        <!-- Recent Authorization Decisions & Runtime Provenance Evidence -->
+        <section class="panel section-gap">
+          <div class="panel-head" style="margin-bottom:10px;">
+            <div>
+              <div class="panel-title" style="font-size:13px;">Recent Authorization Decisions & Runtime Provenance Evidence</div>
+              <div class="panel-subtitle" style="font-size:10px;">Live runtime decisions, object ownership lookups, and provenance edges recorded by <code>RuntimeObjectAuthorizationExtension</code></div>
+            </div>
+            <span class="range-chip">RUNTIME SECURITY PROVENANCE</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time (IST)</th>
+                  <th>Actor / Role</th>
+                  <th>Object & Owner</th>
+                  <th>Emitted Path</th>
+                  <th>Parent Node</th>
+                  <th>Decision</th>
+                  <th>Reason</th>
+                  <th>Risk</th>
+                </tr>
+              </thead>
+              <tbody id="provEvidenceBody">
+                <tr><td class="empty" colspan="8">Loading provenance evidence…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Recent Audit Events & Filters -->
+        <section class="panel logs-panel" id="audit-logs">
+          <div class="panel-head"><div><div class="panel-title">Recent audit events</div><div class="panel-subtitle">Search and filter the latest records returned by the API. Timestamps are stored in UTC and displayed in IST (Asia/Kolkata).</div></div><span class="range-chip" id="recordChip">LATEST RECORDS</span></div>
+          <div class="filters">
+            <input class="input" id="searchInput" type="search" placeholder="Search user, action, reason, or ID…" aria-label="Search audit records">
+            <select class="select" id="decisionFilter" aria-label="Filter by decision"><option value="all">All decisions</option><option value="allow">Allowed</option><option value="deny">Denied</option><option value="other">Other / unknown</option></select>
+            <select class="select" id="riskFilter" aria-label="Filter by risk"><option value="all">All risk levels</option><option value="high">High risk</option><option value="medium">Medium risk</option><option value="low">Low risk</option><option value="unknown">Unknown risk</option></select>
+            <button class="btn" id="clearFiltersButton" type="button">Clear filters</button>
+            <button class="btn" id="exportButton" type="button">⇩ Export visible</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Time (IST)</th><th>Actor</th><th>Decision</th><th>Risk</th><th>Reason</th><th>Operation / details</th></tr></thead>
+              <tbody id="logsBody"><tr><td class="empty" colspan="6">Loading audit events…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="tableCount">Waiting for audit records…</span><span id="lastUpdated">Last updated: —</span></div>
+        </section>
+      </div>
 
       <footer class="footer"><span>GraphQL Shield · Local security observability</span><span>Dashboard data is read from <code>/api/v1/dashboard-stats</code>.</span></footer>
     </main>
@@ -390,8 +821,8 @@
         return 'unknown';
       }
       function safeText(value) { return value === undefined || value === null || value === '' ? '—' : String(value); }
-      function setText(id, value) { $(id).textContent = value; }
-      function setBar(id, count, total) { $(id).style.width = (total > 0 ? Math.max(0, Math.min(100, count / total * 100)) : 0) + '%'; }
+      function setText(id, value) { const el = $(id); if (el) el.textContent = value; }
+      function setBar(id, count, total) { const el = $(id); if (el) el.style.width = (total > 0 ? Math.max(0, Math.min(100, count / total * 100)) : 0) + '%'; }
       function setApiStatus(healthy, text) {
         $('apiStatus').classList.toggle('error', !healthy);
         setText('apiStatusText', text);
@@ -404,6 +835,103 @@
         const toast = $('toast'); toast.textContent = message; toast.classList.add('show');
         window.clearTimeout(toastTimer); toastTimer = window.setTimeout(() => toast.classList.remove('show'), 3200);
       }
+
+      /* TAB SWITCHING SYSTEM */
+      function switchTab(tabId, updateHash = true) {
+        const tabs = document.querySelectorAll('.dashboard-tabs [role="tab"]');
+        const targetTab = $(tabId);
+        if (!targetTab) return;
+
+        tabs.forEach(tab => {
+          const isTarget = tab === targetTab;
+          tab.classList.toggle('active', isTarget);
+          tab.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+          tab.setAttribute('tabindex', isTarget ? '0' : '-1');
+          const panelId = tab.getAttribute('aria-controls');
+          const panel = $(panelId);
+          if (panel) {
+            if (isTarget) {
+              panel.removeAttribute('hidden');
+              panel.classList.add('active');
+            } else {
+              panel.setAttribute('hidden', '');
+              panel.classList.remove('active');
+            }
+          }
+        });
+
+        // Sync sidebar active links
+        document.querySelectorAll('.sidebar .nav a[data-tab]').forEach(a => {
+          a.classList.toggle('active', a.dataset.tab === tabId);
+        });
+
+        if (updateHash) {
+          const hashName = tabId.replace('tab-', '');
+          try {
+            history.replaceState(null, '', '#' + hashName);
+          } catch (_) {
+            location.hash = hashName;
+          }
+        }
+      }
+
+      function initTabs() {
+        const tabs = Array.from(document.querySelectorAll('.dashboard-tabs [role="tab"]'));
+        tabs.forEach((tab, index) => {
+          tab.addEventListener('click', () => {
+            switchTab(tab.id);
+            tab.focus();
+          });
+          tab.addEventListener('keydown', (e) => {
+            let targetIndex = null;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+              targetIndex = (index + 1) % tabs.length;
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+              targetIndex = (index - 1 + tabs.length) % tabs.length;
+            } else if (e.key === 'Home') {
+              targetIndex = 0;
+            } else if (e.key === 'End') {
+              targetIndex = tabs.length - 1;
+            }
+            if (targetIndex !== null) {
+              e.preventDefault();
+              const nextTab = tabs[targetIndex];
+              switchTab(nextTab.id);
+              nextTab.focus();
+            }
+          });
+        });
+
+        // Sidebar link listeners
+        document.querySelectorAll('.sidebar .nav a[data-tab]').forEach(a => {
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            const tabId = a.dataset.tab;
+            if (tabId) {
+              switchTab(tabId);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          });
+        });
+
+        // Handle URL hash on initial load
+        const initialHash = (location.hash || '').replace('#', '').toLowerCase();
+        if (initialHash === 'research' || initialHash === 'research-evaluation') {
+          switchTab('tab-research', false);
+        } else if (initialHash === 'audit' || initialHash === 'decisions' || initialHash === 'audit-logs') {
+          switchTab('tab-audit', false);
+        } else {
+          switchTab('tab-testing', false);
+        }
+
+        window.addEventListener('hashchange', () => {
+          const h = (location.hash || '').replace('#', '').toLowerCase();
+          if (h === 'research' || h === 'research-evaluation') switchTab('tab-research', false);
+          else if (h === 'audit' || h === 'decisions' || h === 'audit-logs') switchTab('tab-audit', false);
+          else if (h === 'testing' || h === 'overview') switchTab('tab-testing', false);
+        });
+      }
+
       function renderDemoUsers(users) {
         const body = $('demoUsersBody');
         if (!body) return;
@@ -475,10 +1003,14 @@
         const circumference = 2 * Math.PI * 45;
         const allowedArc = decisions > 0 ? allowed / decisions * circumference : 0;
         const deniedArc = decisions > 0 ? blocked / decisions * circumference : 0;
-        $('allowArc').setAttribute('stroke-dasharray', `${allowedArc} ${circumference}`);
-        $('allowArc').setAttribute('stroke-dashoffset', '0');
-        $('denyArc').setAttribute('stroke-dasharray', `${deniedArc} ${circumference}`);
-        $('denyArc').setAttribute('stroke-dashoffset', String(-allowedArc));
+        if ($('allowArc')) {
+          $('allowArc').setAttribute('stroke-dasharray', `${allowedArc} ${circumference}`);
+          $('allowArc').setAttribute('stroke-dashoffset', '0');
+        }
+        if ($('denyArc')) {
+          $('denyArc').setAttribute('stroke-dasharray', `${deniedArc} ${circumference}`);
+          $('denyArc').setAttribute('stroke-dashoffset', String(-allowedArc));
+        }
         setText('allowBarLabel', `${formatNumber(allowed)} (${allowPct.toFixed(1)}%)`);
         setText('denyBarLabel', `${formatNumber(blocked)} (${denyPct.toFixed(1)}%)`);
         setText('riskBarLabel', `${formatNumber(highRisk)} (${total > 0 ? (highRisk / total * 100).toFixed(1) : '0.0'}%)`);
@@ -486,6 +1018,7 @@
         setText('riskInsightTitle', bola > 0 ? `${formatNumber(bola)} BOLA-related audit signal${bola === 1 ? '' : 's'}` : 'No BOLA signals recorded');
         setText('riskInsightText', highRisk > 0 ? `${formatNumber(highRisk)} high-risk entries were reported by the API. Review recent events below; only the latest records returned by the endpoint are shown.` : 'No high-risk entries are reported in the aggregate counters. This is an audit summary, not proof that the system is free of attacks.');
       }
+
       function addCell(tr, content, className) {
         const td = document.createElement('td');
         if (className) td.className = className;
@@ -499,13 +1032,10 @@
         if (!value || value === '—') return '—';
         const raw = String(value).trim();
         let date;
-        // SQLite audit timestamps are stored as UTC strings without a zone suffix,
-        // for example: 2026-10-12 15:58:41. Interpret those strings as UTC explicitly.
         const naiveUtc = /^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?$/.test(raw);
         if (naiveUtc) {
           date = new Date(raw.replace(' ', 'T') + 'Z');
         } else {
-          // ISO values with Z or an explicit offset already identify their timezone.
           date = new Date(raw);
         }
         if (Number.isNaN(date.getTime())) return raw;
@@ -516,8 +1046,11 @@
           hour12: true
         }).format(date);
       }
+
       function renderLogs(logs) {
-        const body = $('logsBody'); body.replaceChildren();
+        const body = $('logsBody');
+        if (!body) return;
+        body.replaceChildren();
         if (!logs.length) {
           const tr = document.createElement('tr'); const td = document.createElement('td');
           td.className = 'empty'; td.colSpan = 6; td.textContent = state.logs.length ? 'No audit events match the selected filters.' : 'No audit events were returned by the API.';
@@ -554,8 +1087,11 @@
           body.appendChild(tr);
         }
       }
+
       function applyFilters() {
-        const query = $('searchInput').value.trim().toLowerCase();
+        const searchEl = $('searchInput');
+        if (!searchEl) return;
+        const query = searchEl.value.trim().toLowerCase();
         const decision = $('decisionFilter').value;
         const risk = $('riskFilter').value;
         state.filtered = state.logs.filter(row => {
@@ -567,9 +1103,10 @@
         setText('tableCount', `Showing ${state.filtered.length.toLocaleString()} of ${state.logs.length.toLocaleString()} returned records (API supplies recent records only).`);
         setText('recordChip', `${state.filtered.length} SHOWN`);
       }
+
       function csvEscape(value) { const text = String(value ?? ''); return '"' + text.replace(/"/g, '""') + '"'; }
       function exportCsv() {
-        const rows = state.filtered;
+        const rows = state.filtered.length ? state.filtered : state.logs;
         if (!rows.length) { showToast('No visible rows to export.'); return; }
         const headers = ['timestamp_utc','actor','decision','risk_level','reason','operation_or_details','raw_record_json'];
         const lines = [headers.map(csvEscape).join(',')];
@@ -588,12 +1125,14 @@
         const url = URL.createObjectURL(blob); const link = document.createElement('a');
         link.href = url; link.download = `graphql-shield-audit-${new Date().toISOString().replace(/[:.]/g,'-')}.csv`;
         document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url);
-        showToast(`Exported ${rows.length} visible audit records.`);
+        showToast(`Exported ${rows.length} audit records.`);
       }
+
       async function checkHealth() {
         try { const response = await fetch(HEALTH_URL, {cache:'no-store'}); if (!response.ok) throw new Error('Health check failed'); return true; }
         catch (_) { return false; }
       }
+
       async function refresh({quiet=false} = {}) {
         if (state.loading) return;
         state.loading = true; $('refreshButton').disabled = true; $('refreshButton').textContent = '↻ Loading…';
@@ -607,6 +1146,9 @@
           state.stats = payload.stats; state.logs = payload.recent_logs;
           renderDemoUsers(payload.demo_users || []);
           renderStats(state.stats); applyFilters();
+          if (payload.research_evaluation) {
+            renderResearchEvaluation(payload.research_evaluation);
+          }
           state.lastUpdate = new Date();
           const istNow = new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }).format(state.lastUpdate);
           setText('lastUpdated', 'Last updated (IST): ' + istNow);
@@ -622,18 +1164,21 @@
           state.loading = false; $('refreshButton').disabled = false; $('refreshButton').textContent = '↻ Refresh';
         }
       }
+
       function setScenarioFields() {
         const scenario = $('testScenario').value;
         $('userIdField').style.display = scenario === 'nested' ? '' : 'none';
         $('resourceIdField').style.display = scenario === 'relationship' ? 'none' : '';
         $('parentIdField').style.display = scenario === 'relationship' ? '' : 'none';
       }
+
       function positiveInteger(id, label) {
         const raw = $(id).value.trim();
         const value = Number(raw);
         if (!raw || !Number.isInteger(value) || value < 1) throw new Error(`${label} must be a positive integer.`);
         return value;
       }
+
       function buildSelectedRequest() {
         const scenario = $('testScenario').value;
         if (scenario === 'direct') {
@@ -658,13 +1203,14 @@
         };
       }
 
-// REQUEST_SPECIFIC_TAINT_TRACE_JS_BEGIN
       function traceStep(title, detail, state = '') {
+        const flow = $('traceFlow');
+        if (!flow) return;
         const node = document.createElement('div');
         node.className = 'trace-step' + (state ? ' ' + state : '');
         const number = document.createElement('span');
         number.className = 'trace-step-number';
-        number.textContent = String($('traceFlow').children.length + 1);
+        number.textContent = String(flow.children.length + 1);
         const heading = document.createElement('div');
         heading.className = 'trace-step-title';
         heading.textContent = title;
@@ -672,7 +1218,7 @@
         body.className = 'trace-step-detail';
         body.textContent = detail;
         node.append(number, heading, body);
-        $('traceFlow').appendChild(node);
+        flow.appendChild(node);
       }
 
       function findVisibleObjectIds(value, output = []) {
@@ -687,6 +1233,7 @@
 
       function renderTaintTrace({analysis, analysisError, query, variables, endpoint, httpStatus, response}) {
         const flow = $('traceFlow');
+        if (!flow) return;
         flow.replaceChildren();
         const sources = analysis && Array.isArray(analysis.taint_sources) ? analysis.taint_sources : [];
         const objects = analysis && Array.isArray(analysis.objects) ? analysis.objects : [];
@@ -780,7 +1327,6 @@
         traceStep('Request input', 'Waiting for a test request.');
         $('traceNotes').textContent = 'Taint source data and policy replay will populate this area after a request. A tainted input is not automatically an attack.';
       }
-      // REQUEST_SPECIFIC_TAINT_TRACE_JS_END
 
       async function runSelectedTest() {
         const button = $('runTestButton');
@@ -825,6 +1371,7 @@
           $('testResultStatus').textContent = `HTTP ${graphqlResponse.status}${parsedBody && parsedBody.errors ? ' · GraphQL errors returned' : ''}`;
           $('testResultStatus').className = 'status-inline ' + (graphqlResponse.ok && !(parsedBody && parsedBody.errors) ? 'ok' : 'bad');
           $('testResultBody').textContent = JSON.stringify({endpoint:$('testEndpoint').value, scenario:$('testScenario').value, query, variables, http_status:graphqlResponse.status, response:parsedBody}, null, 2);
+          
           let analysis = null;
           let analysisError = '';
           try {
@@ -841,6 +1388,10 @@
           }
           renderTaintTrace({analysis, analysisError, query, variables, endpoint:$('testEndpoint').value, httpStatus:graphqlResponse.status, response:parsedBody});
           $('testPassword').value = '';
+          
+          // Keep the test result immediately visible after test finishes
+          $('testResultTitle').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          
           await refresh({quiet:true});
           showToast('Test completed. Audit metrics refreshed.');
         } catch (error) {
@@ -853,6 +1404,238 @@
           button.disabled = false; button.textContent = '▶ Run selected test';
         }
       }
+
+      function renderResearchEvaluation(data) {
+        if (!data || typeof data !== 'object') return;
+
+        // Model Status
+        const status = data.model_status || {};
+        const pill = $('modelStatusPill');
+        const statusText = $('modelStatusText');
+        const pathText = $('modelPathText');
+        if (pill && statusText) {
+          if (status.loaded) {
+            pill.className = 'research-status-pill loaded';
+            statusText.textContent = 'Model Loaded & Available (Offline Telemetry)';
+            const dot = pill.querySelector('.status-dot');
+            if (dot) dot.style.background = 'var(--green)';
+          } else {
+            pill.className = 'research-status-pill fallback';
+            statusText.textContent = status.error ? 'Model Unloaded (Rule Fallback Active)' : 'Model Fallback Active';
+            const dot = pill.querySelector('.status-dot');
+            if (dot) dot.style.background = 'var(--amber)';
+          }
+        }
+        if (pathText && status.path) pathText.textContent = status.path;
+
+        // Comparative Metrics
+        const evalMetrics = data.evaluation_metrics || {};
+        const xgb = evalMetrics.xgboost || {};
+        const rule = evalMetrics.rule_baseline || {};
+        const latency = evalMetrics.latency || {};
+
+        if (xgb.accuracy != null) setText('xgbAccuracy', `${(xgb.accuracy * 100).toFixed(2)}% (${xgb.accuracy})`);
+        if (rule.accuracy != null) setText('ruleAccuracy', `${(rule.accuracy * 100).toFixed(2)}% (${rule.accuracy})`);
+        if (xgb.precision != null) setText('xgbPrecision', `${(xgb.precision * 100).toFixed(2)}% (${xgb.precision})`);
+        if (rule.precision != null) setText('rulePrecision', `${(rule.precision * 100).toFixed(2)}% (${rule.precision})`);
+        if (xgb.recall != null) setText('xgbRecall', `${(xgb.recall * 100).toFixed(2)}% (${xgb.recall})`);
+        if (rule.recall != null) setText('ruleRecall', `${(rule.recall * 100).toFixed(2)}% (${rule.recall})`);
+        if (xgb.f1_score != null) setText('xgbF1', String(xgb.f1_score));
+        if (rule.f1_score != null) setText('ruleF1', String(rule.f1_score));
+        if (xgb.pr_auc_average_precision != null) setText('xgbPrAuc', String(xgb.pr_auc_average_precision));
+        if (rule.pr_auc_average_precision != null) setText('rulePrAuc', String(rule.pr_auc_average_precision));
+        if (xgb.false_positive_rate != null) setText('xgbFpr', `${(xgb.false_positive_rate * 100).toFixed(2)}% (${xgb.false_positive_rate})`);
+        if (rule.false_positive_rate != null) setText('ruleFpr', `${(rule.false_positive_rate * 100).toFixed(2)}% (${rule.false_positive_rate})`);
+
+        if (xgb.confusion_matrix) {
+          const cm = xgb.confusion_matrix;
+          setText('xgbCm', `TN:${cm.true_negative} / FP:${cm.false_positive} / FN:${cm.false_negative} / TP:${cm.true_positive}`);
+        }
+        if (rule.confusion_matrix) {
+          const cm = rule.confusion_matrix;
+          setText('ruleCm', `TN:${cm.true_negative} / FP:${cm.false_positive} / FN:${cm.false_negative} / TP:${cm.true_positive}`);
+        }
+        if (latency.average_ms_per_batch) {
+          setText('xgbLatency', `${latency.average_ms_per_batch.toFixed(2)} ms/batch (~${(latency.average_ms_per_session * 1000).toFixed(1)} μs/session)`);
+        }
+
+        // Provenance Evidence
+        const provBody = $('provEvidenceBody');
+        if (provBody && Array.isArray(data.provenance_evidence)) {
+          provBody.replaceChildren();
+          if (!data.provenance_evidence.length) {
+            const tr = document.createElement('tr');
+            const td = document.createElement('td');
+            td.colSpan = 8; td.className = 'empty';
+            td.textContent = 'No provenance records captured yet.';
+            tr.appendChild(td); provBody.appendChild(tr);
+          } else {
+            for (const item of data.provenance_evidence) {
+              const tr = document.createElement('tr');
+              addCell(tr, formatTime(item.timestamp));
+              
+              const actorTd = document.createElement('td');
+              actorTd.innerHTML = `<b>${safeText(item.actor)}</b> <span class="badge ${item.role === 'admin' ? 'high' : 'low'}">${safeText(item.role).toUpperCase()}</span>`;
+              tr.appendChild(actorTd);
+
+              const objTd = document.createElement('td');
+              const matchText = item.ownership_match ? '<span style="color:var(--green)">✓ Owned</span>' : '<span style="color:var(--red)">⚠ Foreign (Unowned)</span>';
+              objTd.innerHTML = `<div>${safeText(item.object_name)} (#${item.object_id})</div><div class="secondary-cell">Owner: User #${item.owner_id} · ${matchText}</div>`;
+              tr.appendChild(objTd);
+
+              const pathTd = document.createElement('td');
+              pathTd.innerHTML = `<span class="prov-node">${safeText(item.path)}</span>`;
+              tr.appendChild(pathTd);
+
+              const parentTd = document.createElement('td');
+              if (item.provenance_edges && item.provenance_edges.length) {
+                const edge = item.provenance_edges[0];
+                parentTd.innerHTML = `<span class="prov-node">Parent #${edge.parent_id} ➔ ${edge.relationship}</span>`;
+              } else {
+                parentTd.innerHTML = `<span style="color:var(--muted); font-size:10px;">Root resolver</span>`;
+              }
+              tr.appendChild(parentTd);
+
+              const dec = (item.decision || '').toLowerCase();
+              addCell(tr, makeBadge(item.decision || 'UNKNOWN', dec === 'allow' ? 'allow' : 'deny'));
+              addCell(tr, item.reason || '—');
+              
+              const risk = (item.risk_level || 'LOW').toLowerCase();
+              addCell(tr, makeBadge(item.risk_level || 'LOW', ['high','medium','low'].includes(risk) ? risk : ''));
+              provBody.appendChild(tr);
+            }
+          }
+        }
+
+        // Behavioural Alerts Table
+        const alertsBody = $('behavioralAlertsBody');
+        if (alertsBody && Array.isArray(data.behavioural_alerts)) {
+          alertsBody.replaceChildren();
+          if (!data.behavioural_alerts.length) {
+            const tr = document.createElement('tr');
+            const td = document.createElement('td');
+            td.colSpan = 9; td.className = 'empty';
+            td.textContent = 'No session alerts recorded.';
+            tr.appendChild(td); alertsBody.appendChild(tr);
+          } else {
+            for (const alert of data.behavioural_alerts) {
+              const tr = document.createElement('tr');
+              
+              const sessTd = document.createElement('td');
+              sessTd.innerHTML = `<div><b>${alert.session_id}</b></div><div class="secondary-cell">${alert.scenario}</div>`;
+              tr.appendChild(sessTd);
+
+              const lvlTd = document.createElement('td');
+              const lvl = (alert.alert_level || 'LOW').toLowerCase();
+              lvlTd.innerHTML = `<span class="alert-badge ${lvl}">${alert.alert_level}</span>`;
+              tr.appendChild(lvlTd);
+
+              addCell(tr, alert.xgboost_prob != null ? `${(alert.xgboost_prob * 100).toFixed(1)}% (${alert.xgboost_label})` : '—');
+              addCell(tr, alert.rule_score != null ? `${(alert.rule_score * 100).toFixed(0)}% (${alert.rule_label})` : '—');
+              addCell(tr, alert.burst_rate != null ? `${alert.burst_rate} req/m` : '—');
+              addCell(tr, alert.recent_denials != null ? String(alert.recent_denials) : '0');
+              addCell(tr, alert.cross_owner != null ? String(alert.cross_owner) : '0');
+              addCell(tr, alert.enumeration_score != null ? String(alert.enumeration_score) : '0.0');
+              addCell(tr, alert.burst_rate != null ? String(alert.burst_rate) : '—');
+
+              alertsBody.appendChild(tr);
+            }
+          }
+        }
+      }
+
+      const SCORER_PRESETS = {
+        normal_steady: {
+          requests_per_window: 20, distinct_objects_count: 4, requests_per_minute: 1.33,
+          recent_denials_count: 0, cross_owner_attempts_count: 0, nested_relationship_count: 2,
+          max_query_depth: 2, enumeration_score: 0.05, request_burst_rate: 2.5
+        },
+        legitimate_high_activity: {
+          requests_per_window: 140, distinct_objects_count: 10, requests_per_minute: 9.33,
+          recent_denials_count: 0, cross_owner_attempts_count: 0, nested_relationship_count: 22,
+          max_query_depth: 2, enumeration_score: 0.08, request_burst_rate: 16.5
+        },
+        rapid_enumeration: {
+          requests_per_window: 160, distinct_objects_count: 150, requests_per_minute: 10.67,
+          recent_denials_count: 48, cross_owner_attempts_count: 125, nested_relationship_count: 4,
+          max_query_depth: 1, enumeration_score: 0.94, request_burst_rate: 24.0
+        },
+        suspicious_nested_probing: {
+          requests_per_window: 45, distinct_objects_count: 18, requests_per_minute: 3.0,
+          recent_denials_count: 14, cross_owner_attempts_count: 28, nested_relationship_count: 38,
+          max_query_depth: 5, enumeration_score: 0.32, request_burst_rate: 5.8
+        }
+      };
+
+      function loadScorerPreset(key) {
+        const p = SCORER_PRESETS[key];
+        if (!p) return;
+        $('scRequestsWindow').value = p.requests_per_window;
+        $('scDistinctObjects').value = p.distinct_objects_count;
+        $('scRequestsMinute').value = p.requests_per_minute;
+        $('scRecentDenials').value = p.recent_denials_count;
+        $('scCrossOwner').value = p.cross_owner_attempts_count;
+        $('scNestedCount').value = p.nested_relationship_count;
+        $('scMaxDepth').value = p.max_query_depth;
+        $('scEnumScore').value = p.enumeration_score;
+        $('scBurstRate').value = p.request_burst_rate;
+        showToast(`Loaded ${key.replace(/_/g, ' ')} preset.`);
+      }
+
+      async function scoreSessionTelemetry(e) {
+        if (e) e.preventDefault();
+        const payload = {
+          requests_per_window: Number($('scRequestsWindow').value),
+          distinct_objects_count: Number($('scDistinctObjects').value),
+          requests_per_minute: Number($('scRequestsMinute').value),
+          repeated_target_count: Math.max(0, Number($('scRequestsWindow').value) - Number($('scDistinctObjects').value)),
+          recent_denials_count: Number($('scRecentDenials').value),
+          cross_owner_attempts_count: Number($('scCrossOwner').value),
+          nested_relationship_count: Number($('scNestedCount').value),
+          max_query_depth: Number($('scMaxDepth').value),
+          enumeration_score: Number($('scEnumScore').value),
+          request_burst_rate: Number($('scBurstRate').value),
+        };
+
+        const btn = $('scoreTelemetryButton');
+        btn.disabled = true; btn.textContent = 'Scoring…';
+        try {
+          const res = await fetch('/api/v1/telemetry/score-session', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(payload)
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          $('telemetryScoreResult').style.display = 'block';
+          
+          const alertBadge = $('scoreResultAlertBadge');
+          const lvl = (data.alert_level || 'LOW').toLowerCase();
+          alertBadge.className = 'alert-badge ' + lvl;
+          alertBadge.textContent = data.alert_level;
+
+          $('scoreResultSummary').textContent = data.is_suspicious
+            ? 'Suspicious Behavioural Anomaly Detected'
+            : 'Session Evaluated as Normal / Benign';
+
+          const prob = data.xgboost && data.xgboost.probability != null
+            ? `${(data.xgboost.probability * 100).toFixed(1)}% (${data.xgboost.label})`
+            : 'Unavailable';
+          $('scoreResultXgbProb').textContent = prob;
+
+          const rScore = data.rule_baseline && data.rule_baseline.score != null
+            ? `${(data.rule_baseline.score * 100).toFixed(0)}% (${data.rule_baseline.label})`
+            : '0%';
+          $('scoreResultRuleScore').textContent = rScore;
+
+          showToast('Telemetry session scored.');
+        } catch (err) {
+          showToast('Failed to score telemetry: ' + err.message);
+        } finally {
+          btn.disabled = false; btn.textContent = '⚡ Score Telemetry';
+        }
+      }
+
       function toggleTheme() {
         document.body.classList.toggle('light');
         const light = document.body.classList.contains('light');
@@ -863,11 +1646,15 @@
         try { if (localStorage.getItem('graphql-shield-dashboard-theme') === 'light') document.body.classList.add('light'); } catch (_) { /* storage can be disabled */ }
         $('themeButton').textContent = document.body.classList.contains('light') ? '☾ Dark mode' : '☼ Light mode';
       }
+
       function init() {
         initTheme();
+        initTabs();
+
         $('demoUsersBody').addEventListener('click', (event) => {
           const button = event.target.closest('button[data-demo-username]');
           if (!button || !button.dataset.demoUsername) return;
+          switchTab('tab-testing');
           $('testUsername').value = button.dataset.demoUsername;
           $('testPassword').focus();
           $('test-console').scrollIntoView({behavior:'smooth', block:'start'});
@@ -891,6 +1678,20 @@
         $('decisionFilter').addEventListener('change', applyFilters);
         $('riskFilter').addEventListener('change', applyFilters);
         $('clearFiltersButton').addEventListener('click', () => { $('searchInput').value = ''; $('decisionFilter').value = 'all'; $('riskFilter').value = 'all'; applyFilters(); });
+
+        // Phase 5 Research Evaluation Scorer Listeners
+        const presetContainer = document.querySelector('.scorer-presets');
+        if (presetContainer) {
+          presetContainer.addEventListener('click', (ev) => {
+            const btn = ev.target.closest('button[data-preset]');
+            if (btn && btn.dataset.preset) loadScorerPreset(btn.dataset.preset);
+          });
+        }
+        const scorerForm = $('telemetryScorerForm');
+        if (scorerForm) {
+          scorerForm.addEventListener('submit', scoreSessionTelemetry);
+        }
+
         refresh({quiet:true});
         state.timer = window.setInterval(() => refresh({quiet:true}), REFRESH_MS);
         document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh({quiet:true}); });
@@ -900,4 +1701,3 @@
   </script>
 </body>
 </html>
-

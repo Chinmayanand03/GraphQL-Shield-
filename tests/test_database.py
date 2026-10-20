@@ -47,9 +47,9 @@ def test_ownership_lookup():
     row = cursor.fetchone()
     assert row is not None
     assert row['owner_id'] == 102
-    assert row['name'] == "Bob's Financial Record"
+    assert row['name'] == "Kapilesh's Financial Record"
     
-    # Check nested objects belong to Alice
+    # Check nested objects belong to Balanilavan
     cursor.execute("SELECT owner_id, name FROM objects WHERE parent_id = ?", (201,))
     nested_objects = cursor.fetchall()
     assert len(nested_objects) == 2

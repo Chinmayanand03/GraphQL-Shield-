@@ -379,8 +379,10 @@ def run_research_benchmark(
         tokens = {
             101: create_access_token(user_id=101, role="user"),
             102: create_access_token(user_id=102, role="user"),
-            103: create_access_token(user_id=103, role="admin"),
+            103: create_access_token(user_id=103, role="user"),
+            104: create_access_token(user_id=104, role="admin"),
         }
+
 
         with TestClient(app) as client:
             tracemalloc.start()

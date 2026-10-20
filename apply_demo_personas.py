@@ -17,15 +17,15 @@ DATABASE_MODULE_PATH = PROJECT_ROOT / "app" / "database.py"
 PERSONAS = [
     {
         "username": "chinmay",
-        "legacy_username": "charlie",
-        "display_name": "Agnihotram Chinmayanand",
+        "legacy_username": None,
+        "display_name": "Admin Demo Account",
         "id": 104,
         "role": "admin",
         "new_account": False,
     },
     {
         "username": "bala",
-        "legacy_username": "alice",
+        "legacy_username": None,
         "display_name": "B.V. Balanilavan",
         "id": 101,
         "role": "user",
@@ -33,7 +33,7 @@ PERSONAS = [
     },
     {
         "username": "kapilesh",
-        "legacy_username": "bob",
+        "legacy_username": None,
         "display_name": "Kapilesh N",
         "id": 102,
         "role": "user",
@@ -50,12 +50,14 @@ PERSONAS = [
 ]
 
 LOGIN_ROUTE = '''LOGIN_USERNAME_ALIASES = {
-    "alice": "bala",
-    "bala": "alice",
-    "bob": "kapilesh",
-    "kapilesh": "bob",
-    "charlie": "chinmay",
-    "chinmay": "charlie",
+    "bala": "balanilavan",
+    "balanilavan": "bala",
+    "kapil": "kapilesh",
+    "kapilesh": "kapil",
+    "chinmay": "chinmayanand",
+    "chinmayanand": "chinmay",
+    "sakthi": "sakthivel",
+    "sakthivel": "sakthi",
 }
 
 
@@ -126,13 +128,10 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
                    COALESCE(
                        NULLIF(u.display_name, ''),
                        CASE u.username
-                           WHEN 'chinmay' THEN 'Agnihotram Chinmayanand'
-                           WHEN 'charlie' THEN 'Agnihotram Chinmayanand'
-                           WHEN 'bala' THEN 'B.V. Balanilavan'
-                           WHEN 'alice' THEN 'B.V. Balanilavan'
-                           WHEN 'kapilesh' THEN 'Kapilesh N'
-                           WHEN 'bob' THEN 'Kapilesh N'
-                           WHEN 'sakthivel' THEN 'Sakthivel B'
+                           WHEN 'chinmay' THEN 'Admin Demo Account'
+                                                      WHEN 'bala' THEN 'B.V. Balanilavan'
+                                                      WHEN 'kapilesh' THEN 'Kapilesh N'
+                                                      WHEN 'sakthivel' THEN 'Sakthivel B'
                            ELSE u.username
                        END,
                        CAST(a.user_id AS TEXT)
@@ -150,24 +149,18 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
             SELECT a.*,
                    u.username AS username,
                    CASE u.username
-                       WHEN 'chinmay' THEN 'Agnihotram Chinmayanand'
-                       WHEN 'charlie' THEN 'Agnihotram Chinmayanand'
-                       WHEN 'bala' THEN 'B.V. Balanilavan'
-                       WHEN 'alice' THEN 'B.V. Balanilavan'
-                       WHEN 'kapilesh' THEN 'Kapilesh N'
-                       WHEN 'bob' THEN 'Kapilesh N'
-                       WHEN 'sakthivel' THEN 'Sakthivel B'
+                       WHEN 'chinmay' THEN 'Admin Demo Account'
+                                              WHEN 'bala' THEN 'B.V. Balanilavan'
+                                              WHEN 'kapilesh' THEN 'Kapilesh N'
+                                              WHEN 'sakthivel' THEN 'Sakthivel B'
                        ELSE u.username
                    END AS display_name,
                    COALESCE(
                        CASE u.username
-                           WHEN 'chinmay' THEN 'Agnihotram Chinmayanand'
-                           WHEN 'charlie' THEN 'Agnihotram Chinmayanand'
-                           WHEN 'bala' THEN 'B.V. Balanilavan'
-                           WHEN 'alice' THEN 'B.V. Balanilavan'
-                           WHEN 'kapilesh' THEN 'Kapilesh N'
-                           WHEN 'bob' THEN 'Kapilesh N'
-                           WHEN 'sakthivel' THEN 'Sakthivel B'
+                           WHEN 'chinmay' THEN 'Admin Demo Account'
+                                                      WHEN 'bala' THEN 'B.V. Balanilavan'
+                                                      WHEN 'kapilesh' THEN 'Kapilesh N'
+                                                      WHEN 'sakthivel' THEN 'Sakthivel B'
                            ELSE u.username
                        END,
                        CAST(a.user_id AS TEXT)
@@ -183,9 +176,9 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
 
     demo_users = []
     for persona in (
-        {"username": "chinmay", "legacy_username": "charlie", "display_name": "Agnihotram Chinmayanand", "role": "ADMIN"},
-        {"username": "bala", "legacy_username": "alice", "display_name": "B.V. Balanilavan", "role": "USER"},
-        {"username": "kapilesh", "legacy_username": "bob", "display_name": "Kapilesh N", "role": "USER"},
+        {"username": "chinmay", "legacy_username": None, "display_name": "Admin Demo Account", "role": "ADMIN"},
+        {"username": "bala", "legacy_username": None, "display_name": "B.V. Balanilavan", "role": "USER"},
+        {"username": "kapilesh", "legacy_username": None, "display_name": "Kapilesh N", "role": "USER"},
         {"username": "sakthivel", "legacy_username": None, "display_name": "Sakthivel B", "role": "USER"},
     ):
         candidates = [persona["username"]]
@@ -682,7 +675,7 @@ def main() -> int:
             )
         print(f"\nBackup saved to: {backup_dir}")
         print("New login usernames are chinmay, bala, kapilesh, and sakthivel.")
-        print("Legacy login aliases alice, bob, and charlie remain supported for existing tests/scripts.")
+        print("Active demo accounts: balanilavan, kapilesh, sakthivel, chinmayanand.")
         print("Existing passwords for the original three accounts are preserved.")
         print("Sakthivel's local demo password is sakthivel123; change it before any non-local use.")
         print("Do not expose the demo dashboard or test accounts to the public internet.")

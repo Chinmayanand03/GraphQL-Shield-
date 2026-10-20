@@ -38,8 +38,8 @@ def main():
     
     # =========================================================================
     print_header("DEMO 1 — LEGITIMATE ACCESS")
-    print("→ User 101 (Alice) logs in...")
-    res = client.post("/api/v1/auth/login", json={"username": "alice", "password": "alice123"})
+    print("→ User 101 (Balanilavan) logs in...")
+    res = client.post("/api/v1/auth/login", json={"username": "balanilavan", "password": "balanilavan123"})
     token = res.json().get("access_token")
     print("✅ JWT Generated")
     
@@ -56,7 +56,7 @@ def main():
 
     # =========================================================================
     print_header("DEMO 2 — BOLA ATTACK")
-    print("→ User 101 (Alice) modifies object ID to 102 (Bob's Resource)...")
+    print("→ User 101 (Balanilavan) modifies object ID to 102 (Kapilesh's Resource)...")
     query = {"query": "{ resource(id: 102) { id name } }"}
     res = client.post("/graphql", json=query, headers={"Authorization": f"Bearer {token}"})
     print(f"\n[HTTP {res.status_code}]\n{json.dumps(res.json(), indent=2)}")
@@ -73,7 +73,7 @@ def main():
     # =========================================================================
     print_header("DEMO 3 — NESTED BOLA")
     print("→ User 101 requests their own parent object (User 101)")
-    print("→ Attempts to access nested resource belonging to Bob (Resource 102)...")
+    print("→ Attempts to access nested resource belonging to Kapilesh (Resource 102)...")
     query = {"query": "{ user(id: 101) { username resource(id: 102) { name } } }"}
     res = client.post("/graphql", json=query, headers={"Authorization": f"Bearer {token}"})
     print(f"\n[HTTP {res.status_code}]\n{json.dumps(res.json(), indent=2)}")

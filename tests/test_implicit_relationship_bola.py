@@ -25,7 +25,7 @@ def relationship_test_db():
         # Create isolated test data.
         seed_database()
 
-        # Put Bob's document beneath Alice's folder.
+        # Put Kapilesh's document beneath Balanilavan's folder.
         conn = get_db_connection()
         try:
             conn.execute(
@@ -48,7 +48,7 @@ def relationship_test_db():
         settings.DATABASE_URL = original_database_url
 
 
-def alice_headers():
+def balanilavan_headers():
     token = create_access_token(user_id=101, role="user")
     return {"Authorization": f"Bearer {token}"}
 
@@ -75,7 +75,7 @@ def test_insecure_endpoint_exposes_foreign_owned_child(
     response = client.post(
         "/graphql-insecure",
         json={"query": RELATIONSHIP_QUERY},
-        headers=alice_headers(),
+        headers=balanilavan_headers(),
     )
 
     assert response.status_code == 200, response.text
@@ -85,7 +85,7 @@ def test_insecure_endpoint_exposes_foreign_owned_child(
 
     children = payload["data"]["resource"]["children"]
 
-    # The intentionally vulnerable endpoint returns Bob's document.
+    # The intentionally vulnerable endpoint returns Kapilesh's document.
     foreign_child = next(
         child for child in children if child["id"] == 102
     )
@@ -100,7 +100,7 @@ def test_protected_endpoint_hides_foreign_owned_child(
     response = client.post(
         "/graphql",
         json={"query": RELATIONSHIP_QUERY},
-        headers=alice_headers(),
+        headers=balanilavan_headers(),
     )
 
     assert response.status_code == 200, response.text
@@ -112,8 +112,8 @@ def test_protected_endpoint_hides_foreign_owned_child(
     children = resource["children"]
     child_ids = {child["id"] for child in children}
 
-    # Bob's document must not be exposed to Alice.
+    # Kapilesh's document must not be exposed to Balanilavan.
     assert 102 not in child_ids
 
-    # Alice's legitimate children must remain accessible.
+    # Balanilavan's legitimate children must remain accessible.
     assert {202, 203}.issubset(child_ids)

@@ -24,18 +24,18 @@ def setup_test_db():
     settings.DATABASE_URL = original_url
 
 def test_login_success():
-    response = client.post("/api/v1/auth/login", json={"username": "alice", "password": "alice123"})
+    response = client.post("/api/v1/auth/login", json={"username": "balanilavan", "password": "balanilavan123"})
     assert response.status_code == 200
     assert "access_token" in response.json()
     assert response.json()["token_type"] == "bearer"
 
 def test_login_failure():
-    response = client.post("/api/v1/auth/login", json={"username": "alice", "password": "wrong"})
+    response = client.post("/api/v1/auth/login", json={"username": "balanilavan", "password": "wrong"})
     assert response.status_code == 401
 
 def test_protected_valid_token():
     # Login to get token
-    response = client.post("/api/v1/auth/login", json={"username": "alice", "password": "alice123"})
+    response = client.post("/api/v1/auth/login", json={"username": "balanilavan", "password": "balanilavan123"})
     token = response.json()["access_token"]
     
     # Access protected route
