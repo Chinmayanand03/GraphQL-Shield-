@@ -125,16 +125,22 @@ GUARDED_TYPES = {ResourceType: "Resource", UserType: "User"}
 
 class RuntimeObjectAuthorizationExtension(SchemaExtension):
     """
-    Prototype runtime guard for ResourceType objects.
+    Layer 2: execution-time guard for owned objects (ResourceType, UserType).
 
-    It checks actual resolver results before GraphQL resolves the
-    object's nested fields. Lists are filtered item by item.
-    Enforcement decisions, audit logs, authorization evidence, and
-    object provenance graphs are recorded on request security state.
+    1. Mutation argument guard: before a root mutation resolver runs, the `id`
+       argument the GraphQL engine actually coerced (after variables, fragments,
+       directives and aliases) is checked against the trusted owner. A denied
+       mutation never executes, so there is no side effect to undo.
+    2. Object guard: actual resolver results are checked before GraphQL resolves
+       the object's nested fields. Lists are filtered item by item.
+
+    Enforcement decisions, audit logs, authorization evidence, and object
+    provenance graphs are recorded on request security state. Denials of objects
+    Layer 1 never evaluated are recorded as Layer 1 blind spots.
 
     Scope:
       - Protected /graphql endpoint only.
-      - ResourceType objects with canonical integer IDs.
+      - ResourceType and UserType objects with canonical integer IDs.
       - Ownership from the trusted database lookup.
 
     This is a prototype, not a universal GraphQL security guarantee.
