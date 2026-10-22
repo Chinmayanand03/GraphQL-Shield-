@@ -319,7 +319,39 @@ With `ENABLE_LAYER_TOGGLE=true`, admins can also switch layers live: `POST /api/
 ### Mutation Ownership Registry
 Layer 2 checks each root mutation's target using `MUTATION_TARGETS` in `app/graphql/mutations.py` (mutation name → target argument and object type). A mutation missing from the registry is denied, and `tests/test_hardening.py` fails if a new mutation is added without an entry.
 
-### Training the Behavioral XGBoost Model
+### Layer 1 Blind-Spot Predictor (self-supervised from cross-layer disagreement)
+
+Layer 2 writes an audit row (`layer='L2'`) only for owned objects Layer 1 never evaluated. Every such row is a Layer 1 coverage gap, recorded by the gateway itself. The blind-spot predictor uses these rows as training labels, so no request is labelled by hand:
+
+1. `scripts/train_blind_spot_model.py` generates 4,000 varied requests (literals, variables, variable defaults, aliases, directives, named/inline fragments, relationships, batches, mutations) from different callers against a test world with mixed-owner folders, and runs each through the real gateway.
+2. Each request Layer 1 allows is labelled by whether Layer 2 then audited an object Layer 1 missed (a coverage gap), and whether Layer 2 denied it (an attack only Layer 2 stopped).
+3. XGBoost is trained on 17 **pre-execution** query features (`app/security/query_features.py`): structure, how IDs are supplied, and how many IDs Layer 1 resolved. It never sees ownership data or enforcement outcomes.
+4. It is compared with the hand-written rule for Layer 1's documented blind spot (relationship traversal), on a random split and on a query family held out from training (relationships wrapped in fragments).
+
+```bash
+python -m scripts.train_blind_spot_model --discovery   # analyse the current Layer 1
+python -m scripts.train_blind_spot_model               # train and deploy the model
+```
+
+**Discovery run (before the fix).** The model learned a Layer 1 gap that the hand-written rule did not encode: `query($id: Int = 102)` with no variables sent. Layer 1 ignored variable defaults, so every such request (585 of them, queries and mutations) reached objects Layer 1 never checked. 263 of them were attacks stopped only by Layer 2.
+
+| Random test split (discovery) | XGBoost | Rule baseline |
+| :--- | :--- | :--- |
+| F1 (coverage gaps) | **1.000** | 0.639 |
+| Attack recall | **100%** | 23.4% |
+
+**After fixing Layer 1** (`object_extractor.py` now reads variable defaults), attacks reaching only Layer 2 fell from 401 to 138 (−66%), and Layer 1 blocks 1,678 instead of 1,415 of the 4,000 requests. The remaining gaps are relationship traversal only; there both the model and the rule reach F1 1.000, including on the held-out family.
+
+**At runtime** the model scores every request Layer 1 allows (about 1.2 ms). A positive prediction is recorded as a `BLIND_SPOT_PREDICTED` layer event, and each `L1_BLIND_SPOT_CAUGHT_BY_L2` event carries the earlier prediction (`predicted p=…`), so predictions can be checked against live traffic. It is advisory only and never changes an allow/deny decision.
+
+- `GET /api/v1/security/blind-spot-model`: metrics, SHAP feature importance, discovery run
+- `POST /api/v1/security/blind-spot-score`: score a query without executing it, with per-feature SHAP explanations
+
+**Limits.** The test world is small and synthetic, and coverage gaps are largely a deterministic function of query structure, so F1 1.000 shows the method recovers the gap causes, not real-world accuracy. The contribution is the method: the gateway labels its own blind spots, and the model turns those labels into causes an engineer can fix.
+
+### Behavioural Session Model (live telemetry)
+The behavioural XGBoost model's 10 session features are now computed from the audit log (last 15 minutes per user, `app/security/live_telemetry.py`) instead of being typed in. Admins get them at `GET /api/v1/telemetry/live-sessions`, and the dashboard's session table shows live sessions when there is recent traffic.
+
 ```bash
 python scripts/generate_behavioral_dataset.py
 python scripts/train_behavioral_xgboost.py
@@ -336,7 +368,7 @@ python -m pytest -v
 
 Expected output:
 ```text
-======================= 258 passed =======================
+======================= 277 passed =======================
 ```
 
 ---

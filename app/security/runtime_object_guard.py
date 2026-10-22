@@ -553,9 +553,12 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
             return
         if getattr(getattr(request, "state", None), "layer1_checked", None) is None:
             return
+        detail = "object reached without an ID Layer 1 could see (relationship traversal or unparsed query shape)"
+        predicted = getattr(request.state, "blind_spot_probability", None)
+        if isinstance(predicted, float):
+            detail += f"; predicted p={predicted:.2f}"
         record_layer_event(decision_info.get("user_id"), "L2", EVENT_L1_BLIND_SPOT, object_type, object_id,
-                           ".".join(map(str, path)),
-                           "object reached without an ID Layer 1 could see (relationship traversal or unparsed query shape)")
+                           ".".join(map(str, path)), detail)
 
 
 class _OwnedRef:

@@ -1,0 +1,286 @@
+{
+  "generated_at": "2026-10-22T18:03:04.463107+00:00",
+  "run": "discovery",
+  "seed": 20261022,
+  "requests": 4000,
+  "l1_blocked_requests": 1415,
+  "coverage_gap_requests": 1261,
+  "blind_spot_attacks": 401,
+  "label_source": "Layer 2 audit rows (layer='L2'), written only for owned objects Layer 1 never evaluated; attacks are L1_BLIND_SPOT_CAUGHT_BY_L2 events. No hand labelling.",
+  "held_out_family": "relationship_in_fragment",
+  "feature_names": [
+    "batch_size",
+    "is_mutation",
+    "caller_is_admin",
+    "max_depth",
+    "field_count",
+    "relationship_field_count",
+    "relationship_chain_depth",
+    "id_argument_count",
+    "l1_resolved_id_count",
+    "unresolved_id_argument_count",
+    "nested_id_lookup_count",
+    "variable_count",
+    "variable_default_count",
+    "inline_fragment_count",
+    "fragment_spread_count",
+    "alias_count",
+    "directive_count"
+  ],
+  "rule_baseline": "relationship_field_count > 0 (Layer 1's documented blind spot)",
+  "splits": {
+    "train_rows": 1817,
+    "random_test": 606,
+    "held_out_family": 162
+  },
+  "evaluation": {
+    "random_test": {
+      "rows": 606,
+      "positives": 262,
+      "attacks": 77,
+      "xgboost": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "false_positive_rate": 0.0,
+        "confusion_matrix": {
+          "tn": 344,
+          "fp": 0,
+          "fn": 0,
+          "tp": 262
+        },
+        "pr_auc_average_precision": 1.0,
+        "attack_recall": 1.0
+      },
+      "rule_baseline": {
+        "precision": 1.0,
+        "recall": 0.4695,
+        "f1_score": 0.639,
+        "false_positive_rate": 0.0,
+        "confusion_matrix": {
+          "tn": 344,
+          "fp": 0,
+          "fn": 139,
+          "tp": 123
+        },
+        "pr_auc_average_precision": 0.6988,
+        "attack_recall": 0.2338
+      }
+    },
+    "held_out_family": {
+      "rows": 162,
+      "positives": 162,
+      "attacks": 63,
+      "xgboost": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "false_positive_rate": 0.0,
+        "confusion_matrix": {
+          "tn": 0,
+          "fp": 0,
+          "fn": 0,
+          "tp": 162
+        },
+        "attack_recall": 1.0
+      },
+      "rule_baseline": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "false_positive_rate": 0.0,
+        "confusion_matrix": {
+          "tn": 0,
+          "fp": 0,
+          "fn": 0,
+          "tp": 162
+        },
+        "attack_recall": 1.0
+      }
+    }
+  },
+  "feature_importance": [
+    {
+      "feature": "relationship_field_count",
+      "mean_abs_shap": 4.5535
+    },
+    {
+      "feature": "l1_resolved_id_count",
+      "mean_abs_shap": 3.4571
+    },
+    {
+      "feature": "variable_count",
+      "mean_abs_shap": 0.2123
+    },
+    {
+      "feature": "batch_size",
+      "mean_abs_shap": 0.107
+    },
+    {
+      "feature": "field_count",
+      "mean_abs_shap": 0.0807
+    },
+    {
+      "feature": "id_argument_count",
+      "mean_abs_shap": 0.013
+    },
+    {
+      "feature": "is_mutation",
+      "mean_abs_shap": 0.0
+    },
+    {
+      "feature": "caller_is_admin",
+      "mean_abs_shap": 0.0
+    },
+    {
+      "feature": "max_depth",
+      "mean_abs_shap": 0.0
+    },
+    {
+      "feature": "relationship_chain_depth",
+      "mean_abs_shap": 0.0
+    },
+    {
+      "feature": "unresolved_id_argument_count",
+      "mean_abs_shap": 0.0
+    },
+    {
+      "feature": "nested_id_lookup_count",
+      "mean_abs_shap": 0.0
+    },
+    {
+      "feature": "variable_default_count",
+      "mean_abs_shap": 0.0
+    },
+    {
+      "feature": "inline_fragment_count",
+      "mean_abs_shap": 0.0
+    },
+    {
+      "feature": "fragment_spread_count",
+      "mean_abs_shap": 0.0
+    },
+    {
+      "feature": "alias_count",
+      "mean_abs_shap": 0.0
+    },
+    {
+      "feature": "directive_count",
+      "mean_abs_shap": 0.0
+    }
+  ],
+  "family_coverage": [
+    {
+      "family": "mutation_variable_default",
+      "l1_allowed": 300,
+      "coverage_gaps": 300,
+      "attacks_caught_by_l2": 128,
+      "coverage_gap_rate": 1.0,
+      "gaps_missed_by_rule": 300
+    },
+    {
+      "family": "relationship",
+      "l1_allowed": 159,
+      "coverage_gaps": 159,
+      "attacks_caught_by_l2": 55,
+      "coverage_gap_rate": 1.0,
+      "gaps_missed_by_rule": 0
+    },
+    {
+      "family": "variable_default",
+      "l1_allowed": 285,
+      "coverage_gaps": 285,
+      "attacks_caught_by_l2": 135,
+      "coverage_gap_rate": 1.0,
+      "gaps_missed_by_rule": 285
+    },
+    {
+      "family": "relationship_in_fragment",
+      "l1_allowed": 162,
+      "coverage_gaps": 162,
+      "attacks_caught_by_l2": 63,
+      "coverage_gap_rate": 1.0,
+      "gaps_missed_by_rule": 0
+    },
+    {
+      "family": "user_resources",
+      "l1_allowed": 287,
+      "coverage_gaps": 287,
+      "attacks_caught_by_l2": 0,
+      "coverage_gap_rate": 1.0,
+      "gaps_missed_by_rule": 0
+    },
+    {
+      "family": "batch",
+      "l1_allowed": 136,
+      "coverage_gaps": 68,
+      "attacks_caught_by_l2": 20,
+      "coverage_gap_rate": 0.5,
+      "gaps_missed_by_rule": 0
+    },
+    {
+      "family": "directive",
+      "l1_allowed": 158,
+      "coverage_gaps": 0,
+      "attacks_caught_by_l2": 0,
+      "coverage_gap_rate": 0.0,
+      "gaps_missed_by_rule": 0
+    },
+    {
+      "family": "alias",
+      "l1_allowed": 161,
+      "coverage_gaps": 0,
+      "attacks_caught_by_l2": 0,
+      "coverage_gap_rate": 0.0,
+      "gaps_missed_by_rule": 0
+    },
+    {
+      "family": "direct_literal",
+      "l1_allowed": 155,
+      "coverage_gaps": 0,
+      "attacks_caught_by_l2": 0,
+      "coverage_gap_rate": 0.0,
+      "gaps_missed_by_rule": 0
+    },
+    {
+      "family": "inline_fragment",
+      "l1_allowed": 141,
+      "coverage_gaps": 0,
+      "attacks_caught_by_l2": 0,
+      "coverage_gap_rate": 0.0,
+      "gaps_missed_by_rule": 0
+    },
+    {
+      "family": "direct_variable",
+      "l1_allowed": 153,
+      "coverage_gaps": 0,
+      "attacks_caught_by_l2": 0,
+      "coverage_gap_rate": 0.0,
+      "gaps_missed_by_rule": 0
+    },
+    {
+      "family": "mutation",
+      "l1_allowed": 162,
+      "coverage_gaps": 0,
+      "attacks_caught_by_l2": 0,
+      "coverage_gap_rate": 0.0,
+      "gaps_missed_by_rule": 0
+    },
+    {
+      "family": "named_fragment",
+      "l1_allowed": 153,
+      "coverage_gaps": 0,
+      "attacks_caught_by_l2": 0,
+      "coverage_gap_rate": 0.0,
+      "gaps_missed_by_rule": 0
+    },
+    {
+      "family": "nested_user_lookup",
+      "l1_allowed": 173,
+      "coverage_gaps": 0,
+      "attacks_caught_by_l2": 0,
+      "coverage_gap_rate": 0.0,
+      "gaps_missed_by_rule": 0
+    }
+  ]
+}

@@ -215,12 +215,14 @@ def _model_service():
 
 
 def _research_evaluation(db, current_user: dict | None) -> dict:
-    """Research metrics are public; provenance evidence is built from audit rows,
-    so like the audit log it is returned only to an ADMIN token."""
+    """Research metrics are public; provenance evidence and live per-user sessions
+    are built from audit rows, so like the audit log they go only to an ADMIN token."""
     summary = _model_service().get_research_evaluation_summary(db)
     summary["provenance_evidence_restricted"] = not is_admin(current_user)
     if summary["provenance_evidence_restricted"]:
         summary["provenance_evidence"] = []
+        if summary.get("behavioural_alerts_source") == "live":
+            summary["behavioural_alerts"] = []
     return summary
 
 
@@ -246,6 +248,55 @@ def score_session(request: SessionScoreRequest):
 
     Advisory only: this score never changes a Layer 1 / Layer 2 authorization decision."""
     return _model_service().score_session_telemetry(request.model_dump())
+
+
+@app.get("/api/v1/telemetry/live-sessions")
+def get_live_sessions(
+    db: sqlite3.Connection = Depends(get_db),
+    current_user: dict = Depends(get_current_user),
+):
+    """ADMIN only: behavioural features computed from the last 15 minutes of the
+    audit log for each active user, scored by the rule baseline and XGBoost."""
+    if not is_admin(current_user):
+        raise HTTPException(status_code=403, detail="Admin access required")
+    from app.security.live_telemetry import live_sessions
+
+    service = _model_service()
+    return {
+        "sessions": [
+            {**session, "score": service.score_session_telemetry(session["features"])}
+            for session in live_sessions(db)
+        ]
+    }
+
+
+class QueryScoreRequest(BaseModel):
+    query: str
+    variables: dict | None = None
+
+
+@app.get("/api/v1/security/blind-spot-model")
+def get_blind_spot_model():
+    """Layer 1 blind-spot predictor: status, evaluation metrics and discovery run."""
+    from app.security import blind_spot_model
+
+    return blind_spot_model.summary()
+
+
+@app.post("/api/v1/security/blind-spot-score")
+def score_blind_spot(body: QueryScoreRequest, current_user: dict = Depends(get_current_user)):
+    """Predict, without executing it, whether a query reaches objects Layer 1 cannot
+    see, with per-feature explanations. Advisory only."""
+    from app.security import blind_spot_model
+
+    result = blind_spot_model.score_request(
+        [{"query": body.query, "variables": body.variables}],
+        caller_is_admin=is_admin(current_user),
+        explain=True,
+    )
+    if result is None:
+        raise HTTPException(status_code=400, detail="Query could not be parsed")
+    return result
 
 
 class LayerToggleRequest(BaseModel):

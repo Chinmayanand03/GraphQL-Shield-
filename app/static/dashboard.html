@@ -637,7 +637,7 @@
             <div class="panel-head" style="margin-bottom:10px;">
               <div>
                 <div class="panel-title" style="font-size:13px;">Suspicious Behavioural Sessions & Active Telemetry Alerts</div>
-                <div class="panel-subtitle" style="font-size:10px;">Sample session observation windows evaluated by XGBoost and Deterministic Rule Baseline</div>
+                <div class="panel-subtitle" style="font-size:10px;">Live per-user sessions computed from the last 15 minutes of the audit log (admin only), evaluated by XGBoost and the deterministic rule baseline. Labelled sample sessions are shown when there is no recent traffic.</div>
               </div>
               <span class="range-chip">SESSION TELEMETRY ALERTS</span>
             </div>
@@ -709,6 +709,39 @@
               </div>
             </div>
           </div>
+        </section>
+
+        <!-- Layer 1 Blind-Spot Predictor -->
+        <section class="panel section-gap" id="blind-spot-predictor">
+          <div class="panel-head">
+            <div><div class="panel-title">Layer 1 blind-spot predictor</div><div class="panel-subtitle">XGBoost predicts, before execution and from query structure alone, whether a request reaches owned objects Layer 1 cannot see. Its training labels come from the gateway itself: Layer 2 audits exactly the objects Layer 1 missed. Advisory only, it never changes an allow/deny decision.</div></div>
+            <span class="range-chip" id="blindSpotStatusChip">LOADING…</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Evaluation split</th><th>Requests</th><th>Coverage gaps</th><th>XGBoost F1</th><th>XGBoost PR-AUC</th><th>XGBoost attack recall</th><th>Rule F1</th><th>Rule attack recall</th></tr></thead>
+              <tbody id="blindSpotMetricsBody"><tr><td class="empty" colspan="8">Loading model metrics…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="console-grid section-gap" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+            <div>
+              <div class="panel-title" style="font-size:13px;">What drives the prediction</div>
+              <div class="panel-subtitle" style="font-size:10px;">Mean |SHAP| contribution per feature</div>
+              <div id="blindSpotImportance" class="secondary-cell">—</div>
+            </div>
+            <div>
+              <div class="panel-title" style="font-size:13px;">Discovery run: gaps found in Layer 1</div>
+              <div class="panel-subtitle" style="font-size:10px;">Coverage gaps per query family before the fix, and how many the hand-written rule missed</div>
+              <div class="table-wrap"><table>
+                <thead><tr><th>Query family</th><th>Gaps</th><th>Missed by rule</th></tr></thead>
+                <tbody id="blindSpotDiscoveryBody"><tr><td class="empty" colspan="3">No discovery run recorded.</td></tr></tbody>
+              </table></div>
+            </div>
+          </div>
+          <div class="field section-gap"><label for="blindSpotQuery">Score a query without running it (sign in as admin first)</label>
+            <textarea class="input" id="blindSpotQuery" rows="3" style="font-family:monospace; resize:vertical;">{ resource(id: 201) { id children { id name } } }</textarea>
+          </div>
+          <div class="console-actions"><button class="btn primary" id="blindSpotScoreButton" type="button">Predict blind spot</button><span class="console-note" id="blindSpotScoreResult">—</span></div>
         </section>
       </div>
 
@@ -1242,6 +1275,74 @@
           showToast(`Could not sign in: ${error.message || error}`);
         } finally {
           $('layerAdminPassword').value = '';
+        }
+      }
+
+      /* LAYER 1 BLIND-SPOT PREDICTOR */
+      function pct(value) { return value === null || value === undefined ? '—' : `${(value * 100).toFixed(1)}%`; }
+
+      async function loadBlindSpotPanel() {
+        try {
+          const response = await fetch('/api/v1/security/blind-spot-model', {headers:{'Accept':'application/json'}, cache:'no-store'});
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = await response.json();
+          setText('blindSpotStatusChip', data.model_status && data.model_status.loaded ? 'MODEL LOADED' : 'MODEL NOT TRAINED');
+          const metrics = data.metrics;
+          if (metrics && metrics.evaluation) {
+            $('blindSpotMetricsBody').replaceChildren(...Object.entries(metrics.evaluation).map(([split, e]) => {
+              const row = document.createElement('tr');
+              row.append(
+                layerCell(split === 'held_out_family' ? `Held-out family (${metrics.held_out_family})` : 'Random test split'),
+                layerCell(e.rows), layerCell(e.positives),
+                layerCell(pct(e.xgboost.f1_score)), layerCell(pct(e.xgboost.pr_auc_average_precision)), layerCell(pct(e.xgboost.attack_recall)),
+                layerCell(pct(e.rule_baseline.f1_score)), layerCell(pct(e.rule_baseline.attack_recall))
+              );
+              return row;
+            }));
+            const top = (metrics.feature_importance || []).filter(item => item.mean_abs_shap > 0).slice(0, 6);
+            const max = top.length ? top[0].mean_abs_shap : 1;
+            $('blindSpotImportance').replaceChildren(...top.map(item => {
+              const line = document.createElement('div');
+              line.style.cssText = 'display:grid; grid-template-columns:minmax(0,1fr) 90px 44px; gap:8px; align-items:center; margin:6px 0;';
+              const label = document.createElement('code'); label.textContent = item.feature;
+              const bar = document.createElement('div');
+              bar.style.cssText = `height:8px; border-radius:4px; background:var(--cyan); width:${Math.max(4, 90 * item.mean_abs_shap / max)}px;`;
+              const value = document.createElement('span'); value.textContent = item.mean_abs_shap.toFixed(2);
+              line.append(label, bar, value);
+              return line;
+            }));
+          }
+          const discovery = data.discovery && data.discovery.family_coverage;
+          if (Array.isArray(discovery)) {
+            const rows = discovery.filter(item => item.coverage_gaps > 0);
+            if (rows.length) {
+              $('blindSpotDiscoveryBody').replaceChildren(...rows.map(item => {
+                const row = document.createElement('tr');
+                row.append(layerCell(item.family), layerCell(`${item.coverage_gaps}/${item.l1_allowed}`), layerCell(item.gaps_missed_by_rule));
+                return row;
+              }));
+            }
+          }
+        } catch (error) {
+          setText('blindSpotStatusChip', 'MODEL API UNAVAILABLE');
+        }
+      }
+
+      async function scoreBlindSpotQuery() {
+        if (!adminToken) { showToast('Sign in as admin in the Dual-layer defense panel first.'); return; }
+        try {
+          const response = await fetch('/api/v1/security/blind-spot-score', {
+            method: 'POST', headers: authHeaders({'Content-Type':'application/json','Accept':'application/json'}),
+            body: JSON.stringify({query: $('blindSpotQuery').value}), cache:'no-store'
+          });
+          const payload = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(payload.detail || `HTTP ${response.status}`);
+          const reasons = (payload.contributions || []).slice(0, 3)
+            .map(c => `${c.feature}=${c.value} (${c.contribution > 0 ? '+' : ''}${c.contribution.toFixed(2)})`).join(', ');
+          const verdict = payload.prediction === null ? 'model unavailable' : payload.prediction ? 'LIKELY BLIND SPOT' : 'Layer 1 can see its objects';
+          setText('blindSpotScoreResult', `${verdict} · p=${pct(payload.probability)} · rule=${payload.rule_prediction ? 'flag' : 'no flag'}${reasons ? ' · ' + reasons : ''}`);
+        } catch (error) {
+          setText('blindSpotScoreResult', `Could not score: ${error.message || error}`);
         }
       }
 
@@ -1847,6 +1948,8 @@
         });
         $('runTestButton').addEventListener('click', runSelectedTest);
         $('adminSignInButton').addEventListener('click', adminSignIn);
+        $('blindSpotScoreButton').addEventListener('click', scoreBlindSpotQuery);
+        loadBlindSpotPanel();
         setAdminToken(adminToken);
         $('toggleLayer1Button').addEventListener('click', () => toggleLayer('layer1'));
         $('toggleLayer2Button').addEventListener('click', () => toggleLayer('layer2'));

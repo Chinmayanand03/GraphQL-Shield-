@@ -19,6 +19,7 @@ from app.benchmarks.behavioral_dataset import (
     FEATURE_NAMES,
     SCENARIO_CONFIGS,
 )
+from app.security.live_telemetry import WINDOW_MINUTES
 from scripts.train_behavioral_xgboost import rule_behavioral_score
 
 logger = logging.getLogger(__name__)
@@ -422,6 +423,24 @@ def get_research_evaluation_summary(db_connection: Any = None) -> dict[str, Any]
         },
     ]
 
+    # Prefer live sessions computed from the audit log; fall back to the samples
+    # above when there has been no recent traffic.
+    live = _live_sessions(db_connection)
+    alerts_source = "live" if live else "sample"
+    if live:
+        sample_sessions = [
+            {
+                "session_id": f"user-{session['user_id']}",
+                "scenario": f"live · {session['actor']}",
+                "description": (
+                    f"Last {WINDOW_MINUTES} min of audit-log decisions; "
+                    f"{session['layer1_blind_spot_denials']} Layer 1 blind-spot denials"
+                ),
+                **session["features"],
+            }
+            for session in live
+        ]
+
     scored_sessions = []
     for s in sample_sessions:
         scored = score_session_telemetry(s)
@@ -473,4 +492,20 @@ def get_research_evaluation_summary(db_connection: Any = None) -> dict[str, Any]
         "non_interference": get_non_interference_summary(),
         "provenance_evidence": provenance_evidence,
         "behavioural_alerts": scored_sessions,
+        "behavioural_alerts_source": alerts_source,
     }
+
+
+def _live_sessions(db_connection: Any = None) -> list[dict[str, Any]]:
+    from app.database import get_db_connection
+    from app.security.live_telemetry import live_sessions
+
+    conn = db_connection if db_connection is not None else get_db_connection()
+    try:
+        return live_sessions(conn)
+    except Exception as exc:  # e.g. a database without the layer_events table
+        logger.warning("Live behavioural telemetry unavailable: %s", exc)
+        return []
+    finally:
+        if db_connection is None:
+            conn.close()

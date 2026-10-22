@@ -28,6 +28,9 @@ EVENT_L1_BLOCKED = "L1_BLOCKED"
 EVENT_L2_FILTERED = "L2_FILTERED"
 EVENT_L2_MUTATION_BLOCKED = "L2_MUTATION_BLOCKED"
 EVENT_L1_BLIND_SPOT = "L1_BLIND_SPOT_CAUGHT_BY_L2"
+# Advisory: the blind-spot predictor expects this allowed request to reach objects
+# Layer 1 cannot see (app/security/blind_spot_model.py). Never changes a decision.
+EVENT_BLIND_SPOT_PREDICTED = "BLIND_SPOT_PREDICTED"
 
 
 def is_enabled(layer: str) -> bool:

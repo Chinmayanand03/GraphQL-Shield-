@@ -7,7 +7,13 @@ from .object_extractor import normalize_query
 from .ownership import get_object_owner
 from .authorization import AuthorizationContext, PolicyEngine
 from .audit import log_decision
-from .layers import EVENT_L1_BLOCKED, is_enabled, mark_layer1_checked, record_layer_event
+from .layers import (
+    EVENT_BLIND_SPOT_PREDICTED,
+    EVENT_L1_BLOCKED,
+    is_enabled,
+    mark_layer1_checked,
+    record_layer_event,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -49,12 +55,35 @@ async def bola_enforcement_middleware(request: Request, current_user: dict = Dep
             if not isinstance(operation, dict):
                 raise HTTPException(status_code=400, detail={"error": "MALFORMED_REQUEST", "batch_index": index})
             _enforce_operation(request, current_user, operation, batch_index=index)
+        _predict_blind_spot(request, current_user, data)
         return
 
     if not isinstance(data, dict):
         raise HTTPException(status_code=400, detail={"error": "MALFORMED_REQUEST", "reason": "Expected a JSON object or array."})
 
     _enforce_operation(request, current_user, data)
+    _predict_blind_spot(request, current_user, [data])
+
+
+def _predict_blind_spot(request: Request, current_user: dict, operations: list[dict]) -> None:
+    """Advisory: score a request Layer 1 allowed with the blind-spot predictor.
+
+    The prediction is stored on the request and recorded as an event when positive;
+    it never changes the authorization decision (Layer 2 still checks everything).
+    """
+    try:
+        from .blind_spot_model import score_request
+
+        result = score_request(operations, caller_is_admin=str(current_user.get("role", "")).upper() == "ADMIN")
+    except Exception:
+        logger.debug("Blind-spot prediction skipped", exc_info=True)
+        return
+    if not result or result["probability"] is None:
+        return
+    request.state.blind_spot_probability = result["probability"]
+    if result["prediction"]:
+        record_layer_event(current_user.get("user_id"), "L1", EVENT_BLIND_SPOT_PREDICTED,
+                           detail=f"p={result['probability']:.2f}")
 
 
 def _enforce_operation(request: Request, current_user: dict, data: dict, batch_index: int | None = None) -> None:
