@@ -10,11 +10,12 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from strawberry.fastapi import GraphQLRouter
 
-from app.config import settings
+from app.config import check_production_settings, settings
 from app.database import init_db, get_db
 from app.graphql.schema import schema
 from app.core.security import create_access_token
-from app.core.dependencies import get_current_user
+from app.core.dependencies import get_current_user, get_optional_user, is_admin
+from app.core.passwords import verify_password
 from app.security.taint_request_explainer import router as taint_explainer_router
 from app.security.enforcement import bola_enforcement_middleware
 from app.security.layers import layer_summary, set_layers
@@ -23,6 +24,7 @@ from app.security.layers import layer_summary, set_layers
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Initialize application resources when FastAPI starts."""
+    check_production_settings()
     init_db()
     yield
 
@@ -54,67 +56,15 @@ class LoginRequest(BaseModel):
     password: str
 
 
-LOGIN_USERNAME_ALIASES = {
-    "balanilavan": ["bala"],
-    "bala": ["balanilavan"],
-
-    "kapilesh": ["kapil"],
-    "kapil": ["kapilesh"],
-
-    "chinmayanand": ["chinmay"],
-    "chinmay": ["chinmayanand"],
-
-    "sakthivel": ["sakthi"],
-    "sakthi": ["sakthivel"],
-}
-
-PASSWORD_ALIASES = {
-    "balanilavan123": ["bala123"],
-    "bala123": ["balanilavan123"],
-
-    "kapilesh123": ["kapil123"],
-    "kapil123": ["kapilesh123"],
-
-    "sakthivel123": ["sakthi123"],
-    "sakthi123": ["sakthivel123"],
-
-    "chinmay123": ["chinmayanand123"],
-    "chinmayanand123": ["chinmay123"],
-}
-
-
-
 @app.post("/api/v1/auth/login")
 def login(request: LoginRequest, db: sqlite3.Connection = Depends(get_db)):
-    """Development login endpoint with friendly and legacy username aliases."""
-    requested_username = request.username.strip().lower()
-    candidates = [requested_username]
-    aliases = LOGIN_USERNAME_ALIASES.get(requested_username, [])
-    if isinstance(aliases, str):
-        aliases = [aliases]
-    for alias in aliases:
-        if alias not in candidates:
-            candidates.append(alias)
+    """Development login endpoint. Demo passwords follow <username>123."""
+    user = db.execute(
+        "SELECT id, role, password_hash FROM users WHERE username = ?",
+        (request.username.strip().lower(),),
+    ).fetchone()
 
-    expected_passwords = [request.password]
-    for alt in PASSWORD_ALIASES.get(request.password, []):
-        if alt not in expected_passwords:
-            expected_passwords.append(alt)
-    expected_hashes = [f"hash_{p}" for p in expected_passwords]
-
-    cursor = db.cursor()
-    user = None
-    for candidate in candidates:
-        placeholders = ", ".join("?" for _ in expected_hashes)
-        cursor.execute(
-            f"SELECT id, role FROM users WHERE username = ? AND password_hash IN ({placeholders})",
-            (candidate, *expected_hashes),
-        )
-        user = cursor.fetchone()
-        if user:
-            break
-
-    if not user:
+    if not user or not verify_password(request.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Invalid username or password")
 
     access_token = create_access_token(user_id=user["id"], role=user["role"])
@@ -138,7 +88,7 @@ def get_audit_logs(
     current_user: dict = Depends(get_current_user),
 ):
     """Restrict audit log access to administrators."""
-    if current_user.get("role", "").upper() != "ADMIN":
+    if not is_admin(current_user):
         raise HTTPException(
             status_code=403,
             detail="Admin access required",
@@ -154,18 +104,26 @@ def get_audit_logs(
 
 
 # Static dashboard assets
-os.makedirs("app/static", exist_ok=True)
+STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
+os.makedirs(STATIC_DIR, exist_ok=True)
 
 app.mount(
     "/static",
-    StaticFiles(directory="app/static"),
+    StaticFiles(directory=STATIC_DIR),
     name="static",
 )
 
 
 @app.get("/api/v1/dashboard-stats")
-def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
-    """Return dashboard metrics, recent audit events, and safe demo-user metadata."""
+def get_dashboard_stats(
+    db: sqlite3.Connection = Depends(get_db),
+    current_user: dict | None = Depends(get_optional_user),
+):
+    """Return dashboard metrics and demo-user metadata.
+
+    The aggregate counters are public; the recent audit rows (who touched which
+    object) are returned only to an ADMIN token, matching /api/v1/audit-logs.
+    """
     cursor = db.cursor()
 
     cursor.execute("SELECT COUNT(*) FROM audit_logs")
@@ -188,30 +146,15 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
     cursor.execute("SELECT COUNT(*) FROM audit_logs WHERE risk_level = 'HIGH'")
     high_risk = cursor.fetchone()[0]
 
-    user_columns = {
-        row[1] for row in cursor.execute("PRAGMA table_info(users)").fetchall()
-    }
-    if "display_name" in user_columns:
+    logs_visible = is_admin(current_user)
+    recent_logs = []
+    if logs_visible:
         cursor.execute(
             """
             SELECT a.*,
                    u.username AS username,
-                   u.display_name AS display_name,
-                   COALESCE(
-                       NULLIF(u.display_name, ''),
-                       CASE u.username
-                           WHEN 'chinmayanand' THEN 'Admin Demo Account'
-                           WHEN 'chinmay' THEN 'Admin Demo Account'
-                           WHEN 'balanilavan' THEN 'B.V. Balanilavan'
-                           WHEN 'bala' THEN 'B.V. Balanilavan'
-                           WHEN 'kapilesh' THEN 'Kapilesh N'
-                           WHEN 'kapil' THEN 'Kapilesh N'
-                           WHEN 'sakthivel' THEN 'Sakthivel B'
-                           WHEN 'sakthi' THEN 'Sakthivel B'
-                           ELSE u.username
-                       END,
-                       CAST(a.user_id AS TEXT)
-                    ) AS actor_name,
+                   COALESCE(NULLIF(u.display_name, ''), u.username) AS display_name,
+                   COALESCE(NULLIF(u.display_name, ''), u.username, CAST(a.user_id AS TEXT)) AS actor_name,
                    COALESCE(u.role, a.role) AS actor_role
             FROM audit_logs AS a
             LEFT JOIN users AS u ON u.id = a.user_id
@@ -219,115 +162,16 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
             LIMIT 15
             """
         )
-    else:
-        cursor.execute(
-            """
-            SELECT a.*,
-                   u.username AS username,
-                   CASE u.username
-                       WHEN 'chinmayanand' THEN 'Admin Demo Account'
-                       WHEN 'chinmay' THEN 'Admin Demo Account'
-                       WHEN 'balanilavan' THEN 'B.V. Balanilavan'
-                       WHEN 'bala' THEN 'B.V. Balanilavan'
-                       WHEN 'kapilesh' THEN 'Kapilesh N'
-                       WHEN 'kapil' THEN 'Kapilesh N'
-                       WHEN 'sakthivel' THEN 'Sakthivel B'
-                       WHEN 'sakthi' THEN 'Sakthivel B'
-                       ELSE u.username
-                   END AS display_name,
-                   COALESCE(
-                       CASE u.username
-                           WHEN 'chinmayanand' THEN 'Admin Demo Account'
-                           WHEN 'chinmay' THEN 'Admin Demo Account'
-                           WHEN 'balanilavan' THEN 'B.V. Balanilavan'
-                           WHEN 'bala' THEN 'B.V. Balanilavan'
-                           WHEN 'kapilesh' THEN 'Kapilesh N'
-                           WHEN 'kapil' THEN 'Kapilesh N'
-                           WHEN 'sakthivel' THEN 'Sakthivel B'
-                           WHEN 'sakthi' THEN 'Sakthivel B'
-                           ELSE u.username
-                       END,
-                       CAST(a.user_id AS TEXT)
-                   ) AS actor_name,
-                   COALESCE(u.role, a.role) AS actor_role
-            FROM audit_logs AS a
-            LEFT JOIN users AS u ON u.id = a.user_id
-            ORDER BY a.timestamp DESC
-            LIMIT 15
-            """
-        )
-    recent_logs = [dict(row) for row in cursor.fetchall()]
+        recent_logs = [dict(row) for row in cursor.fetchall()]
 
-    demo_users = []
-    for persona in (
-        {
-            "username": "balanilavan",
-            "legacy_username": "bala",
-            "display_name": "B.V. Balanilavan",
-            "role": "USER",
-            "id": 101,
-        },
-        {
-            "username": "kapilesh",
-            "legacy_username": "kapil",
-            "display_name": "Kapilesh N",
-            "role": "USER",
-            "id": 102,
-        },
-        {
-            "username": "sakthivel",
-            "legacy_username": "sakthi",
-            "display_name": "Sakthivel B",
-            "role": "USER",
-            "id": 103,
-        },
-        {
-            "username": "chinmayanand",
-            "legacy_username": "chinmay",
-            "display_name": "Admin Demo Account",
-            "role": "ADMIN",
-            "id": 104,
-        },
-    ):
-        candidates = [persona["username"]]
-        if persona["legacy_username"]:
-            candidates.append(persona["legacy_username"])
-        legacy_lookup = {
-            "balanilavan": ["bala"],
-            "kapilesh": ["kapil"],
-            "sakthivel": ["sakthi"],
-            "chinmayanand": ["chinmay"],
-        }
-        for extra in legacy_lookup.get(persona["username"], []):
-            if extra not in candidates:
-                candidates.append(extra)
-        placeholders = ", ".join("?" for _ in candidates)
-        if "display_name" in user_columns:
-            cursor.execute(
-                f"SELECT id, username, role, display_name FROM users WHERE username IN ({placeholders}) ORDER BY CASE username WHEN ? THEN 0 ELSE 1 END LIMIT 1",
-                (*candidates, persona["username"]),
-            )
-        else:
-            cursor.execute(
-                f"SELECT id, username, role FROM users WHERE username IN ({placeholders}) ORDER BY CASE username WHEN ? THEN 0 ELSE 1 END LIMIT 1",
-                (*candidates, persona["username"]),
-            )
-        row = cursor.fetchone()
-        if row is None and "id" in persona:
-            cursor.execute(
-                "SELECT id, username, role FROM users WHERE id = ?",
-                (persona["id"],),
-            )
-            row = cursor.fetchone()
-        if row is None:
-            continue
-        item = dict(row)
-        # Expose canonical seeded identifiers and names on the dashboard
-        item["id"] = persona["id"] if "id" in persona and persona["id"] else item.get("id")
-        item["username"] = persona["username"]
-        item["display_name"] = persona["display_name"]
-        item["role"] = persona["role"]
-        demo_users.append(item)
+    cursor.execute(
+        """
+        SELECT id, username, UPPER(role) AS role,
+               COALESCE(NULLIF(display_name, ''), username) AS display_name
+        FROM users ORDER BY id
+        """
+    )
+    demo_users = [dict(row) for row in cursor.fetchall()]
 
     return {
         "stats": {
@@ -338,8 +182,9 @@ def get_dashboard_stats(db: sqlite3.Connection = Depends(get_db)):
             "high_risk": high_risk,
         },
         "recent_logs": recent_logs,
+        "recent_logs_restricted": not logs_visible,
         "demo_users": demo_users,
-        "research_evaluation": _research_evaluation_or_unavailable(db),
+        "research_evaluation": _research_evaluation_or_unavailable(db, current_user),
     }
 
 
@@ -369,17 +214,32 @@ def _model_service():
     return model_service
 
 
-def _research_evaluation_or_unavailable(db):
+def _research_evaluation(db, current_user: dict | None) -> dict:
+    """Research metrics are public; provenance evidence and live per-user sessions
+    are built from audit rows, so like the audit log they go only to an ADMIN token."""
+    summary = _model_service().get_research_evaluation_summary(db)
+    summary["provenance_evidence_restricted"] = not is_admin(current_user)
+    if summary["provenance_evidence_restricted"]:
+        summary["provenance_evidence"] = []
+        if summary.get("behavioural_alerts_source") == "live":
+            summary["behavioural_alerts"] = []
+    return summary
+
+
+def _research_evaluation_or_unavailable(db, current_user: dict | None):
     try:
-        return _model_service().get_research_evaluation_summary(db)
+        return _research_evaluation(db, current_user)
     except HTTPException as exc:
         return {"available": False, "reason": exc.detail}
 
 
 @app.get("/api/v1/research-evaluation")
-def get_research_evaluation(db: sqlite3.Connection = Depends(get_db)):
+def get_research_evaluation(
+    db: sqlite3.Connection = Depends(get_db),
+    current_user: dict | None = Depends(get_optional_user),
+):
     """Return empirical research evaluation metrics, provenance evidence, and model limits."""
-    return _model_service().get_research_evaluation_summary(db)
+    return _research_evaluation(db, current_user)
 
 
 @app.post("/api/v1/telemetry/score-session")
@@ -390,15 +250,70 @@ def score_session(request: SessionScoreRequest):
     return _model_service().score_session_telemetry(request.model_dump())
 
 
+@app.get("/api/v1/telemetry/live-sessions")
+def get_live_sessions(
+    db: sqlite3.Connection = Depends(get_db),
+    current_user: dict = Depends(get_current_user),
+):
+    """ADMIN only: behavioural features computed from the last 15 minutes of the
+    audit log for each active user, scored by the rule baseline and XGBoost."""
+    if not is_admin(current_user):
+        raise HTTPException(status_code=403, detail="Admin access required")
+    from app.security.live_telemetry import live_sessions
+
+    service = _model_service()
+    return {
+        "sessions": [
+            {**session, "score": service.score_session_telemetry(session["features"])}
+            for session in live_sessions(db)
+        ]
+    }
+
+
+class QueryScoreRequest(BaseModel):
+    query: str
+    variables: dict | None = None
+
+
+@app.get("/api/v1/security/blind-spot-model")
+def get_blind_spot_model():
+    """Layer 1 blind-spot predictor: status, evaluation metrics and discovery run."""
+    from app.security import blind_spot_model
+
+    return blind_spot_model.summary()
+
+
+@app.post("/api/v1/security/blind-spot-score")
+def score_blind_spot(body: QueryScoreRequest, current_user: dict = Depends(get_current_user)):
+    """Predict, without executing it, whether a query reaches objects Layer 1 cannot
+    see, with per-feature explanations. Advisory only."""
+    from app.security import blind_spot_model
+
+    result = blind_spot_model.score_request(
+        [{"query": body.query, "variables": body.variables}],
+        caller_is_admin=is_admin(current_user),
+        explain=True,
+    )
+    if result is None:
+        raise HTTPException(status_code=400, detail="Query could not be parsed")
+    return result
+
+
 class LayerToggleRequest(BaseModel):
     layer1: bool | None = None
     layer2: bool | None = None
 
 
 @app.get("/api/v1/security/layers")
-def get_layers():
-    """Current Layer 1 / Layer 2 state, per-layer event counts and recent layer events."""
-    return layer_summary()
+def get_layers(current_user: dict | None = Depends(get_optional_user)):
+    """Current Layer 1 / Layer 2 state and per-layer event counts. The recent
+    per-object layer events are returned only to an ADMIN token."""
+    summary = layer_summary()
+    summary["toggle_enabled"] = settings.ENABLE_LAYER_TOGGLE
+    summary["recent_restricted"] = not is_admin(current_user)
+    if summary["recent_restricted"]:
+        summary["recent"] = []
+    return summary
 
 
 @app.post("/api/v1/security/layers")
@@ -406,7 +321,7 @@ def toggle_layers(body: LayerToggleRequest, current_user: dict = Depends(get_cur
     """ADMIN only: switch enforcement layers on/off to demonstrate the layer ablation live."""
     if not settings.ENABLE_LAYER_TOGGLE:
         raise HTTPException(status_code=403, detail="Layer toggling is disabled (ENABLE_LAYER_TOGGLE=false)")
-    if current_user.get("role", "").upper() != "ADMIN":
+    if not is_admin(current_user):
         raise HTTPException(status_code=403, detail="Admin access required")
     return {"layers": set_layers(body.layer1, body.layer2)}
 
@@ -414,7 +329,7 @@ def toggle_layers(body: LayerToggleRequest, current_user: dict = Depends(get_cur
 @app.get("/api/v1/security/layer-ablation")
 def get_layer_ablation():
     """Results of scripts/run_layer_ablation.py (the dual-layer ablation experiment)."""
-    path = os.path.join("results", "layer_ablation", "results.json")
+    path = os.path.join(os.path.dirname(STATIC_DIR), "..", "results", "layer_ablation", "results.json")
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Run `python -m scripts.run_layer_ablation` first")
     with open(path, encoding="utf-8") as file:
@@ -424,7 +339,8 @@ def get_layer_ablation():
 @app.get("/dashboard", response_class=HTMLResponse)
 def read_dashboard():
     """Serve the dashboard HTML."""
-    with open("app/static/dashboard.html", "r", encoding="utf-8") as file:
+    html_path = os.path.join(STATIC_DIR, "dashboard.html")
+    with open(html_path, "r", encoding="utf-8") as file:
         return file.read()
 
 

@@ -143,6 +143,8 @@
     .metric.red { --accent:var(--red); --glow:rgba(255,113,133,.10); }
     .metric.cyan { --accent:var(--cyan); --glow:rgba(87,215,232,.10); }
     .metric.amber { --accent:var(--amber); --glow:rgba(255,198,109,.10); }
+    .metrics.four { grid-template-columns:repeat(4,minmax(0,1fr)); }
+    .layer-actions { display:flex; gap:8px; align-items:flex-end; flex-wrap:wrap; }
 
     .grid-two { display:grid; grid-template-columns:minmax(0,1.02fr) minmax(0,1.38fr); gap:16px; margin-bottom:18px; }
     .panel { padding:20px; min-width:0; }
@@ -302,6 +304,7 @@
     /* RESPONSIVE LAYOUT */
     @media (max-width:1240px) {
       .metrics { grid-template-columns:repeat(3,minmax(0,1fr)); }
+      .metrics.four { grid-template-columns:repeat(2,minmax(0,1fr)); }
       .grid-two { grid-template-columns:1fr; }
     }
     @media (max-width:1100px) {
@@ -422,7 +425,7 @@
               <tbody id="demoUsersBody"><tr><td class="empty" colspan="5">Loading demo accounts…</td></tr></tbody>
             </table>
           </div>
-          <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Demo identity note</strong><p>These are local demonstration accounts. Sakthivel's development-only password is <code>sakthivel123</code>; do not reuse it outside local testing.</p></div></div>
+          <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Demo identity note</strong><p>These are local demonstration accounts. Every demo password follows the same format, <code>&lt;username&gt;123</code> (for example <code>balanilavan123</code>); do not reuse them outside local testing.</p></div></div>
         </section>
 
         <!-- GraphQL Test Console -->
@@ -435,7 +438,7 @@
             <div class="field"><label for="testUsername">Login username</label><input class="input" id="testUsername" autocomplete="username" placeholder="e.g. balanilavan"></div>
             <div class="field"><label for="testPassword">Login password</label><input class="input" id="testPassword" type="password" autocomplete="current-password" placeholder="Enter seeded demo password"></div>
             <div class="field"><label for="testEndpoint">Endpoint</label><select class="select" id="testEndpoint"><option value="/graphql">Protected GraphQL Shield</option><option value="/graphql-insecure">Insecure baseline (intentionally vulnerable)</option></select></div>
-            <div class="field"><label for="testScenario">Scenario</label><select class="select" id="testScenario"><option value="direct">Direct resource lookup</option><option value="nested">Nested user → resource lookup</option><option value="relationship">Implicit children relationship</option></select></div>
+            <div class="field"><label for="testScenario">Scenario</label><select class="select" id="testScenario"><option value="direct">Direct resource lookup</option><option value="nested">Nested user → resource lookup</option><option value="relationship">Implicit children relationship</option><option value="inline_fragment">Inline fragment user lookup (Layer 1 bypass attempt)</option><option value="batch">Batched request (2 operations)</option><option value="mutation_update">Mutation: rename resource</option><option value="mutation_delete">Mutation: delete resource (destructive)</option></select></div>
             <div class="field" id="userIdField"><label for="testUserId">User ID (nested query)</label><input class="input" id="testUserId" inputmode="numeric" type="number" min="1" value="101"></div>
             <div class="field" id="resourceIdField"><label for="testResourceId">Resource ID (direct / nested)</label><input class="input" id="testResourceId" inputmode="numeric" type="number" min="1" value="102"></div>
             <div class="field" id="parentIdField"><label for="testParentId">Parent/folder ID (relationship)</label><input class="input" id="testParentId" inputmode="numeric" type="number" min="1" value="201"></div>
@@ -462,6 +465,35 @@
             <div class="request-explanation-subtitle" id="traceIntro">Run a direct, nested, or relationship test above to build an evidence-based explanation.</div>
             <div class="trace-flow" id="traceFlow"><div class="trace-step"><span class="trace-step-number">1</span><div class="trace-step-title">Request input</div><div class="trace-step-detail">Waiting for a test request.</div></div></div>
             <div class="trace-notes" id="traceNotes">The source tracker and policy replay will populate this area after a request. A tainted input is not automatically an attack.</div>
+          </div>
+        </section>
+
+        <!-- Dual-Layer Defense -->
+        <section class="panel section-gap" id="layer-defense">
+          <div class="panel-head">
+            <div><div class="panel-title">Dual-layer defense</div><div class="panel-subtitle">Layer 1 checks object IDs before execution. Layer 2 checks every returned object and every mutation target at execution time. A blind spot is an object Layer 2 denied that Layer 1 never evaluated.</div></div>
+            <span class="range-chip" id="layerStateChip">LOADING…</span>
+          </div>
+          <section class="metrics four" aria-label="Per-layer enforcement counters">
+            <article class="metric red"><div class="metric-head"><span>Layer 1 blocked</span><span class="metric-icon">⊘</span></div><div class="metric-value" id="layerL1Blocked">—</div><div class="metric-foot">Rejected before execution</div></article>
+            <article class="metric amber"><div class="metric-head"><span>Layer 2 filtered</span><span class="metric-icon">⌁</span></div><div class="metric-value" id="layerL2Filtered">—</div><div class="metric-foot">Foreign objects removed at runtime</div></article>
+            <article class="metric cyan"><div class="metric-head"><span>Layer 2 mutations blocked</span><span class="metric-icon">✎</span></div><div class="metric-value" id="layerL2Mutations">—</div><div class="metric-foot">Stopped before the resolver ran</div></article>
+            <article class="metric blue"><div class="metric-head"><span>Layer 1 blind spots</span><span class="metric-icon">◎</span></div><div class="metric-value" id="layerBlindSpots">—</div><div class="metric-foot">Caught by Layer 2 only</div></article>
+          </section>
+          <div class="console-grid">
+            <div class="field"><label for="layerAdminUsername">Admin username</label><input class="input" id="layerAdminUsername" autocomplete="username" value="chinmayanand"></div>
+            <div class="field"><label for="layerAdminPassword">Admin password</label><input class="input" id="layerAdminPassword" type="password" autocomplete="current-password" placeholder="Shows audit events and enables layer switches"></div>
+            <div class="layer-actions">
+              <button class="btn primary" id="adminSignInButton" type="button">Sign in as admin</button>
+              <button class="btn" id="toggleLayer1Button" type="button">Toggle Layer 1</button>
+              <button class="btn" id="toggleLayer2Button" type="button">Toggle Layer 2</button>
+            </div>
+          </div>
+          <div class="table-wrap section-gap">
+            <table>
+              <thead><tr><th>Time (IST)</th><th>Layer</th><th>Event</th><th>Object</th><th>Path</th><th>Detail</th></tr></thead>
+              <tbody id="layerEventsBody"><tr><td class="empty" colspan="6">No layer events yet. Run an attack in the test console above.</td></tr></tbody>
+            </table>
           </div>
         </section>
 
@@ -605,7 +637,7 @@
             <div class="panel-head" style="margin-bottom:10px;">
               <div>
                 <div class="panel-title" style="font-size:13px;">Suspicious Behavioural Sessions & Active Telemetry Alerts</div>
-                <div class="panel-subtitle" style="font-size:10px;">Sample session observation windows evaluated by XGBoost and Deterministic Rule Baseline</div>
+                <div class="panel-subtitle" style="font-size:10px;">Live per-user sessions computed from the last 15 minutes of the audit log (admin only), evaluated by XGBoost and the deterministic rule baseline. Labelled sample sessions are shown when there is no recent traffic.</div>
               </div>
               <span class="range-chip">SESSION TELEMETRY ALERTS</span>
             </div>
@@ -677,6 +709,39 @@
               </div>
             </div>
           </div>
+        </section>
+
+        <!-- Layer 1 Blind-Spot Predictor -->
+        <section class="panel section-gap" id="blind-spot-predictor">
+          <div class="panel-head">
+            <div><div class="panel-title">Layer 1 blind-spot predictor</div><div class="panel-subtitle">XGBoost predicts, before execution and from query structure alone, whether a request reaches owned objects Layer 1 cannot see. Its training labels come from the gateway itself: Layer 2 audits exactly the objects Layer 1 missed. Advisory only, it never changes an allow/deny decision.</div></div>
+            <span class="range-chip" id="blindSpotStatusChip">LOADING…</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Evaluation split</th><th>Requests</th><th>Coverage gaps</th><th>XGBoost F1</th><th>XGBoost PR-AUC</th><th>XGBoost attack recall</th><th>Rule F1</th><th>Rule attack recall</th></tr></thead>
+              <tbody id="blindSpotMetricsBody"><tr><td class="empty" colspan="8">Loading model metrics…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="console-grid section-gap" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+            <div>
+              <div class="panel-title" style="font-size:13px;">What drives the prediction</div>
+              <div class="panel-subtitle" style="font-size:10px;">Mean |SHAP| contribution per feature</div>
+              <div id="blindSpotImportance" class="secondary-cell">—</div>
+            </div>
+            <div>
+              <div class="panel-title" style="font-size:13px;">Discovery run: gaps found in Layer 1</div>
+              <div class="panel-subtitle" style="font-size:10px;">Coverage gaps per query family before the fix, and how many the hand-written rule missed</div>
+              <div class="table-wrap"><table>
+                <thead><tr><th>Query family</th><th>Gaps</th><th>Missed by rule</th></tr></thead>
+                <tbody id="blindSpotDiscoveryBody"><tr><td class="empty" colspan="3">No discovery run recorded.</td></tr></tbody>
+              </table></div>
+            </div>
+          </div>
+          <div class="field section-gap"><label for="blindSpotQuery">Score a query without running it (sign in as admin first)</label>
+            <textarea class="input" id="blindSpotQuery" rows="3" style="font-family:monospace; resize:vertical;">{ resource(id: 201) { id children { id name } } }</textarea>
+          </div>
+          <div class="console-actions"><button class="btn primary" id="blindSpotScoreButton" type="button">Predict blind spot</button><span class="console-note" id="blindSpotScoreResult">—</span></div>
         </section>
       </div>
 
@@ -1053,7 +1118,7 @@
         body.replaceChildren();
         if (!logs.length) {
           const tr = document.createElement('tr'); const td = document.createElement('td');
-          td.className = 'empty'; td.colSpan = 6; td.textContent = state.logs.length ? 'No audit events match the selected filters.' : 'No audit events were returned by the API.';
+          td.className = 'empty'; td.colSpan = 6; td.textContent = state.logs.length ? 'No audit events match the selected filters.' : state.logsRestricted ? ADMIN_ONLY_TEXT : 'No audit events were returned by the API.';
           tr.appendChild(td); body.appendChild(tr); return;
         }
         for (const row of logs) {
@@ -1137,15 +1202,18 @@
         if (state.loading) return;
         state.loading = true; $('refreshButton').disabled = true; $('refreshButton').textContent = '↻ Loading…';
         try {
-          const response = await fetch(API_URL, {headers:{'Accept':'application/json'}, cache:'no-store'});
+          const response = await fetch(API_URL, {headers:authHeaders({'Accept':'application/json'}), cache:'no-store'});
           if (!response.ok) throw new Error(`Dashboard API returned HTTP ${response.status}`);
           const payload = await response.json();
           if (!payload || typeof payload !== 'object' || !payload.stats || !Array.isArray(payload.recent_logs)) {
             throw new Error('Unexpected response shape. Expected stats and recent_logs.');
           }
           state.stats = payload.stats; state.logs = payload.recent_logs;
+          state.logsRestricted = !!payload.recent_logs_restricted;
+          if (adminToken && state.logsRestricted) setAdminToken(null); // token expired or no longer admin
           renderDemoUsers(payload.demo_users || []);
           renderStats(state.stats); applyFilters();
+          loadLayerPanel();
           if (payload.research_evaluation) {
             renderResearchEvaluation(payload.research_evaluation);
           }
@@ -1165,10 +1233,197 @@
         }
       }
 
+      /* ADMIN SESSION: audit rows, provenance evidence and layer events are admin-only */
+      const ADMIN_TOKEN_KEY = 'graphql-shield-admin-token';
+      const ADMIN_ONLY_TEXT = 'Admin only. Sign in as admin in the Dual-layer defense panel to view these records.';
+      let adminToken = null;
+      try { adminToken = sessionStorage.getItem(ADMIN_TOKEN_KEY); } catch (_) { /* storage can be disabled */ }
+
+      function authHeaders(headers = {}) {
+        return adminToken ? {...headers, 'Authorization': `Bearer ${adminToken}`} : headers;
+      }
+
+      function setAdminToken(token) {
+        adminToken = token;
+        try {
+          if (token) sessionStorage.setItem(ADMIN_TOKEN_KEY, token); else sessionStorage.removeItem(ADMIN_TOKEN_KEY);
+        } catch (_) { /* storage can be disabled */ }
+        setText('adminSignInButton', token ? 'Sign out admin' : 'Sign in as admin');
+      }
+
+      async function adminSignIn() {
+        if (adminToken) {
+          setAdminToken(null);
+          showToast('Signed out. Audit records are hidden again.');
+          await refresh({quiet:true});
+          return;
+        }
+        const username = $('layerAdminUsername').value.trim();
+        const password = $('layerAdminPassword').value;
+        if (!username || !password) { showToast('Enter the admin username and password.'); return; }
+        try {
+          const loginResponse = await fetch('/api/v1/auth/login', {
+            method: 'POST', headers: {'Content-Type':'application/json','Accept':'application/json'},
+            body: JSON.stringify({username, password}), cache:'no-store'
+          });
+          const loginPayload = await loginResponse.json().catch(() => ({}));
+          if (!loginResponse.ok || !loginPayload.access_token) throw new Error(`Login failed (HTTP ${loginResponse.status})`);
+          setAdminToken(loginPayload.access_token);
+          showToast('Signed in as admin.');
+          await refresh({quiet:true});
+        } catch (error) {
+          showToast(`Could not sign in: ${error.message || error}`);
+        } finally {
+          $('layerAdminPassword').value = '';
+        }
+      }
+
+      /* LAYER 1 BLIND-SPOT PREDICTOR */
+      function pct(value) { return value === null || value === undefined ? '—' : `${(value * 100).toFixed(1)}%`; }
+
+      async function loadBlindSpotPanel() {
+        try {
+          const response = await fetch('/api/v1/security/blind-spot-model', {headers:{'Accept':'application/json'}, cache:'no-store'});
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = await response.json();
+          setText('blindSpotStatusChip', data.model_status && data.model_status.loaded ? 'MODEL LOADED' : 'MODEL NOT TRAINED');
+          const metrics = data.metrics;
+          if (metrics && metrics.evaluation) {
+            $('blindSpotMetricsBody').replaceChildren(...Object.entries(metrics.evaluation).map(([split, e]) => {
+              const row = document.createElement('tr');
+              row.append(
+                layerCell(split === 'held_out_family' ? `Held-out family (${metrics.held_out_family})` : 'Random test split'),
+                layerCell(e.rows), layerCell(e.positives),
+                layerCell(pct(e.xgboost.f1_score)), layerCell(pct(e.xgboost.pr_auc_average_precision)), layerCell(pct(e.xgboost.attack_recall)),
+                layerCell(pct(e.rule_baseline.f1_score)), layerCell(pct(e.rule_baseline.attack_recall))
+              );
+              return row;
+            }));
+            const top = (metrics.feature_importance || []).filter(item => item.mean_abs_shap > 0).slice(0, 6);
+            const max = top.length ? top[0].mean_abs_shap : 1;
+            $('blindSpotImportance').replaceChildren(...top.map(item => {
+              const line = document.createElement('div');
+              line.style.cssText = 'display:grid; grid-template-columns:minmax(0,1fr) 90px 44px; gap:8px; align-items:center; margin:6px 0;';
+              const label = document.createElement('code'); label.textContent = item.feature;
+              const bar = document.createElement('div');
+              bar.style.cssText = `height:8px; border-radius:4px; background:var(--cyan); width:${Math.max(4, 90 * item.mean_abs_shap / max)}px;`;
+              const value = document.createElement('span'); value.textContent = item.mean_abs_shap.toFixed(2);
+              line.append(label, bar, value);
+              return line;
+            }));
+          }
+          const discovery = data.discovery && data.discovery.family_coverage;
+          if (Array.isArray(discovery)) {
+            const rows = discovery.filter(item => item.coverage_gaps > 0);
+            if (rows.length) {
+              $('blindSpotDiscoveryBody').replaceChildren(...rows.map(item => {
+                const row = document.createElement('tr');
+                row.append(layerCell(item.family), layerCell(`${item.coverage_gaps}/${item.l1_allowed}`), layerCell(item.gaps_missed_by_rule));
+                return row;
+              }));
+            }
+          }
+        } catch (error) {
+          setText('blindSpotStatusChip', 'MODEL API UNAVAILABLE');
+        }
+      }
+
+      async function scoreBlindSpotQuery() {
+        if (!adminToken) { showToast('Sign in as admin in the Dual-layer defense panel first.'); return; }
+        try {
+          const response = await fetch('/api/v1/security/blind-spot-score', {
+            method: 'POST', headers: authHeaders({'Content-Type':'application/json','Accept':'application/json'}),
+            body: JSON.stringify({query: $('blindSpotQuery').value}), cache:'no-store'
+          });
+          const payload = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(payload.detail || `HTTP ${response.status}`);
+          const reasons = (payload.contributions || []).slice(0, 3)
+            .map(c => `${c.feature}=${c.value} (${c.contribution > 0 ? '+' : ''}${c.contribution.toFixed(2)})`).join(', ');
+          const verdict = payload.prediction === null ? 'model unavailable' : payload.prediction ? 'LIKELY BLIND SPOT' : 'Layer 1 can see its objects';
+          setText('blindSpotScoreResult', `${verdict} · p=${pct(payload.probability)} · rule=${payload.rule_prediction ? 'flag' : 'no flag'}${reasons ? ' · ' + reasons : ''}`);
+        } catch (error) {
+          setText('blindSpotScoreResult', `Could not score: ${error.message || error}`);
+        }
+      }
+
+      /* DUAL-LAYER DEFENSE PANEL */
+      const layerState = { layer1: true, layer2: true, toggleEnabled: false };
+
+      function layerCell(text) {
+        const td = document.createElement('td');
+        td.textContent = text === null || text === undefined || text === '' ? '—' : String(text);
+        return td;
+      }
+
+      async function loadLayerPanel() {
+        try {
+          const response = await fetch('/api/v1/security/layers', {headers:authHeaders({'Accept':'application/json'}), cache:'no-store'});
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = await response.json();
+          const counts = data.counts || {};
+          layerState.layer1 = !!(data.layers && data.layers.layer1);
+          layerState.layer2 = !!(data.layers && data.layers.layer2);
+          layerState.toggleEnabled = !!data.toggle_enabled;
+          $('toggleLayer1Button').disabled = !layerState.toggleEnabled;
+          $('toggleLayer2Button').disabled = !layerState.toggleEnabled;
+          const toggleHint = layerState.toggleEnabled ? '' : 'Layer switching is disabled on the server (set ENABLE_LAYER_TOGGLE=true for demos).';
+          $('toggleLayer1Button').title = toggleHint; $('toggleLayer2Button').title = toggleHint;
+          setText('layerL1Blocked', formatNumber(counts.L1_BLOCKED || 0));
+          setText('layerL2Filtered', formatNumber(counts.L2_FILTERED || 0));
+          setText('layerL2Mutations', formatNumber(counts.L2_MUTATION_BLOCKED || 0));
+          setText('layerBlindSpots', formatNumber(counts.L1_BLIND_SPOT_CAUGHT_BY_L2 || 0));
+          setText('layerStateChip', `LAYER 1 ${layerState.layer1 ? 'ON' : 'OFF'} · LAYER 2 ${layerState.layer2 ? 'ON' : 'OFF'}`);
+          setText('toggleLayer1Button', layerState.layer1 ? 'Turn Layer 1 OFF' : 'Turn Layer 1 ON');
+          setText('toggleLayer2Button', layerState.layer2 ? 'Turn Layer 2 OFF' : 'Turn Layer 2 ON');
+          const body = $('layerEventsBody');
+          const events = Array.isArray(data.recent) ? data.recent : [];
+          if (!events.length) {
+            const row = document.createElement('tr');
+            const cell = layerCell(data.recent_restricted ? ADMIN_ONLY_TEXT : 'No layer events yet. Run an attack in the test console above.');
+            cell.className = 'empty'; cell.colSpan = 6; row.appendChild(cell);
+            body.replaceChildren(row);
+            return;
+          }
+          body.replaceChildren(...events.map(event => {
+            const row = document.createElement('tr');
+            row.append(
+              layerCell(formatTime(event.timestamp)),
+              layerCell(event.layer),
+              layerCell(event.event),
+              layerCell(`${event.object_type || ''} ${event.object_id ?? ''}`.trim()),
+              layerCell(event.path),
+              layerCell(event.detail)
+            );
+            return row;
+          }));
+        } catch (error) {
+          setText('layerStateChip', 'LAYER API UNAVAILABLE');
+        }
+      }
+
+      async function toggleLayer(layer) {
+        if (!adminToken) { showToast('Sign in as admin first to switch layers.'); return; }
+        try {
+          const response = await fetch('/api/v1/security/layers', {
+            method: 'POST',
+            headers: authHeaders({'Content-Type':'application/json','Accept':'application/json'}),
+            body: JSON.stringify({[layer]: !layerState[layer]}), cache:'no-store'
+          });
+          const payload = await response.json().catch(() => ({}));
+          if (response.status === 401) setAdminToken(null);
+          if (!response.ok) throw new Error(payload.detail || `HTTP ${response.status}`);
+          showToast(`${layer === 'layer1' ? 'Layer 1' : 'Layer 2'} is now ${payload.layers[layer] ? 'ON' : 'OFF'}.`);
+        } catch (error) {
+          showToast(`Could not switch layer: ${error.message || error}`);
+        } finally {
+          await loadLayerPanel();
+        }
+      }
+
       function setScenarioFields() {
         const scenario = $('testScenario').value;
-        $('userIdField').style.display = scenario === 'nested' ? '' : 'none';
-        $('resourceIdField').style.display = scenario === 'relationship' ? 'none' : '';
+        $('userIdField').style.display = (scenario === 'nested' || scenario === 'inline_fragment') ? '' : 'none';
+        $('resourceIdField').style.display = (scenario === 'relationship' || scenario === 'inline_fragment') ? 'none' : '';
         $('parentIdField').style.display = scenario === 'relationship' ? '' : 'none';
       }
 
@@ -1194,6 +1449,36 @@
           return {
             query: 'query DashboardNestedResource($userId: Int!, $resourceId: Int!) { user(id: $userId) { id username role resource(id: $resourceId) { id name ownerId objectType parentId } } }',
             variables: { userId, resourceId }
+          };
+        }
+        if (scenario === 'inline_fragment') {
+          const userId = positiveInteger('testUserId', 'User ID');
+          return {
+            query: 'query DashboardInlineFragmentUser($userId: Int!) { ... on Query { user(id: $userId) { id username role } } }',
+            variables: { userId }
+          };
+        }
+        if (scenario === 'batch') {
+          const resourceId = positiveInteger('testResourceId', 'Resource ID');
+          const query = 'query DashboardBatchResource($resourceId: Int!) { resource(id: $resourceId) { id name ownerId } }';
+          return {
+            query,
+            variables: { resourceId },
+            batch: [{ query: 'query DashboardBatchHealth { health { status } }' }, { query, variables: { resourceId } }]
+          };
+        }
+        if (scenario === 'mutation_update') {
+          const resourceId = positiveInteger('testResourceId', 'Resource ID');
+          return {
+            query: 'mutation DashboardRenameResource($resourceId: Int!) { updateResource(id: $resourceId, name: "Renamed from dashboard") { id name ownerId } }',
+            variables: { resourceId }
+          };
+        }
+        if (scenario === 'mutation_delete') {
+          const resourceId = positiveInteger('testResourceId', 'Resource ID');
+          return {
+            query: 'mutation DashboardDeleteResource($resourceId: Int!) { deleteResource(id: $resourceId) }',
+            variables: { resourceId }
           };
         }
         const parentId = positiveInteger('testParentId', 'Parent/folder ID');
@@ -1341,7 +1626,8 @@
         }
         let query;
         let variables;
-        try { const requestSpec = buildSelectedRequest(); query = requestSpec.query; variables = requestSpec.variables; }
+        let batch;
+        try { const requestSpec = buildSelectedRequest(); query = requestSpec.query; variables = requestSpec.variables; batch = requestSpec.batch; }
         catch (error) { showToast(error.message); return; }
         button.disabled = true; button.textContent = 'Running…';
         $('testResultTitle').textContent = 'Executing selected GraphQL request';
@@ -1362,7 +1648,7 @@
           const graphqlResponse = await fetch($('testEndpoint').value, {
             method: 'POST',
             headers: {'Content-Type':'application/json','Accept':'application/json','Authorization':`Bearer ${token}`},
-            body: JSON.stringify({query, variables}), cache:'no-store'
+            body: JSON.stringify(batch || {query, variables}), cache:'no-store'
           });
           const rawBody = await graphqlResponse.text();
           let parsedBody;
@@ -1370,7 +1656,7 @@
           $('testResultTitle').textContent = 'GraphQL request completed';
           $('testResultStatus').textContent = `HTTP ${graphqlResponse.status}${parsedBody && parsedBody.errors ? ' · GraphQL errors returned' : ''}`;
           $('testResultStatus').className = 'status-inline ' + (graphqlResponse.ok && !(parsedBody && parsedBody.errors) ? 'ok' : 'bad');
-          $('testResultBody').textContent = JSON.stringify({endpoint:$('testEndpoint').value, scenario:$('testScenario').value, query, variables, http_status:graphqlResponse.status, response:parsedBody}, null, 2);
+          $('testResultBody').textContent = JSON.stringify({endpoint:$('testEndpoint').value, scenario:$('testScenario').value, query: batch ? undefined : query, variables: batch ? undefined : variables, batch, http_status:graphqlResponse.status, response:parsedBody}, null, 2);
           
           let analysis = null;
           let analysisError = '';
@@ -1467,7 +1753,7 @@
             const tr = document.createElement('tr');
             const td = document.createElement('td');
             td.colSpan = 8; td.className = 'empty';
-            td.textContent = 'No provenance records captured yet.';
+            td.textContent = data.provenance_evidence_restricted ? ADMIN_ONLY_TEXT : 'No provenance records captured yet.';
             tr.appendChild(td); provBody.appendChild(tr);
           } else {
             for (const item of data.provenance_evidence) {
@@ -1661,6 +1947,12 @@
           showToast('Account selected. Enter its demo password to run a test.');
         });
         $('runTestButton').addEventListener('click', runSelectedTest);
+        $('adminSignInButton').addEventListener('click', adminSignIn);
+        $('blindSpotScoreButton').addEventListener('click', scoreBlindSpotQuery);
+        loadBlindSpotPanel();
+        setAdminToken(adminToken);
+        $('toggleLayer1Button').addEventListener('click', () => toggleLayer('layer1'));
+        $('toggleLayer2Button').addEventListener('click', () => toggleLayer('layer2'));
         $('clearResultButton').addEventListener('click', () => {
           $('testResultTitle').textContent = 'No test run yet';
           $('testResultStatus').textContent = 'Choose a scenario above';

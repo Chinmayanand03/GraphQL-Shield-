@@ -200,6 +200,20 @@ Open two terminal windows:
 | `103` | `sakthivel` | `sakthivel123` | `user` | Standard User (Resource 103) |
 | `104` | `chinmayanand` | `chinmayanand123` | `admin` | System Administrator (Global access) |
 
+Every demo password follows the same format, `<username>123`. Passwords are stored as salted PBKDF2-SHA256 hashes; older databases holding `hash_<password>` values are upgraded automatically on startup.
+
+### Configuration
+Copy `.env.example` to `.env` and set `JWT_SECRET`. With `ENVIRONMENT=production` the server refuses to start on the built-in development secret.
+
+The insecure baseline and the dashboard's layer switches are **off by default**. The layer switch is process-wide (it changes enforcement for every user), so enable both only for local demos:
+
+```env
+ENABLE_INSECURE_BASELINE=true
+ENABLE_LAYER_TOGGLE=true
+```
+
+Every GraphQL operation is also limited by `MAX_QUERY_DEPTH` (10), `MAX_QUERY_ALIASES` (15), `MAX_QUERY_TOKENS` (2000) and `MAX_BATCH_OPERATIONS` (5). Set `ENABLE_INTROSPECTION=false` to disable schema introspection.
+
 ---
 
 ### Step 1: Obtain JWT Token (User 101)
@@ -278,15 +292,66 @@ curl -X POST "http://localhost:8000/graphql"   -H "Authorization: Bearer $ADMIN_
 ### Comparative Dual-Endpoint Architecture
 GraphQL-Shield hosts dual endpoints for scientific rigor:
 - **`/graphql`**: Hardened with dual-layer defense.
-- **`/graphql-insecure`**: Vulnerable baseline for comparative metrics (requires authenticated token; can be toggled via `ENABLE_INSECURE_BASELINE`).
+- **`/graphql-insecure`**: Vulnerable baseline for comparative metrics (requires authenticated token; off unless `ENABLE_INSECURE_BASELINE=true`).
 
 ### Layer Ablation Experiments
-Admins can evaluate Layer 1 vs Layer 2 independently:
-- Check current layer status: `GET /api/v1/security/layers`
-- Toggle layers dynamically: `POST /api/v1/security/layers` with `{"layer1": false, "layer2": true}`
-- View empirical ablation results: `GET /api/v1/security/layer-ablation`
+Run every Layer 1 / Layer 2 combination against the same attacks (uses a temporary database, so `shield.db` is untouched):
 
-### Training the Behavioral XGBoost Model
+```bash
+python -m scripts.run_layer_ablation
+```
+
+This writes `results/layer_ablation/results.json`, served at `GET /api/v1/security/layer-ablation`. Each cell shows the layer that stopped the attack:
+
+| Scenario | L1 on, L2 on | L1 on, L2 off | L1 off, L2 on | L1 off, L2 off |
+| :--- | :--- | :--- | :--- | :--- |
+| direct | L1 | L1 | L2 | LEAKED |
+| nested | L1 | L1 | L2 | LEAKED |
+| inline_fragment | L1 | L1 | L2 | LEAKED |
+| relationship | L2 | **LEAKED** | L2 | LEAKED |
+| batch | L1 | L1 | L2 | LEAKED |
+| mutation_update | L1 | L1 | L2 | LEAKED |
+
+Relationship traversal is invisible to Layer 1, which is why Layer 2 is required.
+
+With `ENABLE_LAYER_TOGGLE=true`, admins can also switch layers live: `POST /api/v1/security/layers` with `{"layer1": false, "layer2": true}`.
+
+### Mutation Ownership Registry
+Layer 2 checks each root mutation's target using `MUTATION_TARGETS` in `app/graphql/mutations.py` (mutation name → target argument and object type). A mutation missing from the registry is denied, and `tests/test_hardening.py` fails if a new mutation is added without an entry.
+
+### Layer 1 Blind-Spot Predictor (self-supervised from cross-layer disagreement)
+
+Layer 2 writes an audit row (`layer='L2'`) only for owned objects Layer 1 never evaluated. Every such row is a Layer 1 coverage gap, recorded by the gateway itself. The blind-spot predictor uses these rows as training labels, so no request is labelled by hand:
+
+1. `scripts/train_blind_spot_model.py` generates 4,000 varied requests (literals, variables, variable defaults, aliases, directives, named/inline fragments, relationships, batches, mutations) from different callers against a test world with mixed-owner folders, and runs each through the real gateway.
+2. Each request Layer 1 allows is labelled by whether Layer 2 then audited an object Layer 1 missed (a coverage gap), and whether Layer 2 denied it (an attack only Layer 2 stopped).
+3. XGBoost is trained on 17 **pre-execution** query features (`app/security/query_features.py`): structure, how IDs are supplied, and how many IDs Layer 1 resolved. It never sees ownership data or enforcement outcomes.
+4. It is compared with the hand-written rule for Layer 1's documented blind spot (relationship traversal), on a random split and on a query family held out from training (relationships wrapped in fragments).
+
+```bash
+python -m scripts.train_blind_spot_model --discovery   # analyse the current Layer 1
+python -m scripts.train_blind_spot_model               # train and deploy the model
+```
+
+**Discovery run (before the fix).** The model learned a Layer 1 gap that the hand-written rule did not encode: `query($id: Int = 102)` with no variables sent. Layer 1 ignored variable defaults, so every such request (585 of them, queries and mutations) reached objects Layer 1 never checked. 263 of them were attacks stopped only by Layer 2.
+
+| Random test split (discovery) | XGBoost | Rule baseline |
+| :--- | :--- | :--- |
+| F1 (coverage gaps) | **1.000** | 0.639 |
+| Attack recall | **100%** | 23.4% |
+
+**After fixing Layer 1** (`object_extractor.py` now reads variable defaults), attacks reaching only Layer 2 fell from 401 to 138 (−66%), and Layer 1 blocks 1,678 instead of 1,415 of the 4,000 requests. The remaining gaps are relationship traversal only; there both the model and the rule reach F1 1.000, including on the held-out family.
+
+**At runtime** the model scores every request Layer 1 allows (about 1.2 ms). A positive prediction is recorded as a `BLIND_SPOT_PREDICTED` layer event, and each `L1_BLIND_SPOT_CAUGHT_BY_L2` event carries the earlier prediction (`predicted p=…`), so predictions can be checked against live traffic. It is advisory only and never changes an allow/deny decision.
+
+- `GET /api/v1/security/blind-spot-model`: metrics, SHAP feature importance, discovery run
+- `POST /api/v1/security/blind-spot-score`: score a query without executing it, with per-feature SHAP explanations
+
+**Limits.** The test world is small and synthetic, and coverage gaps are largely a deterministic function of query structure, so F1 1.000 shows the method recovers the gap causes, not real-world accuracy. The contribution is the method: the gateway labels its own blind spots, and the model turns those labels into causes an engineer can fix.
+
+### Behavioural Session Model (live telemetry)
+The behavioural XGBoost model's 10 session features are now computed from the audit log (last 15 minutes per user, `app/security/live_telemetry.py`) instead of being typed in. Admins get them at `GET /api/v1/telemetry/live-sessions`, and the dashboard's session table shows live sessions when there is recent traffic.
+
 ```bash
 python scripts/generate_behavioral_dataset.py
 python scripts/train_behavioral_xgboost.py
@@ -303,7 +368,7 @@ python -m pytest -v
 
 Expected output:
 ```text
-======================= 238 passed in 43.60s =======================
+======================= 277 passed =======================
 ```
 
 ---
@@ -316,13 +381,13 @@ Expected output:
 | `/graphql-insecure` | `POST` | Bearer JWT | **Vulnerable Baseline Endpoint** for comparative evaluation |
 | `/dashboard` | `GET` | Public | Real-time Interactive Research & Security Console |
 | `/api/v1/auth/login` | `POST` | Public | User authentication and JWT issuance |
-| `/api/v1/security/layers` | `GET/POST` | Admin for POST | Inspect or toggle Layer 1 / Layer 2 state |
+| `/api/v1/security/layers` | `GET/POST` | Public counts; Admin for recent events and POST | Inspect or toggle Layer 1 / Layer 2 state |
 | `/api/v1/security/layer-ablation` | `GET` | Public | View results from empirical layer ablation experiments |
 | `/api/v1/taint-explain` | `POST` | Bearer JWT | Read-only Taint & Policy evaluation explainer |
-| `/api/v1/audit-logs` | `GET` | Bearer JWT | Fetch recent authorization audit logs |
-| `/api/v1/dashboard-stats` | `GET` | Public | Aggregated security and telemetry metrics |
-| `/api/v1/research-evaluation` | `GET` | Public | Empirical comparison stats (Protected vs Insecure) |
-| `/api/v1/telemetry/score-session` | `POST` | Bearer JWT | Offline behavioral scoring using XGBoost |
+| `/api/v1/audit-logs` | `GET` | Admin | Fetch recent authorization audit logs |
+| `/api/v1/dashboard-stats` | `GET` | Public counts; Admin for `recent_logs` | Aggregated security and telemetry metrics |
+| `/api/v1/research-evaluation` | `GET` | Public metrics; Admin for `provenance_evidence` | Empirical comparison stats (Protected vs Insecure) |
+| `/api/v1/telemetry/score-session` | `POST` | Public | Offline behavioral scoring using XGBoost (no stored data) |
 | `/health` | `GET` | Public | Service health and readiness probe |
 
 ---

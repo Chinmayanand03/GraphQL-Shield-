@@ -1,4 +1,4 @@
-from graphql import FieldNode, VariableNode, IntValueNode, StringValueNode, ListValueNode, OperationDefinitionNode, FragmentSpreadNode, FragmentDefinitionNode, InlineFragmentNode
+from graphql import FieldNode, VariableNode, IntValueNode, StringValueNode, ListValueNode, OperationDefinitionNode, FragmentSpreadNode, FragmentDefinitionNode, InlineFragmentNode, value_from_ast_untyped
 from .graphql_parser import parse_query
 
 def normalize_query(query: str, variables: dict = None) -> dict | None:
@@ -40,7 +40,14 @@ def normalize_query(query: str, variables: dict = None) -> dict | None:
     for definition in ast.definitions:
         if isinstance(definition, OperationDefinitionNode):
             result["operation"] = definition.operation.value
-            
+            # A variable the client did not send takes its declared default, e.g.
+            # `query($id: Int = 102)`. Found by the blind-spot predictor's discovery run.
+            defaults = {
+                var.variable.name.value: value_from_ast_untyped(var.default_value)
+                for var in (definition.variable_definitions or ())
+                if var.default_value is not None
+            }
+
             def visit(node, current_path):
                 if isinstance(node, FieldNode):
                     field_name = node.name.value
@@ -51,7 +58,8 @@ def normalize_query(query: str, variables: dict = None) -> dict | None:
                         if arg.name.value == "id":
                             value = arg.value
                             if isinstance(value, VariableNode):
-                                value = variables.get(value.name.value)
+                                name = value.name.value
+                                value = variables[name] if name in variables else defaults.get(name)
                             elif isinstance(value, ListValueNode):
                                 value = [v.value for v in value.values if hasattr(v, "value")]
                             elif isinstance(value, (IntValueNode, StringValueNode)):
@@ -69,8 +77,10 @@ def normalize_query(query: str, variables: dict = None) -> dict | None:
                         except (ValueError, TypeError):
                             pass
 
-                        # Infer object type directly from field name for this prototype
-                        inferred_type = "User" if field_name.lower() == "user" else field_name.capitalize()
+                        # Infer object type from the field name for this prototype: `user` targets a
+                        # User; every other id-taking field (resource, updateResource, deleteResource,
+                        # transferOwnership) targets a Resource.
+                        inferred_type = "User" if field_name.lower() == "user" else "Resource"
 
                         result["objects"].append({
                             "type": inferred_type,
