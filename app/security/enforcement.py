@@ -1,4 +1,5 @@
 import json
+import logging
 from fastapi import Request, HTTPException, Depends
 from app.config import settings
 from app.core.dependencies import get_current_user
@@ -7,6 +8,8 @@ from .ownership import get_object_owner
 from .authorization import AuthorizationContext, PolicyEngine
 from .audit import log_decision
 from .layers import EVENT_L1_BLOCKED, is_enabled, mark_layer1_checked, record_layer_event
+
+logger = logging.getLogger(__name__)
 
 policy_engine = PolicyEngine()
 
@@ -91,25 +94,12 @@ def _enforce_operation(request: Request, current_user: dict, data: dict, batch_i
         # Evaluate policy engine rules
         result = policy_engine.evaluate(context)
         
-        # Live Security Debug View (Terminal Logging)
-        print("\n" + "="*50)
-        print("[GraphQL Shield: Live Security Trace]")
-        print("="*50)
-        print(f"[AUTH]")
-        print(f"User ID: {user_id}")
-        print(f"Role:    {role.upper()}")
-        print(f"\n[GRAPHQL]")
-        print(f"Path:      {path}")
-        print(f"Object:    {object_type}")
-        print(f"Object ID: {object_id}")
-        print(f"\n[OWNERSHIP]")
-        print(f"Requesting User: {user_id}")
-        print(f"True Owner ID:   {owner_id}")
-        print(f"\n[AUTHORIZATION]")
-        print(f"Decision: {result['decision']}")
-        print(f"Reason:   {result['reason']}")
-        print(f"Risk:     {result['risk_level']} ({result['risk_score']}/100)")
-        
+        logger.info(
+            "Layer 1 decision user_id=%s role=%s path=%s object=%s:%s owner=%s decision=%s reason=%s risk=%s(%s)",
+            user_id, role.upper(), path, object_type, object_id, owner_id,
+            result["decision"], result["reason"], result["risk_level"], result["risk_score"],
+        )
+
         # Audit log the decision
         log_decision(
             user_id=user_id,
@@ -121,13 +111,12 @@ def _enforce_operation(request: Request, current_user: dict, data: dict, batch_i
             decision=result["decision"],
             reason=result["reason"],
             risk_score=result["risk_score"],
-            risk_level=result["risk_level"]
+            risk_level=result["risk_level"],
+            layer="L1",
         )
         
         # Enforcement Block
         if result["decision"] == "DENY":
-            print("[ENFORCEMENT]\nHTTP 403 Forbidden - Request Dropped.")
-            print("="*50 + "\n")
             record_layer_event(user_id, "L1", EVENT_L1_BLOCKED, object_type, object_id, path,
                                result["reason"] if batch_index is None else f"{result['reason']} (batch index {batch_index})")
             raise HTTPException(
@@ -143,6 +132,3 @@ def _enforce_operation(request: Request, current_user: dict, data: dict, batch_i
                     "risk_level": result["risk_level"]
                 }
             )
-        else:
-            print("[ENFORCEMENT]\nALLOW - Executing GraphQL Backend...")
-            print("="*50 + "\n")

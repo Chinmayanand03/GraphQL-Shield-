@@ -425,7 +425,7 @@
               <tbody id="demoUsersBody"><tr><td class="empty" colspan="5">Loading demo accounts…</td></tr></tbody>
             </table>
           </div>
-          <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Demo identity note</strong><p>These are local demonstration accounts. Sakthivel's development-only password is <code>sakthivel123</code>; do not reuse it outside local testing.</p></div></div>
+          <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Demo identity note</strong><p>These are local demonstration accounts. Every demo password follows the same format, <code>&lt;username&gt;123</code> (for example <code>balanilavan123</code>); do not reuse them outside local testing.</p></div></div>
         </section>
 
         <!-- GraphQL Test Console -->
@@ -482,8 +482,9 @@
           </section>
           <div class="console-grid">
             <div class="field"><label for="layerAdminUsername">Admin username</label><input class="input" id="layerAdminUsername" autocomplete="username" value="chinmayanand"></div>
-            <div class="field"><label for="layerAdminPassword">Admin password</label><input class="input" id="layerAdminPassword" type="password" autocomplete="current-password" placeholder="Required to switch layers"></div>
+            <div class="field"><label for="layerAdminPassword">Admin password</label><input class="input" id="layerAdminPassword" type="password" autocomplete="current-password" placeholder="Shows audit events and enables layer switches"></div>
             <div class="layer-actions">
+              <button class="btn primary" id="adminSignInButton" type="button">Sign in as admin</button>
               <button class="btn" id="toggleLayer1Button" type="button">Toggle Layer 1</button>
               <button class="btn" id="toggleLayer2Button" type="button">Toggle Layer 2</button>
             </div>
@@ -1084,7 +1085,7 @@
         body.replaceChildren();
         if (!logs.length) {
           const tr = document.createElement('tr'); const td = document.createElement('td');
-          td.className = 'empty'; td.colSpan = 6; td.textContent = state.logs.length ? 'No audit events match the selected filters.' : 'No audit events were returned by the API.';
+          td.className = 'empty'; td.colSpan = 6; td.textContent = state.logs.length ? 'No audit events match the selected filters.' : state.logsRestricted ? ADMIN_ONLY_TEXT : 'No audit events were returned by the API.';
           tr.appendChild(td); body.appendChild(tr); return;
         }
         for (const row of logs) {
@@ -1168,13 +1169,15 @@
         if (state.loading) return;
         state.loading = true; $('refreshButton').disabled = true; $('refreshButton').textContent = '↻ Loading…';
         try {
-          const response = await fetch(API_URL, {headers:{'Accept':'application/json'}, cache:'no-store'});
+          const response = await fetch(API_URL, {headers:authHeaders({'Accept':'application/json'}), cache:'no-store'});
           if (!response.ok) throw new Error(`Dashboard API returned HTTP ${response.status}`);
           const payload = await response.json();
           if (!payload || typeof payload !== 'object' || !payload.stats || !Array.isArray(payload.recent_logs)) {
             throw new Error('Unexpected response shape. Expected stats and recent_logs.');
           }
           state.stats = payload.stats; state.logs = payload.recent_logs;
+          state.logsRestricted = !!payload.recent_logs_restricted;
+          if (adminToken && state.logsRestricted) setAdminToken(null); // token expired or no longer admin
           renderDemoUsers(payload.demo_users || []);
           renderStats(state.stats); applyFilters();
           loadLayerPanel();
@@ -1197,8 +1200,53 @@
         }
       }
 
+      /* ADMIN SESSION: audit rows, provenance evidence and layer events are admin-only */
+      const ADMIN_TOKEN_KEY = 'graphql-shield-admin-token';
+      const ADMIN_ONLY_TEXT = 'Admin only. Sign in as admin in the Dual-layer defense panel to view these records.';
+      let adminToken = null;
+      try { adminToken = sessionStorage.getItem(ADMIN_TOKEN_KEY); } catch (_) { /* storage can be disabled */ }
+
+      function authHeaders(headers = {}) {
+        return adminToken ? {...headers, 'Authorization': `Bearer ${adminToken}`} : headers;
+      }
+
+      function setAdminToken(token) {
+        adminToken = token;
+        try {
+          if (token) sessionStorage.setItem(ADMIN_TOKEN_KEY, token); else sessionStorage.removeItem(ADMIN_TOKEN_KEY);
+        } catch (_) { /* storage can be disabled */ }
+        setText('adminSignInButton', token ? 'Sign out admin' : 'Sign in as admin');
+      }
+
+      async function adminSignIn() {
+        if (adminToken) {
+          setAdminToken(null);
+          showToast('Signed out. Audit records are hidden again.');
+          await refresh({quiet:true});
+          return;
+        }
+        const username = $('layerAdminUsername').value.trim();
+        const password = $('layerAdminPassword').value;
+        if (!username || !password) { showToast('Enter the admin username and password.'); return; }
+        try {
+          const loginResponse = await fetch('/api/v1/auth/login', {
+            method: 'POST', headers: {'Content-Type':'application/json','Accept':'application/json'},
+            body: JSON.stringify({username, password}), cache:'no-store'
+          });
+          const loginPayload = await loginResponse.json().catch(() => ({}));
+          if (!loginResponse.ok || !loginPayload.access_token) throw new Error(`Login failed (HTTP ${loginResponse.status})`);
+          setAdminToken(loginPayload.access_token);
+          showToast('Signed in as admin.');
+          await refresh({quiet:true});
+        } catch (error) {
+          showToast(`Could not sign in: ${error.message || error}`);
+        } finally {
+          $('layerAdminPassword').value = '';
+        }
+      }
+
       /* DUAL-LAYER DEFENSE PANEL */
-      const layerState = { layer1: true, layer2: true };
+      const layerState = { layer1: true, layer2: true, toggleEnabled: false };
 
       function layerCell(text) {
         const td = document.createElement('td');
@@ -1208,12 +1256,17 @@
 
       async function loadLayerPanel() {
         try {
-          const response = await fetch('/api/v1/security/layers', {headers:{'Accept':'application/json'}, cache:'no-store'});
+          const response = await fetch('/api/v1/security/layers', {headers:authHeaders({'Accept':'application/json'}), cache:'no-store'});
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const data = await response.json();
           const counts = data.counts || {};
           layerState.layer1 = !!(data.layers && data.layers.layer1);
           layerState.layer2 = !!(data.layers && data.layers.layer2);
+          layerState.toggleEnabled = !!data.toggle_enabled;
+          $('toggleLayer1Button').disabled = !layerState.toggleEnabled;
+          $('toggleLayer2Button').disabled = !layerState.toggleEnabled;
+          const toggleHint = layerState.toggleEnabled ? '' : 'Layer switching is disabled on the server (set ENABLE_LAYER_TOGGLE=true for demos).';
+          $('toggleLayer1Button').title = toggleHint; $('toggleLayer2Button').title = toggleHint;
           setText('layerL1Blocked', formatNumber(counts.L1_BLOCKED || 0));
           setText('layerL2Filtered', formatNumber(counts.L2_FILTERED || 0));
           setText('layerL2Mutations', formatNumber(counts.L2_MUTATION_BLOCKED || 0));
@@ -1225,7 +1278,7 @@
           const events = Array.isArray(data.recent) ? data.recent : [];
           if (!events.length) {
             const row = document.createElement('tr');
-            const cell = layerCell('No layer events yet. Run an attack in the test console above.');
+            const cell = layerCell(data.recent_restricted ? ADMIN_ONLY_TEXT : 'No layer events yet. Run an attack in the test console above.');
             cell.className = 'empty'; cell.colSpan = 6; row.appendChild(cell);
             body.replaceChildren(row);
             return;
@@ -1248,28 +1301,20 @@
       }
 
       async function toggleLayer(layer) {
-        const username = $('layerAdminUsername').value.trim();
-        const password = $('layerAdminPassword').value;
-        if (!username || !password) { showToast('Enter the admin username and password to switch layers.'); return; }
+        if (!adminToken) { showToast('Sign in as admin first to switch layers.'); return; }
         try {
-          const loginResponse = await fetch('/api/v1/auth/login', {
-            method: 'POST', headers: {'Content-Type':'application/json','Accept':'application/json'},
-            body: JSON.stringify({username, password}), cache:'no-store'
-          });
-          const loginPayload = await loginResponse.json().catch(() => ({}));
-          if (!loginResponse.ok || !loginPayload.access_token) throw new Error(`Login failed (HTTP ${loginResponse.status})`);
           const response = await fetch('/api/v1/security/layers', {
             method: 'POST',
-            headers: {'Content-Type':'application/json','Accept':'application/json','Authorization':`Bearer ${loginPayload.access_token}`},
+            headers: authHeaders({'Content-Type':'application/json','Accept':'application/json'}),
             body: JSON.stringify({[layer]: !layerState[layer]}), cache:'no-store'
           });
           const payload = await response.json().catch(() => ({}));
+          if (response.status === 401) setAdminToken(null);
           if (!response.ok) throw new Error(payload.detail || `HTTP ${response.status}`);
           showToast(`${layer === 'layer1' ? 'Layer 1' : 'Layer 2'} is now ${payload.layers[layer] ? 'ON' : 'OFF'}.`);
         } catch (error) {
           showToast(`Could not switch layer: ${error.message || error}`);
         } finally {
-          $('layerAdminPassword').value = '';
           await loadLayerPanel();
         }
       }
@@ -1607,7 +1652,7 @@
             const tr = document.createElement('tr');
             const td = document.createElement('td');
             td.colSpan = 8; td.className = 'empty';
-            td.textContent = 'No provenance records captured yet.';
+            td.textContent = data.provenance_evidence_restricted ? ADMIN_ONLY_TEXT : 'No provenance records captured yet.';
             tr.appendChild(td); provBody.appendChild(tr);
           } else {
             for (const item of data.provenance_evidence) {
@@ -1801,6 +1846,8 @@
           showToast('Account selected. Enter its demo password to run a test.');
         });
         $('runTestButton').addEventListener('click', runSelectedTest);
+        $('adminSignInButton').addEventListener('click', adminSignIn);
+        setAdminToken(adminToken);
         $('toggleLayer1Button').addEventListener('click', () => toggleLayer('layer1'));
         $('toggleLayer2Button').addEventListener('click', () => toggleLayer('layer2'));
         $('clearResultButton').addEventListener('click', () => {

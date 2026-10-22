@@ -283,22 +283,25 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
 
             decision = _policy_engine.evaluate(context)
 
-            # Audit log the decision
-            try:
-                log_decision(
-                    user_id=user_id,
-                    role=role,
-                    operation=str(operation_value),
-                    object_type=object_type,
-                    object_id=object_id,
-                    path=path_str,
-                    decision=decision.get("decision", "DENY"),
-                    reason=decision.get("reason", "UNKNOWN"),
-                    risk_score=decision.get("risk_score", 0),
-                    risk_level=decision.get("risk_level", "LOW"),
-                )
-            except Exception:
-                logger.debug("Audit logging skipped or suppressed in runtime guard")
+            # Audit log the decision, unless Layer 1 already logged this object for
+            # this request (Layer 1 runs first, so a repeat row would double count).
+            if not layer1_saw(request, object_type, object_id):
+                try:
+                    log_decision(
+                        user_id=user_id,
+                        role=role,
+                        operation=str(operation_value),
+                        object_type=object_type,
+                        object_id=object_id,
+                        path=path_str,
+                        decision=decision.get("decision", "DENY"),
+                        reason=decision.get("reason", "UNKNOWN"),
+                        risk_score=decision.get("risk_score", 0),
+                        risk_level=decision.get("risk_level", "LOW"),
+                        layer="L2",
+                    )
+                except Exception:
+                    logger.debug("Audit logging skipped or suppressed in runtime guard")
 
             decision_info = {
                 "user_id": user_id,
@@ -486,25 +489,46 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
     def _guard_mutation_arguments(self, info: Any, kwargs: dict) -> None:
         """Block a root mutation that targets an object the caller does not own.
 
-        Uses the engine-coerced `id` argument, so it is unaffected by how the client
-        spelled the request (variables, aliases, fragments, directives).
+        Uses the engine-coerced target argument listed in MUTATION_TARGETS, so it is
+        unaffected by how the client spelled the request (variables, aliases,
+        fragments, directives). A mutation missing from MUTATION_TARGETS is denied.
         """
         parent_type = getattr(getattr(info, "parent_type", None), "name", None)
-        if parent_type != "Mutation" or "id" not in kwargs:
+        if parent_type != "Mutation":
             return
         if not self._should_enforce(info):
             return
 
-        target = _OwnedRef(kwargs["id"])
-        is_auth, decision_info = self._check_resource_authorization(target, info, "Resource")
+        from app.graphql.mutations import MUTATION_TARGETS
+
+        field_name = getattr(info, "field_name", None)
+        if field_name not in MUTATION_TARGETS:
+            raise GraphQLError(
+                "GraphQL Shield: mutation has no registered ownership target.",
+                extensions={
+                    "code": "MUTATION_NOT_REGISTERED",
+                    "layer": "L2_EXECUTION_TIME",
+                    "mutation": field_name,
+                },
+            )
+        argument, object_type = MUTATION_TARGETS[field_name]
+
+        try:
+            target = _OwnedRef(kwargs[argument])
+        except (KeyError, TypeError, ValueError):
+            raise GraphQLError(
+                "GraphQL Shield: mutation target argument is missing or invalid.",
+                extensions={"code": "MUTATION_TARGET_INVALID", "layer": "L2_EXECUTION_TIME"},
+            )
+        is_auth, decision_info = self._check_resource_authorization(target, info, object_type)
         if is_auth:
             return
 
         request = self._get_request(info)
         path = self._format_path_list(getattr(info, "path", None))
-        record_layer_event(decision_info.get("user_id"), "L2", EVENT_L2_MUTATION_BLOCKED, "Resource",
+        record_layer_event(decision_info.get("user_id"), "L2", EVENT_L2_MUTATION_BLOCKED, object_type,
                            target.id, ".".join(map(str, path)), decision_info.get("reason", "DENY"))
-        self._record_blind_spot(request, decision_info, "Resource", target.id, path)
+        self._record_blind_spot(request, decision_info, object_type, target.id, path)
         raise GraphQLError(
             "GraphQL Shield: mutation blocked, caller does not own the target object.",
             extensions={

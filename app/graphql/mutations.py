@@ -3,6 +3,15 @@ from typing import Optional
 from app.graphql.types import ResourceType
 from app.database import get_db_connection
 
+# Layer 2 ownership registry: for each root mutation (GraphQL field name), the
+# argument that names the target object and that object's ownership type.
+# Every mutation must be listed here; Layer 2 denies unlisted mutations.
+MUTATION_TARGETS = {
+    "updateResource": ("id", "Resource"),
+    "deleteResource": ("id", "Resource"),
+    "transferOwnership": ("id", "Resource"),
+}
+
 
 def _load_resource(conn, resource_id: int) -> Optional[ResourceType]:
     row = conn.execute("SELECT * FROM objects WHERE id = ?", (resource_id,)).fetchone()
@@ -24,7 +33,8 @@ class Mutation:
     WITHOUT ownership checks (the BOLA baseline); GraphQL Shield must stop foreign
     writes before they execute:
       - Layer 1 blocks the request when it can see the target id in the query.
-      - Layer 2 blocks the resolver call using the engine-coerced `id` argument.
+      - Layer 2 blocks the resolver call using the engine-coerced target argument
+        listed in MUTATION_TARGETS.
     """
 
     @strawberry.mutation
@@ -54,6 +64,8 @@ class Mutation:
     def transfer_ownership(self, id: int, new_owner_id: int) -> Optional[ResourceType]:
         conn = get_db_connection()
         try:
+            if conn.execute("SELECT 1 FROM users WHERE id = ?", (new_owner_id,)).fetchone() is None:
+                raise ValueError(f"User {new_owner_id} does not exist.")
             conn.execute("UPDATE objects SET owner_id = ? WHERE id = ?", (new_owner_id, id))
             conn.commit()
             return _load_resource(conn, id)

@@ -6,6 +6,15 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 from app.database import get_db_connection, init_db
 from app.config import settings
+from app.core.passwords import hash_password
+
+# The test suite reseeds before every test, so seeded demo accounts use fewer
+# PBKDF2 iterations; the stored hash records its own iteration count.
+SEED_ITERATIONS = 10_000
+
+
+def demo_password(username: str) -> str:
+    return f"{username}123"
 
 def seed_database():
     db_file = settings.DATABASE_URL.replace("sqlite:///", "")
@@ -18,16 +27,19 @@ def seed_database():
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    # Seed Users
+    # Seed Users. Every demo password follows one format: <username>123.
     users = [
-        (101, "balanilavan", "hash_balanilavan123", "user", "B.V. Balanilavan"),
-        (102, "kapilesh", "hash_kapilesh123", "user", "Kapilesh N"),
-        (103, "sakthivel", "hash_sakthivel123", "user", "Sakthivel B"),
-        (104, "chinmayanand", "hash_chinmayanand123", "admin", "Admin Demo Account"),
+        (101, "balanilavan", "user", "B.V. Balanilavan"),
+        (102, "kapilesh", "user", "Kapilesh N"),
+        (103, "sakthivel", "user", "Sakthivel B"),
+        (104, "chinmayanand", "admin", "Admin Demo Account"),
     ]
     cursor.executemany(
         "INSERT INTO users (id, username, password_hash, role, display_name) VALUES (?, ?, ?, ?, ?)",
-        users
+        [
+            (user_id, username, hash_password(demo_password(username), iterations=SEED_ITERATIONS), role, display_name)
+            for user_id, username, role, display_name in users
+        ]
     )
     
     # Seed Objects (with some nested relationships)

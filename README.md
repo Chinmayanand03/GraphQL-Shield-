@@ -200,6 +200,20 @@ Open two terminal windows:
 | `103` | `sakthivel` | `sakthivel123` | `user` | Standard User (Resource 103) |
 | `104` | `chinmayanand` | `chinmayanand123` | `admin` | System Administrator (Global access) |
 
+Every demo password follows the same format, `<username>123`. Passwords are stored as salted PBKDF2-SHA256 hashes; older databases holding `hash_<password>` values are upgraded automatically on startup.
+
+### Configuration
+Copy `.env.example` to `.env` and set `JWT_SECRET`. With `ENVIRONMENT=production` the server refuses to start on the built-in development secret.
+
+The insecure baseline and the dashboard's layer switches are **off by default**. The layer switch is process-wide (it changes enforcement for every user), so enable both only for local demos:
+
+```env
+ENABLE_INSECURE_BASELINE=true
+ENABLE_LAYER_TOGGLE=true
+```
+
+Every GraphQL operation is also limited by `MAX_QUERY_DEPTH` (10), `MAX_QUERY_ALIASES` (15), `MAX_QUERY_TOKENS` (2000) and `MAX_BATCH_OPERATIONS` (5). Set `ENABLE_INTROSPECTION=false` to disable schema introspection.
+
 ---
 
 ### Step 1: Obtain JWT Token (User 101)
@@ -278,13 +292,32 @@ curl -X POST "http://localhost:8000/graphql"   -H "Authorization: Bearer $ADMIN_
 ### Comparative Dual-Endpoint Architecture
 GraphQL-Shield hosts dual endpoints for scientific rigor:
 - **`/graphql`**: Hardened with dual-layer defense.
-- **`/graphql-insecure`**: Vulnerable baseline for comparative metrics (requires authenticated token; can be toggled via `ENABLE_INSECURE_BASELINE`).
+- **`/graphql-insecure`**: Vulnerable baseline for comparative metrics (requires authenticated token; off unless `ENABLE_INSECURE_BASELINE=true`).
 
 ### Layer Ablation Experiments
-Admins can evaluate Layer 1 vs Layer 2 independently:
-- Check current layer status: `GET /api/v1/security/layers`
-- Toggle layers dynamically: `POST /api/v1/security/layers` with `{"layer1": false, "layer2": true}`
-- View empirical ablation results: `GET /api/v1/security/layer-ablation`
+Run every Layer 1 / Layer 2 combination against the same attacks (uses a temporary database, so `shield.db` is untouched):
+
+```bash
+python -m scripts.run_layer_ablation
+```
+
+This writes `results/layer_ablation/results.json`, served at `GET /api/v1/security/layer-ablation`. Each cell shows the layer that stopped the attack:
+
+| Scenario | L1 on, L2 on | L1 on, L2 off | L1 off, L2 on | L1 off, L2 off |
+| :--- | :--- | :--- | :--- | :--- |
+| direct | L1 | L1 | L2 | LEAKED |
+| nested | L1 | L1 | L2 | LEAKED |
+| inline_fragment | L1 | L1 | L2 | LEAKED |
+| relationship | L2 | **LEAKED** | L2 | LEAKED |
+| batch | L1 | L1 | L2 | LEAKED |
+| mutation_update | L1 | L1 | L2 | LEAKED |
+
+Relationship traversal is invisible to Layer 1, which is why Layer 2 is required.
+
+With `ENABLE_LAYER_TOGGLE=true`, admins can also switch layers live: `POST /api/v1/security/layers` with `{"layer1": false, "layer2": true}`.
+
+### Mutation Ownership Registry
+Layer 2 checks each root mutation's target using `MUTATION_TARGETS` in `app/graphql/mutations.py` (mutation name → target argument and object type). A mutation missing from the registry is denied, and `tests/test_hardening.py` fails if a new mutation is added without an entry.
 
 ### Training the Behavioral XGBoost Model
 ```bash
@@ -303,7 +336,7 @@ python -m pytest -v
 
 Expected output:
 ```text
-======================= 238 passed in 43.60s =======================
+======================= 258 passed =======================
 ```
 
 ---
@@ -316,13 +349,13 @@ Expected output:
 | `/graphql-insecure` | `POST` | Bearer JWT | **Vulnerable Baseline Endpoint** for comparative evaluation |
 | `/dashboard` | `GET` | Public | Real-time Interactive Research & Security Console |
 | `/api/v1/auth/login` | `POST` | Public | User authentication and JWT issuance |
-| `/api/v1/security/layers` | `GET/POST` | Admin for POST | Inspect or toggle Layer 1 / Layer 2 state |
+| `/api/v1/security/layers` | `GET/POST` | Public counts; Admin for recent events and POST | Inspect or toggle Layer 1 / Layer 2 state |
 | `/api/v1/security/layer-ablation` | `GET` | Public | View results from empirical layer ablation experiments |
 | `/api/v1/taint-explain` | `POST` | Bearer JWT | Read-only Taint & Policy evaluation explainer |
-| `/api/v1/audit-logs` | `GET` | Bearer JWT | Fetch recent authorization audit logs |
-| `/api/v1/dashboard-stats` | `GET` | Public | Aggregated security and telemetry metrics |
-| `/api/v1/research-evaluation` | `GET` | Public | Empirical comparison stats (Protected vs Insecure) |
-| `/api/v1/telemetry/score-session` | `POST` | Bearer JWT | Offline behavioral scoring using XGBoost |
+| `/api/v1/audit-logs` | `GET` | Admin | Fetch recent authorization audit logs |
+| `/api/v1/dashboard-stats` | `GET` | Public counts; Admin for `recent_logs` | Aggregated security and telemetry metrics |
+| `/api/v1/research-evaluation` | `GET` | Public metrics; Admin for `provenance_evidence` | Empirical comparison stats (Protected vs Insecure) |
+| `/api/v1/telemetry/score-session` | `POST` | Public | Offline behavioral scoring using XGBoost (no stored data) |
 | `/health` | `GET` | Public | Service health and readiness probe |
 
 ---
