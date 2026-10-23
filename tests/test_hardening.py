@@ -115,6 +115,16 @@ def test_object_only_layer2_sees_is_audited_by_layer2():
     assert len(rows) == 3
 
 
+@pytest.mark.parametrize("query", ["{ resource(id: 999) { id } }", "{ user(id: 555) { id } }"])
+def test_missing_object_is_denied_not_a_server_error(query):
+    # Used to raise a foreign-key error in the audit insert (500) and leave the
+    # database locked for the next request.
+    response = client.post("/graphql", json={"query": query}, headers=headers())
+    assert response.status_code == 403
+    assert response.json()["detail"]["reason"] == "OBJECT_NOT_FOUND"
+    assert (999 in [r[0] for r in audit_rows()]) or (555 in [r[0] for r in audit_rows()])
+
+
 # ---------------------------------------------------------------- mutations
 
 def test_every_mutation_has_a_registered_ownership_target():

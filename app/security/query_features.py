@@ -8,14 +8,10 @@ actually resolved. They never include ownership data or the enforcement outcome.
 """
 from __future__ import annotations
 
-from typing import Any
-
 from graphql import (
     FieldNode,
     FragmentDefinitionNode,
     FragmentSpreadNode,
-    GraphQLList,
-    GraphQLNonNull,
     GraphQLObjectType,
     InlineFragmentNode,
     OperationDefinitionNode,
@@ -23,6 +19,7 @@ from graphql import (
 
 from .graphql_parser import parse_query
 from .object_extractor import normalize_query
+from .shield_config import ShieldConfig, default_config, unwrap_type
 
 FEATURE_NAMES: list[str] = [
     "batch_size",
@@ -44,10 +41,6 @@ FEATURE_NAMES: list[str] = [
     "directive_count",
 ]
 
-# GraphQL object types whose instances are owned (guarded by Layer 2).
-OWNED_TYPE_NAMES = {"ResourceType", "UserType"}
-
-
 _MAX_FEATURES = {"max_depth", "relationship_chain_depth", "is_mutation", "caller_is_admin", "batch_size"}
 
 
@@ -63,31 +56,15 @@ def combine_features(per_operation: list[dict[str, int]]) -> dict[str, int]:
     return combined
 
 
-def _unwrap(graphql_type) -> tuple[Any, bool]:
-    """Return (named type, is_list) for a possibly wrapped GraphQL type."""
-    is_list = False
-    while isinstance(graphql_type, (GraphQLNonNull, GraphQLList)):
-        if isinstance(graphql_type, GraphQLList):
-            is_list = True
-        graphql_type = graphql_type.of_type
-    return graphql_type, is_list
-
-
-def _graphql_schema():
-    # Imported lazily: the schema module imports the security layers.
-    from app.graphql.schema import schema
-
-    return schema._schema
-
-
 def extract_features(query: str, variables: dict | None = None, *, batch_size: int = 1,
-                     caller_is_admin: bool = False) -> dict[str, int] | None:
+                     caller_is_admin: bool = False, config: ShieldConfig | None = None) -> dict[str, int] | None:
     """Return the feature vector for one operation, or None if it does not parse."""
     ast = parse_query(query or "")
     if ast is None:
         return None
 
-    schema = _graphql_schema()
+    config = config or default_config()
+    schema = config.graphql_schema()
     variables = variables if isinstance(variables, dict) else {}
     fragments = {d.name.value: d for d in ast.definitions if isinstance(d, FragmentDefinitionNode)}
     features = dict.fromkeys(FEATURE_NAMES, 0)
@@ -108,8 +85,8 @@ def extract_features(query: str, variables: dict | None = None, *, batch_size: i
                     features["nested_id_lookup_count"] += 1
 
             field_def = parent_type.fields.get(node.name.value) if isinstance(parent_type, GraphQLObjectType) else None
-            child_type, is_list = _unwrap(field_def.type) if field_def else (None, False)
-            if is_list and getattr(child_type, "name", None) in OWNED_TYPE_NAMES:
+            child_type, is_list = unwrap_type(field_def.type) if field_def else (None, False)
+            if is_list and config.owned_key(child_type):
                 # A list of owned objects reached through a parent: no ID in the query.
                 features["relationship_field_count"] += 1
                 relationship_depth += 1
@@ -148,7 +125,7 @@ def extract_features(query: str, variables: dict | None = None, *, batch_size: i
         for selection in definition.selection_set.selections:
             visit(selection, root_type, 1, 0, frozenset())
 
-    normalized = normalize_query(query, variables) or {"objects": []}
+    normalized = normalize_query(query, variables, config=config) or {"objects": []}
     features["l1_resolved_id_count"] = len(normalized["objects"])
     features["unresolved_id_argument_count"] = max(0, features["id_argument_count"] - features["l1_resolved_id_count"])
     return features

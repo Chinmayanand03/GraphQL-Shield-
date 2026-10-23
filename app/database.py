@@ -66,8 +66,7 @@ def init_db():
             risk_score INTEGER,
             risk_level TEXT,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY(user_id) REFERENCES users(id),
-            FOREIGN KEY(object_id) REFERENCES objects(id)
+            layer TEXT
         )
     ''')
     
@@ -92,10 +91,42 @@ def init_db():
     if "layer" not in audit_columns:
         cursor.execute("ALTER TABLE audit_logs ADD COLUMN layer TEXT")
 
+    _drop_audit_foreign_keys(cursor)
     _upgrade_legacy_password_hashes(cursor)
 
     conn.commit()
     conn.close()
+
+
+def _drop_audit_foreign_keys(cursor) -> None:
+    """Older audit_logs tables tie object_id to objects(id) and user_id to
+    users(id), but audited objects can be users or IDs that do not exist (a
+    denied probe), and callers come from tokens, so inserts failed. The audit log
+    must record every decision. SQLite cannot drop a constraint in place, so
+    rebuild the table."""
+    if not cursor.execute("PRAGMA foreign_key_list(audit_logs)").fetchall():
+        return
+    columns = "id, user_id, role, operation, object_type, object_id, path, decision, reason, risk_score, risk_level, timestamp, layer"
+    cursor.execute("ALTER TABLE audit_logs RENAME TO audit_logs_old")
+    cursor.execute('''
+        CREATE TABLE audit_logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            role TEXT,
+            operation TEXT,
+            object_type TEXT,
+            object_id INTEGER,
+            path TEXT,
+            decision TEXT,
+            reason TEXT,
+            risk_score INTEGER,
+            risk_level TEXT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            layer TEXT
+        )
+    ''')
+    cursor.execute(f"INSERT INTO audit_logs ({columns}) SELECT {columns} FROM audit_logs_old")
+    cursor.execute("DROP TABLE audit_logs_old")
 
 
 def _upgrade_legacy_password_hashes(cursor) -> None:

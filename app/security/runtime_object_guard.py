@@ -5,7 +5,7 @@ import logging
 from typing import Any
 from unittest.mock import MagicMock
 
-from graphql import GraphQLError
+from graphql import GraphQLError, GraphQLObjectType, GraphQLType
 from strawberry.extensions import SchemaExtension
 
 from app.graphql.types import ResourceType, UserType
@@ -20,6 +20,7 @@ from app.security.layers import (
     record_layer_event,
 )
 from app.security.ownership import get_object_owner
+from app.security.shield_config import ShieldConfig, default_config, unwrap_type
 
 logger = logging.getLogger(__name__)
 
@@ -125,7 +126,12 @@ GUARDED_TYPES = {ResourceType: "Resource", UserType: "User"}
 
 class RuntimeObjectAuthorizationExtension(SchemaExtension):
     """
-    Layer 2: execution-time guard for owned objects (ResourceType, UserType).
+    Layer 2: execution-time guard for owned objects.
+
+    Schema-aware and framework-neutral: what to guard comes from the GraphQL
+    return type of each field (`info.return_type`) and the ShieldConfig's owned
+    types, so the same guard works as a Strawberry extension or as a plain
+    graphql-core middleware in Graphene or Ariadne (see OwnershipMiddleware).
 
     1. Mutation argument guard: before a root mutation resolver runs, the `id`
        argument the GraphQL engine actually coerced (after variables, fragments,
@@ -139,16 +145,40 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
     Layer 1 never evaluated are recorded as Layer 1 blind spots.
 
     Scope:
-      - Protected /graphql endpoint only.
-      - ResourceType and UserType objects with canonical integer IDs.
-      - Ownership from the trusted database lookup.
+      - The config's protected paths only (default /graphql).
+      - Owned object types from the config; IDs read from attributes or dict keys.
+      - Ownership from the config's trusted owner lookup.
 
     This is a prototype, not a universal GraphQL security guarantee.
     """
 
+    # None means this repository's application (default_config); bound by OwnershipMiddleware.
+    config: ShieldConfig | None = None
+
     def __init__(self, execution_context=None, request: Any = None):
         super().__init__(execution_context=execution_context)
         self._request = request
+
+    def _config(self) -> ShieldConfig:
+        return self.config or default_config()
+
+    def _owner(self, object_type: str, object_id: Any):
+        if self.config is None:
+            return get_object_owner(object_type, object_id)
+        return self.config.owner_lookup(object_type, object_id)
+
+    def _object_key(self, value: Any, info: Any, is_item: bool) -> str | None:
+        """Ownership key for a resolved value, from the schema return type, or
+        from the Python class when the return type is unavailable (unit tests)."""
+        if value is None:
+            return None
+        return_type = getattr(info, "return_type", None)
+        if isinstance(return_type, GraphQLType):
+            named, is_list = unwrap_type(return_type)
+            if is_list == is_item:
+                return self._config().owned_types.get(getattr(named, "name", None))
+            return None
+        return GUARDED_TYPES.get(type(value))
 
     def resolve(self, _next, root, info, *args, **kwargs):
         self._guard_mutation_arguments(info, kwargs)
@@ -190,11 +220,8 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
             getattr(getattr(request, "url", None), "path", "")
         ).rstrip("/")
 
-        # Preserve the intentionally vulnerable comparison endpoint.
-        if path == "/graphql-insecure":
-            return False
-
-        return path == "/graphql" and is_enabled("layer2")
+        # Paths outside the config (e.g. the vulnerable /graphql-insecure baseline) are not guarded.
+        return path in self._config().protected_paths and is_enabled("layer2")
 
     @staticmethod
     def _format_path(path) -> str:
@@ -252,11 +279,11 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
 
         try:
             user_id = int(current_user["user_id"])
-            object_id = int(resource.id)
+            object_id = _object_id(resource, self._config())
             role = str(current_user.get("role", "user"))
 
             # Never trust the returned object's owner_id as the authority.
-            owner_id = get_object_owner(object_type, object_id)
+            owner_id = self._owner(object_type, object_id)
 
             operation_node = getattr(info, "operation", None)
             operation_value = getattr(
@@ -362,7 +389,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
         owner_id = decision_info.get("owner_id")
         decision = decision_info.get("decision", "DENY")
         reason = decision_info.get("reason", "UNKNOWN")
-        object_id = int(resource.id)
+        object_id = _object_id(resource, self._config())
 
         evidence_entry = {
             "object_id": object_id,
@@ -416,7 +443,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
         base_path_list = self._format_path_list(path_node)
         field_name = str(getattr(info, "field_name", None) or (path_node.key if path_node else "children"))
 
-        object_type = GUARDED_TYPES.get(type(result))
+        object_type = self._object_key(result, info, is_item=False)
         if object_type is not None:
             is_auth, decision_info = self._check_resource_authorization(result, info, object_type)
             if is_auth:
@@ -449,7 +476,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
         if isinstance(result, list):
             filtered_result = []
             for item in result:
-                item_type = GUARDED_TYPES.get(type(item))
+                item_type = self._object_key(item, info, is_item=True)
                 if item_type is not None:
                     is_auth, decision_info = self._check_resource_authorization(item, info, item_type)
                     if is_auth:
@@ -489,9 +516,11 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
     def _guard_mutation_arguments(self, info: Any, kwargs: dict) -> None:
         """Block a root mutation that targets an object the caller does not own.
 
-        Uses the engine-coerced target argument listed in MUTATION_TARGETS, so it is
+        Uses the engine-coerced target argument (from the config's mutation
+        registry, or the schema when the mutation returns an owned type), so it is
         unaffected by how the client spelled the request (variables, aliases,
-        fragments, directives). A mutation missing from MUTATION_TARGETS is denied.
+        fragments, directives). A mutation with no known target is denied unless
+        the config lists it as unguarded.
         """
         parent_type = getattr(getattr(info, "parent_type", None), "name", None)
         if parent_type != "Mutation":
@@ -499,10 +528,14 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
         if not self._should_enforce(info):
             return
 
-        from app.graphql.mutations import MUTATION_TARGETS
-
+        config = self._config()
         field_name = getattr(info, "field_name", None)
-        if field_name not in MUTATION_TARGETS:
+        parent_type = getattr(info, "parent_type", None)
+        field_def = parent_type.fields.get(field_name) if isinstance(parent_type, GraphQLObjectType) else None
+        target_spec = config.mutation_target(field_name, field_def)
+        if target_spec is None:
+            if field_name in config.unguarded_mutations:
+                return
             raise GraphQLError(
                 "GraphQL Shield: mutation has no registered ownership target.",
                 extensions={
@@ -511,10 +544,10 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
                     "mutation": field_name,
                 },
             )
-        argument, object_type = MUTATION_TARGETS[field_name]
+        argument, object_type = target_spec
 
         try:
-            target = _OwnedRef(kwargs[argument])
+            target = _OwnedRef(kwargs[argument], config)
         except (KeyError, TypeError, ValueError):
             raise GraphQLError(
                 "GraphQL Shield: mutation target argument is missing or invalid.",
@@ -542,9 +575,10 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
 
     # ------------------------------------------------------------------ cross-layer evidence
     def _record_denial(self, request: Any, decision_info: dict, object_type: str, obj: Any, path: list) -> None:
+        object_id = _object_id(obj, self._config())
         record_layer_event(decision_info.get("user_id"), "L2", EVENT_L2_FILTERED, object_type,
-                           int(obj.id), ".".join(map(str, path)), decision_info.get("reason", "DENY"))
-        self._record_blind_spot(request, decision_info, object_type, int(obj.id), path)
+                           object_id, ".".join(map(str, path)), decision_info.get("reason", "DENY"))
+        self._record_blind_spot(request, decision_info, object_type, object_id, path)
 
     @staticmethod
     def _record_blind_spot(request: Any, decision_info: dict, object_type: str, object_id: int, path: list) -> None:
@@ -561,8 +595,31 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
                            ".".join(map(str, path)), detail)
 
 
+def _object_id(obj: Any, config: ShieldConfig) -> Any:
+    """Canonical ID of a resolved object: attribute or dict key, decoded through
+    the config (Relay global IDs), as an int when it is numeric."""
+    raw = obj.get("id") if isinstance(obj, dict) else getattr(obj, "id")
+    _, raw = config.decode(raw)
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        return raw
+
+
 class _OwnedRef:
     """Minimal object carrying the id of a mutation target for the ownership check."""
 
-    def __init__(self, raw_id: Any):
-        self.id = int(raw_id)
+    def __init__(self, raw_id: Any, config: ShieldConfig | None = None):
+        self.id = _object_id({"id": raw_id}, config or default_config())
+
+
+class OwnershipMiddleware(RuntimeObjectAuthorizationExtension):
+    """Layer 2 for any graphql-core server, bound to an application's config.
+
+    Graphene:  schema.execute(query, middleware=[OwnershipMiddleware(config)])
+    Ariadne:   GraphQL(schema, middleware=[OwnershipMiddleware(config)])
+    """
+
+    def __init__(self, config: ShieldConfig, request: Any = None):
+        super().__init__(request=request)
+        self.config = config

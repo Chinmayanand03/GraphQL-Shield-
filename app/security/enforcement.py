@@ -5,6 +5,7 @@ from app.config import settings
 from app.core.dependencies import get_current_user
 from .object_extractor import normalize_query
 from .ownership import get_object_owner
+from .shield_config import ShieldConfig
 from .authorization import AuthorizationContext, PolicyEngine
 from .audit import log_decision
 from .layers import (
@@ -26,6 +27,12 @@ async def bola_enforcement_middleware(request: Request, current_user: dict = Dep
     Layer 2 (runtime_object_guard) re-checks everything at execution time, so a
     query shape this gate cannot parse is still never answered with foreign objects.
     """
+    await enforce_request(request, current_user)
+
+
+async def enforce_request(request: Request, current_user: dict, config: ShieldConfig | None = None) -> None:
+    """Layer 1 for any application: `config` describes its schema and ownership
+    (None means this repository's application). Raises HTTPException(403) on BOLA."""
     request.state.current_user = current_user
     request.state.layer1_checked = set()
 
@@ -54,15 +61,18 @@ async def bola_enforcement_middleware(request: Request, current_user: dict = Dep
         for index, operation in enumerate(data):
             if not isinstance(operation, dict):
                 raise HTTPException(status_code=400, detail={"error": "MALFORMED_REQUEST", "batch_index": index})
-            _enforce_operation(request, current_user, operation, batch_index=index)
-        _predict_blind_spot(request, current_user, data)
+            _enforce_operation(request, current_user, operation, batch_index=index, config=config)
+        if config is None:
+            _predict_blind_spot(request, current_user, data)
         return
 
     if not isinstance(data, dict):
         raise HTTPException(status_code=400, detail={"error": "MALFORMED_REQUEST", "reason": "Expected a JSON object or array."})
 
-    _enforce_operation(request, current_user, data)
-    _predict_blind_spot(request, current_user, [data])
+    _enforce_operation(request, current_user, data, config=config)
+    # The blind-spot model is trained on this repository's application only.
+    if config is None:
+        _predict_blind_spot(request, current_user, [data])
 
 
 def _predict_blind_spot(request: Request, current_user: dict, operations: list[dict]) -> None:
@@ -86,11 +96,13 @@ def _predict_blind_spot(request: Request, current_user: dict, operations: list[d
                            detail=f"p={result['probability']:.2f}")
 
 
-def _enforce_operation(request: Request, current_user: dict, data: dict, batch_index: int | None = None) -> None:
+def _enforce_operation(request: Request, current_user: dict, data: dict, batch_index: int | None = None,
+                       config: ShieldConfig | None = None) -> None:
     query = data.get("query", "")
     variables = data.get("variables") or {}
 
-    normalized = normalize_query(query, variables if isinstance(variables, dict) else {})
+    normalized = normalize_query(query, variables if isinstance(variables, dict) else {}, config=config)
+    owner_lookup = config.owner_lookup if config is not None else get_object_owner
     
     if not normalized or not normalized["objects"]:
         return
@@ -105,7 +117,7 @@ def _enforce_operation(request: Request, current_user: dict, data: dict, batch_i
         path = obj["path"]
         
         # Look up true ownership
-        owner_id = get_object_owner(object_type, object_id)
+        owner_id = owner_lookup(object_type, object_id)
         mark_layer1_checked(request, object_type, object_id)
         
         # Assemble structured context
