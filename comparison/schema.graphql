@@ -1,0 +1,34 @@
+type Query {
+  health: HealthCheckType!
+  user(id: Int!): UserType
+  resource(id: Int!): ResourceType
+}
+
+type HealthCheckType {
+  status: String!
+  message: String!
+}
+
+type UserType {
+  id: Int!
+  username: String!
+  role: String!
+  resources: [ResourceType!]!
+  resource(id: Int!): ResourceType
+}
+
+type ResourceType {
+  id: Int!
+  name: String!
+  ownerId: Int!
+  objectType: String!
+  parentId: Int
+  children: [ResourceType!]!
+  childrenCount: Int!
+}
+
+type Mutation {
+  updateResource(id: Int!, name: String!): ResourceType
+  deleteResource(id: Int!): Boolean!
+  transferOwnership(id: Int!, newOwnerId: Int!): ResourceType
+}
