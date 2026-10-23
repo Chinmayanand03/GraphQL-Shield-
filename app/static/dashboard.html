@@ -723,11 +723,11 @@
               <tbody id="blindSpotMetricsBody"><tr><td class="empty" colspan="8">Loading model metrics…</td></tr></tbody>
             </table>
           </div>
-          <div class="console-grid section-gap" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+          <div class="section-gap" style="display:grid; grid-template-columns:minmax(0,1fr); gap:20px;">
             <div>
               <div class="panel-title" style="font-size:13px;">What drives the prediction</div>
               <div class="panel-subtitle" style="font-size:10px;">Mean |SHAP| contribution per feature</div>
-              <div id="blindSpotImportance" class="secondary-cell">—</div>
+              <div id="blindSpotImportance" style="color:var(--muted); font-size:11px; margin-top:4px;">—</div>
             </div>
             <div>
               <div class="panel-title" style="font-size:13px;">Discovery run: gaps found in Layer 1</div>
@@ -1303,8 +1303,8 @@
             const max = top.length ? top[0].mean_abs_shap : 1;
             $('blindSpotImportance').replaceChildren(...top.map(item => {
               const line = document.createElement('div');
-              line.style.cssText = 'display:grid; grid-template-columns:minmax(0,1fr) 90px 44px; gap:8px; align-items:center; margin:6px 0;';
-              const label = document.createElement('code'); label.textContent = item.feature;
+              line.style.cssText = 'display:grid; grid-template-columns:minmax(0,240px) 96px 44px; gap:12px; align-items:center; margin:6px 0;';
+              const label = document.createElement('code'); label.textContent = item.feature; label.style.overflowWrap = 'anywhere';
               const bar = document.createElement('div');
               bar.style.cssText = `height:8px; border-radius:4px; background:var(--cyan); width:${Math.max(4, 90 * item.mean_abs_shap / max)}px;`;
               const value = document.createElement('span'); value.textContent = item.mean_abs_shap.toFixed(2);
