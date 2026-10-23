@@ -1,21 +1,81 @@
 import os
 import sqlite3
+import threading
 from typing import Generator
 from app.config import settings
 
-def get_db_connection():
-    """
-    Creates and returns a connection to the SQLite database.
-    """
+# Every authorization decision does several small queries (owner lookups, audit
+# rows, layer events). Opening and closing a SQLite connection for each one was
+# about three quarters of a request's time, so idle connections are pooled per
+# database file and handed out to one caller at a time.
+_POOL_MAX_IDLE = 8
+_pool: dict[str, list[sqlite3.Connection]] = {}
+_pool_lock = threading.Lock()
+
+
+class _PooledConnection(sqlite3.Connection):
+    """close() returns the connection to the pool instead of closing it."""
+
+    pool_key: str = ""
+
+    def close(self):
+        _release(self)
+
+
+def _release(conn: _PooledConnection) -> None:
+    try:
+        # A caller that failed mid-transaction must not hand on a held lock.
+        conn.rollback()
+    except sqlite3.Error:
+        sqlite3.Connection.close(conn)
+        return
+    with _pool_lock:
+        idle = _pool.setdefault(conn.pool_key, [])
+        if len(idle) < _POOL_MAX_IDLE and conn not in idle:
+            idle.append(conn)
+            return
+    sqlite3.Connection.close(conn)
+
+
+def close_pooled_connections(db_file: str | None = None) -> None:
+    """Really close idle pooled connections (all, or one database file's), e.g.
+    before deleting the file, which Windows refuses while it is open."""
+    with _pool_lock:
+        keys = [os.path.abspath(db_file)] if db_file else list(_pool)
+        connections = [conn for key in keys for conn in _pool.pop(key, [])]
+    for conn in connections:
+        sqlite3.Connection.close(conn)
+
+
+def _database_file() -> str:
     db_file = settings.DATABASE_URL.replace("sqlite:///", "")
     if not os.path.isabs(db_file) and not os.path.exists(db_file):
         root_db = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", db_file.lstrip("./\\")))
         if os.path.exists(root_db):
             db_file = root_db
-    conn = sqlite3.connect(db_file, check_same_thread=False)
+    return os.path.abspath(db_file)
+
+
+def get_db_connection():
+    """
+    Returns a connection to the SQLite database, reused from the pool when one
+    is idle. Callers close() it as usual, which returns it to the pool.
+    """
+    db_file = _database_file()
+    with _pool_lock:
+        idle = _pool.get(db_file)
+        if idle:
+            return idle.pop()
+    conn = sqlite3.connect(db_file, check_same_thread=False, factory=_PooledConnection)
+    conn.pool_key = db_file
     conn.row_factory = sqlite3.Row
     # Enable foreign keys
     conn.execute("PRAGMA foreign_keys = ON")
+    # Every authorization decision is audited, so commits are frequent. With WAL
+    # (set in init_db), NORMAL skips the disk sync on each commit; the database
+    # stays consistent after a crash and loses at most the latest commits on
+    # power loss.
+    conn.execute("PRAGMA synchronous = NORMAL")
     return conn
 
 def init_db():
@@ -23,8 +83,11 @@ def init_db():
     Initializes the database schemas.
     """
     conn = get_db_connection()
+    # Write-ahead logging: readers do not block the audit writer, and commits are
+    # cheap. The mode is stored in the database file.
+    conn.execute("PRAGMA journal_mode = WAL")
     cursor = conn.cursor()
-    
+
     # users table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS users (

@@ -4,7 +4,7 @@ import sys
 # Ensure the root directory is in the path to import app correctly when run directly
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from app.database import get_db_connection, init_db
+from app.database import close_pooled_connections, get_db_connection, init_db
 from app.config import settings
 from app.core.passwords import hash_password
 
@@ -18,9 +18,11 @@ def demo_password(username: str) -> str:
 
 def seed_database():
     db_file = settings.DATABASE_URL.replace("sqlite:///", "")
-    # Start fresh for development
-    if os.path.exists(db_file):
-        os.remove(db_file)
+    # Start fresh for development, including WAL side files from a previous database.
+    close_pooled_connections(db_file)
+    for path in (db_file, f"{db_file}-wal", f"{db_file}-shm"):
+        if os.path.exists(path):
+            os.remove(path)
         
     init_db()
     

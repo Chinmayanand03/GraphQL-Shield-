@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from app.database import close_pooled_connections
 from app.benchmarks.dataset import (
     generate_dataset,
     read_jsonl,
@@ -537,6 +538,8 @@ def run_research_benchmark(
                 pass
 
         settings.DATABASE_URL = original_database_url
+        # Pooled connections keep the file open; Windows will not delete it otherwise.
+        close_pooled_connections(str(evaluation_db))
         evaluation_directory.cleanup()
 
     elapsed = (
