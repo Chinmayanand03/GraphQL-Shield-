@@ -20,3 +20,6 @@ _dashboard_patch_extract/
 _ist_fix_extract/
 payload/
 run_relationship_benchmark_tomorrow.ps1
+*.db-wal
+*.db-shm
+*.db-journal
