@@ -19,6 +19,8 @@ from app.core.passwords import verify_password
 from app.security.taint_request_explainer import router as taint_explainer_router
 from app.security.enforcement import bola_enforcement_middleware
 from app.security.layers import layer_summary, set_layers
+from app.clinic.api import router as clinic_router
+from app.clinic.data import init_clinic
 
 
 @asynccontextmanager
@@ -26,6 +28,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Initialize application resources when FastAPI starts."""
     check_production_settings()
     init_db()
+    init_clinic()
     yield
 
 
@@ -42,6 +45,8 @@ app = FastAPI(
 
 # Basic REST health check
 app.include_router(taint_explainer_router)
+# Second evaluation application (schema-first graphql-core), protected by the same two layers.
+app.include_router(clinic_router)
 
 @app.get("/health")
 def health_check():
