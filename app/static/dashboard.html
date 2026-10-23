@@ -302,6 +302,10 @@
     body.light .trace-step { background:rgba(247,249,252,.8); }
 
     /* RESPONSIVE LAYOUT */
+    @media (max-width:1440px) {
+      /* The metric table needs the full width for its three columns of values. */
+      .research-grid-two { grid-template-columns:1fr; }
+    }
     @media (max-width:1240px) {
       .metrics { grid-template-columns:repeat(3,minmax(0,1fr)); }
       .metrics.four { grid-template-columns:repeat(2,minmax(0,1fr)); }
@@ -312,7 +316,6 @@
       .taint-flow { grid-template-columns:repeat(3,minmax(0,1fr)); }
       .trace-flow { grid-template-columns:repeat(3,minmax(0,1fr)); }
       .trace-step:nth-child(3)::after { content:''; }
-      .research-grid-two { grid-template-columns:1fr; }
       .property-cards { grid-template-columns:repeat(2,minmax(0,1fr)); }
     }
     @media (max-width:760px) {
@@ -550,8 +553,8 @@
                   <thead>
                     <tr>
                       <th>Evaluation Metric</th>
-                      <th>XGBoost Model (Offline)</th>
-                      <th>Deterministic Rule Baseline</th>
+                      <th>XGBoost</th>
+                      <th>Rule baseline</th>
                     </tr>
                   </thead>
                   <tbody id="metricsComparisonBody">
@@ -1801,7 +1804,7 @@
             const tr = document.createElement('tr');
             const td = document.createElement('td');
             td.colSpan = 9; td.className = 'empty';
-            td.textContent = 'No session alerts recorded.';
+            td.textContent = data.behavioural_alerts_source === 'live' && data.provenance_evidence_restricted ? ADMIN_ONLY_TEXT : 'No session alerts recorded.';
             tr.appendChild(td); alertsBody.appendChild(tr);
           } else {
             for (const alert of data.behavioural_alerts) {
