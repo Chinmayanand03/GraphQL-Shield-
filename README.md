@@ -359,6 +359,69 @@ python scripts/train_behavioral_xgboost.py
 
 ---
 
+## Research Evaluation
+
+### Schema-aware, portable enforcement
+Both layers are configured per application by a `ShieldConfig` (`app/security/shield_config.py`): the GraphQL schema, which object types are owned, an owner-lookup callable, ID arguments and an ID decoder (e.g. Relay global IDs), and targets for mutations whose return type does not reveal what they change.
+
+- **Layer 1** takes each ID's object type from the schema (the type the field returns, or the mutation's target), not from the field name. A global ID naming a different type than the field expects (type confusion, the pattern behind Saleor's CVE-2022-39275) is checked as both types.
+- **Layer 2** decides what to guard from each field's GraphQL return type (`info.return_type`) and reads IDs from objects or dicts. It runs as a Strawberry extension or as plain graphql-core middleware (`OwnershipMiddleware(config)`), so it also fits Graphene and Ariadne servers.
+- A mutation with no known target is denied unless the config lists it as unguarded.
+
+### Second application: clinic records
+`app/clinic` is a second target that shares no code with the demo app: a schema-first SDL on plain graphql-core, dict resolvers, Relay global IDs, and patients, records and prescriptions with independent owners (a colleague's record on another doctor's patient). Its resolvers have no ownership checks; `/clinic/graphql` is protected only by `CLINIC_CONFIG`. `tests/test_clinic_app.py` covers direct, nested, two-level relationship, reverse relationship, type-confused IDs, create/update mutations, Layer 2 alone, admin, and the insecure baseline.
+
+### Comparison with graphql-shield (Node)
+`comparison/graphql-shield` protects the same schema (`comparison/schema.graphql`), seed data and unchecked resolvers with graphql-shield 7.6.5 rules (argument rules, type-wide rules, mutation rules). `scripts/run_tool_comparison.py` runs the same 13 attack and 5 benign scenarios against both and judges every response with one oracle (an attack leaks if a non-owned object is returned or the victim object changes).
+
+```bash
+cd comparison/graphql-shield && npm install && cd ../..
+python -m scripts.run_tool_comparison
+```
+
+| Complete configuration | Attacks leaked | Legitimate requests failed | Configuration written |
+| :--- | :--- | :--- | :--- |
+| GraphQL Shield | 0 / 13 | 0 / 5 | 2 owned types + 1 mutation entry not derivable from the schema |
+| graphql-shield | 0 / 13 | **1 / 5** | 8 permission entries + 4 rule functions |
+
+graphql-shield's failure is GraphQL null propagation: in `children: [ResourceType!]!`, denying the one foreign child raises an error that cannot null a non-null item, so it nulls the whole folder and the owner loses their own documents. Layer 2 removes the foreign item before nullability is enforced.
+
+**Configuration mistakes** (one entry removed at a time):
+
+| System | Effect of a missing entry |
+| :--- | :--- |
+| GraphQL Shield | Missing mutation entry: **0 leaks** (derived from the schema, or denied). Missing owned type: that type is unprotected (Resource: 9/13 leak; User: 1/13). |
+| graphql-shield, `fallbackRule: allow` (default) | Missing mutation rule: the write executes (1 leak each). Missing `ResourceType.*`: relationship leaks. Overlapping rules cover the rest. |
+| graphql-shield, `fallbackRule: deny` | 0 leaks, but each missing rule blocks legitimate requests (1 to 4 of 5). |
+
+Neither approach dominates: GraphQL Shield needs far less configuration and fails closed on mutations, but a missing owned type is a single point of failure; graphql-shield's overlapping per-field rules tolerate one missing read rule but need much more configuration, and cost availability under null propagation.
+
+### Latency
+`scripts/run_latency_benchmark.py` measures each configuration in-process (FastAPI TestClient, no network): 30 warm-up requests, then 5 repeats of 200, reporting the mean with a 95% confidence interval across repeats, and p50/p95/p99. Profiling showed that opening and closing SQLite connections took about 75% of a protected request, so connections are now pooled. Same machine, back to back (`--no-pool` reproduces the old behaviour):
+
+| Both layers | Without pooling | With pooling | Overhead vs insecure (with pooling) |
+| :--- | :--- | :--- | :--- |
+| Own lookup | 59.2 ms | 19.6 ms [18.3, 21.0] | +78% |
+| Relationship (`children`) | 183.5 ms | 38.4 ms [35.7, 41.2] | +81% |
+| Own update | 84.3 ms | 29.4 ms [26.8, 32.0] | +60% |
+
+Numbers come from a Windows laptop with background load and vary between runs; report the confidence intervals, not single means.
+
+### Determinism
+The ablation, the tool comparison and the security test suite are deterministic: the same code and data always give the same outcome, so they are reported as counts, not with confidence intervals. Latency and the blind-spot predictor (new request sets per seed, `scripts/run_blind_spot_seeds.py`) are repeated.
+
+Blind-spot predictor on the fixed Layer 1, 5 seeds × 2,000 requests (mean ± std):
+
+| Measure | XGBoost | Rule baseline |
+| :--- | :--- | :--- |
+| F1, random test split | 0.998 ± 0.004 | 0.998 ± 0.004 |
+| Attack recall | 1.000 ± 0.000 | 1.000 ± 0.000 |
+| F1, held-out family | 1.000 ± 0.000 | 1.000 ± 0.000 |
+
+Coverage-gap rate among allowed requests: 0.289 ± 0.015; attacks stopped only by Layer 2 per 2,000 requests: 75.6 ± 8.8; top feature in every seed: `relationship_field_count`. Once the variable-default gap is fixed, the remaining blind spot is relationship traversal and the rule matches the model: the predictor's value is the discovery run, not ongoing accuracy.
+
+---
+
 ## Verification & Test Suite
 
 Run the complete test suite:
@@ -368,7 +431,7 @@ python -m pytest -v
 
 Expected output:
 ```text
-======================= 277 passed =======================
+======================= 313 passed =======================
 ```
 
 ---
