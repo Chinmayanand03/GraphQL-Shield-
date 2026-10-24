@@ -22,6 +22,7 @@ from app.security.enforcement import bola_enforcement_middleware
 from app.security.layers import layer_summary, set_layers
 from app.clinic.api import router as clinic_router
 from app.clinic.data import init_clinic
+from app.dashboard_api import router as dashboard_router
 
 logger = logging.getLogger("graphql_shield.auth")
 
@@ -50,6 +51,8 @@ app = FastAPI(
 app.include_router(taint_explainer_router)
 # Second evaluation application (schema-first graphql-core), protected by the same two layers.
 app.include_router(clinic_router)
+# Evidence panels: research results, live predictor recall, test report, audit integrity.
+app.include_router(dashboard_router)
 
 @app.get("/health")
 def health_check():
@@ -99,25 +102,7 @@ def protected_route(
     }
 
 
-@app.get("/api/v1/audit-logs")
-def get_audit_logs(
-    db: sqlite3.Connection = Depends(get_db),
-    current_user: dict = Depends(get_current_user),
-):
-    """Restrict audit log access to administrators."""
-    if not is_admin(current_user):
-        raise HTTPException(
-            status_code=403,
-            detail="Admin access required",
-        )
-
-    cursor = db.cursor()
-    cursor.execute(
-        "SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT 50"
-    )
-    logs = [dict(row) for row in cursor.fetchall()]
-
-    return {"logs": logs}
+# /api/v1/audit-logs (admin, filterable, paginated) lives in app/dashboard_api.py.
 
 
 # Static dashboard assets

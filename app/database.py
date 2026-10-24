@@ -129,10 +129,12 @@ def init_db():
             risk_score INTEGER,
             risk_level TEXT,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-            layer TEXT
+            layer TEXT,
+            prev_hash TEXT,
+            row_hash TEXT
         )
     ''')
-    
+
     # layer_events table: what each defense layer did, including the cases where
     # Layer 2 caught an object that Layer 1 never evaluated (a Layer 1 blind spot).
     cursor.execute('''
@@ -155,6 +157,14 @@ def init_db():
         cursor.execute("ALTER TABLE audit_logs ADD COLUMN layer TEXT")
 
     _drop_audit_foreign_keys(cursor)
+
+    # Tamper-evident hash chain (app/security/audit.py). Older rows keep NULL
+    # hashes and are reported as legacy rows.
+    audit_columns = {row[1] for row in cursor.execute("PRAGMA table_info(audit_logs)")}
+    for column in ("prev_hash", "row_hash"):
+        if column not in audit_columns:
+            cursor.execute(f"ALTER TABLE audit_logs ADD COLUMN {column} TEXT")
+
     _upgrade_legacy_password_hashes(cursor)
 
     conn.commit()

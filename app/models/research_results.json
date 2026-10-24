@@ -1,0 +1,448 @@
+{
+ "built_at": "2026-10-24T15:21:30+00:00",
+ "ablation": {
+  "generated_at": "2026-10-22T18:09:46.006202+00:00",
+  "scenarios": [
+   "direct",
+   "nested",
+   "inline_fragment",
+   "relationship",
+   "batch",
+   "mutation_update"
+  ],
+  "configurations": [
+   {
+    "layer1": true,
+    "layer2": true,
+    "outcomes": {
+     "direct": "L1",
+     "nested": "L1",
+     "inline_fragment": "L1",
+     "relationship": "L2",
+     "batch": "L1",
+     "mutation_update": "L1"
+    },
+    "leaked": 0
+   },
+   {
+    "layer1": true,
+    "layer2": false,
+    "outcomes": {
+     "direct": "L1",
+     "nested": "L1",
+     "inline_fragment": "L1",
+     "relationship": "LEAKED",
+     "batch": "L1",
+     "mutation_update": "L1"
+    },
+    "leaked": 1
+   },
+   {
+    "layer1": false,
+    "layer2": true,
+    "outcomes": {
+     "direct": "L2",
+     "nested": "L2",
+     "inline_fragment": "L2",
+     "relationship": "L2",
+     "batch": "L2",
+     "mutation_update": "L2"
+    },
+    "leaked": 0
+   },
+   {
+    "layer1": false,
+    "layer2": false,
+    "outcomes": {
+     "direct": "LEAKED",
+     "nested": "LEAKED",
+     "inline_fragment": "LEAKED",
+     "relationship": "LEAKED",
+     "batch": "LEAKED",
+     "mutation_update": "LEAKED"
+    },
+    "leaked": 6
+   }
+  ]
+ },
+ "tool_comparison": {
+  "generated_at": "2026-10-23T14:01:23.745675+00:00",
+  "configuration_size": {
+   "GraphQL Shield": {
+    "owned_types": 2,
+    "mutation_registry_entries": 3,
+    "mutation_entries_not_derivable_from_schema": 1
+   },
+   "graphql-shield": {
+    "permission_entries": 8,
+    "rule_functions": 4
+   }
+  },
+  "systems": {
+   "GraphQL Shield": {
+    "complete": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 0,
+     "benign": 5,
+     "failed_benign_scenarios": []
+    },
+    "without owned type Resource": {
+     "attacks_leaked": 9,
+     "attacks": 13,
+     "leaked_scenarios": [
+      "direct",
+      "variable",
+      "variable_default",
+      "alias",
+      "named_fragment",
+      "inline_fragment",
+      "nested_lookup",
+      "relationship",
+      "batch"
+     ],
+     "benign_failed": 0,
+     "benign": 5,
+     "failed_benign_scenarios": []
+    },
+    "without owned type User": {
+     "attacks_leaked": 1,
+     "attacks": 13,
+     "leaked_scenarios": [
+      "foreign_user"
+     ],
+     "benign_failed": 0,
+     "benign": 5,
+     "failed_benign_scenarios": []
+    },
+    "without mutation target updateResource": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 0,
+     "benign": 5,
+     "failed_benign_scenarios": []
+    },
+    "without mutation target deleteResource": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 0,
+     "benign": 5,
+     "failed_benign_scenarios": []
+    },
+    "without mutation target transferOwnership": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 0,
+     "benign": 5,
+     "failed_benign_scenarios": []
+    }
+   },
+   "graphql-shield": {
+    "complete": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 1,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship"
+     ]
+    },
+    "fallback_deny": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 1,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship"
+     ]
+    },
+    "without:Query.user": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 1,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship"
+     ]
+    },
+    "without:Query.resource": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 1,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship"
+     ]
+    },
+    "without:UserType.resource": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 1,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship"
+     ]
+    },
+    "without:UserType.*": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 1,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship"
+     ]
+    },
+    "without:ResourceType.*": {
+     "attacks_leaked": 1,
+     "attacks": 13,
+     "leaked_scenarios": [
+      "relationship"
+     ],
+     "benign_failed": 0,
+     "benign": 5,
+     "failed_benign_scenarios": []
+    },
+    "without:Mutation.updateResource": {
+     "attacks_leaked": 1,
+     "attacks": 13,
+     "leaked_scenarios": [
+      "update"
+     ],
+     "benign_failed": 1,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship"
+     ]
+    },
+    "without:Mutation.deleteResource": {
+     "attacks_leaked": 1,
+     "attacks": 13,
+     "leaked_scenarios": [
+      "delete"
+     ],
+     "benign_failed": 1,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship"
+     ]
+    },
+    "without:Mutation.transferOwnership": {
+     "attacks_leaked": 1,
+     "attacks": 13,
+     "leaked_scenarios": [
+      "transfer"
+     ],
+     "benign_failed": 1,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship"
+     ]
+    },
+    "fallback_deny,without:Query.user": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 2,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship",
+      "own_user"
+     ]
+    },
+    "fallback_deny,without:Query.resource": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 3,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_direct",
+      "own_relationship",
+      "admin_relationship"
+     ]
+    },
+    "fallback_deny,without:UserType.resource": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 1,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship"
+     ]
+    },
+    "fallback_deny,without:UserType.*": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 2,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship",
+      "own_user"
+     ]
+    },
+    "fallback_deny,without:ResourceType.*": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 4,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_direct",
+      "own_relationship",
+      "own_update",
+      "admin_relationship"
+     ]
+    },
+    "fallback_deny,without:Mutation.updateResource": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 2,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship",
+      "own_update"
+     ]
+    },
+    "fallback_deny,without:Mutation.deleteResource": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 1,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship"
+     ]
+    },
+    "fallback_deny,without:Mutation.transferOwnership": {
+     "attacks_leaked": 0,
+     "attacks": 13,
+     "leaked_scenarios": [],
+     "benign_failed": 1,
+     "benign": 5,
+     "failed_benign_scenarios": [
+      "own_relationship"
+     ]
+    }
+   }
+  }
+ },
+ "latency": {
+  "generated_at": "2026-10-23T15:13:36.682404+00:00",
+  "method": "in-process TestClient; 30 warm-up, 5 repeats x 200 requests; 95% CI of the mean across repeats (t, df=4)",
+  "rows": [
+   {
+    "request": "own_lookup",
+    "both_layers_pooled": {
+     "mean_ms": 19.641,
+     "ci95_ms": [
+      18.321,
+      20.96
+     ],
+     "p50_ms": 18.148,
+     "p95_ms": 25.358,
+     "p99_ms": 53.358,
+     "requests": 1000,
+     "overhead_ms": 8.616,
+     "overhead_pct": 78.1
+    },
+    "both_layers_no_pool_mean_ms": 59.229,
+    "insecure_pooled_mean_ms": 11.025
+   },
+   {
+    "request": "own_relationship",
+    "both_layers_pooled": {
+     "mean_ms": 38.414,
+     "ci95_ms": [
+      35.647,
+      41.18
+     ],
+     "p50_ms": 33.701,
+     "p95_ms": 68.634,
+     "p99_ms": 119.507,
+     "requests": 1000,
+     "overhead_ms": 17.185,
+     "overhead_pct": 81.0
+    },
+    "both_layers_no_pool_mean_ms": 183.448,
+    "insecure_pooled_mean_ms": 21.229
+   },
+   {
+    "request": "own_update",
+    "both_layers_pooled": {
+     "mean_ms": 29.358,
+     "ci95_ms": [
+      26.747,
+      31.969
+     ],
+     "p50_ms": 26.405,
+     "p95_ms": 41.426,
+     "p99_ms": 89.72,
+     "requests": 1000,
+     "overhead_ms": 11.048,
+     "overhead_pct": 60.3
+    },
+    "both_layers_no_pool_mean_ms": 84.293,
+    "insecure_pooled_mean_ms": 18.31
+   }
+  ]
+ },
+ "blind_spot_seeds": {
+  "generated_at": "2026-10-23T15:20:59.237243+00:00",
+  "seeds": 5,
+  "requests_per_seed": 2000,
+  "summary": {
+   "random_test.xgboost.f1_score": {
+    "mean": 0.998,
+    "std": 0.0044
+   },
+   "random_test.xgboost.attack_recall": {
+    "mean": 1.0,
+    "std": 0.0
+   },
+   "random_test.rule_baseline.f1_score": {
+    "mean": 0.998,
+    "std": 0.0044
+   },
+   "random_test.rule_baseline.attack_recall": {
+    "mean": 1.0,
+    "std": 0.0
+   },
+   "held_out_family.xgboost.f1_score": {
+    "mean": 1.0,
+    "std": 0.0
+   },
+   "held_out_family.rule_baseline.f1_score": {
+    "mean": 1.0,
+    "std": 0.0
+   },
+   "coverage_gap_rate": {
+    "mean": 0.2888,
+    "std": 0.0145
+   },
+   "attacks_caught_only_by_layer2": {
+    "mean": 75.6,
+    "std": 8.792
+   }
+  },
+  "top_feature_by_seed": [
+   "relationship_field_count",
+   "relationship_field_count",
+   "relationship_field_count",
+   "relationship_field_count",
+   "relationship_field_count"
+  ]
+ }
+}
