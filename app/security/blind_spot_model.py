@@ -57,7 +57,9 @@ def load_model(force_reload: bool = False):
 
 def model_status() -> dict[str, Any]:
     load_model()
-    return {"loaded": _model is not None, "path": str(MODEL_PATH), "error": _model_error}
+    from app.core.paths import public_message, public_path
+
+    return {"loaded": _model is not None, "path": public_path(MODEL_PATH), "error": public_message(_model_error)}
 
 
 def predict(features: dict[str, int], *, explain: bool = False) -> dict[str, Any]:

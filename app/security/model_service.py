@@ -96,8 +96,13 @@ def load_behavioral_model(
 
 
 def get_model_status() -> dict[str, Any]:
-    """Return current model loading status."""
-    return dict(_model_load_status)
+    """Return current model loading status, with paths safe to show clients."""
+    from app.core.paths import public_message, public_path
+
+    status = dict(_model_load_status)
+    status["path"] = public_path(status["path"])
+    status["error"] = public_message(status.get("error"))
+    return status
 
 
 _USE_DEFAULT_MODEL = object()
