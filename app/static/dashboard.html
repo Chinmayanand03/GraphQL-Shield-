@@ -503,6 +503,33 @@
     body.light .compare-title { background: #f7f9fc; }
     @media (max-width: 760px) { .compare-grid { grid-template-columns: 1fr; } }
 
+    /* Research evidence panels */
+    .live-recall { margin-top: 20px; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel-2); }
+    .mini-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 14px 0 8px; }
+    .mini-stats > div { display: flex; flex-direction: column; gap: 2px; }
+    .mini-stats span { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -.4px; }
+    .mini-stats small { font-size: 12.5px; color: var(--muted); }
+    .evidence-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .evidence-block { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel-2); }
+    .evidence-block .table-wrap { background: var(--panel); }
+    .evidence-block.wide { grid-column: 1 / -1; }
+    .evidence-block .primary-cell { max-width: none; }
+    .cell-leak { color: var(--red); font-weight: 600; }
+    .cell-l1 { color: var(--cyan); font-weight: 600; }
+    .cell-l2 { color: var(--green); font-weight: 600; }
+    .latency-chart { display: grid; gap: 14px; font-size: 13px; }
+    .lat-row { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; align-items: center; }
+    .lat-bars { display: grid; gap: 6px; }
+    .lat-bar { position: relative; height: 18px; border-radius: 4px; display: flex; align-items: center; }
+    .lat-bar span { position: absolute; left: calc(100% + 8px); white-space: nowrap; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .lat-bar.before { background: #3a4a63; }
+    .lat-bar.after { background: var(--cyan); }
+    .lat-ci { position: absolute; top: 50%; height: 2px; background: var(--text); opacity: .8; }
+    .lat-legend { display: flex; gap: 16px; font-size: 12px; color: var(--muted); }
+    .lat-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+    body.light .lat-bar.before { background: #c4cdd9; }
+    @media (max-width: 1100px) { .evidence-grid { grid-template-columns: 1fr; } .mini-stats { grid-template-columns: 1fr; } }
+
     /* Inline styles in the research markup: raise tiny text and flatten tinted boxes */
     main [style*="font-size:9px"], main [style*="font-size:10px"] { font-size: 12px !important; }
     main [style*="font-size:11px"] { font-size: 12.5px !important; }
@@ -996,6 +1023,47 @@
             <textarea class="input" id="blindSpotQuery" rows="3" style="font-family:monospace; resize:vertical;">{ resource(id: 201) { id children { id name } } }</textarea>
           </div>
           <div class="console-actions"><button class="btn primary" id="blindSpotScoreButton" type="button">Predict blind spot</button><span class="console-note" id="blindSpotScoreResult">—</span></div>
+          <div class="live-recall section-gap" id="blindSpotLive">
+            <div class="panel-title" style="font-size:14px;">On live traffic</div>
+            <div class="panel-subtitle">Every blind-spot denial Layer 2 records carries the prediction the model made before that request ran.</div>
+            <div class="mini-stats">
+              <div><span id="liveRecall">—</span><small>of blind-spot denials were flagged in advance</small></div>
+              <div><span id="liveDenials">—</span><small>blind-spot denials recorded</small></div>
+              <div><span id="livePredicted">—</span><small>requests predicted as blind spots</small></div>
+            </div>
+            <p class="console-note" id="liveRecallNote">—</p>
+          </div>
+        </section>
+
+        <!-- Research evidence: results of the experiments behind the paper -->
+        <section class="panel section-gap" id="research-evidence">
+          <div class="panel-head">
+            <div><div class="panel-title">Research evidence</div><div class="panel-subtitle">Results of the experiments in the paper, read from app/models/research_results.json (rebuild with <code>python -m scripts.build_dashboard_results</code>).</div></div>
+            <span class="range-chip" id="evidenceBuilt">LOADING…</span>
+          </div>
+          <div class="evidence-grid">
+            <div class="evidence-block wide">
+              <div class="panel-title" style="font-size:14px;">Layer ablation: which layer stops each attack</div>
+              <div class="panel-subtitle">Same six attacks with each layer switched on or off. Layer 1 alone leaks relationship traversal.</div>
+              <div class="table-wrap"><table style="min-width:0"><thead id="ablationHead"></thead><tbody id="ablationBody"><tr><td class="empty">Loading…</td></tr></tbody></table></div>
+            </div>
+            <div class="evidence-block wide">
+              <div class="panel-title" style="font-size:14px;">Comparison with graphql-shield (Node.js)</div>
+              <div class="panel-subtitle">Same schema, data and 13 attack + 5 normal scenarios, judged by one oracle.</div>
+              <div class="table-wrap"><table style="min-width:0"><thead><tr><th>Configuration</th><th>Attacks leaked</th><th>Normal requests failed</th></tr></thead><tbody id="comparisonBody"><tr><td class="empty" colspan="3">Loading…</td></tr></tbody></table></div>
+              <p class="console-note" id="comparisonNote"></p>
+            </div>
+            <div class="evidence-block">
+              <div class="panel-title" style="font-size:14px;">Latency per protected request</div>
+              <div class="panel-subtitle">Both layers on, in-process, 5 × 200 requests; bars show the mean, the line the 95% confidence interval.</div>
+              <div id="latencyChart" class="latency-chart">Loading…</div>
+            </div>
+            <div class="evidence-block">
+              <div class="panel-title" style="font-size:14px;">Blind-spot predictor across random seeds</div>
+              <div class="panel-subtitle">Fresh request sets per seed on the fixed Layer 1: the model and the simple rule are equally accurate.</div>
+              <div class="table-wrap"><table style="min-width:0"><thead><tr><th>Measure</th><th>Mean ± std</th></tr></thead><tbody id="seedsBody"><tr><td class="empty" colspan="2">Loading…</td></tr></tbody></table></div>
+            </div>
+          </div>
         </section>
       </div>
 
@@ -1468,6 +1536,7 @@
           renderDemoUsers(payload.demo_users || []);
           renderStats(state.stats); applyFilters();
           loadLayerPanel();
+          loadLiveRecall();
           if (payload.research_evaluation) {
             renderResearchEvaluation(payload.research_evaluation);
           }
@@ -1597,6 +1666,135 @@
           setText('blindSpotScoreResult', `${verdict} · p=${pct(payload.probability)} · rule=${payload.rule_prediction ? 'flag' : 'no flag'}${reasons ? ' · ' + reasons : ''}`);
         } catch (error) {
           setText('blindSpotScoreResult', `Could not score: ${error.message || error}`);
+        }
+      }
+
+      /* RESEARCH EVIDENCE PANELS */
+      const ABLATION_LABELS = {direct: 'Direct', nested: 'Nested lookup', inline_fragment: 'Inline fragment', relationship: 'Relationship', batch: 'Batch', mutation_update: 'Update mutation'};
+      const REQUEST_LABELS = {own_lookup: 'Own lookup', own_relationship: 'Relationship', own_update: 'Own update'};
+
+      function textCell(text, className) {
+        const td = document.createElement('td'); td.textContent = text; if (className) td.className = className; return td;
+      }
+
+      function renderAblation(data) {
+        const th = (text) => { const cell = document.createElement('th'); cell.textContent = text; return cell; };
+        const head = document.createElement('tr');
+        head.append(th('Attack'), ...data.configurations.map(c => th(`L1 ${c.layer1 ? 'on' : 'off'} · L2 ${c.layer2 ? 'on' : 'off'}`)));
+        $('ablationHead').replaceChildren(head);
+        $('ablationBody').replaceChildren(...data.scenarios.map(scenario => {
+          const tr = document.createElement('tr');
+          tr.appendChild(textCell(ABLATION_LABELS[scenario] || scenario, 'primary-cell'));
+          for (const c of data.configurations) {
+            const outcome = c.outcomes[scenario];
+            tr.appendChild(textCell(outcome === 'LEAKED' ? 'Leaked' : `${outcome} stops it`, outcome === 'LEAKED' ? 'cell-leak' : outcome === 'L1' ? 'cell-l1' : 'cell-l2'));
+          }
+          return tr;
+        }));
+      }
+
+      function renderComparison(data) {
+        const shield = data.systems['GraphQL Shield'], gs = data.systems['graphql-shield'];
+        const rows = [
+          ['GraphQL-Shield (complete)', shield && shield.complete],
+          ['graphql-shield, allow fallback (complete)', gs && gs.complete],
+          ['graphql-shield, deny fallback (complete)', gs && gs.fallback_deny],
+        ].filter(([, summary]) => summary);
+        $('comparisonBody').replaceChildren(...rows.map(([label, s]) => {
+          const tr = document.createElement('tr');
+          tr.append(textCell(label, 'primary-cell'),
+            textCell(`${s.attacks_leaked} / ${s.attacks}`, s.attacks_leaked ? 'cell-leak' : ''),
+            textCell(`${s.benign_failed} / ${s.benign}${s.failed_benign_scenarios.length ? ' (' + s.failed_benign_scenarios.join(', ') + ')' : ''}`, s.benign_failed ? 'cell-leak' : ''));
+          return tr;
+        }));
+        const size = data.configuration_size || {};
+        const ours = size['GraphQL Shield'] || {}, theirs = size['graphql-shield'] || {};
+        setText('comparisonNote', `Configuration written: GraphQL-Shield ${ours.owned_types} owned types + ${ours.mutation_entries_not_derivable_from_schema} mutation entry the schema cannot supply; graphql-shield ${theirs.permission_entries} permission entries + ${theirs.rule_functions} rule functions. graphql-shield’s failed normal request is GraphQL null propagation hiding the owner’s own folder.`);
+      }
+
+      function renderLatency(data) {
+        const max = Math.max(...data.rows.map(r => r.both_layers_no_pool_mean_ms));
+        const chart = $('latencyChart');
+        chart.replaceChildren();
+        for (const r of data.rows) {
+          const pooled = r.both_layers_pooled;
+          const row = document.createElement('div'); row.className = 'lat-row';
+          const label = document.createElement('div'); label.textContent = REQUEST_LABELS[r.request] || r.request;
+          const bars = document.createElement('div'); bars.className = 'lat-bars';
+          const before = document.createElement('div'); before.className = 'lat-bar before';
+          before.style.width = `${(r.both_layers_no_pool_mean_ms / max) * 78}%`;
+          before.title = `Without pooling: ${r.both_layers_no_pool_mean_ms.toFixed(1)} ms`;
+          const beforeLabel = document.createElement('span'); beforeLabel.textContent = `${r.both_layers_no_pool_mean_ms.toFixed(1)} ms`; before.appendChild(beforeLabel);
+          const after = document.createElement('div'); after.className = 'lat-bar after';
+          after.style.width = `${(pooled.mean_ms / max) * 78}%`;
+          after.title = `With pooling: ${pooled.mean_ms.toFixed(1)} ms, 95% CI ${pooled.ci95_ms[0].toFixed(1)}–${pooled.ci95_ms[1].toFixed(1)}`;
+          const ci = document.createElement('div'); ci.className = 'lat-ci';
+          ci.style.left = `${(pooled.ci95_ms[0] / pooled.mean_ms) * 100}%`;
+          ci.style.width = `${((pooled.ci95_ms[1] - pooled.ci95_ms[0]) / pooled.mean_ms) * 100}%`;
+          const afterLabel = document.createElement('span');
+          afterLabel.textContent = `${pooled.mean_ms.toFixed(1)} ms [${pooled.ci95_ms[0].toFixed(1)}, ${pooled.ci95_ms[1].toFixed(1)}] · ${(r.both_layers_no_pool_mean_ms / pooled.mean_ms).toFixed(1)}× faster`;
+          after.append(ci, afterLabel);
+          bars.append(before, after);
+          row.append(label, bars);
+          chart.appendChild(row);
+        }
+        const legend = document.createElement('div'); legend.className = 'lat-legend';
+        legend.innerHTML = '<span><i style="background:#3a4a63"></i>Without connection pooling</span><span><i style="background:var(--cyan)"></i>With pooling (current)</span>';
+        chart.appendChild(legend);
+      }
+
+      function renderSeeds(data) {
+        const names = {
+          'random_test.xgboost.f1_score': 'Model F1 (random test split)',
+          'random_test.rule_baseline.f1_score': 'Rule F1 (random test split)',
+          'random_test.xgboost.attack_recall': 'Model attack recall',
+          'held_out_family.xgboost.f1_score': 'Model F1 (held-out query family)',
+          'coverage_gap_rate': 'Share of allowed requests with a coverage gap',
+          'attacks_caught_only_by_layer2': 'Attacks stopped only by Layer 2, per seed',
+        };
+        const rows = Object.entries(names).filter(([key]) => data.summary[key]).map(([key, label]) => {
+          const v = data.summary[key];
+          const tr = document.createElement('tr');
+          tr.append(textCell(label), textCell(`${v.mean} ± ${v.std}`));
+          return tr;
+        });
+        const note = document.createElement('tr');
+        const td = textCell(`${data.seeds} seeds × ${data.requests_per_seed} requests. Top feature in every seed: ${[...new Set(data.top_feature_by_seed)].join(', ')}.`);
+        td.colSpan = 2; td.className = 'secondary-cell'; td.style.whiteSpace = 'normal'; td.style.maxWidth = 'none';
+        note.appendChild(td);
+        $('seedsBody').replaceChildren(...rows, note);
+      }
+
+      async function loadResearchEvidence() {
+        try {
+          const response = await fetch('/api/v1/research/results', {headers: {'Accept': 'application/json'}, cache: 'no-store'});
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = await response.json();
+          setText('evidenceBuilt', `BUILT ${String(data.built_at || '').slice(0, 10)}`);
+          if (data.ablation) renderAblation(data.ablation);
+          if (data.tool_comparison) renderComparison(data.tool_comparison);
+          if (data.latency) renderLatency(data.latency);
+          if (data.blind_spot_seeds) renderSeeds(data.blind_spot_seeds);
+        } catch (error) {
+          setText('evidenceBuilt', 'NOT BUILT');
+          for (const id of ['ablationBody', 'comparisonBody', 'seedsBody']) {
+            const tr = document.createElement('tr'); const td = textCell('Run python -m scripts.build_dashboard_results to add the experiment results.', 'empty'); td.colSpan = 7; tr.appendChild(td); $(id).replaceChildren(tr);
+          }
+          setText('latencyChart', 'Not available yet.');
+        }
+      }
+
+      async function loadLiveRecall() {
+        try {
+          const response = await fetch('/api/v1/security/blind-spot-live', {headers: {'Accept': 'application/json'}, cache: 'no-store'});
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const d = await response.json();
+          setText('liveRecall', d.live_recall === null ? '—' : `${(d.live_recall * 100).toFixed(0)}%`);
+          setText('liveDenials', formatNumber(d.blind_spot_denials));
+          setText('livePredicted', formatNumber(d.requests_predicted_as_blind_spots));
+          setText('liveRecallNote', `${d.denials_flagged_in_advance} flagged in advance, ${d.denials_missed} missed, ${d.denials_without_prediction} recorded before the model was deployed. ${d.note}`);
+        } catch (_) {
+          setText('liveRecallNote', 'Live predictor statistics are unavailable.');
         }
       }
 
@@ -2468,6 +2666,7 @@
         $('adminSignInButton').addEventListener('click', adminSignIn);
         $('blindSpotScoreButton').addEventListener('click', scoreBlindSpotQuery);
         loadBlindSpotPanel();
+        loadResearchEvidence();
         setAdminToken(adminToken);
         $('toggleLayer1Button').addEventListener('click', () => toggleLayer('layer1'));
         $('toggleLayer2Button').addEventListener('click', () => toggleLayer('layer2'));
