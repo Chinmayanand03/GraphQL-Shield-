@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import sqlite3
 from contextlib import asynccontextmanager
@@ -21,6 +22,8 @@ from app.security.enforcement import bola_enforcement_middleware
 from app.security.layers import layer_summary, set_layers
 from app.clinic.api import router as clinic_router
 from app.clinic.data import init_clinic
+
+logger = logging.getLogger("graphql_shield.auth")
 
 
 @asynccontextmanager
@@ -70,6 +73,15 @@ def login(request: LoginRequest, db: sqlite3.Connection = Depends(get_db)):
     ).fetchone()
 
     if not user or not verify_password(request.password, user["password_hash"]):
+        # The client gets one generic message; the server log says why, so a
+        # failed sign-in can be diagnosed. The password itself is never logged.
+        logger.warning(
+            "Login failed for username %r: %s (password length %d%s)",
+            request.username,
+            "unknown username" if not user else "wrong password",
+            len(request.password),
+            ", has leading/trailing spaces" if request.password != request.password.strip() else "",
+        )
         raise HTTPException(status_code=401, detail="Invalid username or password")
 
     access_token = create_access_token(user_id=user["id"], role=user["role"])
