@@ -479,6 +479,30 @@
     .research-status-bar { background: var(--panel-2); border-color: var(--line); border-radius: 10px; }
     .toast { background: var(--panel-2); font-size: 13px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
 
+    /* Test console additions: session line, verdicts, run-all and compare panels */
+    .console-session { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 14px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); font-size: 13px; color: var(--muted); }
+    .console-session.active { color: var(--text); border-color: rgba(60,203,143,.35); }
+    #clinicHint { margin: 10px 0 0; line-height: 1.5; }
+    .verdict { padding: 11px 15px; border-bottom: 1px solid var(--line); font-size: 13.5px; font-weight: 600; display: flex; gap: 10px; align-items: baseline; }
+    .verdict small { font-weight: 400; color: var(--muted); font-size: 12.5px; }
+    .verdict.pass { color: var(--green); background: rgba(60,203,143,.07); }
+    .verdict.fail { color: var(--red); background: rgba(240,101,122,.08); }
+    .verdict.warn { color: var(--amber); background: rgba(242,181,91,.07); }
+    .verdict.info { color: var(--cyan); background: rgba(76,195,224,.07); }
+    .run-all { margin-top: 16px; border: 1px solid var(--line); border-radius: 12px; padding: 16px; background: var(--panel); }
+    .run-all-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 4px; font-size: 14px; }
+    .run-all .console-note { margin: 0 0 12px; display: block; }
+    .run-all td { white-space: normal; }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+    .compare-box { border: 1px solid var(--line); border-radius: 12px; background: var(--panel-2); overflow: hidden; }
+    .compare-title { padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 13px; font-weight: 600; background: #0c131f; }
+    .compare-body { padding: 12px 14px; font-size: 13px; line-height: 1.55; }
+    .compare-body pre { margin: 8px 0 0; max-height: 200px; overflow: auto; font: 12px/1.5 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; color: var(--muted); }
+    .layer-banner { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin: -8px 0 18px; padding: 12px 16px; border: 1px solid rgba(240,101,122,.45); border-radius: 10px; background: rgba(240,101,122,.10); color: var(--text); font-size: 13.5px; font-weight: 500; }
+    .layer-banner[hidden] { display: none; }
+    body.light .compare-title { background: #f7f9fc; }
+    @media (max-width: 760px) { .compare-grid { grid-template-columns: 1fr; } }
+
     /* Inline styles in the research markup: raise tiny text and flatten tinted boxes */
     main [style*="font-size:9px"], main [style*="font-size:10px"] { font-size: 12px !important; }
     main [style*="font-size:11px"] { font-size: 12.5px !important; }
@@ -591,6 +615,10 @@
       </header>
 
       <!-- NAVIGATION TABS -->
+      <div class="layer-banner" id="layerOffBanner" role="alert" hidden>
+        <span id="layerOffText">A security layer is switched off.</span>
+        <button class="btn" id="layerRestoreButton" type="button">Turn both layers back on</button>
+      </div>
       <nav class="dashboard-tabs" role="tablist" aria-label="Dashboard primary views">
         <button role="tab" id="tab-testing" class="tab-btn active" aria-selected="true" aria-controls="panel-testing" tabindex="0">
           <span class="tab-icon">⚡</span>
@@ -643,22 +671,42 @@
           <div class="console-grid">
             <div class="field"><label for="testUsername">Login username</label><input class="input" id="testUsername" autocomplete="username" placeholder="e.g. balanilavan"></div>
             <div class="field"><label for="testPassword">Login password</label><input class="input" id="testPassword" type="password" autocomplete="current-password" placeholder="Enter seeded demo password"></div>
-            <div class="field"><label for="testEndpoint">Endpoint</label><select class="select" id="testEndpoint"><option value="/graphql">Protected GraphQL Shield</option><option value="/graphql-insecure">Insecure baseline (intentionally vulnerable)</option></select></div>
+            <div class="field"><label for="testEndpoint">Endpoint</label><select class="select" id="testEndpoint"><option value="/graphql">Protected GraphQL Shield</option><option value="/graphql-insecure">Insecure baseline (intentionally vulnerable)</option><option value="/clinic/graphql">Clinic app, protected (second application)</option><option value="/clinic/graphql-insecure">Clinic app, insecure baseline</option></select></div>
             <div class="field"><label for="testScenario">Scenario</label><select class="select" id="testScenario"><option value="direct">Direct resource lookup</option><option value="nested">Nested user → resource lookup</option><option value="relationship">Implicit children relationship</option><option value="inline_fragment">Inline fragment user lookup (Layer 1 bypass attempt)</option><option value="batch">Batched request (2 operations)</option><option value="mutation_update">Mutation: rename resource</option><option value="mutation_delete">Mutation: delete resource (destructive)</option></select></div>
             <div class="field" id="userIdField"><label for="testUserId">User ID (nested query)</label><input class="input" id="testUserId" inputmode="numeric" type="number" min="1" value="101"></div>
             <div class="field" id="resourceIdField"><label for="testResourceId">Resource ID (direct / nested)</label><input class="input" id="testResourceId" inputmode="numeric" type="number" min="1" value="102"></div>
             <div class="field" id="parentIdField"><label for="testParentId">Parent/folder ID (relationship)</label><input class="input" id="testParentId" inputmode="numeric" type="number" min="1" value="201"></div>
           </div>
+          <div class="console-session" id="consoleSession">
+            <span id="consoleSessionText">Not logged in. Enter a demo username and password; the console then stays logged in for this tab.</span>
+            <button class="btn" id="consoleLogoutButton" type="button" hidden>Log out</button>
+          </div>
+          <p class="console-note" id="clinicHint" hidden>Clinic app: doctors are the same demo users. Patients 1, 2, 3 belong to users 101, 102, 103; records 11 (101), 12 (102, on patient 1), 21 (102), 31 (103). The Resource ID box is the patient or record ID; the folder box is the patient whose records are listed.</p>
           <div class="console-actions">
             <button class="btn primary" id="runTestButton" type="button">▶ Run selected test</button>
+            <button class="btn" id="compareButton" type="button">⇄ Compare protected vs insecure</button>
+            <button class="btn" id="runAllButton" type="button">✓ Run all tests</button>
             <button class="btn" id="clearResultButton" type="button">Clear result</button>
-            <span class="console-note">Credentials are submitted only to local login. The token is stored in-memory during request execution.</span>
+            <span class="console-note">Credentials are sent only to the local login. The session token is kept in this tab’s memory, never stored.</span>
+          </div>
+          <div class="run-all" id="runAllPanel" hidden>
+            <div class="run-all-head"><strong>Run all tests</strong><span id="runAllSummary" class="status-inline">Running…</span></div>
+            <p class="console-note">Logged in as Balanilavan (user 101). Documents 102 and 204 belong to Kapilesh. Mutations are skipped on the insecure baseline because they would really change data there.</p>
+            <div class="table-wrap"><table style="min-width:0">
+              <thead><tr><th>Test</th><th>What it tries</th><th>Expected (protected)</th><th>Protected result</th><th>Verdict</th><th>Insecure baseline</th></tr></thead>
+              <tbody id="runAllBody"></tbody>
+            </table></div>
+          </div>
+          <div class="compare-grid" id="comparePanel" hidden>
+            <div class="compare-box"><div class="compare-title">Protected endpoint</div><div id="compareProtected" class="compare-body">—</div></div>
+            <div class="compare-box"><div class="compare-title">Insecure baseline</div><div id="compareInsecure" class="compare-body">—</div></div>
           </div>
           <div class="insight"><div class="insight-icon">ⓘ</div><div><strong>Research endpoint note</strong><p>The insecure baseline is intentionally vulnerable and is for local research demonstrations only. Keep this dashboard on your local machine and use seeded test accounts.</p></div></div>
           
           <!-- Test Result and Error Output -->
           <div class="console-result" aria-live="polite">
             <div class="console-result-head"><strong id="testResultTitle">No test run yet</strong><span id="testResultStatus" class="status-inline">Choose a scenario above</span></div>
+            <div class="verdict" id="testVerdict" hidden></div>
             <pre id="testResultBody">The selected request response will appear here. After a run, the dashboard refreshes its audit counters and recent events.</pre>
           </div>
 
@@ -1579,6 +1627,9 @@
           setText('layerL2Mutations', formatNumber(counts.L2_MUTATION_BLOCKED || 0));
           setText('layerBlindSpots', formatNumber(counts.L1_BLIND_SPOT_CAUGHT_BY_L2 || 0));
           setText('layerStateChip', `LAYER 1 ${layerState.layer1 ? 'ON' : 'OFF'} · LAYER 2 ${layerState.layer2 ? 'ON' : 'OFF'}`);
+          const off = ['layer1', 'layer2'].filter(name => !layerState[name]).map(name => name === 'layer1' ? 'Layer 1' : 'Layer 2');
+          $('layerOffBanner').hidden = !off.length;
+          if (off.length) setText('layerOffText', `⚠ ${off.join(' and ')} ${off.length > 1 ? 'are' : 'is'} switched OFF. Protection is reduced for every user of this server until ${off.length > 1 ? 'they are' : 'it is'} turned back on.`);
           setText('toggleLayer1Button', layerState.layer1 ? 'Turn Layer 1 OFF' : 'Turn Layer 1 ON');
           setText('toggleLayer2Button', layerState.layer2 ? 'Turn Layer 2 OFF' : 'Turn Layer 2 ON');
           const body = $('layerEventsBody');
@@ -1607,8 +1658,26 @@
         }
       }
 
+      async function restoreLayers() {
+        if (!adminToken) { showToast('Sign in as admin in the Dual-layer defense panel to turn the layers back on.'); return; }
+        try {
+          const response = await fetch('/api/v1/security/layers', {
+            method: 'POST', headers: authHeaders({'Content-Type': 'application/json', 'Accept': 'application/json'}),
+            body: JSON.stringify({layer1: true, layer2: true}), cache: 'no-store'
+          });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          showToast('Both layers are ON again.');
+        } catch (error) {
+          showToast(`Could not restore layers: ${error.message || error}`);
+        } finally {
+          await loadLayerPanel();
+        }
+      }
+
       async function toggleLayer(layer) {
         if (!adminToken) { showToast('Sign in as admin first to switch layers.'); return; }
+        const name = layer === 'layer1' ? 'Layer 1' : 'Layer 2';
+        if (layerState[layer] && !window.confirm(`Turn ${name} OFF? This reduces protection for every user of this server until it is turned back on. Use it only for a short demonstration.`)) return;
         try {
           const response = await fetch('/api/v1/security/layers', {
             method: 'POST',
@@ -1628,6 +1697,7 @@
 
       function setScenarioFields() {
         const scenario = $('testScenario').value;
+        $('clinicHint').hidden = !$('testEndpoint').value.startsWith('/clinic/');
         $('userIdField').style.display = (scenario === 'nested' || scenario === 'inline_fragment') ? '' : 'none';
         $('resourceIdField').style.display = (scenario === 'relationship' || scenario === 'inline_fragment') ? 'none' : '';
         $('parentIdField').style.display = scenario === 'relationship' ? '' : 'none';
@@ -1819,81 +1889,318 @@
         $('traceNotes').textContent = 'Taint source data and policy replay will populate this area after a request. A tainted input is not automatically an attack.';
       }
 
+      /* TEST CONSOLE: in-memory session, verdicts, run-all, compare, clinic app */
+      const consoleSession = { username: null, token: null, userId: null, role: null };
+      // Seeded clinic ownership (app/clinic/data.py); the clinic schema has no owner field to read.
+      const CLINIC_OWNERS = {
+        Patient: {1: 101, 2: 102, 3: 103},
+        Record: {11: 101, 12: 102, 21: 102, 31: 103},
+        Prescription: {111: 101, 112: 103, 211: 102, 311: 103},
+      };
+      const MUTATION_SCENARIOS = ['mutation_update', 'mutation_delete'];
+
+      function isClinic(endpoint) { return endpoint.startsWith('/clinic/'); }
+      function isInsecure(endpoint) { return endpoint.endsWith('-insecure'); }
+      function counterpart(endpoint) { return isInsecure(endpoint) ? endpoint.replace(/-insecure$/, '') : endpoint + '-insecure'; }
+
+      function decodeJwtClaims(token) {
+        try {
+          const part = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+          return JSON.parse(atob(part + '='.repeat((4 - part.length % 4) % 4)));
+        } catch (_) { return {}; }
+      }
+
+      function renderConsoleSession() {
+        const active = !!consoleSession.token;
+        $('consoleSession').classList.toggle('active', active);
+        $('consoleLogoutButton').hidden = !active;
+        setText('consoleSessionText', active
+          ? `Logged in as ${consoleSession.username} (user ${consoleSession.userId}, ${String(consoleSession.role || '').toUpperCase()}). Tests reuse this session until you log out or change the username.`
+          : 'Not logged in. Enter a demo username and password; the console then stays logged in for this tab.');
+      }
+
+      function consoleLogout() {
+        Object.assign(consoleSession, {username: null, token: null, userId: null, role: null});
+        renderConsoleSession();
+      }
+
+      async function consoleToken() {
+        const username = $('testUsername').value.trim().toLowerCase();
+        if (!username) throw new Error('Enter a demo username first.');
+        if (consoleSession.token && consoleSession.username === username) return consoleSession.token;
+        const password = $('testPassword').value;
+        if (!password) throw new Error(`Enter the password for ${username} (demo passwords are <username>123).`);
+        const response = await fetch('/api/v1/auth/login', {
+          method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+          body: JSON.stringify({username, password}), cache: 'no-store'
+        });
+        const payload = await response.json().catch(() => ({}));
+        $('testPassword').value = '';
+        if (!response.ok || !payload.access_token) throw new Error(`Login failed (HTTP ${response.status}). Check the username and password.`);
+        const claims = decodeJwtClaims(payload.access_token);
+        Object.assign(consoleSession, {username, token: payload.access_token, userId: claims.user_id, role: claims.role});
+        renderConsoleSession();
+        return payload.access_token;
+      }
+
+      async function sendGraphql(endpoint, body, token) {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': `Bearer ${token}`},
+          body: JSON.stringify(body), cache: 'no-store'
+        });
+        const text = await response.text();
+        let parsed;
+        try { parsed = JSON.parse(text); } catch (_) { parsed = text; }
+        if (response.status === 401) consoleLogout();
+        return {status: response.status, body: parsed};
+      }
+
+      function clinicRequest(scenario) {
+        if (scenario === 'direct') {
+          const id = positiveInteger('testResourceId', 'Patient ID');
+          return {query: 'query ClinicPatient($id: ID!) { patient(id: $id) { id name } }', variables: {id: String(id)}};
+        }
+        if (scenario === 'relationship') {
+          const id = positiveInteger('testParentId', 'Patient ID');
+          return {query: 'query ClinicRecords($id: ID!) { patient(id: $id) { id name records { id diagnosis } } }', variables: {id: String(id)}};
+        }
+        if (scenario === 'mutation_update') {
+          const id = positiveInteger('testResourceId', 'Record ID');
+          return {query: 'mutation ClinicUpdate($id: ID!) { updateRecord(id: $id, diagnosis: "Edited from dashboard") { id diagnosis } }', variables: {id: String(id)}};
+        }
+        throw new Error('This scenario is not available for the clinic app. Choose direct lookup, children relationship, or rename (record update).');
+      }
+
+      function requestFor(endpoint, scenario) {
+        return isClinic(endpoint) ? clinicRequest(scenario) : buildSelectedRequest();
+      }
+
+      // Every owned object in a response, with its owner: ownerId on resources, the
+      // user's own id on users, and seeded ownership for the clinic's global IDs.
+      function ownedObjects(value, endpoint, out = []) {
+        if (Array.isArray(value)) { value.forEach(item => ownedObjects(item, endpoint, out)); return out; }
+        if (value && typeof value === 'object') {
+          if (value.ownerId !== undefined && value.ownerId !== null && value.id !== undefined) {
+            out.push({label: `#${value.id}`, owner: value.ownerId});
+          } else if (value.username !== undefined && value.id !== undefined) {
+            out.push({label: `user ${value.id}`, owner: value.id});
+          } else if (isClinic(endpoint) && typeof value.id === 'string') {
+            try {
+              const [type, raw] = atob(value.id).split(':');
+              const owner = (CLINIC_OWNERS[type] || {})[Number(raw)];
+              if (owner !== undefined) out.push({label: `${type} ${raw}`, owner});
+            } catch (_) { /* not a global ID */ }
+          }
+          Object.values(value).forEach(item => ownedObjects(item, endpoint, out));
+        }
+        return out;
+      }
+
+      function mutationRan(bodies) {
+        return bodies.some(b => b && b.data && Object.values(b.data).some(v => v !== null && v !== false) && !(Array.isArray(b.errors) && b.errors.length));
+      }
+
+      // PASS / FAIL from what the response actually contains, not from the status code alone.
+      function evaluateResult(endpoint, scenario, result, userId, role) {
+        const insecure = isInsecure(endpoint);
+        if (String(role || '').toUpperCase() === 'ADMIN') {
+          return {cls: 'info', text: 'Admin request', detail: 'Administrators may access every object (ADMIN_OVERRIDE), so this is not an attack test.'};
+        }
+        if (result.status === 404 && insecure) return {cls: 'info', text: 'Baseline disabled', detail: 'Set ENABLE_INSECURE_BASELINE=true to use the insecure baseline.'};
+        if (result.status === 403) {
+          return insecure
+            ? {cls: 'info', text: 'Blocked (HTTP 403)', detail: 'Unexpected on the unprotected baseline.'}
+            : {cls: 'pass', text: 'PASS · Blocked by Layer 1 (HTTP 403)', detail: 'The request named an object you do not own, so nothing ran.'};
+        }
+        if (result.status >= 400) return {cls: 'warn', text: `HTTP ${result.status}`, detail: 'The request failed; see the raw response below.'};
+        const bodies = Array.isArray(result.body) ? result.body : [result.body];
+        const layer2Blocked = bodies.some(b => b && Array.isArray(b.errors) && b.errors.some(e => (e.extensions || {}).code === 'MUTATION_AUTHORIZATION_DENIED'));
+        if (layer2Blocked) return {cls: 'pass', text: 'PASS · Blocked by Layer 2', detail: 'The change was stopped before it ran; nothing was modified.'};
+        const foreign = bodies.flatMap(b => ownedObjects(b && b.data, endpoint)).filter(o => Number(o.owner) !== Number(userId));
+        if (foreign.length) {
+          const list = foreign.slice(0, 4).map(o => `${o.label} (owner ${o.owner})`).join(', ');
+          return insecure
+            ? {cls: 'warn', text: 'LEAK · expected on the unprotected baseline', detail: `The response contains another user’s data: ${list}.`}
+            : {cls: 'fail', text: 'FAIL · Leak', detail: `The response contains another user’s data: ${list}.`};
+        }
+        if (MUTATION_SCENARIOS.includes(scenario) && mutationRan(bodies)) {
+          return insecure
+            ? {cls: 'warn', text: 'Change executed on the baseline', detail: 'The unprotected baseline has no ownership checks, so the change really happened.'}
+            : {cls: 'pass', text: 'PASS · Allowed', detail: 'GraphQL-Shield allowed this change, so you own the target object.'};
+        }
+        return {cls: 'pass', text: insecure ? 'No other user’s data in this response' : 'PASS · Only your own data', detail: 'No object owned by another user appears in the response.'};
+      }
+
+      function showVerdict(element, verdict) {
+        element.hidden = false;
+        element.className = 'verdict ' + verdict.cls;
+        element.replaceChildren(document.createTextNode(verdict.text + ' '));
+        const small = document.createElement('small'); small.textContent = verdict.detail; element.appendChild(small);
+      }
+
       async function runSelectedTest() {
         const button = $('runTestButton');
-        const username = $('testUsername').value.trim();
-        const password = $('testPassword').value;
-        if (!username || !password) {
-          showToast('Enter a seeded demo username and password first.');
-          $('testResultTitle').textContent = 'Login credentials required';
-          $('testResultStatus').textContent = 'Not started';
-          $('testResultStatus').className = 'status-inline bad';
-          return;
-        }
-        let query;
-        let variables;
-        let batch;
-        try { const requestSpec = buildSelectedRequest(); query = requestSpec.query; variables = requestSpec.variables; batch = requestSpec.batch; }
+        const endpoint = $('testEndpoint').value;
+        const scenario = $('testScenario').value;
+        let spec;
+        try { spec = requestFor(endpoint, scenario); }
         catch (error) { showToast(error.message); return; }
+        if (scenario === 'mutation_delete') {
+          const target = $('testResourceId').value;
+          if (!window.confirm(`This sends a real delete for resource ${target}. If you own it (or the endpoint is the insecure baseline), it will be permanently deleted. Continue?`)) return;
+        }
+        const {query, variables, batch} = spec;
         button.disabled = true; button.textContent = 'Running…';
+        $('testVerdict').hidden = true;
         $('testResultTitle').textContent = 'Executing selected GraphQL request';
         $('testResultStatus').textContent = 'Logging in…';
         $('testResultStatus').className = 'status-inline';
-        $('testResultBody').textContent = `Endpoint: ${$('testEndpoint').value}\nScenario: ${$('testScenario').selectedOptions[0].text}\nQuery:\n${query}\n\nWaiting for response…`;
+        $('testResultBody').textContent = `Endpoint: ${endpoint}\nScenario: ${$('testScenario').selectedOptions[0].text}\nQuery:\n${query}\n\nWaiting for response…`;
         try {
-          const loginResponse = await fetch('/api/v1/auth/login', {
-            method: 'POST', headers: {'Content-Type':'application/json','Accept':'application/json'},
-            body: JSON.stringify({username, password}), cache:'no-store'
-          });
-          const loginPayload = await loginResponse.json().catch(() => ({}));
-          if (!loginResponse.ok || !loginPayload.access_token) {
-            throw new Error(`Login failed (HTTP ${loginResponse.status}): ${JSON.stringify(loginPayload)}`);
-          }
-          const token = loginPayload.access_token;
+          const token = await consoleToken();
           $('testResultStatus').textContent = 'Sending GraphQL request…';
-          const graphqlResponse = await fetch($('testEndpoint').value, {
-            method: 'POST',
-            headers: {'Content-Type':'application/json','Accept':'application/json','Authorization':`Bearer ${token}`},
-            body: JSON.stringify(batch || {query, variables}), cache:'no-store'
-          });
-          const rawBody = await graphqlResponse.text();
-          let parsedBody;
-          try { parsedBody = JSON.parse(rawBody); } catch (_) { parsedBody = rawBody; }
+          const result = await sendGraphql(endpoint, batch || {query, variables}, token);
+          const parsedBody = result.body;
           $('testResultTitle').textContent = 'GraphQL request completed';
-          $('testResultStatus').textContent = `HTTP ${graphqlResponse.status}${parsedBody && parsedBody.errors ? ' · GraphQL errors returned' : ''}`;
-          $('testResultStatus').className = 'status-inline ' + (graphqlResponse.ok && !(parsedBody && parsedBody.errors) ? 'ok' : 'bad');
-          $('testResultBody').textContent = JSON.stringify({endpoint:$('testEndpoint').value, scenario:$('testScenario').value, query: batch ? undefined : query, variables: batch ? undefined : variables, batch, http_status:graphqlResponse.status, response:parsedBody}, null, 2);
-          
+          $('testResultStatus').textContent = `HTTP ${result.status}${parsedBody && parsedBody.errors ? ' · GraphQL errors returned' : ''}`;
+          $('testResultStatus').className = 'status-inline ' + (result.status < 400 && !(parsedBody && parsedBody.errors) ? 'ok' : 'bad');
+          showVerdict($('testVerdict'), evaluateResult(endpoint, scenario, result, consoleSession.userId, consoleSession.role));
+          $('testResultBody').textContent = JSON.stringify({endpoint, scenario, query: batch ? undefined : query, variables: batch ? undefined : variables, batch, http_status: result.status, response: parsedBody}, null, 2);
+
           let analysis = null;
           let analysisError = '';
-          try {
-            const explainResponse = await fetch('/api/v1/taint-explain', {
-              method: 'POST',
-              headers: {'Content-Type':'application/json','Accept':'application/json','Authorization':`Bearer ${token}`},
-              body: JSON.stringify({query, variables}), cache:'no-store'
-            });
-            const explainPayload = await explainResponse.json().catch(() => ({}));
-            if (!explainResponse.ok) throw new Error(`Explanation API returned HTTP ${explainResponse.status}: ${JSON.stringify(explainPayload)}`);
-            analysis = explainPayload;
-          } catch (explainError) {
-            analysisError = explainError && explainError.message ? explainError.message : String(explainError);
+          if (isClinic(endpoint)) {
+            analysisError = 'The taint explainer covers the main application’s schema only.';
+          } else {
+            try {
+              const explainResponse = await fetch('/api/v1/taint-explain', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': `Bearer ${token}`},
+                body: JSON.stringify({query, variables}), cache: 'no-store'
+              });
+              const explainPayload = await explainResponse.json().catch(() => ({}));
+              if (!explainResponse.ok) throw new Error(`Explanation API returned HTTP ${explainResponse.status}: ${JSON.stringify(explainPayload)}`);
+              analysis = explainPayload;
+            } catch (explainError) {
+              analysisError = explainError && explainError.message ? explainError.message : String(explainError);
+            }
           }
-          renderTaintTrace({analysis, analysisError, query, variables, endpoint:$('testEndpoint').value, httpStatus:graphqlResponse.status, response:parsedBody});
-          $('testPassword').value = '';
-          
-          // Keep the test result immediately visible after test finishes
-          $('testResultTitle').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          
-          await refresh({quiet:true});
+          renderTaintTrace({analysis, analysisError, query, variables, endpoint, httpStatus: result.status, response: parsedBody});
+          $('testResultTitle').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+          await refresh({quiet: true});
           showToast('Test completed. Audit metrics refreshed.');
         } catch (error) {
           $('testResultTitle').textContent = 'Test failed';
           $('testResultStatus').textContent = 'Request error';
           $('testResultStatus').className = 'status-inline bad';
           $('testResultBody').textContent = String(error && error.message ? error.message : error);
-          showToast('Test failed. Review the result panel.');
+          showToast(error && error.message ? error.message : 'Test failed. Review the result panel.');
         } finally {
           button.disabled = false; button.textContent = '▶ Run selected test';
+        }
+      }
+
+      // Run all: Balanilavan (101) against the protected endpoint, and the read-only
+      // attacks against the insecure baseline. Documents 102 and 204 are Kapilesh's.
+      const RUN_ALL_TESTS = [
+        {name: 'Own document', tries: 'Read document 101 (yours)', expect: 'Allowed', body: {query: '{ resource(id: 101) { id name ownerId } }'}},
+        {name: 'Direct attack', tries: 'Read document 102 by its ID', expect: 'Blocked', body: {query: '{ resource(id: 102) { id name ownerId } }'}},
+        {name: 'Nested attack', tries: 'Hide 102 inside a user query', expect: 'Blocked', body: {query: '{ user(id: 101) { id resource(id: 102) { id name ownerId } } }'}},
+        {name: 'Inline fragment', tries: 'Look up user 102 inside a fragment', expect: 'Blocked', body: {query: '{ ... on Query { user(id: 102) { id username role } } }'}},
+        {name: 'Folder children', tries: 'List folder 201, which holds Kapilesh’s 204', expect: 'Only your documents', body: {query: '{ resource(id: 201) { id name ownerId children { id name ownerId } } }'}},
+        {name: 'Batch', tries: 'Send a harmless query together with an attack', expect: 'Blocked', body: [{query: '{ health { status } }'}, {query: '{ resource(id: 102) { id name ownerId } }'}]},
+        {name: 'Rename attack', tries: 'Rename Kapilesh’s 102', expect: 'Blocked, unchanged', scenario: 'mutation_update', body: {query: 'mutation { updateResource(id: 102, name: "Renamed by run-all") { id name ownerId } }'}},
+        {name: 'Delete attack', tries: 'Delete Kapilesh’s 102', expect: 'Blocked, not deleted', scenario: 'mutation_delete', body: {query: 'mutation { deleteResource(id: 102) }'}},
+      ];
+
+      function resultCell(verdict) {
+        const td = document.createElement('td');
+        const strong = document.createElement('div'); strong.className = 'primary-cell'; strong.style.whiteSpace = 'normal'; strong.textContent = verdict.text;
+        const small = document.createElement('div'); small.className = 'secondary-cell'; small.style.whiteSpace = 'normal'; small.style.maxWidth = 'none'; small.textContent = verdict.detail;
+        td.append(strong, small);
+        return td;
+      }
+
+      async function runAllTests() {
+        const button = $('runAllButton');
+        if (consoleSession.userId !== 101) $('testUsername').value = 'balanilavan';
+        let token;
+        try { token = await consoleToken(); }
+        catch (error) { showToast(error.message + ' Run all uses balanilavan (password balanilavan123).'); return; }
+        button.disabled = true; button.textContent = 'Running…';
+        $('runAllPanel').hidden = false;
+        const body = $('runAllBody');
+        body.replaceChildren();
+        let passed = 0, leaks = 0, attacks = 0;
+        try {
+          for (const test of RUN_ALL_TESTS) {
+            const scenario = test.scenario || 'query';
+            const protectedResult = await sendGraphql('/graphql', test.body, token);
+            const verdict = evaluateResult('/graphql', scenario, protectedResult, 101, 'user');
+            const mutationAttack = MUTATION_SCENARIOS.includes(scenario);
+            const ok = verdict.cls === 'pass' && (!mutationAttack || verdict.text.includes('Blocked'));
+            if (ok) passed += 1;
+            let insecureVerdict = {text: 'Skipped', detail: 'Would really change data on the unprotected baseline.'};
+            if (!mutationAttack) {
+              insecureVerdict = evaluateResult('/graphql-insecure', scenario, await sendGraphql('/graphql-insecure', test.body, token), 101, 'user');
+              if (test.name !== 'Own document') { attacks += 1; if (insecureVerdict.text.startsWith('LEAK')) leaks += 1; }
+            }
+            const tr = document.createElement('tr');
+            addCell(tr, test.name, 'primary-cell');
+            addCell(tr, test.tries);
+            addCell(tr, test.expect);
+            tr.appendChild(resultCell({text: `HTTP ${protectedResult.status}`, detail: verdict.text.replace(/^PASS · |^FAIL · /, '')}));
+            addCell(tr, makeBadge(ok ? 'PASS' : 'FAIL', ok ? 'allow' : 'deny'));
+            tr.appendChild(resultCell(insecureVerdict));
+            body.appendChild(tr);
+          }
+          const summary = `${passed} of ${RUN_ALL_TESTS.length} passed on the protected endpoint · the insecure baseline leaked in ${leaks} of ${attacks} read attacks`;
+          setText('runAllSummary', summary);
+          $('runAllSummary').className = 'status-inline ' + (passed === RUN_ALL_TESTS.length ? 'ok' : 'bad');
+          $('runAllPanel').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+          await refresh({quiet: true});
+        } catch (error) {
+          setText('runAllSummary', `Stopped: ${error.message || error}`);
+          $('runAllSummary').className = 'status-inline bad';
+        } finally {
+          button.disabled = false; button.textContent = '✓ Run all tests';
+        }
+      }
+
+      function compareBox(element, endpoint, result, verdict) {
+        element.replaceChildren();
+        const head = document.createElement('div');
+        head.className = 'verdict ' + verdict.cls; head.style.border = '0'; head.style.padding = '0 0 6px';
+        head.textContent = `HTTP ${result.status} · ${verdict.text}`;
+        const detail = document.createElement('div'); detail.textContent = verdict.detail;
+        const pre = document.createElement('pre'); pre.textContent = JSON.stringify(result.body, null, 2);
+        element.append(head, detail, pre);
+      }
+
+      async function compareEndpoints() {
+        const endpoint = $('testEndpoint').value;
+        const scenario = $('testScenario').value;
+        if (MUTATION_SCENARIOS.includes(scenario)) { showToast('Compare is read-only: a mutation would really change data on the insecure baseline.'); return; }
+        let spec;
+        try { spec = requestFor(endpoint, scenario); } catch (error) { showToast(error.message); return; }
+        const button = $('compareButton');
+        button.disabled = true;
+        try {
+          const token = await consoleToken();
+          const protectedEndpoint = isInsecure(endpoint) ? counterpart(endpoint) : endpoint;
+          const insecureEndpoint = counterpart(protectedEndpoint);
+          const body = spec.batch || {query: spec.query, variables: spec.variables};
+          const [p, i] = [await sendGraphql(protectedEndpoint, body, token), await sendGraphql(insecureEndpoint, body, token)];
+          $('comparePanel').hidden = false;
+          compareBox($('compareProtected'), protectedEndpoint, p, evaluateResult(protectedEndpoint, scenario, p, consoleSession.userId, consoleSession.role));
+          compareBox($('compareInsecure'), insecureEndpoint, i, evaluateResult(insecureEndpoint, scenario, i, consoleSession.userId, consoleSession.role));
+          $('comparePanel').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+          await refresh({quiet: true});
+        } catch (error) {
+          showToast(error.message || String(error));
+        } finally {
+          button.disabled = false;
         }
       }
 
@@ -2153,6 +2460,11 @@
           showToast('Account selected. Enter its demo password to run a test.');
         });
         $('runTestButton').addEventListener('click', runSelectedTest);
+        $('runAllButton').addEventListener('click', runAllTests);
+        $('compareButton').addEventListener('click', compareEndpoints);
+        $('consoleLogoutButton').addEventListener('click', consoleLogout);
+        $('layerRestoreButton').addEventListener('click', restoreLayers);
+        $('testEndpoint').addEventListener('change', setScenarioFields);
         $('adminSignInButton').addEventListener('click', adminSignIn);
         $('blindSpotScoreButton').addEventListener('click', scoreBlindSpotQuery);
         loadBlindSpotPanel();
@@ -2164,6 +2476,9 @@
           $('testResultStatus').textContent = 'Choose a scenario above';
           $('testResultStatus').className = 'status-inline';
           $('testResultBody').textContent = 'The selected request response will appear here.';
+          $('testVerdict').hidden = true;
+          $('runAllPanel').hidden = true;
+          $('comparePanel').hidden = true;
           resetTaintTrace();
         });
         $('testScenario').addEventListener('change', setScenarioFields);
