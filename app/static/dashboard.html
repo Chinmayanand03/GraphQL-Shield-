@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b1220">
   <title>GraphQL Shield Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -530,6 +531,24 @@
     body.light .lat-bar.before { background: #c4cdd9; }
     @media (max-width: 1100px) { .evidence-grid { grid-template-columns: 1fr; } .mini-stats { grid-template-columns: 1fr; } }
 
+    /* Audit tab additions */
+    .timeline-chart { font-size: 12px; color: var(--muted); }
+    .tl-bars { display: flex; align-items: flex-end; gap: 6px; height: 180px; padding: 8px 0 0; border-bottom: 1px solid var(--line); }
+    .tl-col { flex: 1; min-width: 0; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; gap: 1px; }
+    .tl-col .seg { border-radius: 3px 3px 0 0; }
+    .tl-col .seg.deny { background: var(--red); opacity: .85; }
+    .tl-col .seg.allow { background: var(--green); opacity: .85; }
+    .tl-col .seg + .seg { border-radius: 0; }
+    .tl-labels { display: flex; gap: 6px; margin-top: 6px; }
+    .tl-labels span { flex: 1; min-width: 0; text-align: center; font-size: 11px; color: var(--faint); white-space: nowrap; overflow: hidden; }
+    .tl-legend { display: flex; gap: 16px; margin-top: 10px; }
+    .tl-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+    .val-pill.fail { color: var(--red); background: rgba(240,101,122,.10); }
+    .val-pill.notrun { color: var(--muted); background: var(--panel-hover); }
+    #integrityText.ok { color: var(--green); }
+    #integrityText.bad { color: var(--red); font-weight: 600; }
+    .table-footer { align-items: center; }
+
     /* Inline styles in the research markup: raise tiny text and flatten tinted boxes */
     main [style*="font-size:9px"], main [style*="font-size:10px"] { font-size: 12px !important; }
     main [style*="font-size:11px"] { font-size: 12.5px !important; }
@@ -636,6 +655,7 @@
         <div class="top-actions">
           <div class="api-status" id="apiStatus"><span class="status-dot"></span><span id="apiStatusText">Connecting to API…</span></div>
           <button class="btn" id="themeButton" type="button" aria-label="Toggle color theme">☼ Theme</button>
+          <button class="btn" id="autoRefreshButton" type="button" title="The dashboard refreshes every 30 seconds">⏸ Pause auto-refresh</button>
           <button class="btn" id="refreshButton" type="button">↻ Refresh</button>
           <button class="btn primary" id="exportButtonTop" type="button">⇩ Export CSV</button>
         </div>
@@ -1097,6 +1117,15 @@
           </article>
         </section>
 
+        <!-- Decisions over time -->
+        <section class="panel section-gap" id="decision-timeline">
+          <div class="panel-head">
+            <div><div class="panel-title">Decisions over time</div><div class="panel-subtitle">Allowed and denied authorization decisions per day or per hour, from the audit log (times in UTC).</div></div>
+            <div class="layer-actions"><button class="btn" id="timelineDays" type="button">Last 14 days</button><button class="btn" id="timelineHours" type="button">Last 24 hours</button></div>
+          </div>
+          <div id="timelineChart" class="timeline-chart">Loading…</div>
+        </section>
+
         <!-- Verified Non-Interference Property Tests -->
         <section class="panel section-gap">
           <div class="panel-head" style="margin-bottom:10px;">
@@ -1104,15 +1133,16 @@
               <div class="panel-title" style="font-size:13px;">Verified Non-Interference Property Tests</div>
               <div class="panel-subtitle" style="font-size:10px;">Property tests verified passing in <code>tests/test_non_interference.py</code> for information flow security and isolation</div>
             </div>
-            <span class="val-pill best" id="nonInterferenceBadge">6/6 PROPERTY TESTS PASSING</span>
+            <span class="val-pill" id="nonInterferenceBadge">CHECKING LAST TEST RUN…</span>
           </div>
+          <p class="console-note" id="testRunInfo" style="margin:8px 0 0">Reading the last recorded pytest run…</p>
           <div class="property-cards" id="nonInterferenceGrid">
-            <div class="property-card"><div class="property-head"><span class="property-title">Single Resource Access</span><span class="val-pill best">PASS</span></div><p class="property-desc">Authorized single-object queries succeed without interference or false positives.</p></div>
-            <div class="property-card"><div class="property-head"><span class="property-title">Nested Hierarchy Access</span><span class="val-pill best">PASS</span></div><p class="property-desc">Authorized traversals across user-owned folders and children are preserved.</p></div>
-            <div class="property-card"><div class="property-head"><span class="property-title">Insecure Endpoint Isolation</span><span class="val-pill best">PASS</span></div><p class="property-desc">Controlled endpoint /graphql-insecure bypasses gateway for research baseline.</p></div>
-            <div class="property-card"><div class="property-head"><span class="property-title">High-to-Low Confidentiality</span><span class="val-pill best">PASS</span></div><p class="property-desc">Unowned confidential records cannot be accessed via low-security traversals.</p></div>
-            <div class="property-card"><div class="property-head"><span class="property-title">Secret Mutation Independence</span><span class="val-pill best">PASS</span></div><p class="property-desc">Observable client responses are invariant to unowned high-security mutations.</p></div>
-            <div class="property-card"><div class="property-head"><span class="property-title">Derived-Value Independence</span><span class="val-pill best">PASS</span></div><p class="property-desc">Aggregate fields (children_count) filter unowned child nodes defense-in-depth.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">Single Resource Access</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">Authorized single-object queries succeed without interference or false positives.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">Nested Hierarchy Access</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">Authorized traversals across user-owned folders and children are preserved.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">Insecure Endpoint Isolation</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">Controlled endpoint /graphql-insecure bypasses gateway for research baseline.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">High-to-Low Confidentiality</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">Unowned confidential records cannot be accessed via low-security traversals.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">Secret Mutation Independence</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">Observable client responses are invariant to unowned high-security mutations.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">Derived-Value Independence</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">Aggregate fields (children_count) filter unowned child nodes defense-in-depth.</p></div>
           </div>
         </section>
 
@@ -1153,16 +1183,18 @@
             <input class="input" id="searchInput" type="search" placeholder="Search user, action, reason, or ID…" aria-label="Search audit records">
             <select class="select" id="decisionFilter" aria-label="Filter by decision"><option value="all">All decisions</option><option value="allow">Allowed</option><option value="deny">Denied</option><option value="other">Other / unknown</option></select>
             <select class="select" id="riskFilter" aria-label="Filter by risk"><option value="all">All risk levels</option><option value="high">High risk</option><option value="medium">Medium risk</option><option value="low">Low risk</option><option value="unknown">Unknown risk</option></select>
+            <select class="select" id="layerFilter" aria-label="Filter by layer"><option value="all">All layers</option><option value="L1">Layer 1</option><option value="L2">Layer 2</option></select>
+            <select class="select" id="userFilter" aria-label="Filter by user"><option value="all">All users</option><option value="101">101 · Balanilavan</option><option value="102">102 · Kapilesh</option><option value="103">103 · Sakthivel</option><option value="104">104 · Admin</option></select>
             <button class="btn" id="clearFiltersButton" type="button">Clear filters</button>
             <button class="btn" id="exportButton" type="button">⇩ Export visible</button>
           </div>
           <div class="table-wrap">
             <table>
-              <thead><tr><th>Time (IST)</th><th>Actor</th><th>Decision</th><th>Risk</th><th>Reason</th><th>Operation / details</th></tr></thead>
-              <tbody id="logsBody"><tr><td class="empty" colspan="6">Loading audit events…</td></tr></tbody>
+              <thead><tr><th>Time (IST)</th><th>Actor</th><th>Layer</th><th>Decision</th><th>Risk</th><th>Reason</th><th>Operation / details</th></tr></thead>
+              <tbody id="logsBody"><tr><td class="empty" colspan="7">Loading audit events…</td></tr></tbody>
             </table>
           </div>
-          <div class="table-footer"><span id="tableCount">Waiting for audit records…</span><span id="lastUpdated">Last updated: —</span></div>
+          <div class="table-footer"><span id="tableCount">Waiting for audit records…</span><button class="btn" id="loadMoreButton" type="button" hidden>Load 25 more</button><span id="integrityText">Checking audit log integrity…</span><span id="lastUpdated">Last updated: —</span></div>
         </section>
       </div>
 
@@ -1440,7 +1472,7 @@
         body.replaceChildren();
         if (!logs.length) {
           const tr = document.createElement('tr'); const td = document.createElement('td');
-          td.className = 'empty'; td.colSpan = 6; td.textContent = state.logs.length ? 'No audit events match the selected filters.' : state.logsRestricted ? ADMIN_ONLY_TEXT : 'No audit events were returned by the API.';
+          td.className = 'empty'; td.colSpan = 7; td.textContent = state.logs.length ? 'No audit events match the selected filters.' : state.logsRestricted ? ADMIN_ONLY_TEXT : 'No audit events were returned by the API.';
           tr.appendChild(td); body.appendChild(tr); return;
         }
         for (const row of logs) {
@@ -1451,6 +1483,8 @@
           const actorMain = document.createElement('div'); actorMain.className = 'primary-cell'; actorMain.textContent = firstValue(row, actorFields);
           const actorSub = document.createElement('div'); actorSub.className = 'secondary-cell'; actorSub.textContent = firstValue(row, ['ip_address', 'client_ip', 'request_id'], '');
           actorCell.append(actorMain); if (actorSub.textContent) actorCell.append(actorSub); tr.appendChild(actorCell);
+          const layer = firstValue(row, ['layer'], '');
+          addCell(tr, layer ? makeBadge(layer === 'L1' ? 'LAYER 1' : layer === 'L2' ? 'LAYER 2' : layer, '') : '—');
           const decision = normalizeDecision(row); const decisionRaw = firstValue(row, decisionFields, 'UNKNOWN').toUpperCase();
           addCell(tr, makeBadge(decisionRaw, decision === 'allow' ? 'allow' : decision === 'deny' ? 'deny' : ''));
           const risk = normalizeRisk(row); const riskRaw = firstValue(row, riskFields, 'UNKNOWN').toUpperCase();
@@ -1487,7 +1521,9 @@
           return (!query || searchable.includes(query)) && (decision === 'all' || decisionValue === decision) && (risk === 'all' || riskValue === risk);
         });
         renderLogs(state.filtered);
-        setText('tableCount', `Showing ${state.filtered.length.toLocaleString()} of ${state.logs.length.toLocaleString()} returned records (API supplies recent records only).`);
+        const total = state.auditTotal || state.logs.length;
+        setText('tableCount', state.logsRestricted ? 'Admin only: sign in as admin to view audit events.' : `Showing ${state.filtered.length.toLocaleString()} of ${total.toLocaleString()} matching records (newest first).`);
+        $('loadMoreButton').hidden = state.logsRestricted || state.logs.length >= total;
         setText('recordChip', `${state.filtered.length} SHOWN`);
       }
 
@@ -1534,7 +1570,7 @@
           state.logsRestricted = !!payload.recent_logs_restricted;
           if (adminToken && state.logsRestricted) setAdminToken(null); // token expired or no longer admin
           renderDemoUsers(payload.demo_users || []);
-          renderStats(state.stats); applyFilters();
+          renderStats(state.stats); loadAuditLogs({keep: true}); loadIntegrity(); loadTestReport(); loadTimeline();
           loadLayerPanel();
           loadLiveRecall();
           if (payload.research_evaluation) {
@@ -1666,6 +1702,136 @@
           setText('blindSpotScoreResult', `${verdict} · p=${pct(payload.probability)} · rule=${payload.rule_prediction ? 'flag' : 'no flag'}${reasons ? ' · ' + reasons : ''}`);
         } catch (error) {
           setText('blindSpotScoreResult', `Could not score: ${error.message || error}`);
+        }
+      }
+
+      /* AUDIT TAB: paginated admin log, real test results, integrity, timeline */
+      const AUDIT_PAGE = 25;
+      state.auditTotal = 0;
+
+      function auditParams(limit, offset) {
+        const params = new URLSearchParams({limit, offset});
+        const layer = $('layerFilter').value, user = $('userFilter').value;
+        const decision = $('decisionFilter').value, risk = $('riskFilter').value;
+        if (layer !== 'all') params.set('layer', layer);
+        if (user !== 'all') params.set('user_id', user);
+        if (decision === 'allow' || decision === 'deny') params.set('decision', decision.toUpperCase());
+        if (['high', 'medium', 'low'].includes(risk)) params.set('risk', risk.toUpperCase());
+        return params;
+      }
+
+      async function loadAuditLogs({append = false, keep = false} = {}) {
+        if (!adminToken) {
+          state.logs = []; state.auditTotal = 0; state.logsRestricted = true; applyFilters(); return;
+        }
+        const offset = append ? state.logs.length : 0;
+        const limit = keep ? Math.min(200, Math.max(AUDIT_PAGE, state.logs.length)) : AUDIT_PAGE;
+        try {
+          const response = await fetch('/api/v1/audit-logs?' + auditParams(limit, offset), {headers: authHeaders({'Accept': 'application/json'}), cache: 'no-store'});
+          if (response.status === 401 || response.status === 403) {
+            setAdminToken(null); state.logs = []; state.logsRestricted = true; applyFilters(); return;
+          }
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = await response.json();
+          state.logs = append ? state.logs.concat(data.logs) : data.logs;
+          state.auditTotal = data.total;
+          state.logsRestricted = false;
+          applyFilters();
+        } catch (error) {
+          showToast(`Could not load audit events: ${error.message || error}`);
+        }
+      }
+
+      async function loadTestReport() {
+        try {
+          const response = await fetch('/api/v1/verification/test-report', {headers: {'Accept': 'application/json'}, cache: 'no-store'});
+          const data = await response.json();
+          const cards = [...document.querySelectorAll('#nonInterferenceGrid .property-card')];
+          if (!data.available) {
+            setText('nonInterferenceBadge', 'NO TEST RUN RECORDED');
+            $('nonInterferenceBadge').className = 'val-pill notrun';
+            setText('testRunInfo', data.reason);
+            cards.forEach(card => { const pill = card.querySelector('[data-property-status]'); pill.textContent = 'NOT RUN'; pill.className = 'val-pill notrun'; });
+            return;
+          }
+          const byName = Object.fromEntries(data.properties.map(item => [item.name, item]));
+          let passing = 0;
+          for (const card of cards) {
+            const item = byName[card.querySelector('.property-title').textContent.trim()];
+            const pill = card.querySelector('[data-property-status]');
+            const status = item ? item.status : 'NOT RUN';
+            pill.textContent = status;
+            pill.className = 'val-pill ' + (status === 'PASS' ? 'best' : status === 'FAIL' ? 'fail' : 'notrun');
+            if (item) pill.title = `Verified by: ${item.tests.join(', ')}`;
+            if (status === 'PASS') passing += 1;
+          }
+          setText('nonInterferenceBadge', `${passing}/${cards.length} PROPERTY TESTS PASSING`);
+          $('nonInterferenceBadge').className = 'val-pill ' + (passing === cards.length ? 'best' : 'fail');
+          const run = data.last_run || {};
+          setText('testRunInfo', `From the last recorded pytest run (${formatTime(data.finished_at)} IST): ${run.passed} passed, ${run.failed} failed of ${run.total} tests. Hover a status to see the tests that verify it.`);
+        } catch (_) {
+          setText('testRunInfo', 'The test report is unavailable.');
+        }
+      }
+
+      async function loadIntegrity() {
+        try {
+          const response = await fetch('/api/v1/audit/integrity', {headers: {'Accept': 'application/json'}, cache: 'no-store'});
+          const d = await response.json();
+          const el = $('integrityText');
+          if (d.intact) {
+            el.textContent = `✓ Audit log intact: ${d.checked.toLocaleString()} chained rows verified${d.legacy_rows ? `, ${d.legacy_rows.toLocaleString()} older rows predate the chain` : ''}`;
+            el.className = 'ok';
+          } else {
+            el.textContent = `⚠ Audit log altered: hash chain broken at row ${d.first_broken_id}`;
+            el.className = 'bad';
+          }
+        } catch (_) {
+          setText('integrityText', 'Integrity check unavailable.');
+        }
+      }
+
+      let timelineMode = {bucket: 'day', span: 14};
+      async function loadTimeline(mode) {
+        if (mode) timelineMode = mode;
+        try {
+          const response = await fetch(`/api/v1/audit/timeline?bucket=${timelineMode.bucket}&span=${timelineMode.span}`, {headers: {'Accept': 'application/json'}, cache: 'no-store'});
+          const data = await response.json();
+          const chart = $('timelineChart');
+          if (!data.points.length) { chart.textContent = 'No decisions in this period.'; return; }
+          const max = Math.max(...data.points.map(p => p.allowed + p.denied));
+          const bars = document.createElement('div'); bars.className = 'tl-bars';
+          const labels = document.createElement('div'); labels.className = 'tl-labels';
+          for (const point of data.points) {
+            const col = document.createElement('div'); col.className = 'tl-col';
+            col.title = `${point.bucket} UTC: ${point.allowed} allowed, ${point.denied} denied`;
+            const deny = document.createElement('div'); deny.className = 'seg deny'; deny.style.height = `${(point.denied / max) * 100}%`;
+            const allow = document.createElement('div'); allow.className = 'seg allow'; allow.style.height = `${(point.allowed / max) * 100}%`;
+            col.append(deny, allow);
+            bars.appendChild(col);
+            const label = document.createElement('span');
+            label.textContent = timelineMode.bucket === 'day' ? point.bucket.slice(5) : point.bucket.slice(11);
+            labels.appendChild(label);
+          }
+          const legend = document.createElement('div'); legend.className = 'tl-legend';
+          const totals = data.points.reduce((acc, p) => ({a: acc.a + p.allowed, d: acc.d + p.denied}), {a: 0, d: 0});
+          legend.innerHTML = `<span><i style="background:var(--green)"></i>Allowed (${totals.a})</span><span><i style="background:var(--red)"></i>Denied (${totals.d})</span><span>Peak ${max} per ${timelineMode.bucket}</span>`;
+          chart.replaceChildren(bars, labels, legend);
+        } catch (_) {
+          setText('timelineChart', 'Timeline unavailable.');
+        }
+      }
+
+      function toggleAutoRefresh() {
+        const button = $('autoRefreshButton');
+        if (state.timer) {
+          window.clearInterval(state.timer); state.timer = null;
+          button.textContent = '▶ Resume auto-refresh';
+          showToast('Auto-refresh paused. Use Refresh to update manually.');
+        } else {
+          state.timer = window.setInterval(() => refresh({quiet: true}), REFRESH_MS);
+          button.textContent = '⏸ Pause auto-refresh';
+          refresh({quiet: true});
         }
       }
 
@@ -2687,9 +2853,16 @@
         $('exportButton').addEventListener('click', exportCsv);
         $('exportButtonTop').addEventListener('click', exportCsv);
         $('searchInput').addEventListener('input', applyFilters);
-        $('decisionFilter').addEventListener('change', applyFilters);
-        $('riskFilter').addEventListener('change', applyFilters);
-        $('clearFiltersButton').addEventListener('click', () => { $('searchInput').value = ''; $('decisionFilter').value = 'all'; $('riskFilter').value = 'all'; applyFilters(); });
+        for (const id of ['decisionFilter', 'riskFilter', 'layerFilter', 'userFilter']) $(id).addEventListener('change', () => loadAuditLogs());
+        $('clearFiltersButton').addEventListener('click', () => {
+          $('searchInput').value = '';
+          for (const id of ['decisionFilter', 'riskFilter', 'layerFilter', 'userFilter']) $(id).value = 'all';
+          loadAuditLogs();
+        });
+        $('loadMoreButton').addEventListener('click', () => loadAuditLogs({append: true}));
+        $('timelineDays').addEventListener('click', () => loadTimeline({bucket: 'day', span: 14}));
+        $('timelineHours').addEventListener('click', () => loadTimeline({bucket: 'hour', span: 24}));
+        $('autoRefreshButton').addEventListener('click', toggleAutoRefresh);
 
         // Phase 5 Research Evaluation Scorer Listeners
         const presetContainer = document.querySelector('.scorer-presets');
