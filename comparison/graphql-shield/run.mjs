@@ -25,7 +25,7 @@ const { allow, deny, rule, shield } = require("graphql-shield");
 
 const [variant = "complete", scenarioFile] = process.argv.slice(2);
 const typeDefs = readFileSync(new URL("../schema.graphql", import.meta.url), "utf8");
-const scenarios = JSON.parse(readFileSync(scenarioFile, "utf8"));
+const scenarios = scenarioFile ? JSON.parse(readFileSync(scenarioFile, "utf8")) : [];
 const VICTIM = 102;
 
 // Mirrors app/seed.py plus the shared-folder object 204.
@@ -128,7 +128,7 @@ function permissions(variant) {
   });
 }
 
-const schema = applyMiddleware(makeExecutableSchema({ typeDefs, resolvers }), permissions(variant));
+const schema = applyMiddleware(makeExecutableSchema({ typeDefs, resolvers }), permissions(variant === "latency" ? "complete" : variant));
 
 async function execute(operation, user) {
   const result = await graphql({
@@ -141,6 +141,36 @@ async function execute(operation, user) {
   const payload = { data: result.data ?? null };
   if (result.errors?.length) payload.errors = result.errors.map((e) => ({ message: e.message }));
   return payload;
+}
+
+// Latency mode: `node run.mjs latency` times the protected schema against the same
+// schema with no middleware, in the shape of scripts/run_latency_benchmark.py.
+if (variant === "latency") {
+  const unprotected = makeExecutableSchema({ typeDefs, resolvers });
+  const user = { id: 101, role: "user" };
+  const requests = {
+    own_lookup: "{ resource(id: 101) { id name ownerId } }",
+    own_relationship: "{ resource(id: 201) { id children { id name ownerId } } }",
+    own_update: 'mutation { updateResource(id: 101, name: "bench") { id } }',
+  };
+  const WARMUP = 300, REPEATS = 5, REQUESTS = 2000;
+  const report = {};
+  for (const [name, source] of Object.entries(requests)) {
+    report[name] = {};
+    for (const [label, target] of [["unprotected", unprotected], ["graphql_shield", schema]]) {
+      const run = () => graphql({ schema: target, source, contextValue: { user } });
+      for (let i = 0; i < WARMUP; i++) await run();
+      const means = [];
+      for (let r = 0; r < REPEATS; r++) {
+        const start = process.hrtime.bigint();
+        for (let i = 0; i < REQUESTS; i++) await run();
+        means.push(Number(process.hrtime.bigint() - start) / 1e6 / REQUESTS);
+      }
+      report[name][label] = means;
+    }
+  }
+  process.stdout.write(JSON.stringify(report));
+  process.exit(0);
 }
 
 const results = [];

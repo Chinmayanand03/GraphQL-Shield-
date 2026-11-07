@@ -1,0 +1,66 @@
+{
+  "generated_at": "2026-11-07T09:57:35.610553+00:00",
+  "attacker_user_id": 101,
+  "scenarios": [
+    "direct",
+    "nested",
+    "inline_fragment",
+    "relationship",
+    "batch",
+    "mutation_update"
+  ],
+  "configurations": [
+    {
+      "layer1": true,
+      "layer2": true,
+      "outcomes": {
+        "direct": "L1",
+        "nested": "L1",
+        "inline_fragment": "L1",
+        "relationship": "L2",
+        "batch": "L1",
+        "mutation_update": "L1"
+      },
+      "leaked": 0
+    },
+    {
+      "layer1": true,
+      "layer2": false,
+      "outcomes": {
+        "direct": "L1",
+        "nested": "L1",
+        "inline_fragment": "L1",
+        "relationship": "LEAKED",
+        "batch": "L1",
+        "mutation_update": "L1"
+      },
+      "leaked": 1
+    },
+    {
+      "layer1": false,
+      "layer2": true,
+      "outcomes": {
+        "direct": "L2",
+        "nested": "L2",
+        "inline_fragment": "L2",
+        "relationship": "L2",
+        "batch": "L2",
+        "mutation_update": "L2"
+      },
+      "leaked": 0
+    },
+    {
+      "layer1": false,
+      "layer2": false,
+      "outcomes": {
+        "direct": "LEAKED",
+        "nested": "LEAKED",
+        "inline_fragment": "LEAKED",
+        "relationship": "LEAKED",
+        "batch": "LEAKED",
+        "mutation_update": "LEAKED"
+      },
+      "leaked": 6
+    }
+  ]
+}

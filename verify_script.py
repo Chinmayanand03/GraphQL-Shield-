@@ -41,7 +41,7 @@ def verify():
     # Check Demo 2 (Direct BOLA)
     query2 = {"query": "{ resource(id: 102) { id name } }"}
     r2 = httpx.post(f"{BASE_URL}/graphql", json=query2, headers={"Authorization": f"Bearer {token}"})
-    if r2.status_code == 403 and r2.json()["detail"]["reason"] == "OWNERSHIP_MISMATCH":
+    if r2.status_code == 403 and r2.json()["detail"]["reason"] == "ACCESS_DENIED":
         print("Direct BOLA: PASS")
     else:
         print("Direct BOLA: FAIL", r2.status_code, r2.text)
@@ -50,7 +50,7 @@ def verify():
     # Check Demo 3 (Nested BOLA)
     query3 = {"query": "{ user(id: 101) { username resource(id: 102) { name } } }"}
     r3 = httpx.post(f"{BASE_URL}/graphql", json=query3, headers={"Authorization": f"Bearer {token}"})
-    if r3.status_code == 403 and r3.json()["detail"]["reason"] == "NESTED_AUTHORIZATION_VIOLATION":
+    if r3.status_code == 403 and r3.json()["detail"]["reason"] == "ACCESS_DENIED":
         print("Nested BOLA: PASS")
     else:
         print("Nested BOLA: FAIL", r3.status_code, r3.text)

@@ -1,0 +1,10 @@
+.git
+.env
+.pytest_cache
+__pycache__
+*.db
+*.db-shm
+*.db-wal
+backups
+results
+comparison/graphql-shield/node_modules

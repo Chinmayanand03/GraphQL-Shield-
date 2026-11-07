@@ -65,7 +65,7 @@ def test_gateway_deny_other_user_object():
     assert response.status_code == 403
     data = response.json()
     assert data["detail"]["decision"] == "DENY"
-    assert data["detail"]["reason"] == "OWNERSHIP_MISMATCH"
+    assert data["detail"]["reason"] == "ACCESS_DENIED"
     assert data["detail"]["user_id"] == 101
     assert data["detail"]["object_id"] == 102
 

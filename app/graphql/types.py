@@ -2,7 +2,6 @@ import strawberry
 from typing import List, Optional
 from strawberry.types import Info
 from app.database import get_db_connection
-from app.security.layers import is_enabled
 
 @strawberry.type
 class HealthCheckType:
@@ -45,64 +44,14 @@ class ResourceType:
 
     @strawberry.field
     def children_count(self, info: Info) -> int:
-        """
-        Count children visible to the current requester on the
-        protected endpoint.
-
-        The insecure endpoint deliberately counts all children
-        so it remains useful as a vulnerable benchmark baseline.
-        """
+        """Count children. Like every resolver here it checks nothing itself: on the
+        protected endpoint Layer 2 answers this field from the visible children
+        (ShieldConfig.aggregate_fields)."""
         conn = get_db_connection()
         try:
-            rows = conn.execute(
-                "SELECT owner_id FROM objects WHERE parent_id = ?",
-                (self.id,),
-            ).fetchall()
+            return conn.execute("SELECT COUNT(*) FROM objects WHERE parent_id = ?", (self.id,)).fetchone()[0]
         finally:
             conn.close()
-
-        context = getattr(info, "context", None)
-
-        if isinstance(context, dict):
-            request = context.get("request")
-        else:
-            request = getattr(context, "request", None)
-
-        path = str(
-            getattr(getattr(request, "url", None), "path", "")
-        ).rstrip("/")
-
-        # Preserve intentionally vulnerable baseline behaviour (also when Layer 2 is
-        # switched off for the layer ablation).
-        if path == "/graphql-insecure" or not is_enabled("layer2"):
-            return len(rows)
-
-        # On the protected endpoint, fail closed if context is absent.
-        current_user = getattr(
-            getattr(request, "state", None),
-            "current_user",
-            None,
-        )
-
-        if not isinstance(current_user, dict):
-            return 0
-
-        role = str(current_user.get("role", "user")).upper()
-
-        # Administrators may count all children under the current policy.
-        if role == "ADMIN":
-            return len(rows)
-
-        requester_id = current_user.get("user_id")
-        if requester_id is None:
-            return 0
-
-        # Count only children the requester owns.
-        return sum(
-            1
-            for row in rows
-            if str(row["owner_id"]) == str(requester_id)
-        )
 
 
 @strawberry.type

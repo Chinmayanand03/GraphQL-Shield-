@@ -22,14 +22,15 @@ def calculate_risk(context, decision_reason: str) -> tuple[int, str]:
         conn = get_db_connection()
         cursor = conn.cursor()
         # Check for denied requests in the last 10 minutes
+        # Only whether a recent denial exists matters, so stop at the first one.
         cursor.execute('''
-            SELECT COUNT(*) FROM audit_logs 
-            WHERE user_id = ? AND decision = 'DENY'
-            AND timestamp >= datetime('now', '-10 minutes')
+            SELECT EXISTS (SELECT 1 FROM audit_logs
+                           WHERE user_id = ? AND decision = 'DENY'
+                           AND timestamp >= datetime('now', '-10 minutes'))
         ''', (context.user_id,))
         recent_denies = cursor.fetchone()[0]
         conn.close()
-        
+
         if recent_denies > 0:
             score += 10
             

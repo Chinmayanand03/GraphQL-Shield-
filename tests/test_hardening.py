@@ -121,7 +121,7 @@ def test_missing_object_is_denied_not_a_server_error(query):
     # database locked for the next request.
     response = client.post("/graphql", json={"query": query}, headers=headers())
     assert response.status_code == 403
-    assert response.json()["detail"]["reason"] == "OBJECT_NOT_FOUND"
+    assert response.json()["detail"]["reason"] == "ACCESS_DENIED"
     assert (999 in [r[0] for r in audit_rows()]) or (555 in [r[0] for r in audit_rows()])
 
 

@@ -1,5 +1,5 @@
-% Verify every entry (authors, venue, year, pages) before submission.
-% Entries marked "found via web search" were not read in full.
+% Every entry below was checked against the publisher, Crossref, arXiv or the project page.
+% Saltzer-Schroeder, McKeeman and Lundberg-Lee details came from secondary listings.
 
 @misc{owasp2023,
   author       = {{OWASP Foundation}},
@@ -9,48 +9,74 @@
 }
 
 @misc{graphqler,
+  author       = {Omar Tsai and Jianing Li and Tsz Tung Cheung and Lejing Huang and Hao Zhu and Jianrui Xiao and Iman Sharafaldin and Mohammad A. Tayebi},
   title        = {{GraphQLer}: Enhancing {GraphQL} Security with Context-Aware {API} Testing},
   year         = {2025},
-  howpublished = {arXiv:2504.13358},
-  note         = {Found via web search; see also ACM DOI 10.1145/3832783.3834496}
+  howpublished = {arXiv:2504.13358}
 }
 
-@misc{bolaz,
+@article{bolaz,
+  author       = {Anbin Wu and Zhiyong Feng and Ruitao Feng and Zhenchang Xing and Yang Liu},
   title        = {Rethinking Broken Object Level Authorization Attacks Under Zero Trust Principle},
-  year         = {2025},
-  howpublished = {arXiv:2507.02309},
-  note         = {Found via web search}
+  journal      = {ACM Transactions on Software Engineering and Methodology},
+  year         = {2026},
+  doi          = {10.1145/3833417}
 }
 
 @misc{authprobe,
+  author       = {Jay Barach},
   title        = {{AuthProbe}: Specification-Driven, Multi-Identity Detection of Broken Object-Level Authorization in Recruitment {API}},
   year         = {2026},
-  howpublished = {arXiv:2607.20574},
-  note         = {Found via web search}
+  howpublished = {arXiv:2607.20574}
 }
 
 @article{petrinet,
-  author       = {{[Authors to verify]}},
-  title       = {Automated broken object-level authorization attack detection in {REST} {APIs} through {OpenAPI} to colored {Petri} nets transformation},
+  author       = {Ailton {Santos Filho} and Ricardo J. Rodr{\'\i}guez and Eduardo L. Feitosa},
+  title        = {Automated broken object-level authorization attack detection in {REST} {APIs} through {OpenAPI} to colored {Petri} nets transformation},
   journal      = {International Journal of Information Security},
-  publisher    = {Springer},
-  year         = {2024},
-  doi          = {10.1007/s10207-024-00970-5},
-  note         = {Found via web search}
+  volume       = {24},
+  number       = {2},
+  pages        = {83},
+  year         = {2025},
+  doi          = {10.1007/s10207-024-00970-5}
+}
+
+@article{lambers2026,
+  author       = {Leen Lambers and Lucas Sakizloglou and Taisiya Khakharova and Fernando Orejas},
+  title        = {Taint Analysis for Graph {APIs} Focusing on Broken Access Control},
+  journal      = {Logical Methods in Computer Science},
+  volume       = {22},
+  number       = {1},
+  year         = {2026},
+  doi          = {10.46298/lmcs-22(1:18)2026}
 }
 
 @inproceedings{hartig2018,
   author       = {Olaf Hartig and Jorge P{\'e}rez},
   title        = {Semantics and Complexity of {GraphQL}},
   booktitle    = {Proceedings of the 2018 World Wide Web Conference (WWW)},
-  year         = {2018}
+  pages        = {1155--1164},
+  year         = {2018},
+  doi          = {10.1145/3178876.3186014}
 }
 
 @inproceedings{cha2020,
   author       = {Alan Cha and Erik Wittern and Guillaume Baudart and James C. Davis and Louis Mandel and Jim A. Laredo},
   title        = {A Principled Approach to {GraphQL} Query Cost Analysis},
   booktitle    = {Proceedings of the 28th ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering (ESEC/FSE)},
-  year         = {2020}
+  pages        = {257--268},
+  year         = {2020},
+  doi          = {10.1145/3368089.3409670}
+}
+
+@inproceedings{wittern2019,
+  author       = {Erik Wittern and Alan Cha and James C. Davis and Guillaume Baudart and Louis Mandel},
+  title        = {An Empirical Study of {GraphQL} Schemas},
+  booktitle    = {Service-Oriented Computing (ICSOC)},
+  series       = {Lecture Notes in Computer Science},
+  pages        = {3--19},
+  year         = {2019},
+  doi          = {10.1007/978-3-030-33702-5_1}
 }
 
 @misc{cve202239275,
@@ -72,10 +98,10 @@
 }
 
 @misc{bolataxonomy,
+  author       = {Bandana Kaur},
   title        = {Broken Object Level Authorization in the Wild: An Empirical Taxonomy from 100+ Bug Bounty Disclosures},
   year         = {2026},
-  howpublished = {arXiv:2605.25865},
-  note         = {Found via web search}
+  howpublished = {arXiv:2605.25865}
 }
 
 @techreport{anderson1972,
@@ -86,11 +112,84 @@
   year         = {1972}
 }
 
+@article{saltzer1975,
+  author       = {Jerome H. Saltzer and Michael D. Schroeder},
+  title        = {The Protection of Information in Computer Systems},
+  journal      = {Proceedings of the IEEE},
+  volume       = {63},
+  number       = {9},
+  pages        = {1278--1308},
+  year         = {1975}
+}
+
+@inproceedings{goguen1982,
+  author       = {Joseph A. Goguen and Jos{\'e} Meseguer},
+  title        = {Security Policies and Security Models},
+  booktitle    = {IEEE Symposium on Security and Privacy},
+  pages        = {11},
+  year         = {1982},
+  doi          = {10.1109/SP.1982.10014}
+}
+
+@article{mckeeman1998,
+  author       = {William M. McKeeman},
+  title        = {Differential Testing for Software},
+  journal      = {Digital Technical Journal},
+  volume       = {10},
+  number       = {1},
+  pages        = {100--107},
+  year         = {1998}
+}
+
+@article{jia2011,
+  author       = {Yue Jia and Mark Harman},
+  title        = {An Analysis and Survey of the Development of Mutation Testing},
+  journal      = {IEEE Transactions on Software Engineering},
+  volume       = {37},
+  number       = {5},
+  pages        = {649--678},
+  year         = {2011},
+  doi          = {10.1109/TSE.2010.62}
+}
+
+@inproceedings{quickcheck,
+  author       = {Koen Claessen and John Hughes},
+  title        = {{QuickCheck}: A Lightweight Tool for Random Testing of {Haskell} Programs},
+  booktitle    = {Proceedings of the Fifth ACM SIGPLAN International Conference on Functional Programming (ICFP)},
+  pages        = {268--279},
+  year         = {2000},
+  doi          = {10.1145/351240.351266}
+}
+
+@article{hypothesis,
+  author       = {David R. MacIver and Zac Hatfield-Dodds and {many contributors}},
+  title        = {Hypothesis: A New Approach to Property-Based Testing},
+  journal      = {Journal of Open Source Software},
+  volume       = {4},
+  number       = {43},
+  pages        = {1891},
+  year         = {2019},
+  doi          = {10.21105/joss.01891}
+}
+
+@article{snorkel,
+  author       = {Alexander Ratner and Stephen H. Bach and Henry Ehrenberg and Jason Fries and Sen Wu and Christopher R{\'e}},
+  title        = {Snorkel: Rapid Training Data Creation with Weak Supervision},
+  journal      = {Proceedings of the VLDB Endowment},
+  volume       = {11},
+  number       = {3},
+  pages        = {269--282},
+  year         = {2017},
+  doi          = {10.14778/3157794.3157797}
+}
+
 @inproceedings{xgboost,
   author       = {Tianqi Chen and Carlos Guestrin},
   title        = {{XGBoost}: A Scalable Tree Boosting System},
   booktitle    = {Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
-  year         = {2016}
+  pages        = {785--794},
+  year         = {2016},
+  doi          = {10.1145/2939672.2939785}
 }
 
 @inproceedings{shap,

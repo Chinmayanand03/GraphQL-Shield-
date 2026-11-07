@@ -272,6 +272,7 @@ def test_nested_foreign_owned_child_is_filtered(monkeypatch):
         "app.security.runtime_object_guard.log_decision",
         lambda **kwargs: None,
     )
+    monkeypatch.setattr("app.security.runtime_object_guard.BATCH_LIST_CHECKS", False)
 
     parent = make_resource(201, 1)
 

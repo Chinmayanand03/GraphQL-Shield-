@@ -52,7 +52,9 @@ from app.security import blind_spot_model
 from app.security.layers import EVENT_L1_BLIND_SPOT, set_layers
 from app.security.query_features import FEATURE_NAMES, combine_features, extract_features
 
-HELD_OUT_FAMILY = "relationship_in_fragment"
+# Held out of training together: the query family with the blind spot, and a family
+# with the same fragment shape and no blind spot, so the test set has true negatives.
+HELD_OUT_FAMILIES = ("relationship_in_fragment", "named_fragment")
 DATASET_DIR = os.path.join(PROJECT_ROOT, "results", "blind_spot")
 
 # Extra objects on top of app.seed: folders with mixed-owner children and a nested chain.
@@ -239,8 +241,8 @@ def evaluate(rows: list[dict], seed: int) -> tuple[XGBClassifier, dict]:
     """Train and evaluate on the requests Layer 1 allowed (the ones that execute)."""
     rng = random.Random(seed)
     rows = [row for row in rows if row["l1_allowed"]]
-    held_out = [row for row in rows if row["family"] == HELD_OUT_FAMILY]
-    rest = [row for row in rows if row["family"] != HELD_OUT_FAMILY]
+    held_out = [row for row in rows if row["family"] in HELD_OUT_FAMILIES]
+    rest = [row for row in rows if row["family"] not in HELD_OUT_FAMILIES]
     rng.shuffle(rest)
     split = int(len(rest) * 0.75)
     train, test = rest[:split], rest[split:]
@@ -303,6 +305,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--count", type=int, default=4000)
     parser.add_argument("--seed", type=int, default=20261022)
+    parser.add_argument("--fault", help="Layer 1 fault from run_fault_injection to apply first. "
+                                        "--discovery --fault no_variable_defaults reproduces the original discovery.")
     parser.add_argument("--discovery", action="store_true",
                         help="Analyse the current Layer 1 without replacing the deployed model.")
     args = parser.parse_args()
@@ -313,6 +317,10 @@ def main() -> None:
     settings.DATABASE_URL = f"sqlite:///{db_file}"
     set_layers(True, True)
     try:
+        if args.fault:
+            from scripts.run_fault_injection import inject_fault
+
+            inject_fault(args.fault)
         rows = build_dataset(args.count, args.seed)
     finally:
         settings.DATABASE_URL = original_url
@@ -328,7 +336,8 @@ def main() -> None:
         "blind_spot_attacks": sum(row["attack"] for row in rows),
         "label_source": ("Layer 2 audit rows (layer='L2'), written only for owned objects Layer 1 never "
                          f"evaluated; attacks are {EVENT_L1_BLIND_SPOT} events. No hand labelling."),
-        "held_out_family": HELD_OUT_FAMILY,
+        "held_out_family": " + ".join(HELD_OUT_FAMILIES),
+        "injected_fault": args.fault,
         "feature_names": FEATURE_NAMES,
         "rule_baseline": "relationship_field_count > 0 (Layer 1's documented blind spot)",
         **results,

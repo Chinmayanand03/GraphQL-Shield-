@@ -9,8 +9,8 @@ from graphql import GraphQLError, GraphQLObjectType, GraphQLType
 from strawberry.extensions import SchemaExtension
 
 from app.graphql.types import ResourceType, UserType
-from app.security.audit import log_decision
-from app.security.authorization import AuthorizationContext, PolicyEngine
+from app.security.audit import audit_row, log_decision, log_decisions
+from app.security.authorization import PUBLIC_DENIAL_REASON, AuthorizationContext, PolicyEngine
 from app.security.layers import (
     EVENT_L1_BLIND_SPOT,
     EVENT_L2_FILTERED,
@@ -119,6 +119,9 @@ def make_info(
     return info
 
 
+# Evaluation switch: False checks and audits list items one at a time.
+BATCH_LIST_CHECKS = True
+
 # Owned GraphQL object types guarded at execution time, and the ownership-table type
 # name used for each. A UserType is owned by the user it describes.
 GUARDED_TYPES = {ResourceType: "Resource", UserType: "User"}
@@ -176,12 +179,15 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
         if isinstance(return_type, GraphQLType):
             named, is_list = unwrap_type(return_type)
             if is_list == is_item:
-                return self._config().owned_types.get(getattr(named, "name", None))
+                return self._config().value_key(named, value, info)
             return None
         return GUARDED_TYPES.get(type(value))
 
     def resolve(self, _next, root, info, *args, **kwargs):
         self._guard_mutation_arguments(info, kwargs)
+        relationship = self._config().aggregate_relationship(info)
+        if relationship is not None and self._should_enforce(info):
+            return self._count_visible(relationship, root, info)
         result = _next(root, info, *args, **kwargs)
 
         # Support synchronous and asynchronous resolvers.
@@ -194,6 +200,36 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
             return resolve_and_check()
 
         return self._guard_result(result, root, info)
+
+    def _count_visible(self, relationship: str, root: Any, info: Any) -> int:
+        """Answer an aggregate field from its relationship, counting only the objects
+        the caller may read, so a count cannot reveal objects Layer 2 would remove."""
+        field_def = info.parent_type.fields[relationship]
+        items = field_def.resolve(root, info) if field_def.resolve else getattr(root, relationship)
+        named, _ = unwrap_type(field_def.type)
+        current_user = getattr(getattr(self._get_request(info), "state", None), "current_user", None)
+        if not isinstance(current_user, dict):
+            return 0
+        visible = 0
+        for item in items:
+            key = self._config().value_key(named, item, info)
+            if key is None:
+                visible += 1
+                continue
+            object_id = _object_id(item, self._config())
+            decision = _policy_engine.evaluate(AuthorizationContext(
+                user_id=current_user.get("user_id"),
+                role=str(current_user.get("role", "user")),
+                operation="query",
+                object_type=key,
+                object_id=object_id,
+                path=self._format_path(getattr(info, "path", None)),
+                owner_id=self._owner(key, object_id),
+                metadata={"source": "runtime_object_guard"},
+            ))
+            if decision.get("decision") == "ALLOW":
+                visible += 1
+        return visible
 
     def _get_request(self, info):
         context = getattr(info, "context", None)
@@ -246,6 +282,8 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
         resource: Any,
         info: Any,
         object_type: str = "Resource",
+        owners: dict | None = None,
+        audit_rows: list | None = None,
     ) -> tuple[bool, dict[str, Any]]:
         request = self._get_request(info)
 
@@ -278,12 +316,15 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
             }
 
         try:
-            user_id = int(current_user["user_id"])
+            user_id = current_user["user_id"]
             object_id = _object_id(resource, self._config())
             role = str(current_user.get("role", "user"))
 
             # Never trust the returned object's owner_id as the authority.
-            owner_id = self._owner(object_type, object_id)
+            if owners is not None and object_type in owners:
+                owner_id = owners[object_type].get(object_id)
+            else:
+                owner_id = self._owner(object_type, object_id)
 
             operation_node = getattr(info, "operation", None)
             operation_value = getattr(
@@ -314,7 +355,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
             # this request (Layer 1 runs first, so a repeat row would double count).
             if not layer1_saw(request, object_type, object_id):
                 try:
-                    log_decision(
+                    row = dict(
                         user_id=user_id,
                         role=role,
                         operation=str(operation_value),
@@ -327,6 +368,10 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
                         risk_level=decision.get("risk_level", "LOW"),
                         layer="L2",
                     )
+                    if audit_rows is None:
+                        log_decision(**row)
+                    else:
+                        audit_rows.append(audit_row(**row))
                 except Exception:
                     logger.debug("Audit logging skipped or suppressed in runtime guard")
 
@@ -366,6 +411,22 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
                 "risk_level": "CRITICAL",
             }
             return False, decision_info
+
+    def _owners_of(self, items: list, info: Any) -> dict | None:
+        """One owner query per object type for a list, or None to look up one by one."""
+        lookup = self._config().owners_lookup
+        if lookup is None or not BATCH_LIST_CHECKS or len(items) < 2:
+            return None
+        ids_by_key: dict[str, list] = {}
+        for item in items:
+            key = self._object_key(item, info, is_item=True)
+            if key is not None:
+                ids_by_key.setdefault(key, []).append(_object_id(item, self._config()))
+        try:
+            return {key: lookup(key, ids) for key, ids in ids_by_key.items()}
+        except Exception:
+            logger.exception("Batched owner lookup failed; checking items one by one")
+            return None
 
     def _is_authorized(self, resource: ResourceType, info: Any) -> bool:
         is_auth, _ = self._check_resource_authorization(resource, info)
@@ -475,10 +536,12 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
 
         if isinstance(result, list):
             filtered_result = []
+            owners = self._owners_of(result, info)
+            audit_rows = [] if BATCH_LIST_CHECKS else None
             for item in result:
                 item_type = self._object_key(item, info, is_item=True)
                 if item_type is not None:
-                    is_auth, decision_info = self._check_resource_authorization(item, info, item_type)
+                    is_auth, decision_info = self._check_resource_authorization(item, info, item_type, owners, audit_rows)
                     if is_auth:
                         emitted_idx = len(filtered_result)
                         emitted_path = list(base_path_list) + [emitted_idx]
@@ -507,9 +570,15 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
                         self._record_denial(request, decision_info, item_type, item, base_path_list)
                 else:
                     filtered_result.append(item)
+            if audit_rows:
+                try:
+                    log_decisions(audit_rows)
+                except Exception:
+                    logger.debug("Audit logging skipped or suppressed in runtime guard")
             return filtered_result
 
-        # Scalars and non-owned objects are outside this prototype's scope.
+        # Other scalars and non-owned objects carry no owned object. Computed values
+        # over owned objects are declared in the config's aggregate_fields.
         return result
 
     # ------------------------------------------------------------------ mutation argument guard
@@ -568,8 +637,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
                 "code": "MUTATION_AUTHORIZATION_DENIED",
                 "layer": "L2_EXECUTION_TIME",
                 "object_id": target.id,
-                "reason": decision_info.get("reason", "DENY"),
-                "risk_level": decision_info.get("risk_level", "HIGH"),
+                "reason": PUBLIC_DENIAL_REASON,
             },
         )
 

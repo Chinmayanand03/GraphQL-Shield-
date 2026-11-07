@@ -45,6 +45,12 @@ def log_decision(user_id: int, role: str, operation: str, object_type: str, obje
     Writes the full security context, decision, and risk metrics to the audit log.
     `layer` records which enforcement layer ("L1" or "L2") made the decision.
     """
+    log_decisions([audit_row(user_id, role, operation, object_type, object_id, path, decision, reason,
+                             risk_score, risk_level, layer)])
+
+
+def audit_row(user_id, role, operation, object_type, object_id, path, decision, reason, risk_score, risk_level,
+              layer=None) -> dict:
     row = {
         "user_id": user_id, "role": role, "operation": operation, "object_type": object_type,
         "object_id": object_id, "path": path, "decision": decision, "reason": reason,
@@ -54,6 +60,11 @@ def log_decision(user_id: int, role: str, operation: str, object_type: str, obje
     }
     for field in INTEGER_FIELDS:
         row[field] = _as_stored(row[field])
+    return row
+
+
+def log_decisions(rows: list[dict]) -> None:
+    """Append rows to the hash chain in one transaction."""
     conn = get_db_connection()
     try:
         # IMMEDIATE takes the write lock first, so two writers cannot chain to the same row.
@@ -62,10 +73,13 @@ def log_decision(user_id: int, role: str, operation: str, object_type: str, obje
             "SELECT row_hash FROM audit_logs WHERE row_hash IS NOT NULL ORDER BY id DESC LIMIT 1"
         ).fetchone()
         prev_hash = last[0] if last else None
-        conn.execute('''
-            INSERT INTO audit_logs (user_id, role, operation, object_type, object_id, path, decision, reason, risk_score, risk_level, layer, timestamp, prev_hash, row_hash)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (*(row[field] for field in CHAIN_FIELDS), prev_hash, _row_hash(prev_hash, row)))
+        for row in rows:
+            row_hash = _row_hash(prev_hash, row)
+            conn.execute('''
+                INSERT INTO audit_logs (user_id, role, operation, object_type, object_id, path, decision, reason, risk_score, risk_level, layer, timestamp, prev_hash, row_hash)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (*(row[field] for field in CHAIN_FIELDS), prev_hash, row_hash))
+            prev_hash = row_hash
         conn.commit()
     finally:
         # A failed insert must not leave a transaction holding the database lock.

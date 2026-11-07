@@ -73,7 +73,7 @@ def test_09_direct_object_id_manipulation():
     query = "{ resource(id: 103) { name } }" # Sakthivel's resource
     res = client.post("/graphql", json={"query": query}, headers={"Authorization": f"Bearer {token}"})
     assert res.status_code in (401, 403)
-    assert res.json()["detail"]["reason"] == "OWNERSHIP_MISMATCH"
+    assert res.json()["detail"]["reason"] == "ACCESS_DENIED"
 
 def test_10_multiple_object_ids():
     token = create_access_token(user_id=101, role="user")
@@ -87,7 +87,7 @@ def test_11_nested_bola():
     query = "{ user(id: 101) { resource(id: 102) { name } } }"
     res = client.post("/graphql", json={"query": query}, headers={"Authorization": f"Bearer {token}"})
     assert res.status_code in (401, 403)
-    assert res.json()["detail"]["reason"] == "NESTED_AUTHORIZATION_VIOLATION"
+    assert res.json()["detail"]["reason"] == "ACCESS_DENIED"
 
 def test_12_bola_through_variables():
     token = create_access_token(user_id=101, role="user")

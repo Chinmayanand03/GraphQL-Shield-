@@ -1,0 +1,1119 @@
+{
+  "generated_at": "2026-11-06T19:04:15.821270+00:00",
+  "seeds": [
+    20261101,
+    20261102,
+    20261103,
+    20261104,
+    20261105
+  ],
+  "overall": {
+    "faults": 17,
+    "faults_with_a_naming_feature": 14,
+    "detected_by_evidence_alone": 17,
+    "mean_f1": {
+      "decision_tree_structural": 0.9574,
+      "evidence_rule": 0.9664,
+      "logistic_structural": 0.9679,
+      "relationship_rule": 0.6612,
+      "xgboost_all_features": 0.9775,
+      "xgboost_structural": 0.9668
+    },
+    "localisation_over_all_faults": {
+      "lift": {
+        "top1": 0.7647,
+        "top3": 0.7647
+      },
+      "decision_tree": {
+        "top1": 0.7882,
+        "top3": 0.8235
+      },
+      "logistic": {
+        "top1": 0.8235,
+        "top3": 0.8235
+      },
+      "xgboost": {
+        "top1": 0.8235,
+        "top3": 0.8235
+      }
+    },
+    "localisation_over_nameable_faults": {
+      "lift": {
+        "top1": 0.9286,
+        "top3": 0.9286
+      },
+      "decision_tree": {
+        "top1": 0.9571,
+        "top3": 1.0
+      },
+      "logistic": {
+        "top1": 1.0,
+        "top3": 1.0
+      },
+      "xgboost": {
+        "top1": 1.0,
+        "top3": 1.0
+      }
+    }
+  },
+  "faults": {
+    "aliased_fields_skipped": {
+      "expected_features": [
+        "alias_count"
+      ],
+      "residual_gaps": 140.4,
+      "unexplained_attacks": 46.4,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.6438,
+          "std": 0.0219
+        },
+        "evidence_rule": {
+          "mean": 0.9653,
+          "std": 0.0263
+        },
+        "decision_tree_structural": {
+          "mean": 0.9566,
+          "std": 0.025
+        },
+        "logistic_structural": {
+          "mean": 0.9641,
+          "std": 0.0283
+        },
+        "xgboost_structural": {
+          "mean": 0.9627,
+          "std": 0.0177
+        },
+        "xgboost_all_features": {
+          "mean": 0.9615,
+          "std": 0.0185
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "decision_tree": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "logistic": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "xgboost": {
+          "top1": 1.0,
+          "top3": 1.0
+        }
+      },
+      "top_feature_by_seed": [
+        "alias_count",
+        "alias_count",
+        "alias_count",
+        "alias_count",
+        "alias_count"
+      ]
+    },
+    "directive_fields_skipped": {
+      "expected_features": [
+        "directive_count"
+      ],
+      "residual_gaps": 102,
+      "unexplained_attacks": 46.2,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.7632,
+          "std": 0.0242
+        },
+        "evidence_rule": {
+          "mean": 0.9834,
+          "std": 0.0076
+        },
+        "decision_tree_structural": {
+          "mean": 0.9819,
+          "std": 0.0062
+        },
+        "logistic_structural": {
+          "mean": 0.9834,
+          "std": 0.0076
+        },
+        "xgboost_structural": {
+          "mean": 0.9809,
+          "std": 0.0093
+        },
+        "xgboost_all_features": {
+          "mean": 0.9809,
+          "std": 0.0093
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "decision_tree": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "logistic": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "xgboost": {
+          "top1": 1.0,
+          "top3": 1.0
+        }
+      },
+      "top_feature_by_seed": [
+        "directive_count",
+        "directive_count",
+        "directive_count",
+        "directive_count",
+        "directive_count"
+      ]
+    },
+    "first_batch_operation_only": {
+      "expected_features": [
+        "batch_size"
+      ],
+      "residual_gaps": 92.2,
+      "unexplained_attacks": 47,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.7325,
+          "std": 0.0303
+        },
+        "evidence_rule": {
+          "mean": 0.7325,
+          "std": 0.0303
+        },
+        "decision_tree_structural": {
+          "mean": 0.9713,
+          "std": 0.0126
+        },
+        "logistic_structural": {
+          "mean": 0.9726,
+          "std": 0.0131
+        },
+        "xgboost_structural": {
+          "mean": 0.9697,
+          "std": 0.0112
+        },
+        "xgboost_all_features": {
+          "mean": 0.9697,
+          "std": 0.0112
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 0.0,
+          "top3": 0.0
+        },
+        "decision_tree": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "logistic": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "xgboost": {
+          "top1": 1.0,
+          "top3": 1.0
+        }
+      },
+      "top_feature_by_seed": [
+        "batch_size",
+        "batch_size",
+        "batch_size",
+        "batch_size",
+        "batch_size"
+      ]
+    },
+    "first_nested_selection_only": {
+      "expected_features": [
+        "max_depth",
+        "nested_id_lookup_count"
+      ],
+      "residual_gaps": 228,
+      "unexplained_attacks": 107.2,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.6032,
+          "std": 0.0283
+        },
+        "evidence_rule": {
+          "mean": 0.9726,
+          "std": 0.0094
+        },
+        "decision_tree_structural": {
+          "mean": 0.9684,
+          "std": 0.0048
+        },
+        "logistic_structural": {
+          "mean": 0.9725,
+          "std": 0.0098
+        },
+        "xgboost_structural": {
+          "mean": 0.9675,
+          "std": 0.0089
+        },
+        "xgboost_all_features": {
+          "mean": 0.9675,
+          "std": 0.0089
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "decision_tree": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "logistic": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "xgboost": {
+          "top1": 1.0,
+          "top3": 1.0
+        }
+      },
+      "top_feature_by_seed": [
+        "max_depth",
+        "max_depth",
+        "max_depth",
+        "max_depth",
+        "max_depth"
+      ]
+    },
+    "first_operation_only": {
+      "expected_features": [],
+      "residual_gaps": 103.4,
+      "unexplained_attacks": 45,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.728,
+          "std": 0.0625
+        },
+        "evidence_rule": {
+          "mean": 0.9806,
+          "std": 0.0128
+        },
+        "decision_tree_structural": {
+          "mean": 0.7772,
+          "std": 0.0411
+        },
+        "logistic_structural": {
+          "mean": 0.9586,
+          "std": 0.0104
+        },
+        "xgboost_structural": {
+          "mean": 0.9555,
+          "std": 0.0117
+        },
+        "xgboost_all_features": {
+          "mean": 0.98,
+          "std": 0.0117
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 0.0,
+          "top3": 0.0
+        },
+        "decision_tree": {
+          "top1": 0.0,
+          "top3": 0.0
+        },
+        "logistic": {
+          "top1": 0.0,
+          "top3": 0.0
+        },
+        "xgboost": {
+          "top1": 0.0,
+          "top3": 0.0
+        }
+      },
+      "top_feature_by_seed": [
+        "id_argument_count",
+        "id_argument_count",
+        "id_argument_count",
+        "id_argument_count",
+        "id_argument_count"
+      ]
+    },
+    "first_root_field_only": {
+      "expected_features": [],
+      "residual_gaps": 89.6,
+      "unexplained_attacks": 43,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.7682,
+          "std": 0.0299
+        },
+        "evidence_rule": {
+          "mean": 0.9721,
+          "std": 0.0077
+        },
+        "decision_tree_structural": {
+          "mean": 0.9101,
+          "std": 0.0149
+        },
+        "logistic_structural": {
+          "mean": 0.9366,
+          "std": 0.0053
+        },
+        "xgboost_structural": {
+          "mean": 0.931,
+          "std": 0.0234
+        },
+        "xgboost_all_features": {
+          "mean": 0.9656,
+          "std": 0.0147
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 0.0,
+          "top3": 0.0
+        },
+        "decision_tree": {
+          "top1": 0.0,
+          "top3": 0.0
+        },
+        "logistic": {
+          "top1": 0.0,
+          "top3": 0.0
+        },
+        "xgboost": {
+          "top1": 0.0,
+          "top3": 0.0
+        }
+      },
+      "top_feature_by_seed": [
+        "alias_count",
+        "alias_count",
+        "alias_count",
+        "alias_count",
+        "alias_count"
+      ]
+    },
+    "mutation_targets_skipped": {
+      "expected_features": [
+        "is_mutation"
+      ],
+      "residual_gaps": 256.2,
+      "unexplained_attacks": 109.6,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.4682,
+          "std": 0.0456
+        },
+        "evidence_rule": {
+          "mean": 0.9975,
+          "std": 0.0034
+        },
+        "decision_tree_structural": {
+          "mean": 0.9975,
+          "std": 0.0034
+        },
+        "logistic_structural": {
+          "mean": 0.9975,
+          "std": 0.0034
+        },
+        "xgboost_structural": {
+          "mean": 0.9975,
+          "std": 0.0034
+        },
+        "xgboost_all_features": {
+          "mean": 0.9975,
+          "std": 0.0034
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "decision_tree": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "logistic": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "xgboost": {
+          "top1": 1.0,
+          "top3": 1.0
+        }
+      },
+      "top_feature_by_seed": [
+        "is_mutation",
+        "is_mutation",
+        "is_mutation",
+        "is_mutation",
+        "is_mutation"
+      ]
+    },
+    "no_defaults_in_mutations": {
+      "expected_features": [
+        "is_mutation",
+        "variable_default_count"
+      ],
+      "residual_gaps": 78.8,
+      "unexplained_attacks": 31.8,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.735,
+          "std": 0.0331
+        },
+        "evidence_rule": {
+          "mean": 0.9956,
+          "std": 0.0061
+        },
+        "decision_tree_structural": {
+          "mean": 0.9956,
+          "std": 0.0061
+        },
+        "logistic_structural": {
+          "mean": 0.9956,
+          "std": 0.0061
+        },
+        "xgboost_structural": {
+          "mean": 0.9956,
+          "std": 0.0061
+        },
+        "xgboost_all_features": {
+          "mean": 0.9956,
+          "std": 0.0061
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "decision_tree": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "logistic": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "xgboost": {
+          "top1": 1.0,
+          "top3": 1.0
+        }
+      },
+      "top_feature_by_seed": [
+        "variable_default_count",
+        "is_mutation",
+        "is_mutation",
+        "variable_default_count",
+        "is_mutation"
+      ]
+    },
+    "no_fragment_spreads": {
+      "expected_features": [
+        "fragment_spread_count"
+      ],
+      "residual_gaps": 206.8,
+      "unexplained_attacks": 97.4,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.5987,
+          "std": 0.0308
+        },
+        "evidence_rule": {
+          "mean": 0.9754,
+          "std": 0.0126
+        },
+        "decision_tree_structural": {
+          "mean": 0.9754,
+          "std": 0.0126
+        },
+        "logistic_structural": {
+          "mean": 0.9702,
+          "std": 0.0195
+        },
+        "xgboost_structural": {
+          "mean": 0.9713,
+          "std": 0.016
+        },
+        "xgboost_all_features": {
+          "mean": 0.9713,
+          "std": 0.016
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "decision_tree": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "logistic": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "xgboost": {
+          "top1": 1.0,
+          "top3": 1.0
+        }
+      },
+      "top_feature_by_seed": [
+        "fragment_spread_count",
+        "fragment_spread_count",
+        "fragment_spread_count",
+        "fragment_spread_count",
+        "fragment_spread_count"
+      ]
+    },
+    "no_inline_fragments": {
+      "expected_features": [
+        "inline_fragment_count"
+      ],
+      "residual_gaps": 206.6,
+      "unexplained_attacks": 98,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.6145,
+          "std": 0.0343
+        },
+        "evidence_rule": {
+          "mean": 0.9789,
+          "std": 0.0074
+        },
+        "decision_tree_structural": {
+          "mean": 0.9796,
+          "std": 0.0112
+        },
+        "logistic_structural": {
+          "mean": 0.9797,
+          "std": 0.0084
+        },
+        "xgboost_structural": {
+          "mean": 0.9753,
+          "std": 0.0077
+        },
+        "xgboost_all_features": {
+          "mean": 0.9753,
+          "std": 0.0077
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "decision_tree": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "logistic": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "xgboost": {
+          "top1": 1.0,
+          "top3": 1.0
+        }
+      },
+      "top_feature_by_seed": [
+        "inline_fragment_count",
+        "inline_fragment_count",
+        "inline_fragment_count",
+        "inline_fragment_count",
+        "inline_fragment_count"
+      ]
+    },
+    "no_nested_fragment_spreads": {
+      "expected_features": [
+        "fragment_spread_count"
+      ],
+      "residual_gaps": 103.2,
+      "unexplained_attacks": 49.4,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.7383,
+          "std": 0.0443
+        },
+        "evidence_rule": {
+          "mean": 0.9842,
+          "std": 0.0061
+        },
+        "decision_tree_structural": {
+          "mean": 0.9751,
+          "std": 0.0109
+        },
+        "logistic_structural": {
+          "mean": 0.9783,
+          "std": 0.0059
+        },
+        "xgboost_structural": {
+          "mean": 0.9796,
+          "std": 0.0065
+        },
+        "xgboost_all_features": {
+          "mean": 0.9782,
+          "std": 0.0073
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "decision_tree": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "logistic": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "xgboost": {
+          "top1": 1.0,
+          "top3": 1.0
+        }
+      },
+      "top_feature_by_seed": [
+        "fragment_spread_count",
+        "fragment_spread_count",
+        "fragment_spread_count",
+        "fragment_spread_count",
+        "fragment_spread_count"
+      ]
+    },
+    "no_untyped_inline_fragments": {
+      "expected_features": [
+        "inline_fragment_count"
+      ],
+      "residual_gaps": 102.2,
+      "unexplained_attacks": 47,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.7398,
+          "std": 0.0413
+        },
+        "evidence_rule": {
+          "mean": 0.9813,
+          "std": 0.0111
+        },
+        "decision_tree_structural": {
+          "mean": 0.8839,
+          "std": 0.0245
+        },
+        "logistic_structural": {
+          "mean": 0.8541,
+          "std": 0.0248
+        },
+        "xgboost_structural": {
+          "mean": 0.8497,
+          "std": 0.015
+        },
+        "xgboost_all_features": {
+          "mean": 0.9732,
+          "std": 0.0167
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "decision_tree": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "logistic": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "xgboost": {
+          "top1": 1.0,
+          "top3": 1.0
+        }
+      },
+      "top_feature_by_seed": [
+        "inline_fragment_count",
+        "inline_fragment_count",
+        "inline_fragment_count",
+        "inline_fragment_count",
+        "inline_fragment_count"
+      ]
+    },
+    "no_variable_defaults": {
+      "expected_features": [
+        "variable_default_count"
+      ],
+      "residual_gaps": 232.4,
+      "unexplained_attacks": 106.4,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.594,
+          "std": 0.0324
+        },
+        "evidence_rule": {
+          "mean": 0.9768,
+          "std": 0.009
+        },
+        "decision_tree_structural": {
+          "mean": 0.976,
+          "std": 0.0101
+        },
+        "logistic_structural": {
+          "mean": 0.9768,
+          "std": 0.009
+        },
+        "xgboost_structural": {
+          "mean": 0.9742,
+          "std": 0.009
+        },
+        "xgboost_all_features": {
+          "mean": 0.9759,
+          "std": 0.0085
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "decision_tree": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "logistic": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "xgboost": {
+          "top1": 1.0,
+          "top3": 1.0
+        }
+      },
+      "top_feature_by_seed": [
+        "variable_default_count",
+        "variable_default_count",
+        "variable_default_count",
+        "variable_default_count",
+        "variable_default_count"
+      ]
+    },
+    "no_variables": {
+      "expected_features": [
+        "variable_count"
+      ],
+      "residual_gaps": 480.2,
+      "unexplained_attacks": 224.8,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.4539,
+          "std": 0.0467
+        },
+        "evidence_rule": {
+          "mean": 0.9792,
+          "std": 0.0093
+        },
+        "decision_tree_structural": {
+          "mean": 0.9778,
+          "std": 0.0075
+        },
+        "logistic_structural": {
+          "mean": 0.9792,
+          "std": 0.008
+        },
+        "xgboost_structural": {
+          "mean": 0.977,
+          "std": 0.0094
+        },
+        "xgboost_all_features": {
+          "mean": 0.9755,
+          "std": 0.0098
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "decision_tree": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "logistic": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "xgboost": {
+          "top1": 1.0,
+          "top3": 1.0
+        }
+      },
+      "top_feature_by_seed": [
+        "variable_count",
+        "variable_count",
+        "variable_count",
+        "variable_count",
+        "variable_count"
+      ]
+    },
+    "none": {
+      "expected_features": [],
+      "residual_gaps": 0,
+      "unexplained_attacks": 0,
+      "seeds_with_evidence": 0,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.995,
+          "std": 0.0064
+        },
+        "evidence_rule": {
+          "mean": 0.995,
+          "std": 0.0064
+        },
+        "decision_tree_structural": {
+          "mean": 0.9854,
+          "std": 0.0243
+        },
+        "logistic_structural": {
+          "mean": 0.995,
+          "std": 0.0064
+        },
+        "xgboost_structural": {
+          "mean": 0.995,
+          "std": 0.0064
+        },
+        "xgboost_all_features": {
+          "mean": 0.995,
+          "std": 0.0064
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 0.0,
+          "top3": 0.0
+        },
+        "decision_tree": {
+          "top1": 0.0,
+          "top3": 0.0
+        },
+        "logistic": {
+          "top1": 0.0,
+          "top3": 0.0
+        },
+        "xgboost": {
+          "top1": 0.0,
+          "top3": 0.0
+        }
+      },
+      "top_feature_by_seed": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "root_fields_only": {
+      "expected_features": [
+        "max_depth",
+        "nested_id_lookup_count"
+      ],
+      "residual_gaps": 228,
+      "unexplained_attacks": 107.2,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.6032,
+          "std": 0.0283
+        },
+        "evidence_rule": {
+          "mean": 0.9726,
+          "std": 0.0094
+        },
+        "decision_tree_structural": {
+          "mean": 0.9684,
+          "std": 0.0048
+        },
+        "logistic_structural": {
+          "mean": 0.9725,
+          "std": 0.0098
+        },
+        "xgboost_structural": {
+          "mean": 0.9675,
+          "std": 0.0089
+        },
+        "xgboost_all_features": {
+          "mean": 0.9675,
+          "std": 0.0089
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "decision_tree": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "logistic": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "xgboost": {
+          "top1": 1.0,
+          "top3": 1.0
+        }
+      },
+      "top_feature_by_seed": [
+        "max_depth",
+        "max_depth",
+        "max_depth",
+        "max_depth",
+        "max_depth"
+      ]
+    },
+    "root_fragment_spreads_only": {
+      "expected_features": [
+        "fragment_spread_count",
+        "nested_id_lookup_count"
+      ],
+      "residual_gaps": 66.4,
+      "unexplained_attacks": 31.4,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.8318,
+          "std": 0.0532
+        },
+        "evidence_rule": {
+          "mean": 0.9824,
+          "std": 0.0137
+        },
+        "decision_tree_structural": {
+          "mean": 0.9824,
+          "std": 0.0137
+        },
+        "logistic_structural": {
+          "mean": 0.9645,
+          "std": 0.0203
+        },
+        "xgboost_structural": {
+          "mean": 0.9822,
+          "std": 0.0145
+        },
+        "xgboost_all_features": {
+          "mean": 0.9837,
+          "std": 0.0143
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "decision_tree": {
+          "top1": 0.4,
+          "top3": 1.0
+        },
+        "logistic": {
+          "top1": 1.0,
+          "top3": 1.0
+        },
+        "xgboost": {
+          "top1": 1.0,
+          "top3": 1.0
+        }
+      },
+      "top_feature_by_seed": [
+        "fragment_spread_count",
+        "fragment_spread_count",
+        "fragment_spread_count",
+        "fragment_spread_count",
+        "fragment_spread_count"
+      ]
+    },
+    "user_type_skipped": {
+      "expected_features": [],
+      "residual_gaps": 144.2,
+      "unexplained_attacks": 0,
+      "seeds_with_evidence": 5,
+      "f1": {
+        "relationship_rule": {
+          "mean": 0.6233,
+          "std": 0.0534
+        },
+        "evidence_rule": {
+          "mean": 0.9987,
+          "std": 0.0025
+        },
+        "decision_tree_structural": {
+          "mean": 0.9987,
+          "std": 0.0025
+        },
+        "logistic_structural": {
+          "mean": 0.9987,
+          "std": 0.0025
+        },
+        "xgboost_structural": {
+          "mean": 0.9987,
+          "std": 0.0025
+        },
+        "xgboost_all_features": {
+          "mean": 0.9987,
+          "std": 0.0025
+        }
+      },
+      "localisation": {
+        "lift": {
+          "top1": 0.0,
+          "top3": 0.0
+        },
+        "decision_tree": {
+          "top1": 0.0,
+          "top3": 0.0
+        },
+        "logistic": {
+          "top1": 0.0,
+          "top3": 0.0
+        },
+        "xgboost": {
+          "top1": 0.0,
+          "top3": 0.0
+        }
+      },
+      "top_feature_by_seed": [
+        "max_depth",
+        "max_depth",
+        "max_depth",
+        "max_depth",
+        "max_depth"
+      ]
+    }
+  }
+}

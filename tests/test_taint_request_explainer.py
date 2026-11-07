@@ -50,9 +50,9 @@ def test_explanation_tracks_source_and_denies_foreign_object(monkeypatch):
 
     assert result["source_tracking"]["source_count"] == 1
     assert result["taint_sources"][0]["variable_name"] == "resourceId"
-    assert result["objects"][0]["owner_id"] == 102
+    assert result["objects"][0]["owner_id"] is None
     assert result["objects"][0]["authorization"]["decision"] == "DENY"
-    assert result["objects"][0]["authorization"]["reason"] == "OWNERSHIP_MISMATCH"
+    assert result["objects"][0]["authorization"]["reason"] == "ACCESS_DENIED"
 
 
 def test_explanation_accepts_owned_object(monkeypatch):

@@ -13,7 +13,7 @@ from pydantic import BaseModel, Field
 from graphql import FieldNode, FragmentDefinitionNode, FragmentSpreadNode, OperationDefinitionNode
 
 from app.core.dependencies import get_current_user
-from app.security.authorization import AuthorizationContext, PolicyEngine
+from app.security.authorization import PUBLIC_DENIAL_REASON, AuthorizationContext, PolicyEngine
 from app.security.graphql_parser import parse_query
 from app.security.object_extractor import normalize_query
 from app.security.ownership import get_object_owner
@@ -140,6 +140,15 @@ def build_taint_explanation(
             risk_score = None
             risk_level = "UNKNOWN"
             explanation = f"The explanation could not evaluate this object safely ({type(exc).__name__}). No allow conclusion was inferred."
+
+        # Only administrators see why an object was denied and who owns it; for
+        # anyone else this would answer "does this ID exist, and whose is it?".
+        if decision == "DENY" and role.upper() != "ADMIN":
+            owner_id = None
+            reason = PUBLIC_DENIAL_REASON
+            risk_score = None
+            risk_level = None
+            explanation = "The policy denies this principal access to this object."
 
         objects.append({
             "object_type": object_type,

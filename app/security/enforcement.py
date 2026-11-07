@@ -6,7 +6,7 @@ from app.core.dependencies import get_current_user
 from .object_extractor import normalize_query
 from .ownership import get_object_owner
 from .shield_config import ShieldConfig
-from .authorization import AuthorizationContext, PolicyEngine
+from .authorization import PUBLIC_DENIAL_REASON, AuthorizationContext, PolicyEngine
 from .audit import log_decision
 from .layers import (
     EVENT_BLIND_SPOT_PREDICTED,
@@ -168,8 +168,6 @@ def _enforce_operation(request: Request, current_user: dict, data: dict, batch_i
                     "decision": result["decision"],
                     "user_id": user_id,
                     "object_id": object_id,
-                    "reason": result["reason"],
-                    "risk_score": result["risk_score"],
-                    "risk_level": result["risk_level"]
+                    "reason": PUBLIC_DENIAL_REASON,
                 }
             )

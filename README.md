@@ -3,7 +3,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
 [![Strawberry GraphQL](https://img.shields.io/badge/GraphQL-Strawberry-e535ab.svg?logo=graphql)](https://strawberry.rocks/)
-[![Tests Passing](https://img.shields.io/badge/tests-238%20passed-brightgreen.svg)]()
+[![Tests Passing](https://img.shields.io/badge/tests-386%20passed-brightgreen.svg)]()
 [![Security Standard](https://img.shields.io/badge/OWASP-API1%3A2023%20BOLA-red.svg)](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -72,6 +72,12 @@ While REST architectures feature rigid, predictable resource hierarchies (e.g. `
   - **Mutation Argument Guard**: Inspects engine-coerced arguments before root mutations (`updateResource`, `deleteResource`, `transferOwnership`) execute.
   - **Guarded Types**: Secures both `ResourceType` and `UserType` models.
   - **Non-Interference Sanitization**: Filters collection fields item-by-item without leaking foreign object existence.
+  - **Interfaces and unions**: resolves the concrete type of `node(id:)` and union results before deciding, so a foreign object cannot hide behind an abstract type.
+  - **Aggregate fields**: declared counts (e.g. `childrenCount`) are answered by Layer 2 from the objects the caller may see.
+  - **Batched checks**: a list is checked with one owner lookup and audited in one transaction.
+- **Uniform denials**: a foreign object and a missing one get the same `ACCESS_DENIED` response; the exact reason stays in the hash-chained audit log.
+- **Startup lint**: warns about schema types with owner-like fields that the configuration leaves unprotected, and about undeclared aggregate fields.
+- **Framework support**: the same `OwnershipMiddleware` protects Strawberry, plain graphql-core, Graphene and Ariadne servers.
 - **Layer 1 Blind Spot Auditing**:
   - Automatically identifies and logs when Layer 2 catches an unauthorized object that Layer 1 could not parse from raw query text.
   - Emits telemetry events to `layer_events` table for forensic analysis.
@@ -136,7 +142,7 @@ When Layer 2 denies an object that Layer 1 never checked (e.g. an object reached
 ## Quickstart Guide
 
 ### Prerequisites
-- **Python 3.10+** (Tested on Python 3.10, 3.11, 3.12)
+- **Python 3.10+** (tested on Python 3.13)
 - **Git**
 
 ### Installation & Setup
@@ -241,7 +247,7 @@ User `101` attempts to read Kapilesh's document (`id: 102`).
 ```bash
 curl -X POST "http://localhost:8000/graphql"   -H "Authorization: Bearer $TOKEN"   -H "Content-Type: application/json"   -d '{"query": "{ resource(id: 102) { id name } }"}'
 ```
-**Outcome**: `403 Forbidden` | Blocked at **Layer 1 Pre-Execution Gate** (`OWNERSHIP_MISMATCH`).
+**Outcome**: `403 Forbidden` | Blocked at **Layer 1 Pre-Execution Gate**. The response says `ACCESS_DENIED`, the same as for an ID that does not exist; the audit log records `OWNERSHIP_MISMATCH`.
 
 ---
 
@@ -251,7 +257,7 @@ User `101` queries their own profile but nests a foreign resource request inside
 ```bash
 curl -X POST "http://localhost:8000/graphql"   -H "Authorization: Bearer $TOKEN"   -H "Content-Type: application/json"   -d '{"query": "{ user(id: 101) { username resource(id: 102) { name } } }"}'
 ```
-**Outcome**: `403 Forbidden` | Blocked at **Layer 1** (`NESTED_AUTHORIZATION_VIOLATION`).
+**Outcome**: `403 Forbidden` | Blocked at **Layer 1** (`ACCESS_DENIED`; the exact reason is in the audit log).
 
 ---
 
@@ -261,7 +267,7 @@ User `101` attempts to modify Kapilesh's resource (`id: 102`) using the `updateR
 ```bash
 curl -X POST "http://localhost:8000/graphql"   -H "Authorization: Bearer $TOKEN"   -H "Content-Type: application/json"   -d '{"query": "mutation { updateResource(id: 102, name: "Hacked Note") { id name } }"}'
 ```
-**Outcome**: Blocked by **Layer 2 Mutation Guard** (`MUTATION_AUTHORIZATION_DENIED`). Resolver never executes; database remains unmodified.
+**Outcome**: Blocked before the resolver runs (by Layer 1, or by the **Layer 2 Mutation Guard** when Layer 1 is off). The error says `ACCESS_DENIED`; the database is unchanged.
 
 ---
 
@@ -271,7 +277,7 @@ User `101` queries folder `201` with child records (when seeded with `--with-sha
 ```bash
 curl -X POST "http://localhost:8000/graphql"   -H "Authorization: Bearer $TOKEN"   -H "Content-Type: application/json"   -d '{"query": "{ resource(id: 201) { id name children { id name } childrenCount } }"}'
 ```
-**Outcome**: `200 OK` | **Layer 2** transparently filters out Kapilesh's document `204`. Balanilavan only receives documents `202` and `203`. Zero information leak.
+**Outcome**: `200 OK` | **Layer 2** filters out Kapilesh's document `204`. Balanilavan only receives documents `202` and `203`, and `childrenCount` is 2, not 3.
 
 ---
 
@@ -338,9 +344,9 @@ python -m scripts.train_blind_spot_model               # train and deploy the mo
 | Random test split (discovery) | XGBoost | Rule baseline |
 | :--- | :--- | :--- |
 | F1 (coverage gaps) | **1.000** | 0.639 |
-| Attack recall | **100%** | 23.4% |
+| Attack recall | **100%** | 22.8% |
 
-**After fixing Layer 1** (`object_extractor.py` now reads variable defaults), attacks reaching only Layer 2 fell from 401 to 138 (−66%), and Layer 1 blocks 1,678 instead of 1,415 of the 4,000 requests. The remaining gaps are relationship traversal only; there both the model and the rule reach F1 1.000, including on the held-out family.
+**After fixing Layer 1** (`object_extractor.py` now reads variable defaults), attacks reaching only Layer 2 fell from 401 to 138 (−66%), and Layer 1 blocks 1,678 instead of 1,415 of the 4,000 requests. The remaining gaps are relationship traversal only; there the model and the rule tie (F1 0.996 on the random split, 1.000 on the held-out family).
 
 **At runtime** the model scores every request Layer 1 allows (about 1.2 ms). A positive prediction is recorded as a `BLIND_SPOT_PREDICTED` layer event, and each `L1_BLIND_SPOT_CAUGHT_BY_L2` event carries the earlier prediction (`predicted p=…`), so predictions can be checked against live traffic. It is advisory only and never changes an allow/deny decision.
 
@@ -381,7 +387,7 @@ python -m scripts.run_tool_comparison
 
 | Complete configuration | Attacks leaked | Legitimate requests failed | Configuration written |
 | :--- | :--- | :--- | :--- |
-| GraphQL Shield | 0 / 13 | 0 / 5 | 2 owned types + 1 mutation entry not derivable from the schema |
+| GraphQL Shield | 0 / 13 | 0 / 5 | 2 owned types, 1 mutation entry not derivable from the schema, 1 aggregate field, and the owner-lookup function |
 | graphql-shield | 0 / 13 | **1 / 5** | 8 permission entries + 4 rule functions |
 
 graphql-shield's failure is GraphQL null propagation: in `children: [ResourceType!]!`, denying the one foreign child raises an error that cannot null a non-null item, so it nulls the whole folder and the owner loses their own documents. Layer 2 removes the foreign item before nullability is enforced.
@@ -397,13 +403,24 @@ graphql-shield's failure is GraphQL null propagation: in `children: [ResourceTyp
 Neither approach dominates: GraphQL Shield needs far less configuration and fails closed on mutations, but a missing owned type is a single point of failure; graphql-shield's overlapping per-field rules tolerate one missing read rule but need much more configuration, and cost availability under null propagation.
 
 ### Latency
-`scripts/run_latency_benchmark.py` measures each configuration in-process (FastAPI TestClient, no network): 30 warm-up requests, then 5 repeats of 200, reporting the mean with a 95% confidence interval across repeats, and p50/p95/p99. Profiling showed that opening and closing SQLite connections took about 75% of a protected request, so connections are now pooled. Same machine, back to back (`--no-pool` reproduces the old behaviour):
+`scripts/run_latency_benchmark.py` measures each configuration in-process (FastAPI TestClient, no network): 30 warm-up requests, then 5 repeats of 200, reporting the mean with a 95% confidence interval across repeats, and p50/p95/p99. Two fixes found by profiling: SQLite connections are pooled (`--no-pool` reproduces the old behaviour), and the risk engine's recent-denial check now uses an index and an existence probe instead of counting the whole audit log for every checked object, which had made latency grow with the log. Same machine, back to back (`evaluation/latency_*.json`):
 
-| Both layers | Without pooling | With pooling | Overhead vs insecure (with pooling) |
+| Request | Unprotected | Both layers, no pooling | Both layers, pooled | Overhead (pooled) |
+| :--- | :--- | :--- | :--- | :--- |
+| Own lookup | 14.8 ms | 60.2 ms | 19.7 ms [19.2, 20.1] | +33% |
+| Relationship (`children`) | 14.2 ms | 132.4 ms | 21.6 ms [21.3, 21.9] | +53% |
+| Own update | 14.9 ms | 71.8 ms | 18.8 ms [17.9, 19.8] | +26% |
+
+Layer 2 alone adds 4–17%; most of the cost is Layer 1's parse and schema walk.
+
+**Scaling** (`python -m scripts.run_scaling_benchmark`, `evaluation/latency_scaling.json`): a folder with N children, 10% foreign.
+
+| Children | Unprotected | Layer 2 one by one | Layer 2 batched |
 | :--- | :--- | :--- | :--- |
-| Own lookup | 59.2 ms | 19.6 ms [18.3, 21.0] | +78% |
-| Relationship (`children`) | 183.5 ms | 38.4 ms [35.7, 41.2] | +81% |
-| Own update | 84.3 ms | 29.4 ms [26.8, 32.0] | +60% |
+| 1 | 14.5 ms | 20.5 ms | 20.2 ms |
+| 10 | 15.4 ms | 24.7 ms | 23.0 ms |
+| 50 | 16.6 ms | 47.9 ms | 32.6 ms |
+| 200 | 28.0 ms | 127.5 ms | 73.5 ms |
 
 Numbers come from a Windows laptop with background load and vary between runs; report the confidence intervals, not single means.
 
@@ -414,11 +431,50 @@ Blind-spot predictor on the fixed Layer 1, 5 seeds × 2,000 requests (mean ± st
 
 | Measure | XGBoost | Rule baseline |
 | :--- | :--- | :--- |
-| F1, random test split | 0.998 ± 0.004 | 0.998 ± 0.004 |
+| F1, random test split | 0.992 ± 0.006 | 0.992 ± 0.006 |
 | Attack recall | 1.000 ± 0.000 | 1.000 ± 0.000 |
 | F1, held-out family | 1.000 ± 0.000 | 1.000 ± 0.000 |
 
 Coverage-gap rate among allowed requests: 0.289 ± 0.015; attacks stopped only by Layer 2 per 2,000 requests: 75.6 ± 8.8; top feature in every seed: `relationship_field_count`. Once the variable-default gap is fixed, the remaining blind spot is relationship traversal and the rule matches the model: the predictor's value is the discovery run, not ongoing accuracy.
+
+### Fault injection: does the cross-layer evidence find Layer 1 bugs?
+One discovered bypass is an anecdote, so `scripts/run_fault_injection.py` measures it. It patches 17 realistic bugs into Layer 1 at load time (files on disk never change): ignored variables or defaults, skipped fragments, aliases, directives, nested lookups, batch operations, mutation targets, and more. Each fault and an unmodified control run on 5 seeds of 1,000 requests composed from independent constructs.
+
+```bash
+python -m scripts.run_fault_injection            # about 1.5 h on a laptop
+python -m scripts.run_fault_injection --analyse  # recompute from raw rows
+```
+
+Results (`evaluation/fault_injection.json`):
+
+| Measure | Result |
+| :--- | :--- |
+| Faults detected from the evidence alone | **17 / 17** (every seed); 0 false alarms on the unmodified Layer 1 |
+| Mean F1 predicting affected requests | relationship rule 0.661, evidence rule 0.966, decision tree 0.957, logistic regression 0.968, XGBoost 0.967 (0.978 with Layer 1's resolution count) |
+| Broken construct ranked first (14 faults a feature can name) | logistic regression 1.000, XGBoost 1.000, decision tree 0.957, lift 0.929 |
+
+The evidence rule is "a relationship field, or an ID argument Layer 1 did not resolve". The value is in the evidence, not the model: XGBoost is no better than logistic regression.
+
+### Security properties (property-based tests)
+`tests/test_properties.py` checks four properties with Hypothesis on generated owners, folder contents and composed requests (120 examples each):
+
+- **P1 Safety**: no response contains an object the caller does not own.
+- **P2 Non-interference**: changing only other users' objects cannot change the response.
+- **P3 Write safety**: no request changes an object the caller does not own.
+- **P4 Availability**: a request naming only the caller's objects returns them.
+
+With protection off, all four fail, which shows the tests can catch a violation. Writing P2 exposed three leak channels, now fixed and covered by `tests/test_leak_channels.py`: different denial reasons for foreign and missing objects (plus owner IDs in the explainer), foreign objects returned through interfaces and unions, and `childrenCount` counting foreign children. **Known remaining channel:** deleting a folder that holds a hidden foreign child fails on the foreign-key constraint, which reveals that the child exists.
+
+### Other frameworks
+`tests/test_frameworks.py` protects a Graphene app (Relay `Node`, lists, mutations) and an Ariadne app with the same middleware. Graphene needs graphql-core < 3.3, so run it in a separate environment:
+
+```bash
+python -m venv venv-graphene && venv-graphene/Scripts/pip install -r requirements-frameworks.txt
+venv-graphene/Scripts/python -m pytest tests/test_frameworks.py
+```
+
+### Docker and CI
+`Dockerfile` runs the server and `.github/workflows/tests.yml` runs the test suite on push. Neither was run on the development machine (no Docker there).
 
 ---
 
@@ -431,7 +487,7 @@ python -m pytest -v
 
 Expected output:
 ```text
-======================= 313 passed =======================
+382 passed, 4 skipped   (the 4 Graphene tests run in their own environment, see "Other frameworks")
 ```
 
 ---
@@ -461,6 +517,7 @@ Expected output:
 GraphQL-Shield/
 ├── app/
 │   ├── benchmarks/           # Ground truth oracles & evaluation datasets
+│   ├── clinic/               # Second, unrelated application (schema-first, Relay IDs)
 │   ├── core/                 # JWT security primitives & FastAPI dependencies
 │   ├── graphql/              # Schema, queries, mutations, and types
 │   │   ├── mutations.py      # Resource write operations (update, delete, transfer)
@@ -472,15 +529,19 @@ GraphQL-Shield/
 │   │   ├── runtime_object_guard.py  # Layer 2: Execution-time object & mutation guard
 │   │   ├── layers.py         # Dual-layer state, layer events & blind-spot recorder
 │   │   ├── object_extractor.py # AST traversal with inline fragments & list IDs
-│   │   ├── model_service.py  # Lazy-loaded XGBoost ML behavioral service
-│   │   └── policy_rules.py   # Formal authorization policy rules
+│   │   ├── shield_config.py  # Per-application configuration and startup lint
+│   │   ├── audit.py          # Hash-chained audit log
+│   │   └── model_service.py  # Lazy-loaded XGBoost ML behavioral service
 │   ├── static/
 │   │   └── dashboard.html    # Interactive research console UI
 │   ├── database.py           # SQLite connection & layer_events table
 │   ├── main.py               # FastAPI entrypoint, layer APIs, and routers
 │   └── seed.py               # Database seeder with optional shared-folder scenario
-├── scripts/                  # Benchmarking, training, and demo scripts
-├── tests/                    # 238 unit, integration, and security tests
+├── comparison/               # graphql-shield (Node) on the same schema
+├── evaluation/               # Tracked results: fault injection, latency, scaling
+├── paper/                    # IEEE paper source (LaTeX)
+├── scripts/                  # Benchmarking, training, and fault-injection scripts
+├── tests/                    # 386 unit, integration, property and security tests
 ├── requirements.txt
 └── README.md
 ```

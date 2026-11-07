@@ -9,14 +9,31 @@ graphql-core based server (Strawberry, Graphene, Ariadne):
   - how to look up an object's owner (a callable, so any data store works),
   - which argument names carry object IDs, and how to decode them (e.g. Relay
     global IDs such as base64("Resource:102")),
-  - targets for mutations whose return type does not reveal what they change.
+  - targets for mutations whose return type does not reveal what they change,
+  - aggregate fields, which summarise a relationship (e.g. a child count).
+
+lint_config() checks a configuration against its schema: an owned type left out
+would be unprotected by both layers, so it is reported at startup.
 """
 from __future__ import annotations
 
+import logging
+import re
 from dataclasses import dataclass, field
 from typing import Any, Callable
 
-from graphql import GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema
+from graphql import (
+    GraphQLInterfaceType,
+    GraphQLList,
+    GraphQLNonNull,
+    GraphQLObjectType,
+    GraphQLSchema,
+    GraphQLUnionType,
+    is_leaf_type,
+)
+
+
+logger = logging.getLogger(__name__)
 
 
 def unwrap_type(graphql_type) -> tuple[Any, bool]:
@@ -54,6 +71,12 @@ class ShieldConfig:
     # Mutations allowed to run without an ownership target (e.g. creating a
     # top-level object owned by the caller). Everything else unlisted is denied.
     unguarded_mutations: frozenset[str] = frozenset()
+    # "Type.field" -> the relationship field it summarises. Layer 2 answers these
+    # by counting only the related objects the caller may read.
+    aggregate_fields: dict[str, str] = field(default_factory=dict)
+    # Optional (ownership key, ids) -> {id: owner}. Lets Layer 2 check a list in one
+    # query; without it, each list item takes one owner_lookup call.
+    owners_lookup: Callable[[str, list], dict] | None = None
 
     def graphql_schema(self) -> GraphQLSchema:
         return self.schema()
@@ -62,6 +85,29 @@ class ShieldConfig:
         """Ownership key of a (possibly wrapped) GraphQL type, if it is owned."""
         named, _ = unwrap_type(graphql_type)
         return self.owned_types.get(getattr(named, "name", None))
+
+    def value_key(self, named_type, value: Any, info: Any = None) -> str | None:
+        """Ownership key of a resolved value. An interface or union says nothing about
+        ownership by itself, so the concrete type is used; when that cannot be found
+        and the abstract type can hold an owned object, the value is guarded anyway."""
+        if not isinstance(named_type, (GraphQLInterfaceType, GraphQLUnionType)):
+            return self.owned_types.get(getattr(named_type, "name", None))
+        name = _concrete_type_name(named_type, value, info)
+        if name is not None:
+            return self.owned_types.get(name)
+        return next(iter(self.abstract_keys(named_type, info)), None)
+
+    def abstract_keys(self, named_type, info: Any = None) -> list[str]:
+        """Ownership keys an interface or union field could return."""
+        schema = getattr(info, "schema", None) or self.graphql_schema()
+        return [self.owned_types[t.name] for t in schema.get_possible_types(named_type)
+                if t.name in self.owned_types]
+
+    def aggregate_relationship(self, info: Any) -> str | None:
+        parent = getattr(getattr(info, "parent_type", None), "name", None)
+        if parent is None or not self.aggregate_fields:
+            return None
+        return self.aggregate_fields.get(f"{parent}.{getattr(info, 'field_name', None)}")
 
     def field_definition(self, parent_type, field_name: str):
         if isinstance(parent_type, GraphQLObjectType):
@@ -86,6 +132,59 @@ class ShieldConfig:
             return None, value
 
 
+def _concrete_type_name(abstract_type, value: Any, info: Any) -> str | None:
+    if isinstance(value, dict) and value.get("__typename"):
+        return value["__typename"]
+    resolver = getattr(abstract_type, "resolve_type", None)
+    if resolver is not None and info is not None:
+        try:
+            resolved = resolver(value, info, abstract_type)
+        except Exception:
+            resolved = None
+        if isinstance(resolved, str):
+            return resolved
+    schema = getattr(info, "schema", None)
+    if schema is None:
+        return None
+    for candidate in schema.get_possible_types(abstract_type):
+        if candidate.is_type_of is not None and candidate.is_type_of(value, info) is True:
+            return candidate.name
+    return None
+
+
+# Field names that suggest a type is owned, or a value summarises other objects.
+_OWNER_FIELD = re.compile(r"^(owner|author|creator|user|patient|doctor|customer|account|tenant|createdBy)(_?id)?$", re.I)
+_AGGREGATE_FIELD = re.compile(r"(count|total|sum|size|number)$|^(count|total|num|has)", re.I)
+
+
+def lint_config(config: ShieldConfig) -> list[dict]:
+    """Findings for parts of the schema the configuration may have left unprotected.
+
+    These are heuristics over field names, so a finding is a prompt to look, and a
+    clean result does not prove the configuration is complete.
+    """
+    schema = config.graphql_schema()
+    roots = {t.name for t in (schema.query_type, schema.mutation_type, schema.subscription_type) if t}
+    owned_names = set(config.owned_types)
+    findings = []
+    for name, graphql_type in schema.type_map.items():
+        if name.startswith("__") or name in roots or not isinstance(graphql_type, GraphQLObjectType):
+            continue
+        for field_name, field_def in graphql_type.fields.items():
+            named, _ = unwrap_type(field_def.type)
+            if name not in owned_names and (_OWNER_FIELD.match(field_name) or getattr(named, "name", None) in owned_names):
+                findings.append({"kind": "possible_unowned_type", "type": name, "field": field_name})
+            if (name in owned_names and is_leaf_type(named) and _AGGREGATE_FIELD.search(field_name)
+                    and f"{name}.{field_name}" not in config.aggregate_fields):
+                findings.append({"kind": "undeclared_aggregate", "type": name, "field": field_name})
+    return findings
+
+
+def warn_about_config(config: ShieldConfig) -> None:
+    for finding in lint_config(config):
+        logger.warning("ShieldConfig: %s at %s.%s", finding["kind"], finding["type"], finding["field"])
+
+
 _default: ShieldConfig | None = None
 
 
@@ -94,7 +193,7 @@ def default_config() -> ShieldConfig:
     global _default
     if _default is None:
         from app.graphql.mutations import MUTATION_TARGETS
-        from app.security.ownership import get_object_owner
+        from app.security.ownership import get_object_owner, get_object_owners
 
         def schema():
             from app.graphql.schema import schema as strawberry_schema
@@ -105,6 +204,8 @@ def default_config() -> ShieldConfig:
             schema=schema,
             owned_types={"ResourceType": "Resource", "UserType": "User"},
             owner_lookup=get_object_owner,
+            owners_lookup=get_object_owners,
             mutation_targets=MUTATION_TARGETS,
+            aggregate_fields={"ResourceType.childrenCount": "children"},
         )
     return _default

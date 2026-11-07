@@ -1,7 +1,7 @@
 {
- "built_at": "2026-10-24T15:21:30+00:00",
+ "built_at": "2026-11-07T10:19:21+00:00",
  "ablation": {
-  "generated_at": "2026-10-22T18:09:46.006202+00:00",
+  "generated_at": "2026-11-07T09:57:35.610553+00:00",
   "scenarios": [
    "direct",
    "nested",
@@ -66,7 +66,7 @@
   ]
  },
  "tool_comparison": {
-  "generated_at": "2026-10-23T14:01:23.745675+00:00",
+  "generated_at": "2026-11-07T09:58:11.703630+00:00",
   "configuration_size": {
    "GraphQL Shield": {
     "owned_types": 2,
@@ -340,81 +340,81 @@
   }
  },
  "latency": {
-  "generated_at": "2026-10-23T15:13:36.682404+00:00",
+  "generated_at": "2026-11-07T10:06:19.757200+00:00",
   "method": "in-process TestClient; 30 warm-up, 5 repeats x 200 requests; 95% CI of the mean across repeats (t, df=4)",
   "rows": [
    {
     "request": "own_lookup",
     "both_layers_pooled": {
-     "mean_ms": 19.641,
+     "mean_ms": 19.65,
      "ci95_ms": [
-      18.321,
-      20.96
+      19.219,
+      20.08
      ],
-     "p50_ms": 18.148,
-     "p95_ms": 25.358,
-     "p99_ms": 53.358,
+     "p50_ms": 18.67,
+     "p95_ms": 24.144,
+     "p99_ms": 40.039,
      "requests": 1000,
-     "overhead_ms": 8.616,
-     "overhead_pct": 78.1
+     "overhead_ms": 4.873,
+     "overhead_pct": 33.0
     },
-    "both_layers_no_pool_mean_ms": 59.229,
-    "insecure_pooled_mean_ms": 11.025
+    "both_layers_no_pool_mean_ms": 60.236,
+    "insecure_pooled_mean_ms": 14.777
    },
    {
     "request": "own_relationship",
     "both_layers_pooled": {
-     "mean_ms": 38.414,
+     "mean_ms": 21.593,
      "ci95_ms": [
-      35.647,
-      41.18
+      21.31,
+      21.877
      ],
-     "p50_ms": 33.701,
-     "p95_ms": 68.634,
-     "p99_ms": 119.507,
+     "p50_ms": 20.683,
+     "p95_ms": 25.011,
+     "p99_ms": 37.003,
      "requests": 1000,
-     "overhead_ms": 17.185,
-     "overhead_pct": 81.0
+     "overhead_ms": 7.433,
+     "overhead_pct": 52.5
     },
-    "both_layers_no_pool_mean_ms": 183.448,
-    "insecure_pooled_mean_ms": 21.229
+    "both_layers_no_pool_mean_ms": 132.432,
+    "insecure_pooled_mean_ms": 14.16
    },
    {
     "request": "own_update",
     "both_layers_pooled": {
-     "mean_ms": 29.358,
+     "mean_ms": 18.847,
      "ci95_ms": [
-      26.747,
-      31.969
+      17.897,
+      19.798
      ],
-     "p50_ms": 26.405,
-     "p95_ms": 41.426,
-     "p99_ms": 89.72,
+     "p50_ms": 18.065,
+     "p95_ms": 22.624,
+     "p99_ms": 32.579,
      "requests": 1000,
-     "overhead_ms": 11.048,
-     "overhead_pct": 60.3
+     "overhead_ms": 3.902,
+     "overhead_pct": 26.1
     },
-    "both_layers_no_pool_mean_ms": 84.293,
-    "insecure_pooled_mean_ms": 18.31
+    "both_layers_no_pool_mean_ms": 71.747,
+    "insecure_pooled_mean_ms": 14.945
    }
   ]
  },
  "blind_spot_seeds": {
-  "generated_at": "2026-10-23T15:20:59.237243+00:00",
+  "generated_at": "2026-11-07T09:57:27.933702+00:00",
   "seeds": 5,
   "requests_per_seed": 2000,
   "summary": {
    "random_test.xgboost.f1_score": {
-    "mean": 0.998,
-    "std": 0.0044
+    "mean": 0.992,
+    "std": 0.0061
    },
    "random_test.xgboost.attack_recall": {
     "mean": 1.0,
     "std": 0.0
    },
    "random_test.rule_baseline.f1_score": {
-    "mean": 0.998,
-    "std": 0.0044
+    "mean": 0.992,
+    "std": 0.0061
    },
    "random_test.rule_baseline.attack_recall": {
     "mean": 1.0,

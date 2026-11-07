@@ -20,7 +20,8 @@ from app.core.passwords import verify_password
 from app.security.taint_request_explainer import router as taint_explainer_router
 from app.security.enforcement import bola_enforcement_middleware
 from app.security.layers import layer_summary, set_layers
-from app.clinic.api import router as clinic_router
+from app.security.shield_config import default_config, warn_about_config
+from app.clinic.api import CLINIC_CONFIG, router as clinic_router
 from app.clinic.data import init_clinic
 from app.dashboard_api import router as dashboard_router
 
@@ -33,6 +34,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     check_production_settings()
     init_db()
     init_clinic()
+    warn_about_config(default_config())
+    warn_about_config(CLINIC_CONFIG)
     yield
 
 

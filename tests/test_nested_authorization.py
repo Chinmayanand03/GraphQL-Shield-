@@ -44,11 +44,11 @@ def test_nested_authorization_violation_deny():
         headers={"Authorization": f"Bearer {token}"}
     )
     
-    # Expected: DENY, HTTP 403, NESTED_AUTHORIZATION_VIOLATION
+    # Expected: DENY, HTTP 403; the exact reason stays in the audit log
     assert response.status_code == 403
     data = response.json()
     assert data["detail"]["decision"] == "DENY"
-    assert data["detail"]["reason"] == "NESTED_AUTHORIZATION_VIOLATION"
+    assert data["detail"]["reason"] == "ACCESS_DENIED"
     assert data["detail"]["user_id"] == 101
     assert data["detail"]["object_id"] == 102
 

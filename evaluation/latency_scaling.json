@@ -1,0 +1,99 @@
+{
+  "generated_at": "2026-11-07T10:02:36.231837+00:00",
+  "method": "in-process TestClient; 10 warm-up, 5 repeats x 40 requests; 95% CI across repeats",
+  "foreign_share": 0.1,
+  "results": {
+    "1": {
+      "unprotected": {
+        "mean_ms": 14.485,
+        "ci95_ms": [
+          12.946,
+          16.024
+        ]
+      },
+      "batched": {
+        "mean_ms": 20.16,
+        "ci95_ms": [
+          18.701,
+          21.619
+        ]
+      },
+      "one_by_one": {
+        "mean_ms": 20.489,
+        "ci95_ms": [
+          19.22,
+          21.759
+        ]
+      }
+    },
+    "10": {
+      "unprotected": {
+        "mean_ms": 15.42,
+        "ci95_ms": [
+          14.504,
+          16.336
+        ]
+      },
+      "batched": {
+        "mean_ms": 22.995,
+        "ci95_ms": [
+          20.18,
+          25.81
+        ]
+      },
+      "one_by_one": {
+        "mean_ms": 24.687,
+        "ci95_ms": [
+          23.819,
+          25.554
+        ]
+      }
+    },
+    "50": {
+      "unprotected": {
+        "mean_ms": 16.595,
+        "ci95_ms": [
+          15.694,
+          17.495
+        ]
+      },
+      "batched": {
+        "mean_ms": 32.592,
+        "ci95_ms": [
+          31.572,
+          33.611
+        ]
+      },
+      "one_by_one": {
+        "mean_ms": 47.86,
+        "ci95_ms": [
+          44.72,
+          51.0
+        ]
+      }
+    },
+    "200": {
+      "unprotected": {
+        "mean_ms": 28.022,
+        "ci95_ms": [
+          24.011,
+          32.032
+        ]
+      },
+      "batched": {
+        "mean_ms": 73.545,
+        "ci95_ms": [
+          71.447,
+          75.643
+        ]
+      },
+      "one_by_one": {
+        "mean_ms": 127.503,
+        "ci95_ms": [
+          122.844,
+          132.162
+        ]
+      }
+    }
+  }
+}

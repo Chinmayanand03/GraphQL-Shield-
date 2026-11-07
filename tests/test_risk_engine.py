@@ -54,3 +54,16 @@ def test_risk_nested_suspicious(mock_db):
     assert res2["decision"] == "DENY"
     assert res2["risk_level"] == "HIGH"
     assert res2["risk_score"] == 100
+
+
+def test_recent_denial_check_uses_the_audit_index():
+    # Without the index this check scanned the whole audit log once per checked
+    # object, so protected latency grew with the size of the log.
+    from app.database import get_db_connection
+
+    conn = get_db_connection()
+    plan = " ".join(str(tuple(row)) for row in conn.execute(
+        "EXPLAIN QUERY PLAN SELECT EXISTS (SELECT 1 FROM audit_logs WHERE user_id = ? AND decision = 'DENY' "
+        "AND timestamp >= datetime('now', '-10 minutes'))", (101,)))
+    conn.close()
+    assert "idx_audit_user_decision_time" in plan

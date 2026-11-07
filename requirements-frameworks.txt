@@ -1,0 +1,11 @@
+# Environment for the Graphene tests in tests/test_frameworks.py. Graphene needs
+# graphql-core below 3.3 and requirements.txt pins 3.3, so this is a separate install.
+fastapi==0.143.0
+uvicorn==0.54.0
+strawberry-graphql==0.325.0
+graphql-core==3.2.13
+graphene==3.4.3
+PyJWT==2.15.1
+pytest==9.1.1
+httpx==0.27.2
+pydantic-settings==2.15.0

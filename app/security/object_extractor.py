@@ -1,4 +1,4 @@
-from graphql import FieldNode, VariableNode, ListValueNode, OperationDefinitionNode, FragmentSpreadNode, FragmentDefinitionNode, InlineFragmentNode, value_from_ast_untyped
+from graphql import FieldNode, GraphQLInterfaceType, GraphQLUnionType, VariableNode, ListValueNode, OperationDefinitionNode, FragmentSpreadNode, FragmentDefinitionNode, InlineFragmentNode, value_from_ast_untyped
 from .graphql_parser import parse_query
 from .shield_config import ShieldConfig, default_config, unwrap_type
 
@@ -107,6 +107,9 @@ def normalize_query(query: str, variables: dict = None, config: ShieldConfig | N
                         key = config.owned_key(field_def.type)
                         targets = [(argument, key) for argument in config.id_arguments if key and argument in field_def.args]
                     child_type, _ = unwrap_type(field_def.type)
+                    # node(id:) on an interface: only the ID itself can name the type.
+                    if isinstance(child_type, (GraphQLInterfaceType, GraphQLUnionType)) and not targets:
+                        targets = [(argument, None) for argument in config.id_arguments if argument in field_def.args]
 
                 for argument, key in targets:
                     for value in argument_values(node, argument):

@@ -1,6 +1,11 @@
 from dataclasses import dataclass
 from typing import Optional, Dict, Any
 
+# Every denial looks the same to the caller: the exact reason would tell a foreign
+# object from a missing one and let any user enumerate IDs. It stays in the audit log.
+PUBLIC_DENIAL_REASON = "ACCESS_DENIED"
+
+
 @dataclass
 class AuthorizationContext:
     """

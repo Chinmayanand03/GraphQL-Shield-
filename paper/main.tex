@@ -22,7 +22,7 @@
 
 \begin{document}
 
-\title{GraphQL-Shield: Schema-Aware Dual-Layer Enforcement Against GraphQL BOLA with Self-Supervised Blind-Spot Detection}
+\title{GraphQL-Shield: Dual-Layer Enforcement Against GraphQL BOLA with Cross-Layer Coverage Evidence}
 
 \author{
 \IEEEauthorblockN{[Author 1]}
@@ -38,34 +38,32 @@
 \maketitle
 
 \begin{abstract}
-Broken Object Level Authorization (BOLA) is the top risk in the OWASP API Security Top~10, and GraphQL makes it harder to stop: a single request can reach an object by its identifier, through nested lookups, inside fragments, variables and batches, or through relationship fields that never name the object at all. We present GraphQL-Shield, a gateway that enforces object ownership at two independent points: a schema-aware pre-execution layer that checks every object identifier it can resolve before any resolver runs, and an execution-time layer that checks every object the resolvers return and every mutation target the engine coerces. The second layer also measures the first: each object it evaluates that the first layer never saw is recorded, and these cross-layer disagreements become training labels, with no manual labelling, for a model that predicts the first layer's blind spots from query structure alone. On 4,000 generated requests the model exposed a previously unknown bypass of the first layer (variable default values) that a hand-written rule missed entirely; fixing it cut attacks stoppable only by the second layer by 66\%. Both layers are configured from the schema and a small ownership map and protect a second, unrelated application without code changes. Compared with graphql-shield on the same schema and scenarios, GraphQL-Shield leaks no object, blocks no legitimate request where graphql-shield loses an owner's own data to GraphQL null propagation, and needs 3 configuration entries instead of 12. After connection pooling, in-process overhead is 60--81\% over an unprotected endpoint.
+Broken Object Level Authorization (BOLA) is the top risk in the OWASP API Security Top~10, and GraphQL makes it harder to stop: one request can reach an object by identifier, through nested lookups, fragments, variables and batches, or through relationship fields that never name the object. We present GraphQL-Shield, which enforces object ownership at two independent points: a schema-aware layer that checks every identifier it can resolve before execution, and an execution-time layer that checks every object resolvers return and every mutation target the engine coerces. The second layer records each object the first never evaluated, so the gateway measures its own pre-execution coverage. We test this evidence by fault injection: 17 realistic bugs planted in the first layer, each run on 5 seeds of 1,000 composed requests. The evidence revealed all 17 and raised no alarm on the unmodified layer. A one-line rule over the evidence predicted the affected requests with mean F1 0.966; logistic regression and XGBoost both named the broken construct first for all 14 faults our features can express, and XGBoost was no better than the simple models. We state four security properties and check them with property-based testing, close three leak channels the tests exposed (an existence oracle, objects behind interfaces and unions, and aggregate fields), and run the same layers on Strawberry, plain graphql-core, Graphene and Ariadne. On the same schema and 13 attacks, graphql-shield also leaks nothing but loses an owner's own data to GraphQL null propagation; GraphQL-Shield loses none, but a type left out of its configuration leaks up to 9 of 13 attacks.
 \end{abstract}
 
 \begin{IEEEkeywords}
-GraphQL, API security, broken object level authorization, access control, defense in depth, machine learning, self-supervised learning
+GraphQL, API security, broken object level authorization, access control, defense in depth, fault injection, property-based testing
 \end{IEEEkeywords}
 
 % ===================================================================
 \section{Introduction}
 
-An API has a BOLA flaw when it returns or changes an object without checking that the caller may access it. OWASP ranks it first among API risks (API1:2023)~\cite{owasp2023}, and it is hard to detect because a BOLA request is ordinary authenticated traffic: the only difference is whose object it names.
+An API has a BOLA flaw when it returns or changes an object without checking that the caller may access it. OWASP ranks it first among API risks (API1:2023)~\cite{owasp2023}. It is hard to detect because a BOLA request is ordinary authenticated traffic: the only difference is whose object it names.
 
-GraphQL widens this attack surface. A REST endpoint usually takes one object identifier in its path; a GraphQL request can name many objects at any depth and can reach objects without naming them. A caller who owns a folder can list its \code{children}, including a document owned by someone else, and no identifier for that document ever appears in the query. The same identifier can also arrive as a literal, a variable, a variable's default value, inside a named or inline fragment, under an alias, or in one operation of a batch.
+GraphQL widens this attack surface. A REST endpoint usually takes one identifier in its path; a GraphQL request can name many objects at any depth and can reach objects without naming them. A caller who owns a folder can list its \code{children}, including a document owned by someone else, and no identifier for that document appears in the query. The same identifier can also arrive as a literal, a variable, a variable's default value, inside a named or inline fragment, under an alias, or in one operation of a batch.
 
-Two families of defence exist, and each misses something. Checks that analyse the query before execution see only the identifiers written in it, so relationship traversal is invisible to them. Checks written into each resolver see every object but must be written and maintained field by field. We show both effects experimentally: a pre-execution layer alone leaks relationship traversal (Section~\ref{sec:ablation}), and per-field rules either execute an unprotected write or block legitimate requests when one rule is missing (Section~\ref{sec:comparison}).
-
-GraphQL-Shield combines both and uses each to audit the other. Our contributions are:
+Two families of defence exist, and each misses something. Checks that analyse the query before execution see only the identifiers written in it, so relationship traversal is invisible to them. Checks written into each resolver see every object but must be written and maintained field by field. GraphQL-Shield combines both and uses the second to audit the first. Our contributions are:
 \begin{enumerate}
-\item \textbf{Dual-layer enforcement with cross-layer evidence.} A schema-aware pre-execution layer and an execution-time layer enforce ownership independently; the second records every object the first never evaluated, so the gateway measures its own pre-execution coverage.
-\item \textbf{Self-supervised blind-spot prediction.} These records label requests automatically. A gradient-boosted model trained on them predicts the first layer's blind spots before execution and explains them per feature. Its discovery run found a previously unknown bypass; the fix cut attacks reaching only the second layer by 66\%.
-\item \textbf{Schema-driven, portable configuration.} Both layers read owned types, relationship fields and mutation targets from the schema and a small ownership map, run as graphql-core middleware, and handle Relay global identifiers, including type-confused ones. The same layers protect a second, unrelated application.
-\item \textbf{Evaluation.} Layer ablation, a comparison with graphql-shield on the same schema and scenarios including configuration mistakes, latency with confidence intervals, and multi-seed evaluation of the predictor.
+\item \textbf{Dual-layer enforcement with cross-layer evidence.} A pre-execution layer and an execution-time layer enforce ownership independently, configured from the schema and a small ownership map. The second records every object the first never evaluated, which turns defence in depth into a coverage measurement.
+\item \textbf{A fault-injection evaluation of that evidence.} We plant 17 bugs in the pre-execution layer and measure detection, prediction and localisation. The evidence detects every fault; simple models over it are as good as gradient boosting.
+\item \textbf{Stated properties and closed leak channels.} We define safety, non-interference, write safety and availability, check them on generated data and requests, show they fail with protection off, and fix three channels that returned or revealed foreign data in an earlier version.
+\item \textbf{Portability and comparison.} The same layers run on four Python GraphQL frameworks and a second, unrelated application. We compare with graphql-shield on the same schema, including configuration mistakes, and report latency with confidence intervals.
 \end{enumerate}
 
 % ===================================================================
 \section{Background}
 
-\textbf{GraphQL execution.} A GraphQL server parses a request, validates it against a typed schema, and calls a resolver for each selected field, top down. Arguments are coerced first: variables are substituted, missing variables take their declared defaults, and fragments, aliases and \code{@include}/\code{@skip} directives are expanded. A defence that reads the raw query text sees the request before this coercion; a defence inside the engine sees the values resolvers actually receive and return.
+\textbf{GraphQL execution.} A server parses a request, validates it against a typed schema, and calls a resolver for each selected field, top down~\cite{hartig2018}. Arguments are coerced first: variables are substituted, missing variables take their declared defaults, and fragments, aliases and \code{@include}/\code{@skip} directives are expanded. A defence that reads the query text sees the request before coercion; a defence inside the engine sees the values resolvers receive and return.
 
 \textbf{Forms of BOLA in GraphQL.} Table~\ref{tab:forms} lists the five forms used throughout the paper.
 
@@ -87,29 +85,38 @@ Write & \texttt{\scriptsize updateResource(id:102,\ldots)} & Yes, as an argument
 \end{tabular}
 \end{table}
 
-\textbf{Global identifiers and type confusion.} Many GraphQL APIs use Relay-style opaque global identifiers, typically base64 of \code{Type:id}. A resolver that decodes such an identifier without checking its type can be handed an identifier of one type where another is expected; Saleor's CVE-2022-39275, in which some mutations did not validate object identifier types, is an instance~\cite{cve202239275}.
+\textbf{Global identifiers and type confusion.} Many GraphQL APIs use Relay-style opaque identifiers, typically base64 of \code{Type:id}. A resolver that decodes one without checking its type can be handed an identifier of one type where another is expected; Saleor's CVE-2022-39275 is an instance~\cite{cve202239275}.
 
-\textbf{Null propagation.} When a field of non-null type raises an error, GraphQL nulls its nearest nullable ancestor~\cite{graphqlspec}. In a list typed \code{[T!]!}, denying one item cannot null that item alone; the error propagates to the parent object. Denying one foreign child can therefore hide the caller's own objects (Section~\ref{sec:comparison}).
+\textbf{Abstract types.} A field typed as an interface or union (\code{node(id:)}, a search result) returns objects of several concrete types. A check that reads only the declared return type sees no owned type there.
+
+\textbf{Null propagation.} When a non-null field raises an error, GraphQL nulls its nearest nullable ancestor~\cite{graphqlspec}. In a list typed \code{[T!]!}, denying one item cannot null that item alone, so the error nulls the parent object, and the caller's own objects disappear with it.
 
 % ===================================================================
 \section{Related Work}
 
-We found no prior work that enforces BOLA in GraphQL at two layers or learns a gateway's blind spots from disagreement between its own layers.
+We found no prior work that enforces BOLA in GraphQL at two layers and uses one layer to measure the other's coverage.
 
-\textbf{BOLA detection by testing.} GraphQLer builds a dependency graph from schema introspection, chains queries and mutations, and replays requests as other users to find broken access control~\cite{graphqler}. AuthProbe drives REST APIs from an OpenAPI specification with multiple identities~\cite{authprobe}, and a Colored Petri Net approach derives data-flow models from OpenAPI specifications~\cite{petrinet}. These are test-time tools, two of them for REST; GraphQL-Shield is a runtime defence that such testers can evaluate.
+\textbf{BOLA detection by testing.} GraphQLer builds a dependency graph from introspection, chains queries and mutations, and replays requests as other users~\cite{graphqler}. AuthProbe tests REST APIs from an OpenAPI specification with multiple identities~\cite{authprobe}, and a Colored Petri Net approach derives attack models from OpenAPI specifications~\cite{petrinet}. These are test-time tools, two of them for REST. GraphQL-Shield is a runtime defence such tools can evaluate.
 
-\textbf{BOLA enforcement.} BolaZ combines CodeQL taint tracking with runtime authorization checks for Spring Boot services~\cite{bolaz}. It shares our view that static analysis needs a runtime backstop, but targets Java REST services and does not use one layer to measure the other.
+\textbf{BOLA enforcement and analysis.} BolaZ combines CodeQL taint tracking with runtime authorization checks in Spring Boot services~\cite{bolaz}; it shares our view that static analysis needs a runtime backstop but targets Java REST services and does not use one layer to measure the other. Lambers et al.\ define taint analysis for graph APIs aimed at broken access control~\cite{lambers2026}, a static complement to our runtime checks.
 
-\textbf{GraphQL authorization libraries.} graphql-shield attaches permission rules to types and fields as resolver middleware~\cite{graphqlshieldlib}; it is the per-field approach we compare against.
+\textbf{GraphQL authorization and query analysis.} graphql-shield attaches permission rules to types and fields as resolver middleware~\cite{graphqlshieldlib}; it is the per-field approach we compare against. Formal semantics~\cite{hartig2018}, static cost analysis~\cite{cha2020} and empirical schema studies~\cite{wittern2019} underpin depth and cost limits, which bound how expensive a query is, not whose objects it reaches.
 
-\textbf{Query analysis.} Formal semantics of GraphQL~\cite{hartig2018} and static cost analysis~\cite{cha2020} underpin depth and cost limits, which we also apply. They bound how expensive a query is, not whose objects it reaches.
-
-\textbf{Empirical studies.} A taxonomy of over 100 bug-bounty BOLA disclosures includes GraphQL global-identifier leakage as one mechanism~\cite{bolataxonomy}.
+\textbf{Foundations.} Layer~2 is a reference monitor~\cite{anderson1972} that mediates every returned object, following complete mediation and fail-safe defaults~\cite{saltzer1975}. Our non-interference property follows Goguen and Meseguer~\cite{goguen1982}. Comparing two layers' decisions is a form of differential testing~\cite{mckeeman1998}, planting bugs to judge a detector follows mutation testing~\cite{jia2011}, and we check properties as in QuickCheck~\cite{quickcheck} using Hypothesis~\cite{hypothesis}. Turning automatically produced records into training labels resembles weak supervision~\cite{snorkel}. A taxonomy of over 100 bug-bounty BOLA disclosures includes GraphQL global-identifier leakage~\cite{bolataxonomy}.
 
 % ===================================================================
-\section{Threat Model}
+\section{Threat Model and Properties}
 
-The attacker is an authenticated user who wants to read or change objects owned by someone else. The attacker holds a valid token for their own account, can send any syntactically valid GraphQL request, knows or can guess other users' object identifiers, and can read the schema. We assume authentication is sound and the owner lookup is trusted: ownership comes from the application's data store, never from client input or from the object a resolver returns. Resolvers may contain no authorization checks at all. An owned object is accessible to its owner and to administrators, and objects reached through relationships are checked individually: owning a parent grants nothing about its children. Out of scope are authentication flaws, function-level authorization, injection, denial of service beyond the depth, alias, token and batch limits we apply, side channels, and policies richer than owner-or-administrator.
+The attacker is an authenticated user who wants to read or change objects owned by someone else. They hold a valid token for their own account, can send any syntactically valid request, know or can guess other users' identifiers, and can read the schema. Authentication is sound and the owner lookup is trusted: ownership comes from the data store, never from client input or from the object a resolver returns. Resolvers may contain no authorization checks. An owned object is accessible to its owner and to administrators, and objects reached through relationships are checked individually: owning a parent grants nothing about its children. Out of scope are authentication flaws, function-level authorization, injection, denial of service beyond the depth, alias, token and batch limits we apply, timing side channels, and policies richer than owner-or-administrator.
+
+For a non-administrator caller $u$ and any request $q$ we require:
+\begin{description}
+\item[P1 Safety.] The response to $q$ contains no object $u$ does not own.
+\item[P2 Non-interference.] Changing only objects $u$ does not own (their content, existence, or children placed under $u$'s folders) does not change the response to $q$.
+\item[P3 Write safety.] $q$ changes no object $u$ does not own.
+\item[P4 Availability.] If $q$ names only objects $u$ owns, they are returned.
+\end{description}
+P2 is stronger than P1: it rules out answers that reveal foreign data indirectly, such as an error that differs for a foreign object and a missing one, or a count that includes foreign children.
 
 % ===================================================================
 \section{Design}
@@ -141,39 +148,43 @@ Fig.~\ref{fig:arch} shows the architecture: two independent checks around the Gr
 \node[font=\tiny, text=red!70!black, align=center] at (0.45,-1.1) {foreign ID:\\HTTP 403};
 \draw[-{Stealth[length=1.4mm]}, red!70!black] (l1.south west) ++(0.15,0) -- (0.75,-0.75);
 \end{tikzpicture}
-\caption{GraphQL-Shield. Layer 1 rejects requests naming foreign objects (HTTP 403); Layer 2 filters returned objects and blocks foreign writes, and records every object Layer 1 never evaluated, which trains the advisory predictor.}
+\caption{GraphQL-Shield. Layer 1 rejects requests naming foreign objects (HTTP 403); Layer 2 filters returned objects, blocks foreign writes, and records every object Layer 1 never evaluated.}
 \label{fig:arch}
 \end{figure}
 
 \subsection{Per-application configuration}
-A \code{ShieldConfig} describes the protected application: its schema; which object types are owned, each mapped to an ownership key; an owner-lookup function from (key, identifier) to owner; the argument names that carry identifiers and a decoder for them (for example, Relay global identifiers); and targets for mutations whose return type does not reveal what they change. Everything else is derived from the schema. For our demo application this is two owned types and one mutation entry the schema cannot supply (\code{deleteResource} returns \code{Boolean}).
+A \code{ShieldConfig} describes the protected application: its schema; which object types are owned, each mapped to an ownership key; an owner-lookup function from (key, identifier) to owner, optionally with a batched form; the arguments that carry identifiers and a decoder for them (for example, Relay global identifiers); targets for mutations whose return type does not reveal what they change; and aggregate fields, such as a child count, that summarise owned objects. Everything else is derived from the schema. The demo application needs two owned types, one mutation entry (\code{deleteResource} returns \code{Boolean}), one aggregate entry and its owner lookup.
+
+At startup a lint pass compares the configuration with the schema. It reports object types not configured as owned that have an owner-like field (\code{ownerId}, \code{author}, \code{createdBy}, \ldots) or a field of an owned type, and scalar fields on owned types named like counts or totals (\code{childrenCount}, \code{hasChildren}) that are not declared as aggregates. Removing any one of the five owned types across our two applications produces a finding for that type, and the complete configurations produce none. The lint is a heuristic: a type whose owner is held under an unusual name is not reported.
 
 \subsection{Layer 1: schema-aware pre-execution gate}
-Layer 1 parses the request before the engine runs and walks it against the schema. For every field with an identifier argument it takes the object type from the schema---the owned type the field returns or, for a root mutation, its configured target---rather than from the field's name. It resolves values as the engine will: literals, variables, declared defaults, lists, named and inline fragments, aliases, and each operation of a batch. A global identifier whose embedded type differs from the type the field expects is checked as both types, which defeats type confusion. One denial rejects the whole request with HTTP 403, so a write never starts.
+Layer 1 parses the request before the engine runs and walks it against the schema. For every field with an identifier argument it takes the object type from the schema---the owned type the field returns, the type embedded in a global identifier when the field returns an interface or union, or a root mutation's configured target---rather than from the field's name. It resolves values as the engine will: literals, variables, declared defaults, lists, named and inline fragments, aliases, and each operation of a batch. A global identifier whose embedded type differs from the expected type is checked as both. One denial rejects the whole request with HTTP 403, so a write never starts.
 
 \subsection{Layer 2: execution-time guard}
-Layer 2 runs inside the engine as graphql-core middleware. Before a root mutation's resolver runs, it checks the target argument the engine actually coerced; a denial raises an error and the resolver never executes. After each resolver returns, it decides whether the value is an owned object from the field's GraphQL return type, not from the value's class, so it works with typed objects, dictionaries or ORM rows. A denied single object becomes \code{null}; a denied list item is removed before GraphQL enforces non-null types, so the caller keeps their own items. A mutation with no derivable or configured target is denied unless explicitly listed as unguarded.
+Layer 2 runs inside the engine as graphql-core middleware or a Strawberry extension. Before a root mutation's resolver runs, it checks the target argument the engine coerced; a denial raises an error and the resolver never executes. After each resolver returns, it decides whether the value is an owned object from the field's GraphQL type, not the value's class, so it works with typed objects, dictionaries or ORM rows. For an interface or union it resolves the concrete type the way the engine does (\code{\_\_typename}, \code{resolve\_type} or \code{is\_type\_of}). A denied single object becomes \code{null}; a denied list item is removed before non-null types are enforced, so the caller keeps their own items. A list is checked with one batched owner lookup and its decisions are written in one audit transaction. A declared aggregate field is answered by Layer 2 itself as the number of related objects the caller may see. A mutation with no derivable or configured target is denied unless explicitly listed as unguarded.
 
-\subsection{Cross-layer evidence}
-Layer 1 marks every (type, identifier) it evaluated. Layer 2 writes an audit record only for objects Layer 1 never marked, so each such record is direct evidence of a Layer 1 coverage gap, and no decision is counted twice. When Layer 2 also denies such an object it records a blind-spot event: an attack only Layer 2 stopped.
+\subsection{Uniform denials}
+Every denial a non-administrator sees carries the same reason, \code{ACCESS\_DENIED}, whether the object belongs to someone else or does not exist; the exact reason and risk score are kept only in the audit log. An earlier version returned \code{OWNERSHIP\_MISMATCH} or \code{OBJECT\_NOT\_FOUND}, and its request explainer returned the owner's identifier, which together let any user enumerate which objects exist and who owns them.
 
-\subsection{Self-supervised blind-spot predictor}
-The coverage-gap records label requests without human effort. For each request Layer 1 allows, the predictor computes 17 structural features available before execution: depth, field count, relationship fields and chain depth, identifier arguments and how many Layer 1 resolved, nested lookups, variables and defaults, fragments, aliases, directives, batch size, mutation flag and caller role. It never sees ownership data or enforcement outcomes. An XGBoost classifier~\cite{xgboost} (120 trees, depth 4) predicts whether a request will reach objects Layer 1 cannot see, and SHAP contributions~\cite{shap} explain each prediction. At runtime the score is advisory: it is recorded and attached to later blind-spot events so predictions can be checked against live traffic, and it never changes a decision.
+\subsection{Cross-layer evidence and the advisory predictor}
+Layer 1 marks every (type, identifier) it evaluated. Layer 2 writes an audit record only for objects Layer 1 never marked, so each such record is direct evidence of a Layer 1 coverage gap, and no decision is counted twice. When Layer 2 also denies such an object it records a blind-spot event: an attack only Layer 2 stopped. The audit log is hash-chained, so a deleted or edited record is detectable.
+
+The evidence labels requests without manual effort. For each request Layer 1 allows we compute 17 structural features available before execution: depth, field count, relationship fields and chain depth, identifier arguments and how many Layer 1 resolved, nested lookups, variables and defaults, fragments, aliases, directives, batch size, mutation flag and caller role. The features never include ownership data or outcomes. An XGBoost classifier~\cite{xgboost} (120 trees, depth 4) predicts whether a request will reach objects Layer 1 cannot see, and SHAP contributions~\cite{shap} rank the features behind each prediction. At runtime the score is advisory: it is recorded with later blind-spot events and never changes a decision.
 
 % ===================================================================
 \section{Implementation}
 
-GraphQL-Shield is implemented in Python on FastAPI and graphql-core~3.3, with SQLite (write-ahead logging) for ownership data and audit records. Layer~1 is a dependency on the protected route; Layer~2 is a Strawberry schema extension or, for any graphql-core server, \code{OwnershipMiddleware(config)}. Every request is limited to depth 10, 15 aliases, 2,000 tokens and 5 batched operations. Profiling showed that opening and closing database connections took about 75\% of a protected request's time (19 connections per relationship query), so connections are pooled and rolled back on return. The test suite has 317 tests.
+GraphQL-Shield is written in Python on FastAPI and graphql-core~3.3, with SQLite (write-ahead logging) for ownership data and audit records. Layer~1 is a dependency on the protected route; Layer~2 is \code{OwnershipMiddleware(config)} for any graphql-core server or a Strawberry extension. Every request is limited to depth 10, 15 aliases, 2,000 tokens and 5 batched operations. Database connections are pooled. The test suite has 386 tests.
 
-We evaluate on two applications. The \emph{demo} application (Strawberry, code-first) has users, documents and folders with integer identifiers. The \emph{clinic} application shares no code with it: a schema-first SDL on plain graphql-core, dictionary resolvers, Relay global identifiers, and patients, records and prescriptions with independent owners, so a colleague's record can sit on another doctor's patient. In both, resolvers contain no authorization checks, and each exposes an unprotected endpoint used only as a baseline.
+We evaluate on two applications. The \emph{demo} application (Strawberry, code-first) has users, documents and folders with integer identifiers. The \emph{clinic} application shares no code with it: a schema-first SDL on plain graphql-core, dictionary resolvers, Relay global identifiers, and patients, records and prescriptions with independent owners. In both, resolvers contain no authorization checks, and each exposes an unprotected endpoint used only as a baseline. To test framework independence we also protect small Graphene (Relay \code{Node}, lists, mutations) and Ariadne (schema-first) applications with the same middleware and configuration type.
 
 % ===================================================================
 \section{Evaluation}
 
-We address four questions. \textbf{RQ1:} does each layer stop BOLA alone, and do both together? \textbf{RQ2:} can cross-layer labels expose real Layer~1 gaps? \textbf{RQ3:} how does the approach compare with per-field rules, including under configuration mistakes? \textbf{RQ4:} what does enforcement cost? All experiments run in-process on temporary seeded databases on a Windows laptop with Python~3.13. The ablation, the tool comparison and the security tests are deterministic, so we report counts; latency and the predictor are repeated.
+We address five questions. \textbf{RQ1:} does each layer stop BOLA alone, and do both together? \textbf{RQ2:} does the cross-layer evidence reveal faults in Layer~1, and what is needed to use it? \textbf{RQ3:} do the stated properties hold? \textbf{RQ4:} how does the approach compare with per-field rules, including under configuration mistakes? \textbf{RQ5:} what does enforcement cost? All experiments run in-process on temporary seeded databases on one Windows laptop with Python~3.13. Deterministic experiments report counts; randomised ones report the mean and spread over seeds.
 
 \subsection{RQ1: Layer ablation}\label{sec:ablation}
-Table~\ref{tab:ablation} runs six attacks by one user against another user's objects under each layer combination. Layer~1 alone leaks relationship traversal, because no identifier of the child appears in the query; Layer~2 alone stops every attack but catches writes only at execution time. On a larger benchmark of 5,000 requests, the protected endpoint blocked all 2,267 BOLA requests and none of the legitimate ones. The clinic application, protected through its configuration alone (three owned types, two mutation entries), passes all 14 of its security tests, including type-confused global identifiers, one- and two-level relationship filtering, create and update mutations on another doctor's patient, and Layer~2 acting alone.
+Table~\ref{tab:ablation} runs six attacks by one user against another user's objects under each layer combination. Layer~1 alone leaks relationship traversal, because no identifier of the child appears in the query; Layer~2 alone stops every attack but catches writes only at execution time. The clinic application, protected through its configuration alone (three owned types, two mutation entries), passes all 14 of its security tests, including type-confused global identifiers, one- and two-level relationship filtering, and Layer~2 acting alone. The Graphene and Ariadne applications pass their tests for foreign single objects, filtered lists, foreign mutations that never run, and Layer~1 reading their schemas.
 
 \begin{table}[t]
 \caption{Layer ablation: the layer that stopped each attack}
@@ -194,32 +205,51 @@ Update mutation & L1 & L1 & L2 & leaked \\
 \end{tabular}
 \end{table}
 
-\subsection{RQ2: Blind-spot discovery}
-We generated 4,000 varied requests from four callers---literals, variables, variable defaults, aliases, directives, named and inline fragments, relationships, batches and mutations---ran each through the gateway, and labelled them from Layer~2's evidence. We compare the model with the hand-written rule for Layer~1's documented blind spot, ``flag queries containing a relationship field'' (Table~\ref{tab:discovery}).
+\subsection{RQ2: Cross-layer evidence as a fault detector}\label{sec:faults}
+
+\textbf{One discovery.} We generated 4,000 varied requests from four callers and labelled them from Layer~2's evidence. Layer~1 ignored variables' declared default values, so \code{query(\$id: Int = 102)} sent without variables reached object 102 unchecked. All 585 such requests were coverage gaps and 263 were attacks stopped only by Layer~2. The hand-written rule for Layer~1's documented blind spot, ``flag requests with a relationship field'', reached F1 0.639 and caught 22.8\% of these attacks; the model reached F1 1.000. After the fix, attacks reaching only Layer~2 fell from 401 to 138, the remaining gaps were relationship traversal, and the rule matched the model (F1 0.996 for both). Over five further seeds of 2,000 requests the model and the rule tied at F1 $0.992\pm0.006$.
+
+\textbf{Fault injection.} One discovery is an anecdote, so we measured the evidence systematically. We wrote 17 faults a developer could plausibly introduce into Layer~1 (Table~\ref{tab:faults}), each patched into its source at load time, and ran each fault and an unmodified control on five seeds of 1,000 requests with Layer~2 on. Requests are composed from independent constructs---identifier source (literal, variable, default, list), wrapper (alias, directive, named or inline fragment, nested fragment), location (root, nested lookup, relationship), shape (single operation or batch) and operation (query or mutation)---so a test request is not a copy of a training one. We ask three things of each fault. \emph{Detection:} does the evidence contain gaps the known relationship blind spot does not explain? \emph{Prediction:} on a held-out 30\%, which requests will have gaps? \emph{Localisation:} does a method's top-ranked feature, among gaps the relationship rule does not explain, name the broken construct?
 
 \begin{table}[t]
-\caption{Blind-spot discovery on 4,000 requests (random test split)}
-\label{tab:discovery}
+\caption{Fault injection: 17 Layer~1 faults, 5 seeds of 1,000 requests each}
+\label{tab:faults}
 \centering
 \footnotesize
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}L{3.6cm}cc@{}}
 \toprule
- & \multicolumn{2}{c}{Before fix} & \multicolumn{2}{c}{After fix} \\
-\cmidrule(lr){2-3}\cmidrule(lr){4-5}
- & Model & Rule & Model & Rule \\
+ & Result & Over \\
 \midrule
-F1 (coverage gaps) & 1.000 & 0.639 & 1.000 & 1.000 \\
-Attack recall & 100\% & 23.4\% & 100\% & 100\% \\
+Faults detected by evidence alone & 17 / 17 & 5 / 5 seeds each \\
+False alarms on unmodified Layer~1 & 0 & 5 seeds \\
 \midrule
-Blocked by Layer 1 & \multicolumn{2}{c}{1,415} & \multicolumn{2}{c}{1,678} \\
-Attacks only Layer 2 stopped & \multicolumn{2}{c}{401} & \multicolumn{2}{c}{138} \\
+\multicolumn{3}{@{}l}{\emph{Prediction, mean F1 over faults}} \\
+Relationship rule & 0.661 & \\
+Evidence rule & 0.966 & \\
+Decision tree (structural) & 0.957 & \\
+Logistic regression (structural) & 0.968 & \\
+XGBoost (structural) & 0.967 & \\
+XGBoost (all features) & 0.978 & \\
+\midrule
+\multicolumn{3}{@{}l}{\emph{Localisation, top-1 (14 nameable faults)}} \\
+Lift statistic & 0.929 & \\
+Decision tree & 0.957 & top-3: 1.000 \\
+Logistic regression & 1.000 & \\
+XGBoost & 1.000 & \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The discovery run exposed a gap the rule did not encode: Layer~1 ignored variables' declared default values, so \code{query(\$id: Int = 102)} sent without variables reached object 102 unchecked. All 585 such requests (queries and mutations) were coverage gaps, and 263 were attacks stopped only by Layer~2. After we fixed Layer~1, attacks reaching only Layer~2 fell by 66\%, and the remaining gaps were relationship traversal, which the rule then matched. On a query family held out from training (relationships inside fragments) both reach F1~1.000. Over five further seeds of 2,000 requests on the fixed Layer~1, the model reached F1 $0.998\pm0.004$ and attack recall $1.000\pm0.000$, identical to the rule; $28.9\%\pm1.5\%$ of allowed requests had a coverage gap, $75.6\pm8.8$ attacks per seed were stopped only by Layer~2, and relationship-field count was the top feature in every seed. Scoring a request takes about 1.2\,ms.
+The faults cover ignored variables, ignored defaults (everywhere or only in mutations), skipped named, nested or untyped inline fragments, skipped aliased or directive-bearing fields, nested lookups skipped or only the first visited, fragments handled only at the root, only the first operation, root field or batch operation checked, mutation targets skipped, and the user type skipped. Every fault left unexplained gaps on every seed, and the unmodified layer left none. The \emph{evidence rule}---flag a request with a relationship field or an identifier argument Layer~1 did not resolve---reached a mean F1 of 0.966, against 0.661 for the relationship rule. It fails only where the fault makes Layer~1 believe it resolved an identifier it skipped (\code{first\_batch\_operation\_only}, F1 0.733), which the learned models handle. Learned models did not beat simple ones: XGBoost on structural features (0.967) tied logistic regression (0.968), and adding Layer~1's resolution count raised XGBoost to 0.978. For localisation, logistic regression and XGBoost ranked the broken construct first for all 14 faults a feature can name. The other three faults (only the first operation, only the first root field, the user type skipped) have no feature that names them; they are detected but not localised, giving a top-1 rate of 0.824 over all 17.
 
-\subsection{RQ3: Comparison with graphql-shield}\label{sec:comparison}
+The lesson is that the contribution is the evidence, not the model. A gateway with two layers can detect a broken first layer from its own logs, and a linear model or a one-line rule extracts most of the value.
+
+\subsection{RQ3: Properties and leak channels}
+We check P1--P4 with Hypothesis~\cite{hypothesis}. Each example draws a world---owners for three folders and six documents among three users, and a parent for each document---a caller, and a request composed as in Section~\ref{sec:faults}; each property runs 120 examples. P2 compares the response in two worlds that agree on the caller's objects and differ arbitrarily in everyone else's. All four properties hold. With both layers off, each property fails, so the tests can detect a violation.
+
+Writing P2 exposed three channels through which an earlier version revealed foreign data, all now closed. \emph{Existence oracle:} Layer~1, Layer~2 and the explainer reported different reasons for a foreign object and a missing one, and the explainer returned the owner's identifier; responses are now identical apart from the requested identifier. \emph{Abstract types:} Layer~2 read only the declared return type, so \code{node(id:2)} or a union search returned a foreign object's content; it now resolves the concrete type. \emph{Aggregates:} \code{childrenCount} counted foreign children, and was protected only by a hand-written check in its resolver; Layer~2 now answers declared aggregates from the visible objects. One channel remains: deleting a folder that holds a hidden foreign child fails on the foreign-key constraint and so reveals the child exists. We document it as a known violation of P2 and test that it behaves as described.
+
+\subsection{RQ4: Comparison with graphql-shield}\label{sec:comparison}
 We rebuilt the demo schema, seed data and unchecked resolvers in Node.js and protected them with graphql-shield~7.6.5 in its documented style: argument rules on lookups, type-wide rules on owned types, and rules on each mutation. Both systems ran the same 13 attack and 5 benign scenarios, judged by one oracle: an attack leaks if a non-owned object is returned or the victim object changes; a benign request fails if the caller's own objects are missing.
 
 \begin{table}[t]
@@ -233,57 +263,87 @@ We rebuilt the demo schema, seed data and unchecked resolvers in Node.js and pro
 \midrule
 Attacks leaked & 0 / 13 & 0 / 13 \\
 Legitimate requests failed & 0 / 5 & 1 / 5 \\
-Configuration written & 2 owned types, 1 non-derivable mutation entry & 8 permission entries, 4 rule functions \\
+Configuration written & 2 owned types, 1 mutation entry, 1 aggregate, owner lookup & 8 permission entries, 4 rule functions \\
 \midrule
 \multicolumn{3}{@{}l}{\emph{One configuration entry removed}} \\
-Missing mutation entry & 0 leaks (derived or denied) & write executes (allow fallback) \\
+Missing mutation entry & 0 leaks (derived or denied) & that write executes (1 leak) \\
 Missing type entry & type unprotected (9/13 or 1/13 leak) & 0--1 leak (overlapping rules) \\
 With deny fallback & --- & 0 leaks; 1--4 of 5 legitimate requests blocked \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-graphql-shield's failure is null propagation: in \code{children: [ResourceType!]!}, denying the one foreign child cannot null that item, so the error nulls the whole folder and its owner loses their own two documents. Layer~2 removes the item before nullability is enforced. Under configuration mistakes neither approach dominates (Table~\ref{tab:comparison}): GraphQL-Shield needs a quarter of the configuration and fails closed on mutations, but an omitted owned type is a single point of failure; graphql-shield's overlapping per-field rules tolerate one missing read rule but require far more configuration and lose availability under null propagation.
+Both systems stop all 13 attacks when fully configured. graphql-shield's failure is availability: in \code{children: [ResourceType!]!}, denying the one foreign child cannot null that item, so the error nulls the whole folder and its owner loses their own two documents. Layer~2 removes the item before nullability is enforced. Under configuration mistakes neither approach dominates (Table~\ref{tab:comparison}). GraphQL-Shield fails closed on mutations, but an owned type left out is a single point of failure that leaks up to 9 of 13 attacks; the startup lint reports such omissions. graphql-shield's overlapping rules tolerate one missing read rule, but a missing mutation rule executes the write under its default allow fallback, and its deny fallback blocks legitimate requests instead.
 
-\subsection{RQ4: Latency}
-We measured each configuration with 30 warm-up requests, then 5 repeats of 200, reporting the mean with a 95\% confidence interval across repeats ($t$-distribution, 4 degrees of freedom). Fig.~\ref{fig:latency} compares both-layer latency before and after connection pooling, measured back to back on the same machine: pooling reduced it 2.9 to 4.8 times. With pooling, overhead over the unprotected endpoint was +78\% for an owned lookup (19.6\,ms, CI [18.3, 21.0]), +81\% for a relationship query (38.4\,ms, CI [35.7, 41.2]) and +60\% for an update (29.4\,ms, CI [26.8, 32.0]). These are in-process measurements on a laptop with background load; network latency would dilute the relative overhead.
+\subsection{RQ5: Latency}
+Each configuration ran 30 warm-up requests, then 5 repeats of 200; we report the mean with a 95\% confidence interval across repeats ($t$-distribution, 4 degrees of freedom). With both layers, an owned lookup took 19.7\,ms (CI [19.2, 20.1]) against 14.8\,ms unprotected (+33\%), a relationship query 21.6\,ms (CI [21.3, 21.9]) against 14.2\,ms (+53\%), and an update 18.8\,ms (CI [17.9, 19.8]) against 14.9\,ms (+26\%). Layer~2 alone added 4--17\%; most of the cost is Layer~1's parse and schema walk. Fig.~\ref{fig:latency} shows the effect of two engineering fixes. Pooling database connections cut both-layer latency 3.1 to 6.1 times, measured back to back. Profiling the scaling benchmark found that the risk score ran an unindexed count over the whole audit log for every checked object, so latency grew with the log; an index and an existence probe made it constant.
 
 \begin{figure}[t]
 \centering
 \begin{tikzpicture}
 \begin{axis}[
-  ybar, bar width=9pt, width=\columnwidth, height=4.6cm,
-  ymin=0, ymax=215, ylabel={ms per request}, ylabel style={font=\scriptsize},
+  ybar=1pt, bar width=8pt, width=\columnwidth, height=4.8cm,
+  ymin=0, ymax=165, ylabel={ms per request}, ylabel style={font=\scriptsize},
   symbolic x coords={Own lookup, Relationship, Own update}, xtick=data,
   tick label style={font=\scriptsize}, axis lines*=left, ytick=\empty, axis y line=none,
-  nodes near coords, nodes near coords style={font=\tiny},
-  legend style={font=\scriptsize, at={(0.98,0.97)}, anchor=north east, draw=none},
-  enlarge x limits=0.22
+  nodes near coords, nodes near coords style={font=\tiny, rotate=90, anchor=west},
+  legend style={font=\scriptsize, at={(0.5,1.03)}, anchor=south, draw=none, legend columns=3, /tikz/every even column/.append style={column sep=6pt}},
+  enlarge x limits=0.2
 ]
-\addplot[fill=shieldgrey, draw=none] coordinates {(Own lookup,59.2) (Relationship,183.5) (Own update,84.3)};
-\addplot[fill=shieldteal, draw=none] coordinates {(Own lookup,19.6) (Relationship,38.4) (Own update,29.4)};
-\legend{Without pooling, With pooling}
+\addplot[fill=shieldgrey, draw=none] coordinates {(Own lookup,60.2) (Relationship,132.4) (Own update,71.8)};
+\addplot[fill=shieldteal, draw=none] coordinates {(Own lookup,19.7) (Relationship,21.6) (Own update,18.8)};
+\addplot[fill=shieldnavy!40, draw=none] coordinates {(Own lookup,14.8) (Relationship,14.2) (Own update,14.9)};
+\legend{{Both layers, no pooling},{Both layers, pooled},{Unprotected}}
 \end{axis}
 \end{tikzpicture}
-\caption{Mean both-layer latency per request, in-process, before and after connection pooling (5$\times$200 requests each).}
+\caption{Mean latency per request, in-process (5$\times$200 requests each).}
 \label{fig:latency}
 \end{figure}
+
+\textbf{Scaling.} A folder with $N$ children, one in ten foreign, was queried with Layer~2 checking the list one item at a time or with one batched owner lookup and one audit transaction (Table~\ref{tab:scaling}). Batching matters as lists grow: at 200 children it cut the protected request from 127.5\,ms to 73.5\,ms, against 28.0\,ms unprotected. The remaining cost grows linearly with the number of returned objects.
+
+\begin{table}[t]
+\caption{Latency (ms) as a request returns more objects}
+\label{tab:scaling}
+\centering
+\footnotesize
+\begin{tabular}{@{}rccc@{}}
+\toprule
+Children & Unprotected & One by one & Batched \\
+\midrule
+1 & 14.5 & 20.5 & 20.2 \\
+10 & 15.4 & 24.7 & 23.0 \\
+50 & 16.6 & 47.9 & 32.6 \\
+200 & 28.0 & 127.5 & 73.5 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For reference, graphql-shield on Node.js added 15\% to an owned lookup, 62\% to a relationship query and 4\% to an update over its own unprotected server (5$\times$2,000 requests, means of 0.21--0.41\,ms). The runtimes differ, so only the relative overheads are comparable, and only loosely.
 
 % ===================================================================
 \section{Discussion and Limitations}
 
-\textbf{External validity.} Both applications and all attack scenarios were built by the authors. The results show the mechanism works on these applications, not that it generalises; evaluation on third-party applications and with independently written attacks is future work.
+\textbf{External validity.} Both applications, the Graphene and Ariadne examples, the injected faults and all attack scenarios were written by the authors. The results show the mechanism works on these applications, not that it generalises. We did not evaluate on third-party applications or with independently written attacks, and we did not run black-box testers such as GraphQLer against the gateway; both are the most important future work.
 
-\textbf{Near-deterministic predictor.} In our applications a coverage gap follows almost entirely from query structure, so F1 near 1.0 reflects an easy target rather than real-world accuracy. Our claim concerns the method: cross-layer disagreement labels blind spots for free and the model names their causes. One discovery supports it; once fixed, the model adds no accuracy over the rule.
+\textbf{Synthetic traffic.} The predictor and the fault-injection study use generated requests from a small world. In this world a coverage gap follows almost entirely from query structure, so F1 near 1.0 reflects an easy target, not real-world accuracy. The fault study measures whether the evidence carries the signal, not how often real Layer~1 bugs occur.
 
-\textbf{Configuration as a single point of failure.} An owned type left out of the configuration is unprotected by both layers. A startup check that flags schema types with owner-like fields but no ownership entry would mitigate this.
+\textbf{Configuration.} An owned type left out is unprotected by both layers. The lint narrows this but is a naming heuristic. Only owner-or-administrator policies are supported; sharing, teams and attribute-based rules fit into Layer~2's per-object check but are not implemented.
 
-\textbf{Policy, measurement and deployment.} Only owner-or-administrator access is supported; sharing, teams and attribute-based rules fit naturally into Layer~2's per-object check. Latency was measured in-process on a laptop. graphql-shield was reimplemented on a copy of our schema in its documented style; other rule sets could perform differently. Layer~1 runs in the application process rather than as a separate proxy.
+\textbf{Residual channels.} The foreign-key refusal on folder deletion reveals a hidden child. Timing differences between foreign and missing objects were not measured.
+
+\textbf{Measurement.} Latency was measured in-process on a laptop with background load. graphql-shield was reimplemented on a copy of our schema in its documented style; other rule sets could perform differently, and its Node.js latency is not comparable in absolute terms with our Python numbers.
 
 % ===================================================================
 \section{Conclusion}
 
-Enforcing GraphQL object ownership at two independent points lets a gateway stop BOLA in every form we tested and measure its own blind spots. A pre-execution layer alone misses objects reached through relationships; an execution-time layer catches them and records each object the first layer never saw. Treated as free training labels, these records let a model find a real bypass of the first layer that a hand-written rule missed, and the fix cut attacks reaching only the execution-time layer by 66\%. The layers are configured from the schema and a small ownership map, protect a second unrelated application, avoid the availability loss that per-field rules suffer under null propagation, and cost 60--81\% latency in-process after connection pooling. Evaluating on third-party applications with independently written attacks is the next step.
+Enforcing GraphQL object ownership at two independent points stops BOLA in every form we tested and lets a gateway measure its own coverage. A pre-execution layer alone misses objects reached through relationships; an execution-time layer catches them and records each object the first layer never saw. Planting 17 bugs in the first layer showed that this record detects every one, that a one-line rule over it predicts the affected requests, and that simple models name the broken construct as reliably as gradient boosting. Stating non-interference exposed and closed three leak channels in our own system. The layers are configured from the schema and a small ownership map, run on four Python GraphQL frameworks, and avoid the availability loss per-field rules suffer under null propagation. Evaluating on third-party applications with independently written attacks is the next step.
+
+\section*{Availability}
+Source code, the fault-injection harness and the results reported here are released under the MIT licence.
+
+\section*{Acknowledgment}
+Parts of the implementation, evaluation scripts and text were drafted with the assistance of an AI coding assistant (Claude, Anthropic). The authors reviewed and are responsible for all content, and all reported numbers come from the released scripts.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}

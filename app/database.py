@@ -165,6 +165,11 @@ def init_db():
         if column not in audit_columns:
             cursor.execute(f"ALTER TABLE audit_logs ADD COLUMN {column} TEXT")
 
+    # The risk engine asks, for each checked object, whether the user had a recent
+    # denial. Without this index that question scans the whole audit log.
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_audit_user_decision_time "
+                   "ON audit_logs (user_id, decision, timestamp)")
+
     _upgrade_legacy_password_hashes(cursor)
 
     conn.commit()

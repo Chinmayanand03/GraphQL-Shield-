@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22T18:08:38.534146+00:00",
+  "generated_at": "2026-11-07T09:51:22.272911+00:00",
   "run": "deployed",
   "seed": 20261022,
   "requests": 4000,
@@ -7,7 +7,8 @@
   "coverage_gap_requests": 676,
   "blind_spot_attacks": 138,
   "label_source": "Layer 2 audit rows (layer='L2'), written only for owned objects Layer 1 never evaluated; attacks are L1_BLIND_SPOT_CAUGHT_BY_L2 events. No hand labelling.",
-  "held_out_family": "relationship_in_fragment",
+  "held_out_family": "relationship_in_fragment + named_fragment",
+  "injected_fault": null,
   "feature_names": [
     "batch_size",
     "is_mutation",
@@ -29,46 +30,46 @@
   ],
   "rule_baseline": "relationship_field_count > 0 (Layer 1's documented blind spot)",
   "splits": {
-    "train_rows": 1620,
-    "random_test": 540,
-    "held_out_family": 162
+    "train_rows": 1505,
+    "random_test": 502,
+    "held_out_family": 315
   },
   "evaluation": {
     "random_test": {
-      "rows": 540,
-      "positives": 122,
-      "attacks": 19,
+      "rows": 502,
+      "positives": 124,
+      "attacks": 20,
       "xgboost": {
-        "precision": 1.0,
+        "precision": 0.992,
         "recall": 1.0,
-        "f1_score": 1.0,
-        "false_positive_rate": 0.0,
+        "f1_score": 0.996,
+        "false_positive_rate": 0.0026,
         "confusion_matrix": {
-          "tn": 418,
-          "fp": 0,
+          "tn": 377,
+          "fp": 1,
           "fn": 0,
-          "tp": 122
+          "tp": 124
         },
-        "pr_auc_average_precision": 1.0,
+        "pr_auc_average_precision": 0.992,
         "attack_recall": 1.0
       },
       "rule_baseline": {
-        "precision": 1.0,
+        "precision": 0.992,
         "recall": 1.0,
-        "f1_score": 1.0,
-        "false_positive_rate": 0.0,
+        "f1_score": 0.996,
+        "false_positive_rate": 0.0026,
         "confusion_matrix": {
-          "tn": 418,
-          "fp": 0,
+          "tn": 377,
+          "fp": 1,
           "fn": 0,
-          "tp": 122
+          "tp": 124
         },
-        "pr_auc_average_precision": 1.0,
+        "pr_auc_average_precision": 0.992,
         "attack_recall": 1.0
       }
     },
     "held_out_family": {
-      "rows": 162,
+      "rows": 315,
       "positives": 162,
       "attacks": 63,
       "xgboost": {
@@ -77,11 +78,12 @@
         "f1_score": 1.0,
         "false_positive_rate": 0.0,
         "confusion_matrix": {
-          "tn": 0,
+          "tn": 153,
           "fp": 0,
           "fn": 0,
           "tp": 162
         },
+        "pr_auc_average_precision": 1.0,
         "attack_recall": 1.0
       },
       "rule_baseline": {
@@ -90,11 +92,12 @@
         "f1_score": 1.0,
         "false_positive_rate": 0.0,
         "confusion_matrix": {
-          "tn": 0,
+          "tn": 153,
           "fp": 0,
           "fn": 0,
           "tp": 162
         },
+        "pr_auc_average_precision": 1.0,
         "attack_recall": 1.0
       }
     }
@@ -102,15 +105,11 @@
   "feature_importance": [
     {
       "feature": "relationship_field_count",
-      "mean_abs_shap": 6.2097
-    },
-    {
-      "feature": "field_count",
-      "mean_abs_shap": 0.3385
+      "mean_abs_shap": 6.2131
     },
     {
       "feature": "batch_size",
-      "mean_abs_shap": 0.0784
+      "mean_abs_shap": 0.0
     },
     {
       "feature": "is_mutation",
@@ -122,6 +121,10 @@
     },
     {
       "feature": "max_depth",
+      "mean_abs_shap": 0.0
+    },
+    {
+      "feature": "field_count",
       "mean_abs_shap": 0.0
     },
     {
