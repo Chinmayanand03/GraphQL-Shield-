@@ -3,7 +3,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
 [![Strawberry GraphQL](https://img.shields.io/badge/GraphQL-Strawberry-e535ab.svg?logo=graphql)](https://strawberry.rocks/)
-[![Tests Passing](https://img.shields.io/badge/tests-414%20passed-brightgreen.svg)]()
+[![Tests Passing](https://img.shields.io/badge/tests-427%20passed-brightgreen.svg)]()
 [![Security Standard](https://img.shields.io/badge/OWASP-API1%3A2023%20BOLA-red.svg)](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -79,6 +79,7 @@ While REST architectures feature rigid, predictable resource hierarchies (e.g. `
 - **Startup lint**: warns about schema types with owner-like fields (`ownerId`, `belongsTo`, `createdBy`, …) that the configuration leaves unprotected, about any type fetched by ID from a root query that is neither owned nor declared in `public_types`, and about undeclared aggregate fields.
 - **No timing channel**: a missing object is checked and audited like a foreign one, so a denial takes the same time either way (`scripts/run_timing_channel.py`).
 - **Framework support**: the same `OwnershipMiddleware` protects Strawberry, plain graphql-core, Graphene and Ariadne servers.
+- **Self-repairing configuration**: Layer 2's evidence of what Layer 1 missed becomes configuration repairs, verified offline by replay and applied only by an admin.
 - **Layer 1 Blind Spot Auditing**:
   - Automatically identifies and logs when Layer 2 catches an unauthorized object that Layer 1 could not parse from raw query text.
   - Emits telemetry events to `layer_events` table for forensic analysis.
@@ -459,6 +460,52 @@ Blind-spot predictor on the fixed Layer 1, 5 seeds × 2,000 requests (mean ± st
 
 Coverage-gap rate among allowed requests: 0.289 ± 0.015; attacks stopped only by Layer 2 per 2,000 requests: 75.6 ± 8.8; top feature in every seed: `relationship_field_count`. Once the variable-default gap is fixed, the remaining blind spot is relationship traversal and the rule matches the model: the predictor's value is the discovery run, not ongoing accuracy.
 
+### Self-repairing configuration
+Layer 2 records every object Layer 1 missed. `app/security/repair.py` turns that record into configuration repairs:
+
+1. **Evidence.** For each missed object, Layer 2 notes the field and the arguments that reached it. It also notes every mutation it refused because no ownership target is known. Recent requests are sampled in memory.
+2. **Diagnosis.** Each gap gets a cause:
+
+   | Cause | Repair |
+   | :--- | :--- |
+   | The ID came in an argument the configuration does not list | Add it to `id_arguments` |
+   | A mutation has no known target | Add a `mutation_targets` entry, with the argument and type taken from the refused calls |
+   | A per-user type is not protected (from the startup lint) | Add it to `owned_types` |
+   | Relationship traversal (`children`) | None. Layer 2 covers it by design |
+   | The ID argument is listed but Layer 1 still missed it | None. It is a bug in Layer 1's code; the shared query constructs are named for a developer |
+
+3. **Verification.** Each repair is replayed offline through Layer 1 against the recorded requests. Nothing executes and no data changes. A repair is offered only if it:
+   - closes gaps or protects objects;
+   - blocks no request that was legitimate;
+   - names IDs the owner lookup recognises (at least 90%);
+   - does not reuse another owned type's ownership key.
+4. **Human approval.** Only an admin can apply a repair (`POST /api/v1/security/repairs/apply`), and it is verified again first. Applied repairs are stored, re-applied on startup, and can be reverted.
+
+**On the dashboard** (Research tab → *Self-repairing configuration*, signed in as admin):
+1. Pick a mistake and click **Introduce this mistake**.
+2. Run some tests on the Security Testing tab, then click **Analyse now**.
+3. Review the verified repair and click **Apply repair**.
+4. **Restore original configuration** undoes the demo.
+
+The switch needs `ENABLE_LAYER_TOGGLE=true`.
+
+**Evaluation** (`python -m scripts.run_repair_evaluation`, `evaluation/repair_evaluation.json`): 10 realistic configuration mistakes across both applications, 3 seeds of 400 requests each. Every run used fresh databases with the correct configuration, with the mistake, and with the repair.
+
+| Measure | Result |
+| :--- | :--- |
+| Mistakes detected | **30 / 30** runs |
+| First verified repair is the correct one | **30 / 30** |
+| Responses restored exactly to the correct configuration's, in one round | **30 / 30** (the mistakes had changed 23–207 responses per run) |
+| Repairs proposed for the correct configurations (false repairs) | **0** in 6 control runs |
+| Wrong (decoy) repairs refused by verification | **33 / 33** |
+
+The decoys are plausible wrong repairs: a non-ID argument such as `name` read as an ID, or the wrong owned type. The first decoy run let one through, protecting `UserType` with the `Resource` owner table. Replay could not tell them apart because demo user IDs 101–104 coincide with resource IDs owned by the same users. The rule refusing a key another owned type already uses was added after that.
+
+**Limits:**
+- Only configuration is repaired; bugs in Layer 1's code are diagnosed, not fixed.
+- An owned type with no lookup by ID is found only through the lint's naming heuristic.
+- The mistakes, traffic and decoys were written by the authors.
+
 ### Fault injection: does the cross-layer evidence find Layer 1 bugs?
 One discovered bypass is an anecdote, so `scripts/run_fault_injection.py` measures it. It patches 17 realistic bugs into Layer 1 at load time (files on disk never change): ignored variables or defaults, skipped fragments, aliases, directives, nested lookups, batch operations, mutation targets, and more. Each fault and an unmodified control run on 5 seeds of 1,000 requests composed from independent constructs.
 
@@ -516,7 +563,7 @@ python -m pytest -v
 
 Expected output:
 ```text
-410 passed, 4 skipped   (the 4 Graphene tests run in their own environment, see "Other frameworks")
+423 passed, 4 skipped   (the 4 Graphene tests run in their own environment, see "Other frameworks")
 ```
 
 ---
@@ -570,7 +617,7 @@ GraphQL-Shield/
 ├── evaluation/               # Tracked results: fault injection, latency, scaling
 ├── paper/                    # IEEE paper source (LaTeX)
 ├── scripts/                  # Benchmarking, training, and fault-injection scripts
-├── tests/                    # 414 unit, integration, property and security tests
+├── tests/                    # 427 unit, integration, property and security tests
 ├── requirements.txt
 └── README.md
 ```

@@ -1,0 +1,1386 @@
+{
+  "generated_at": "2026-11-08T19:06:24.004229+00:00",
+  "seeds": [
+    20261109,
+    20261110,
+    20261111
+  ],
+  "requests_per_run": 400,
+  "summary": {
+    "fault_runs": 30,
+    "faults_with_impact": 30,
+    "detected": 30,
+    "first_verified_repair_is_the_expected_one": 30,
+    "restored": 30,
+    "restored_in_one_round": 30,
+    "control_runs": 6,
+    "false_repairs_on_controls": 0,
+    "false_blocks_in_verified_repairs": 0,
+    "decoy_repairs": 33,
+    "decoy_repairs_rejected": 33
+  },
+  "runs": [
+    {
+      "app": "demo",
+      "fault": "none",
+      "seed": 20261109,
+      "requests": 400,
+      "expected_repair": null,
+      "fault_impact": 0,
+      "proposed": 0,
+      "verified": 0,
+      "first_verified": null,
+      "first_is_expected": false,
+      "expected_rank_among_verified": null,
+      "decoys": 0,
+      "decoys_rejected": 0,
+      "rounds": 0,
+      "applied": [],
+      "differences_after_repair": 0,
+      "restored": false,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": null
+    },
+    {
+      "app": "demo",
+      "fault": "wrong_id_argument_name",
+      "seed": 20261109,
+      "requests": 400,
+      "expected_repair": "Treat argument `id` as an object ID",
+      "fault_impact": 186,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Treat argument `id` as an object ID",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Treat argument `id` as an object ID"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 267,
+        "gaps_closed": 340,
+        "attacks_blocked_earlier": 186,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 234,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "demo",
+      "fault": "missing_delete_target",
+      "seed": 20261109,
+      "requests": 400,
+      "expected_repair": "Register mutation `deleteResource`: target argument `id`, owned type `Resource`",
+      "fault_impact": 74,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Register mutation `deleteResource`: target argument `id`, owned type `Resource`",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Register mutation `deleteResource`: target argument `id`, owned type `Resource`"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 243,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 24,
+        "non_owners_still_denied": 50,
+        "objects_newly_checked": 130,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "demo",
+      "fault": "missing_resource_type",
+      "seed": 20261109,
+      "requests": 400,
+      "expected_repair": "Protect type `ResourceType` as owned (ownership key `Resource`)",
+      "fault_impact": 172,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `ResourceType` as owned (ownership key `Resource`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `ResourceType` as owned (ownership key `Resource`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 176,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 80,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 50,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "{ resource(id: 201) { id children { id name } } }",
+          "{ resource(id: 103) { id name } }",
+          "{ user(id: 101) { id resource(id: 104) { id name } } }"
+        ]
+      }
+    },
+    {
+      "app": "demo",
+      "fault": "missing_user_type",
+      "seed": 20261109,
+      "requests": 400,
+      "expected_repair": "Protect type `UserType` as owned (ownership key `User`)",
+      "fault_impact": 33,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `UserType` as owned (ownership key `User`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `UserType` as owned (ownership key `User`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 178,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 37,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 6,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "{ user(id: 102) { id username } }",
+          "{ user(id: 103) { id username } }",
+          "{ user(id: 102) { id username } }"
+        ]
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "none",
+      "seed": 20261109,
+      "requests": 400,
+      "expected_repair": null,
+      "fault_impact": 0,
+      "proposed": 0,
+      "verified": 0,
+      "first_verified": null,
+      "first_is_expected": false,
+      "expected_rank_among_verified": null,
+      "decoys": 0,
+      "decoys_rejected": 0,
+      "rounds": 0,
+      "applied": [],
+      "differences_after_repair": 0,
+      "restored": false,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": null
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_id_argument",
+      "seed": 20261109,
+      "requests": 400,
+      "expected_repair": "Treat argument `id` as an object ID",
+      "fault_impact": 198,
+      "proposed": 2,
+      "verified": 2,
+      "first_verified": "Treat argument `id` as an object ID",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Treat argument `id` as an object ID"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 199,
+        "gaps_closed": 197,
+        "attacks_blocked_earlier": 117,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 130,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_create_record_target",
+      "seed": 20261109,
+      "requests": 400,
+      "expected_repair": "Register mutation `createRecord`: target argument `patientId`, owned type `Patient`",
+      "fault_impact": 117,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Register mutation `createRecord`: target argument `patientId`, owned type `Patient`",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 2,
+      "decoys_rejected": 2,
+      "rounds": 1,
+      "applied": [
+        "Register mutation `createRecord`: target argument `patientId`, owned type `Patient`"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 146,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 22,
+        "non_owners_still_denied": 31,
+        "objects_newly_checked": 20,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_delete_prescription_target",
+      "seed": 20261109,
+      "requests": 400,
+      "expected_repair": "Register mutation `deletePrescription`: target argument `id`, owned type `Prescription`",
+      "fault_impact": 56,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Register mutation `deletePrescription`: target argument `id`, owned type `Prescription`",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Register mutation `deletePrescription`: target argument `id`, owned type `Prescription`"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 188,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 22,
+        "non_owners_still_denied": 34,
+        "objects_newly_checked": 96,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_patient_type",
+      "seed": 20261109,
+      "requests": 400,
+      "expected_repair": "Protect type `Patient` as owned (ownership key `Patient`)",
+      "fault_impact": 56,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `Patient` as owned (ownership key `Patient`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `Patient` as owned (ownership key `Patient`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 146,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 35,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 18,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "{ patient(id: \"UGF0aWVudDoy\") { id name } }",
+          "{ patient(id: \"UGF0aWVudDox\") { id records { id diagnosis } } }",
+          "{ patient(id: \"UGF0aWVudDoz\") { id name } }"
+        ]
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_record_type",
+      "seed": 20261109,
+      "requests": 400,
+      "expected_repair": "Protect type `Record` as owned (ownership key `Record`)",
+      "fault_impact": 142,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `Record` as owned (ownership key `Record`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `Record` as owned (ownership key `Record`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 145,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 44,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 24,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "mutation { updateRecord(id: \"UmVjb3JkOjMx\", diagnosis: \"updated\") { id } }",
+          "mutation { updateRecord(id: \"UmVjb3JkOjIx\", diagnosis: \"updated\") { id } }",
+          "{ record(id: \"UmVjb3JkOjIx\") { id diagnosis } }"
+        ]
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_prescription_type",
+      "seed": 20261109,
+      "requests": 400,
+      "expected_repair": "Protect type `Prescription` as owned (ownership key `Prescription`)",
+      "fault_impact": 24,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `Prescription` as owned (ownership key `Prescription`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `Prescription` as owned (ownership key `Prescription`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 140,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 13,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 8,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "{ prescription(id: \"UHJlc2NyaXB0aW9uOjMxMQ==\") { id drug } }",
+          "{ prescription(id: \"UHJlc2NyaXB0aW9uOjExMQ==\") { id drug } }",
+          "{ prescription(id: \"UHJlc2NyaXB0aW9uOjIxMQ==\") { id drug } }"
+        ]
+      }
+    },
+    {
+      "app": "demo",
+      "fault": "none",
+      "seed": 20261110,
+      "requests": 400,
+      "expected_repair": null,
+      "fault_impact": 0,
+      "proposed": 0,
+      "verified": 0,
+      "first_verified": null,
+      "first_is_expected": false,
+      "expected_rank_among_verified": null,
+      "decoys": 0,
+      "decoys_rejected": 0,
+      "rounds": 0,
+      "applied": [],
+      "differences_after_repair": 0,
+      "restored": false,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": null
+    },
+    {
+      "app": "demo",
+      "fault": "wrong_id_argument_name",
+      "seed": 20261110,
+      "requests": 400,
+      "expected_repair": "Treat argument `id` as an object ID",
+      "fault_impact": 193,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Treat argument `id` as an object ID",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Treat argument `id` as an object ID"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 250,
+        "gaps_closed": 333,
+        "attacks_blocked_earlier": 193,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 210,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "demo",
+      "fault": "missing_delete_target",
+      "seed": 20261110,
+      "requests": 400,
+      "expected_repair": "Register mutation `deleteResource`: target argument `id`, owned type `Resource`",
+      "fault_impact": 62,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Register mutation `deleteResource`: target argument `id`, owned type `Resource`",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Register mutation `deleteResource`: target argument `id`, owned type `Resource`"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 225,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 27,
+        "non_owners_still_denied": 35,
+        "objects_newly_checked": 114,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "demo",
+      "fault": "missing_resource_type",
+      "seed": 20261110,
+      "requests": 400,
+      "expected_repair": "Protect type `ResourceType` as owned (ownership key `Resource`)",
+      "fault_impact": 169,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `ResourceType` as owned (ownership key `Resource`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `ResourceType` as owned (ownership key `Resource`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 166,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 73,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 45,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "{ resource(id: 201) { id children { id name } } }",
+          "{ resource(id: 201) { id children { id name } } }",
+          "query($r: Int!) { resource(id: $r) { id name } }"
+        ]
+      }
+    },
+    {
+      "app": "demo",
+      "fault": "missing_user_type",
+      "seed": 20261110,
+      "requests": 400,
+      "expected_repair": "Protect type `UserType` as owned (ownership key `User`)",
+      "fault_impact": 44,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `UserType` as owned (ownership key `User`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `UserType` as owned (ownership key `User`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 168,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 32,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 6,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "{ user(id: 103) { id username } }",
+          "{ user(id: 103) { id username } }",
+          "{ user(id: 101) { id username } }"
+        ]
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "none",
+      "seed": 20261110,
+      "requests": 400,
+      "expected_repair": null,
+      "fault_impact": 0,
+      "proposed": 0,
+      "verified": 0,
+      "first_verified": null,
+      "first_is_expected": false,
+      "expected_rank_among_verified": null,
+      "decoys": 0,
+      "decoys_rejected": 0,
+      "rounds": 0,
+      "applied": [],
+      "differences_after_repair": 0,
+      "restored": false,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": null
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_id_argument",
+      "seed": 20261110,
+      "requests": 400,
+      "expected_repair": "Treat argument `id` as an object ID",
+      "fault_impact": 202,
+      "proposed": 2,
+      "verified": 2,
+      "first_verified": "Treat argument `id` as an object ID",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Treat argument `id` as an object ID"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 191,
+        "gaps_closed": 212,
+        "attacks_blocked_earlier": 130,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 130,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_create_record_target",
+      "seed": 20261110,
+      "requests": 400,
+      "expected_repair": "Register mutation `createRecord`: target argument `patientId`, owned type `Patient`",
+      "fault_impact": 94,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Register mutation `createRecord`: target argument `patientId`, owned type `Patient`",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 2,
+      "decoys_rejected": 2,
+      "rounds": 1,
+      "applied": [
+        "Register mutation `createRecord`: target argument `patientId`, owned type `Patient`"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 136,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 13,
+        "non_owners_still_denied": 34,
+        "objects_newly_checked": 18,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_delete_prescription_target",
+      "seed": 20261110,
+      "requests": 400,
+      "expected_repair": "Register mutation `deletePrescription`: target argument `id`, owned type `Prescription`",
+      "fault_impact": 54,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Register mutation `deletePrescription`: target argument `id`, owned type `Prescription`",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Register mutation `deletePrescription`: target argument `id`, owned type `Prescription`"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 172,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 23,
+        "non_owners_still_denied": 31,
+        "objects_newly_checked": 84,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_patient_type",
+      "seed": 20261110,
+      "requests": 400,
+      "expected_repair": "Protect type `Patient` as owned (ownership key `Patient`)",
+      "fault_impact": 75,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `Patient` as owned (ownership key `Patient`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `Patient` as owned (ownership key `Patient`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 136,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 30,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 18,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "{ patient(id: \"UGF0aWVudDox\") { id name } }",
+          "{ patient(id: \"UGF0aWVudDoz\") { id name } }",
+          "{ patient(id: \"UGF0aWVudDoz\") { id name } }"
+        ]
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_record_type",
+      "seed": 20261110,
+      "requests": 400,
+      "expected_repair": "Protect type `Record` as owned (ownership key `Record`)",
+      "fault_impact": 121,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `Record` as owned (ownership key `Record`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `Record` as owned (ownership key `Record`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 137,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 43,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 22,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "{ record(id: \"UmVjb3JkOjIx\") { id diagnosis } }",
+          "{ record(id: \"UmVjb3JkOjEx\") { id diagnosis } }",
+          "{ record(id: \"UmVjb3JkOjEy\") { id diagnosis } }"
+        ]
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_prescription_type",
+      "seed": 20261110,
+      "requests": 400,
+      "expected_repair": "Protect type `Prescription` as owned (ownership key `Prescription`)",
+      "fault_impact": 23,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `Prescription` as owned (ownership key `Prescription`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `Prescription` as owned (ownership key `Prescription`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 130,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 16,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 8,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "{ prescription(id: \"UHJlc2NyaXB0aW9uOjMxMQ==\") { id drug } }",
+          "{ prescription(id: \"UHJlc2NyaXB0aW9uOjExMg==\") { id drug } }",
+          "{ prescription(id: \"UHJlc2NyaXB0aW9uOjIxMQ==\") { id drug } }"
+        ]
+      }
+    },
+    {
+      "app": "demo",
+      "fault": "none",
+      "seed": 20261111,
+      "requests": 400,
+      "expected_repair": null,
+      "fault_impact": 0,
+      "proposed": 0,
+      "verified": 0,
+      "first_verified": null,
+      "first_is_expected": false,
+      "expected_rank_among_verified": null,
+      "decoys": 0,
+      "decoys_rejected": 0,
+      "rounds": 0,
+      "applied": [],
+      "differences_after_repair": 0,
+      "restored": false,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": null
+    },
+    {
+      "app": "demo",
+      "fault": "wrong_id_argument_name",
+      "seed": 20261111,
+      "requests": 400,
+      "expected_repair": "Treat argument `id` as an object ID",
+      "fault_impact": 183,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Treat argument `id` as an object ID",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Treat argument `id` as an object ID"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 258,
+        "gaps_closed": 349,
+        "attacks_blocked_earlier": 183,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 234,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "demo",
+      "fault": "missing_delete_target",
+      "seed": 20261111,
+      "requests": 400,
+      "expected_repair": "Register mutation `deleteResource`: target argument `id`, owned type `Resource`",
+      "fault_impact": 56,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Register mutation `deleteResource`: target argument `id`, owned type `Resource`",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Register mutation `deleteResource`: target argument `id`, owned type `Resource`"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 220,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 20,
+        "non_owners_still_denied": 36,
+        "objects_newly_checked": 102,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "demo",
+      "fault": "missing_resource_type",
+      "seed": 20261111,
+      "requests": 400,
+      "expected_repair": "Protect type `ResourceType` as owned (ownership key `Resource`)",
+      "fault_impact": 172,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `ResourceType` as owned (ownership key `Resource`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `ResourceType` as owned (ownership key `Resource`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 167,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 79,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 50,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "query($r: Int!) { resource(id: $r) { id name } }",
+          "query($r: Int!) { resource(id: $r) { id name } }",
+          "{ user(id: 101) { id resource(id: 204) { id name } } }"
+        ]
+      }
+    },
+    {
+      "app": "demo",
+      "fault": "missing_user_type",
+      "seed": 20261111,
+      "requests": 400,
+      "expected_repair": "Protect type `UserType` as owned (ownership key `User`)",
+      "fault_impact": 32,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `UserType` as owned (ownership key `User`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `UserType` as owned (ownership key `User`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 169,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 38,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 6,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "{ user(id: 103) { id username } }",
+          "{ user(id: 101) { id username } }",
+          "{ user(id: 103) { id username } }"
+        ]
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "none",
+      "seed": 20261111,
+      "requests": 400,
+      "expected_repair": null,
+      "fault_impact": 0,
+      "proposed": 0,
+      "verified": 0,
+      "first_verified": null,
+      "first_is_expected": false,
+      "expected_rank_among_verified": null,
+      "decoys": 0,
+      "decoys_rejected": 0,
+      "rounds": 0,
+      "applied": [],
+      "differences_after_repair": 0,
+      "restored": false,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": null
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_id_argument",
+      "seed": 20261111,
+      "requests": 400,
+      "expected_repair": "Treat argument `id` as an object ID",
+      "fault_impact": 207,
+      "proposed": 2,
+      "verified": 2,
+      "first_verified": "Treat argument `id` as an object ID",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Treat argument `id` as an object ID"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 193,
+        "gaps_closed": 193,
+        "attacks_blocked_earlier": 129,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 124,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_create_record_target",
+      "seed": 20261111,
+      "requests": 400,
+      "expected_repair": "Register mutation `createRecord`: target argument `patientId`, owned type `Patient`",
+      "fault_impact": 103,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Register mutation `createRecord`: target argument `patientId`, owned type `Patient`",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 2,
+      "decoys_rejected": 2,
+      "rounds": 1,
+      "applied": [
+        "Register mutation `createRecord`: target argument `patientId`, owned type `Patient`"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 142,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 17,
+        "non_owners_still_denied": 37,
+        "objects_newly_checked": 22,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_delete_prescription_target",
+      "seed": 20261111,
+      "requests": 400,
+      "expected_repair": "Register mutation `deletePrescription`: target argument `id`, owned type `Prescription`",
+      "fault_impact": 57,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Register mutation `deletePrescription`: target argument `id`, owned type `Prescription`",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Register mutation `deletePrescription`: target argument `id`, owned type `Prescription`"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 183,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 23,
+        "non_owners_still_denied": 34,
+        "objects_newly_checked": 94,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 0,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": []
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_patient_type",
+      "seed": 20261111,
+      "requests": 400,
+      "expected_repair": "Protect type `Patient` as owned (ownership key `Patient`)",
+      "fault_impact": 65,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `Patient` as owned (ownership key `Patient`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `Patient` as owned (ownership key `Patient`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 142,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 30,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 17,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "{ patient(id: \"UGF0aWVudDoy\") { id records { id diagnosis } } }",
+          "{ patient(id: \"UGF0aWVudDox\") { id records { id diagnosis } } }",
+          "{ patient(id: \"UGF0aWVudDox\") { id records { id diagnosis } } }"
+        ]
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_record_type",
+      "seed": 20261111,
+      "requests": 400,
+      "expected_repair": "Protect type `Record` as owned (ownership key `Record`)",
+      "fault_impact": 142,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `Record` as owned (ownership key `Record`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `Record` as owned (ownership key `Record`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 141,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 45,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 24,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "mutation { updateRecord(id: \"UmVjb3JkOjMx\", diagnosis: \"updated\") { id } }",
+          "{ record(id: \"UmVjb3JkOjEx\") { id diagnosis } }",
+          "{ record(id: \"UmVjb3JkOjMx\") { id diagnosis } }"
+        ]
+      }
+    },
+    {
+      "app": "clinic",
+      "fault": "missing_prescription_type",
+      "seed": 20261111,
+      "requests": 400,
+      "expected_repair": "Protect type `Prescription` as owned (ownership key `Prescription`)",
+      "fault_impact": 29,
+      "proposed": 1,
+      "verified": 1,
+      "first_verified": "Protect type `Prescription` as owned (ownership key `Prescription`)",
+      "first_is_expected": true,
+      "expected_rank_among_verified": 1,
+      "decoys": 1,
+      "decoys_rejected": 1,
+      "rounds": 1,
+      "applied": [
+        "Protect type `Prescription` as owned (ownership key `Prescription`)"
+      ],
+      "differences_after_repair": 0,
+      "restored": true,
+      "explanations": [
+        "relationship_traversal",
+        "relationship_traversal",
+        "relationship_traversal"
+      ],
+      "first_verification": {
+        "verified": true,
+        "replayed_requests": 136,
+        "gaps_closed": 0,
+        "attacks_blocked_earlier": 0,
+        "owners_unblocked": 0,
+        "non_owners_still_denied": 0,
+        "objects_newly_checked": 13,
+        "owner_lookup_resolution": 1.0,
+        "exposures_found": 8,
+        "false_blocks": 0,
+        "key_used_by": null,
+        "examples_now_blocked": [
+          "{ prescription(id: \"UHJlc2NyaXB0aW9uOjMxMQ==\") { id drug } }",
+          "{ prescription(id: \"UHJlc2NyaXB0aW9uOjExMg==\") { id drug } }",
+          "{ prescription(id: \"UHJlc2NyaXB0aW9uOjExMQ==\") { id drug } }"
+        ]
+      }
+    }
+  ]
+}
