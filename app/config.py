@@ -36,6 +36,15 @@ class Settings(BaseSettings):
     MAX_QUERY_TOKENS: int = 2000
     ENABLE_INTROSPECTION: bool = True
 
+    # Account protection (app/core/accounts.py).
+    ACCESS_TOKEN_MINUTES: int = 60
+    # Wrong passwords for one username, or from one client address, within the window
+    # lock that username or address for LOGIN_LOCK_SECONDS.
+    LOGIN_MAX_FAILURES: int = 5
+    LOGIN_IP_MAX_FAILURES: int = 20
+    LOGIN_WINDOW_SECONDS: int = 900
+    LOGIN_LOCK_SECONDS: int = 900
+
     # Pydantic v2 configuration replaces the deprecated inner Config class.
     model_config = SettingsConfigDict(
         env_file=".env",

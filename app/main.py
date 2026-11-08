@@ -5,18 +5,20 @@ import sqlite3
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
 
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from strawberry.fastapi import GraphQLRouter
 
 from app.config import check_production_settings, settings
-from app.database import init_db, get_db
+from app.database import init_db, get_db, get_db_connection
 from app.graphql.schema import schema
 from app.core.security import create_access_token
 from app.core.dependencies import get_current_user, get_optional_user, is_admin
-from app.core.passwords import verify_password
+from app.core.accounts import (LoginBlocked, authenticate, change_password, check_not_locked,
+                               check_production_accounts, end_all_sessions, record_failure, record_success,
+                               revoke_token)
 from app.security.taint_request_explainer import router as taint_explainer_router
 from app.security.enforcement import bola_enforcement_middleware
 from app.security.layers import layer_summary, set_layers
@@ -33,6 +35,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     """Initialize application resources when FastAPI starts."""
     check_production_settings()
     init_db()
+    check_production_accounts()
     init_clinic()
     warn_about_config(default_config())
     warn_about_config(CLINIC_CONFIG)
@@ -71,27 +74,81 @@ class LoginRequest(BaseModel):
 
 
 @app.post("/api/v1/auth/login")
-def login(request: LoginRequest, db: sqlite3.Connection = Depends(get_db)):
-    """Development login endpoint. Demo passwords follow <username>123."""
-    user = db.execute(
-        "SELECT id, role, password_hash FROM users WHERE username = ?",
-        (request.username.strip().lower(),),
-    ).fetchone()
+def login(request: LoginRequest, http_request: Request):
+    """Sign in. Demo passwords follow <username>123.
 
-    if not user or not verify_password(request.password, user["password_hash"]):
+    Repeated failures lock the username, or the client address, for a while; a locked
+    sign-in is refused before the password is checked (HTTP 429)."""
+    client = http_request.client.host if http_request.client else None
+    try:
+        check_not_locked(request.username, client)
+    except LoginBlocked as blocked:
+        raise HTTPException(status_code=429, detail="Too many failed sign-ins. Try again later.",
+                            headers={"Retry-After": str(blocked.retry_after)})
+    user = authenticate(request.username, request.password)
+
+    if user is None:
+        record_failure(request.username, client)
         # The client gets one generic message; the server log says why, so a
         # failed sign-in can be diagnosed. The password itself is never logged.
         logger.warning(
             "Login failed for username %r: %s (password length %d%s)",
             request.username,
-            "unknown username" if not user else "wrong password",
+            "unknown username or wrong password",
             len(request.password),
             ", has leading/trailing spaces" if request.password != request.password.strip() else "",
         )
         raise HTTPException(status_code=401, detail="Invalid username or password")
 
+    record_success(request.username)
     access_token = create_access_token(user_id=user["id"], role=user["role"])
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+
+
+@app.post("/api/v1/auth/logout")
+def logout(current_user: dict = Depends(get_current_user)):
+    """End this session: the token stops working now, not when it expires."""
+    revoke_token(current_user)
+    return {"logged_out": True}
+
+
+@app.post("/api/v1/auth/logout-all")
+def logout_all(current_user: dict = Depends(get_current_user)):
+    """End every session of this account, on every device."""
+    end_all_sessions(current_user["user_id"])
+    return {"logged_out_everywhere": True}
+
+
+@app.post("/api/v1/auth/change-password")
+def change_password_route(body: ChangePasswordRequest, http_request: Request,
+                          current_user: dict = Depends(get_current_user)):
+    """Change the password. Needs the current one, enforces the password policy, and
+    ends every other session; the response carries a fresh token for this one."""
+    conn = get_db_connection()
+    try:
+        username = conn.execute("SELECT username FROM users WHERE id = ?", (current_user["user_id"],)).fetchone()["username"]
+    finally:
+        conn.close()
+    client = http_request.client.host if http_request.client else None
+    try:
+        check_not_locked(username, client)
+    except LoginBlocked as blocked:
+        raise HTTPException(status_code=429, detail="Too many failed attempts. Try again later.",
+                            headers={"Retry-After": str(blocked.retry_after)})
+    problems = change_password(current_user["user_id"], body.current_password, body.new_password)
+    if problems == ["current password is wrong"]:
+        record_failure(username, client)
+        raise HTTPException(status_code=401, detail="Current password is wrong")
+    if problems:
+        raise HTTPException(status_code=400, detail={"message": "Password too weak", "problems": problems})
+    record_success(username)
+    return {"access_token": create_access_token(user_id=current_user["user_id"], role=current_user["role"]),
+            "token_type": "bearer"}
 
 
 @app.get("/api/v1/protected")

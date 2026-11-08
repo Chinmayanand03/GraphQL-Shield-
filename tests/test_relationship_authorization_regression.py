@@ -85,7 +85,7 @@ def test_protected_children_filters_foreign_owned_child_but_keeps_owned_children
 
 
 def test_admin_can_still_read_foreign_owned_child(relationship_client):
-    token = create_access_token(user_id=103, role="admin")
+    token = create_access_token(user_id=104, role="admin")
     response = relationship_client.post(
         "/graphql",
         json={"query": RELATIONSHIP_QUERY},

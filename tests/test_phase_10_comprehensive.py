@@ -57,7 +57,7 @@ def test_06_user_accessing_another_users_object():
     assert res.status_code in (401, 403)
 
 def test_07_admin_access():
-    token = create_access_token(user_id=103, role="admin")
+    token = create_access_token(user_id=104, role="admin")
     query = "{ resource(id: 102) { name } }"
     res = client.post("/graphql", json={"query": query}, headers={"Authorization": f"Bearer {token}"})
     assert res.status_code == 200

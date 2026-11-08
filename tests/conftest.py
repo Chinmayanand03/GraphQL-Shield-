@@ -26,6 +26,26 @@ def pytest_sessionstart(session):
     init_clinic()
 
 
+import pytest
+
+
+@pytest.fixture(autouse=True)
+def _fresh_sign_in_counters():
+    """Every test starts with no failed sign-ins recorded, so lockouts from one test
+    (or an earlier run) never leak into another."""
+    from app.database import get_db_connection
+
+    conn = get_db_connection()
+    try:
+        conn.execute("DELETE FROM login_attempts")
+        conn.commit()
+    except Exception:
+        pass
+    finally:
+        conn.close()
+    yield
+
+
 def pytest_runtest_logreport(report):
     # A test fails if any phase fails; it passes only when its call phase passes.
     if report.failed:

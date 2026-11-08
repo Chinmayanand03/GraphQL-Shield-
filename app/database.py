@@ -172,6 +172,10 @@ def init_db():
 
     _upgrade_legacy_password_hashes(cursor)
 
+    from app.core.accounts import init_account_tables
+
+    init_account_tables(cursor)
+
     conn.commit()
     conn.close()
 

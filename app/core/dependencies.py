@@ -1,6 +1,7 @@
 import jwt
 from fastapi import HTTPException, Security
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from app.core.accounts import SessionInvalid, validate_session
 from app.core.security import verify_token
 
 security = HTTPBearer()
@@ -14,11 +15,16 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Security(securi
     token = credentials.credentials
     try:
         payload = verify_token(token)
-        return payload
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token has expired")
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Invalid token")
+    # The signature only proves the server issued the token. The account must still
+    # exist, the session must not have been ended, and the role is read fresh.
+    try:
+        return validate_session(payload)
+    except SessionInvalid:
+        raise HTTPException(status_code=401, detail="Session ended. Please sign in again.")
 
 
 def get_optional_user(credentials: HTTPAuthorizationCredentials | None = Security(optional_security)):
@@ -26,8 +32,8 @@ def get_optional_user(credentials: HTTPAuthorizationCredentials | None = Securit
     if credentials is None:
         return None
     try:
-        return verify_token(credentials.credentials)
-    except jwt.InvalidTokenError:
+        return validate_session(verify_token(credentials.credentials))
+    except (jwt.InvalidTokenError, SessionInvalid):
         return None
 
 

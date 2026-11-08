@@ -3,7 +3,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
 [![Strawberry GraphQL](https://img.shields.io/badge/GraphQL-Strawberry-e535ab.svg?logo=graphql)](https://strawberry.rocks/)
-[![Tests Passing](https://img.shields.io/badge/tests-392%20passed-brightgreen.svg)]()
+[![Tests Passing](https://img.shields.io/badge/tests-414%20passed-brightgreen.svg)]()
 [![Security Standard](https://img.shields.io/badge/OWASP-API1%3A2023%20BOLA-red.svg)](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -220,6 +220,21 @@ ENABLE_LAYER_TOGGLE=true
 ```
 
 Every GraphQL operation is also limited by `MAX_QUERY_DEPTH` (10), `MAX_QUERY_ALIASES` (15), `MAX_QUERY_TOKENS` (2000) and `MAX_BATCH_OPERATIONS` (5). Set `ENABLE_INTROSPECTION=false` to disable schema introspection.
+
+### Account protection
+GraphQL-Shield stops one user reaching another user's objects. `app/core/accounts.py` also stops someone taking over the account itself:
+
+| Attack | Protection |
+| :--- | :--- |
+| Guessing a password | 5 wrong passwords for a username within 15 minutes lock it for 15 minutes (HTTP 429, even for the right password). 20 failures from one address block that address. Unknown usernames are locked the same way. |
+| Finding out which usernames exist | Wrong password and unknown username get the same reply, and take the same time (an unknown username is checked against a dummy hash). |
+| Editing a token (another user ID, or `admin`) | The signature check rejects it. |
+| A token that should no longer work | Every request checks the database: the account must still exist, and the token must not be logged out or from before a password change. The role is read from the database, never from the token, so removing a role takes effect at once. |
+| A stolen session | `POST /api/v1/auth/logout` ends that token; `POST /api/v1/auth/logout-all` ends every session of the account. |
+| Weak passwords | `POST /api/v1/auth/change-password` needs the current password and refuses passwords under 12 characters, containing the username, common ones, or with too few different characters. It ends every other session. Wrong current passwords count towards the lockout. |
+| Demo passwords in production | With `ENVIRONMENT=production` the server refuses to start while any account still has its demo password. |
+
+Limits are set by `LOGIN_MAX_FAILURES`, `LOGIN_IP_MAX_FAILURES`, `LOGIN_WINDOW_SECONDS`, `LOGIN_LOCK_SECONDS` and `ACCESS_TOKEN_MINUTES`. Locked yourself out during a demo? Run `python -m scripts.unlock_sign_in <username>` (or `--all`). Tested in `tests/test_account_security.py`. Not included: two-factor authentication, and HTTPS, which a real deployment must add in front of the server.
 
 ---
 
@@ -501,7 +516,7 @@ python -m pytest -v
 
 Expected output:
 ```text
-388 passed, 4 skipped   (the 4 Graphene tests run in their own environment, see "Other frameworks")
+410 passed, 4 skipped   (the 4 Graphene tests run in their own environment, see "Other frameworks")
 ```
 
 ---
@@ -555,7 +570,7 @@ GraphQL-Shield/
 ├── evaluation/               # Tracked results: fault injection, latency, scaling
 ├── paper/                    # IEEE paper source (LaTeX)
 ├── scripts/                  # Benchmarking, training, and fault-injection scripts
-├── tests/                    # 392 unit, integration, property and security tests
+├── tests/                    # 414 unit, integration, property and security tests
 ├── requirements.txt
 └── README.md
 ```

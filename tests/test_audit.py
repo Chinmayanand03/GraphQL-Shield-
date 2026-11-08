@@ -64,7 +64,7 @@ def test_audit_log_endpoint():
     assert res.status_code == 403
     
     # Attempt as admin -> 200
-    admin_token = create_access_token(user_id=103, role="admin")
+    admin_token = create_access_token(user_id=104, role="admin")
     res2 = client.get("/api/v1/audit-logs", headers={"Authorization": f"Bearer {admin_token}"})
     assert res2.status_code == 200
     assert "logs" in res2.json()

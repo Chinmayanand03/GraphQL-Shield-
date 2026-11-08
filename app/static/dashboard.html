@@ -1661,7 +1661,7 @@
             body: JSON.stringify({username, password}), cache:'no-store'
           });
           const loginPayload = await loginResponse.json().catch(() => ({}));
-          if (!loginResponse.ok || !loginPayload.access_token) throw new Error(`Login failed (HTTP ${loginResponse.status})`);
+          if (!loginResponse.ok || !loginPayload.access_token) throw new Error(loginFailureMessage(loginResponse));
           setAdminToken(loginPayload.access_token);
           showToast('Signed in as admin.');
           await refresh({quiet:true});
@@ -1881,6 +1881,15 @@
       const REQUEST_LABELS = {own_lookup: 'Own lookup', own_relationship: 'Relationship', own_update: 'Own update'};
 
       const ms = (value) => Number(value + 1e-9).toFixed(1);
+
+      function loginFailureMessage(response) {
+        if (response.status === 429) {
+          const wait = Number(response.headers.get('Retry-After')) || 0;
+          const minutes = Math.max(1, Math.ceil(wait / 60));
+          return `Too many failed sign-ins: this account or address is locked for about ${minutes} minute${minutes === 1 ? '' : 's'}.`;
+        }
+        return `Login failed (HTTP ${response.status}). Check the username and password.`;
+      }
 
       function textCell(text, className) {
         const td = document.createElement('td'); td.textContent = text; if (className) td.className = className; return td;
@@ -2402,6 +2411,11 @@
       }
 
       function consoleLogout() {
+        // End the session on the server too, so the token stops working everywhere,
+        // not only in this tab.
+        if (consoleSession.token) {
+          fetch('/api/v1/auth/logout', {method: 'POST', headers: {'Authorization': `Bearer ${consoleSession.token}`}, cache: 'no-store'}).catch(() => {});
+        }
         Object.assign(consoleSession, {username: null, token: null, userId: null, role: null});
         renderConsoleSession();
       }
@@ -2418,7 +2432,7 @@
         });
         const payload = await response.json().catch(() => ({}));
         $('testPassword').value = '';
-        if (!response.ok || !payload.access_token) throw new Error(`Login failed (HTTP ${response.status}). Check the username and password.`);
+        if (!response.ok || !payload.access_token) throw new Error(loginFailureMessage(response));
         const claims = decodeJwtClaims(payload.access_token);
         Object.assign(consoleSession, {username, token: payload.access_token, userId: claims.user_id, role: claims.role});
         renderConsoleSession();
