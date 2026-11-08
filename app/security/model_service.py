@@ -24,21 +24,10 @@ from scripts.train_behavioral_xgboost import rule_behavioral_score
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_MODEL_PATH = (
-    Path(__file__).resolve().parents[2]
-    / "results"
-    / "research_benchmark"
-    / "behavioral_xgboost"
-    / "behavioral_xgboost_model.json"
-)
-
-DEFAULT_METRICS_PATH = (
-    Path(__file__).resolve().parents[2]
-    / "results"
-    / "research_benchmark"
-    / "behavioral_xgboost"
-    / "evaluation_metrics.json"
-)
+# Tracked in git (results/ is not), so a fresh clone can load the model.
+MODEL_DIR = Path(__file__).resolve().parents[1] / "models" / "behavioral"
+DEFAULT_MODEL_PATH = MODEL_DIR / "behavioral_xgboost_model.json"
+DEFAULT_METRICS_PATH = MODEL_DIR / "evaluation_metrics.json"
 
 # Global cached model instance (loaded on-demand, never retrained on startup)
 _cached_model: XGBClassifier | None = None

@@ -7,6 +7,11 @@ empty panels. This keeps a small, tracked summary of:
   - the graphql-shield comparison (scripts/run_tool_comparison.py)
   - latency with and without connection pooling (scripts/run_latency_benchmark.py)
   - the multi-seed blind-spot evaluation (scripts/run_blind_spot_seeds.py)
+  - fault injection into Layer 1         (scripts/run_fault_injection.py)
+  - latency as responses grow            (scripts/run_scaling_benchmark.py)
+
+Each result is read from the tracked evaluation/ folder when it is there, and
+from results/ otherwise.
 
     python -m scripts.build_dashboard_results
 """
@@ -18,16 +23,34 @@ from datetime import datetime, timezone
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 RESULTS = os.path.join(ROOT, "results")
+EVALUATION = os.path.join(ROOT, "evaluation")
+
+# results/ path -> its tracked copy in evaluation/
+TRACKED = {
+    ("layer_ablation", "results.json"): "layer_ablation.json",
+    ("tool_comparison", "results.json"): "tool_comparison.json",
+    ("latency", "latency_pooled.json"): "latency_pooled.json",
+    ("latency", "latency_no_pool.json"): "latency_no_pool.json",
+    ("blind_spot", "seeds.json"): "blind_spot_seeds.json",
+}
 OUTPUT = os.path.join(ROOT, "app", "models", "research_results.json")
 
 
-def _load(*parts):
-    path = os.path.join(RESULTS, *parts)
+def _read(path):
     try:
         with open(path, encoding="utf-8") as file:
             return json.load(file)
     except (OSError, ValueError):
         return None
+
+
+def _load(*parts):
+    tracked = TRACKED.get(parts)
+    if tracked:
+        data = _read(os.path.join(EVALUATION, tracked))
+        if data:
+            return data
+    return _read(os.path.join(RESULTS, *parts))
 
 
 def ablation():
@@ -87,6 +110,35 @@ def seeds():
     }
 
 
+def fault_injection():
+    data = _read(os.path.join(EVALUATION, "fault_injection.json"))
+    if not data:
+        return None
+    faults = {}
+    for name, fault in data["faults"].items():
+        if name == "none":
+            continue
+        faults[name] = {
+            "expected_features": fault["expected_features"],
+            "residual_gaps": fault["residual_gaps"],
+            "seeds_with_evidence": fault["seeds_with_evidence"],
+            "f1": {method: value["mean"] for method, value in fault["f1"].items()},
+            "localised_top1": {method: value["top1"] for method, value in fault["localisation"].items()},
+        }
+    control = data["faults"].get("none", {})
+    return {"generated_at": data["generated_at"], "seeds": len(data["seeds"]), "overall": data["overall"],
+            "control_seeds_with_evidence": control.get("seeds_with_evidence"), "faults": faults}
+
+
+def scaling():
+    data = _read(os.path.join(EVALUATION, "latency_scaling.json"))
+    if not data:
+        return None
+    return {"generated_at": data["generated_at"], "method": data["method"], "foreign_share": data["foreign_share"],
+            "rows": [{"children": int(size), **{k: v["mean_ms"] for k, v in row.items()}}
+                     for size, row in data["results"].items()]}
+
+
 def main() -> None:
     report = {
         "built_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -94,6 +146,8 @@ def main() -> None:
         "tool_comparison": comparison(),
         "latency": latency(),
         "blind_spot_seeds": seeds(),
+        "fault_injection": fault_injection(),
+        "scaling": scaling(),
     }
     with open(OUTPUT, "w", encoding="utf-8") as file:
         json.dump(report, file, indent=1)

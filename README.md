@@ -363,6 +363,8 @@ python scripts/generate_behavioral_dataset.py
 python scripts/train_behavioral_xgboost.py
 ```
 
+The trained model is stored in `app/models/behavioral/` (tracked in git), so the dashboard can load it on a fresh clone.
+
 ---
 
 ## Research Evaluation

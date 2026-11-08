@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-07T10:19:21+00:00",
+ "built_at": "2026-11-08T10:36:48+00:00",
  "ablation": {
   "generated_at": "2026-11-07T09:57:35.610553+00:00",
   "scenarios": [
@@ -66,12 +66,14 @@
   ]
  },
  "tool_comparison": {
-  "generated_at": "2026-11-07T09:58:11.703630+00:00",
+  "generated_at": "2026-11-08T10:36:33.366020+00:00",
   "configuration_size": {
    "GraphQL Shield": {
     "owned_types": 2,
     "mutation_registry_entries": 3,
-    "mutation_entries_not_derivable_from_schema": 1
+    "mutation_entries_not_derivable_from_schema": 1,
+    "aggregate_fields": 1,
+    "owner_lookup_functions": 1
    },
    "graphql-shield": {
     "permission_entries": 8,
@@ -443,6 +445,448 @@
    "relationship_field_count",
    "relationship_field_count",
    "relationship_field_count"
+  ]
+ },
+ "fault_injection": {
+  "generated_at": "2026-11-06T19:04:15.821270+00:00",
+  "seeds": 5,
+  "overall": {
+   "faults": 17,
+   "faults_with_a_naming_feature": 14,
+   "detected_by_evidence_alone": 17,
+   "mean_f1": {
+    "decision_tree_structural": 0.9574,
+    "evidence_rule": 0.9664,
+    "logistic_structural": 0.9679,
+    "relationship_rule": 0.6612,
+    "xgboost_all_features": 0.9775,
+    "xgboost_structural": 0.9668
+   },
+   "localisation_over_all_faults": {
+    "lift": {
+     "top1": 0.7647,
+     "top3": 0.7647
+    },
+    "decision_tree": {
+     "top1": 0.7882,
+     "top3": 0.8235
+    },
+    "logistic": {
+     "top1": 0.8235,
+     "top3": 0.8235
+    },
+    "xgboost": {
+     "top1": 0.8235,
+     "top3": 0.8235
+    }
+   },
+   "localisation_over_nameable_faults": {
+    "lift": {
+     "top1": 0.9286,
+     "top3": 0.9286
+    },
+    "decision_tree": {
+     "top1": 0.9571,
+     "top3": 1.0
+    },
+    "logistic": {
+     "top1": 1.0,
+     "top3": 1.0
+    },
+    "xgboost": {
+     "top1": 1.0,
+     "top3": 1.0
+    }
+   }
+  },
+  "control_seeds_with_evidence": 0,
+  "faults": {
+   "aliased_fields_skipped": {
+    "expected_features": [
+     "alias_count"
+    ],
+    "residual_gaps": 140.4,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.6438,
+     "evidence_rule": 0.9653,
+     "decision_tree_structural": 0.9566,
+     "logistic_structural": 0.9641,
+     "xgboost_structural": 0.9627,
+     "xgboost_all_features": 0.9615
+    },
+    "localised_top1": {
+     "lift": 1.0,
+     "decision_tree": 1.0,
+     "logistic": 1.0,
+     "xgboost": 1.0
+    }
+   },
+   "directive_fields_skipped": {
+    "expected_features": [
+     "directive_count"
+    ],
+    "residual_gaps": 102,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.7632,
+     "evidence_rule": 0.9834,
+     "decision_tree_structural": 0.9819,
+     "logistic_structural": 0.9834,
+     "xgboost_structural": 0.9809,
+     "xgboost_all_features": 0.9809
+    },
+    "localised_top1": {
+     "lift": 1.0,
+     "decision_tree": 1.0,
+     "logistic": 1.0,
+     "xgboost": 1.0
+    }
+   },
+   "first_batch_operation_only": {
+    "expected_features": [
+     "batch_size"
+    ],
+    "residual_gaps": 92.2,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.7325,
+     "evidence_rule": 0.7325,
+     "decision_tree_structural": 0.9713,
+     "logistic_structural": 0.9726,
+     "xgboost_structural": 0.9697,
+     "xgboost_all_features": 0.9697
+    },
+    "localised_top1": {
+     "lift": 0.0,
+     "decision_tree": 1.0,
+     "logistic": 1.0,
+     "xgboost": 1.0
+    }
+   },
+   "first_nested_selection_only": {
+    "expected_features": [
+     "max_depth",
+     "nested_id_lookup_count"
+    ],
+    "residual_gaps": 228,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.6032,
+     "evidence_rule": 0.9726,
+     "decision_tree_structural": 0.9684,
+     "logistic_structural": 0.9725,
+     "xgboost_structural": 0.9675,
+     "xgboost_all_features": 0.9675
+    },
+    "localised_top1": {
+     "lift": 1.0,
+     "decision_tree": 1.0,
+     "logistic": 1.0,
+     "xgboost": 1.0
+    }
+   },
+   "first_operation_only": {
+    "expected_features": [],
+    "residual_gaps": 103.4,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.728,
+     "evidence_rule": 0.9806,
+     "decision_tree_structural": 0.7772,
+     "logistic_structural": 0.9586,
+     "xgboost_structural": 0.9555,
+     "xgboost_all_features": 0.98
+    },
+    "localised_top1": {
+     "lift": 0.0,
+     "decision_tree": 0.0,
+     "logistic": 0.0,
+     "xgboost": 0.0
+    }
+   },
+   "first_root_field_only": {
+    "expected_features": [],
+    "residual_gaps": 89.6,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.7682,
+     "evidence_rule": 0.9721,
+     "decision_tree_structural": 0.9101,
+     "logistic_structural": 0.9366,
+     "xgboost_structural": 0.931,
+     "xgboost_all_features": 0.9656
+    },
+    "localised_top1": {
+     "lift": 0.0,
+     "decision_tree": 0.0,
+     "logistic": 0.0,
+     "xgboost": 0.0
+    }
+   },
+   "mutation_targets_skipped": {
+    "expected_features": [
+     "is_mutation"
+    ],
+    "residual_gaps": 256.2,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.4682,
+     "evidence_rule": 0.9975,
+     "decision_tree_structural": 0.9975,
+     "logistic_structural": 0.9975,
+     "xgboost_structural": 0.9975,
+     "xgboost_all_features": 0.9975
+    },
+    "localised_top1": {
+     "lift": 1.0,
+     "decision_tree": 1.0,
+     "logistic": 1.0,
+     "xgboost": 1.0
+    }
+   },
+   "no_defaults_in_mutations": {
+    "expected_features": [
+     "is_mutation",
+     "variable_default_count"
+    ],
+    "residual_gaps": 78.8,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.735,
+     "evidence_rule": 0.9956,
+     "decision_tree_structural": 0.9956,
+     "logistic_structural": 0.9956,
+     "xgboost_structural": 0.9956,
+     "xgboost_all_features": 0.9956
+    },
+    "localised_top1": {
+     "lift": 1.0,
+     "decision_tree": 1.0,
+     "logistic": 1.0,
+     "xgboost": 1.0
+    }
+   },
+   "no_fragment_spreads": {
+    "expected_features": [
+     "fragment_spread_count"
+    ],
+    "residual_gaps": 206.8,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.5987,
+     "evidence_rule": 0.9754,
+     "decision_tree_structural": 0.9754,
+     "logistic_structural": 0.9702,
+     "xgboost_structural": 0.9713,
+     "xgboost_all_features": 0.9713
+    },
+    "localised_top1": {
+     "lift": 1.0,
+     "decision_tree": 1.0,
+     "logistic": 1.0,
+     "xgboost": 1.0
+    }
+   },
+   "no_inline_fragments": {
+    "expected_features": [
+     "inline_fragment_count"
+    ],
+    "residual_gaps": 206.6,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.6145,
+     "evidence_rule": 0.9789,
+     "decision_tree_structural": 0.9796,
+     "logistic_structural": 0.9797,
+     "xgboost_structural": 0.9753,
+     "xgboost_all_features": 0.9753
+    },
+    "localised_top1": {
+     "lift": 1.0,
+     "decision_tree": 1.0,
+     "logistic": 1.0,
+     "xgboost": 1.0
+    }
+   },
+   "no_nested_fragment_spreads": {
+    "expected_features": [
+     "fragment_spread_count"
+    ],
+    "residual_gaps": 103.2,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.7383,
+     "evidence_rule": 0.9842,
+     "decision_tree_structural": 0.9751,
+     "logistic_structural": 0.9783,
+     "xgboost_structural": 0.9796,
+     "xgboost_all_features": 0.9782
+    },
+    "localised_top1": {
+     "lift": 1.0,
+     "decision_tree": 1.0,
+     "logistic": 1.0,
+     "xgboost": 1.0
+    }
+   },
+   "no_untyped_inline_fragments": {
+    "expected_features": [
+     "inline_fragment_count"
+    ],
+    "residual_gaps": 102.2,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.7398,
+     "evidence_rule": 0.9813,
+     "decision_tree_structural": 0.8839,
+     "logistic_structural": 0.8541,
+     "xgboost_structural": 0.8497,
+     "xgboost_all_features": 0.9732
+    },
+    "localised_top1": {
+     "lift": 1.0,
+     "decision_tree": 1.0,
+     "logistic": 1.0,
+     "xgboost": 1.0
+    }
+   },
+   "no_variable_defaults": {
+    "expected_features": [
+     "variable_default_count"
+    ],
+    "residual_gaps": 232.4,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.594,
+     "evidence_rule": 0.9768,
+     "decision_tree_structural": 0.976,
+     "logistic_structural": 0.9768,
+     "xgboost_structural": 0.9742,
+     "xgboost_all_features": 0.9759
+    },
+    "localised_top1": {
+     "lift": 1.0,
+     "decision_tree": 1.0,
+     "logistic": 1.0,
+     "xgboost": 1.0
+    }
+   },
+   "no_variables": {
+    "expected_features": [
+     "variable_count"
+    ],
+    "residual_gaps": 480.2,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.4539,
+     "evidence_rule": 0.9792,
+     "decision_tree_structural": 0.9778,
+     "logistic_structural": 0.9792,
+     "xgboost_structural": 0.977,
+     "xgboost_all_features": 0.9755
+    },
+    "localised_top1": {
+     "lift": 1.0,
+     "decision_tree": 1.0,
+     "logistic": 1.0,
+     "xgboost": 1.0
+    }
+   },
+   "root_fields_only": {
+    "expected_features": [
+     "max_depth",
+     "nested_id_lookup_count"
+    ],
+    "residual_gaps": 228,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.6032,
+     "evidence_rule": 0.9726,
+     "decision_tree_structural": 0.9684,
+     "logistic_structural": 0.9725,
+     "xgboost_structural": 0.9675,
+     "xgboost_all_features": 0.9675
+    },
+    "localised_top1": {
+     "lift": 1.0,
+     "decision_tree": 1.0,
+     "logistic": 1.0,
+     "xgboost": 1.0
+    }
+   },
+   "root_fragment_spreads_only": {
+    "expected_features": [
+     "fragment_spread_count",
+     "nested_id_lookup_count"
+    ],
+    "residual_gaps": 66.4,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.8318,
+     "evidence_rule": 0.9824,
+     "decision_tree_structural": 0.9824,
+     "logistic_structural": 0.9645,
+     "xgboost_structural": 0.9822,
+     "xgboost_all_features": 0.9837
+    },
+    "localised_top1": {
+     "lift": 1.0,
+     "decision_tree": 0.4,
+     "logistic": 1.0,
+     "xgboost": 1.0
+    }
+   },
+   "user_type_skipped": {
+    "expected_features": [],
+    "residual_gaps": 144.2,
+    "seeds_with_evidence": 5,
+    "f1": {
+     "relationship_rule": 0.6233,
+     "evidence_rule": 0.9987,
+     "decision_tree_structural": 0.9987,
+     "logistic_structural": 0.9987,
+     "xgboost_structural": 0.9987,
+     "xgboost_all_features": 0.9987
+    },
+    "localised_top1": {
+     "lift": 0.0,
+     "decision_tree": 0.0,
+     "logistic": 0.0,
+     "xgboost": 0.0
+    }
+   }
+  }
+ },
+ "scaling": {
+  "generated_at": "2026-11-07T10:02:36.231837+00:00",
+  "method": "in-process TestClient; 10 warm-up, 5 repeats x 40 requests; 95% CI across repeats",
+  "foreign_share": 0.1,
+  "rows": [
+   {
+    "children": 1,
+    "unprotected": 14.485,
+    "batched": 20.16,
+    "one_by_one": 20.489
+   },
+   {
+    "children": 10,
+    "unprotected": 15.42,
+    "batched": 22.995,
+    "one_by_one": 24.687
+   },
+   {
+    "children": 50,
+    "unprotected": 16.595,
+    "batched": 32.592,
+    "one_by_one": 47.86
+   },
+   {
+    "children": 200,
+    "unprotected": 28.022,
+    "batched": 73.545,
+    "one_by_one": 127.503
+   }
   ]
  }
 }

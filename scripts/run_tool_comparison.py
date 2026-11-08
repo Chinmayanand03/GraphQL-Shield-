@@ -231,7 +231,8 @@ def main() -> None:
         "scenarios": [{"name": s["name"], "kind": s["kind"]} for s in SCENARIOS],
         "configuration_size": {
             "GraphQL Shield": {"owned_types": len(config.owned_types), "mutation_registry_entries": len(config.mutation_targets),
-                               "mutation_entries_not_derivable_from_schema": 1},
+                               "mutation_entries_not_derivable_from_schema": 1,
+                               "aggregate_fields": len(config.aggregate_fields), "owner_lookup_functions": 1},
             "graphql-shield": {"permission_entries": len(NODE_RULES), "rule_functions": 4},
         },
         "systems": {name: {variant: {**summarize(rows), "rows": rows} for variant, rows in variants.items()}

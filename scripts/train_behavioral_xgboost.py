@@ -130,7 +130,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--output-dir",
-        default="results/research_benchmark/behavioral_xgboost",
+        default="app/models/behavioral",
         help="Directory to save model artifact and evaluation report.",
     )
     parser.add_argument(

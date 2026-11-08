@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-07T09:58:11.703630+00:00",
+  "generated_at": "2026-11-08T10:36:33.366020+00:00",
   "scenarios": [
     {
       "name": "direct",
@@ -78,7 +78,9 @@
     "GraphQL Shield": {
       "owned_types": 2,
       "mutation_registry_entries": 3,
-      "mutation_entries_not_derivable_from_schema": 1
+      "mutation_entries_not_derivable_from_schema": 1,
+      "aggregate_fields": 1,
+      "owner_lookup_functions": 1
     },
     "graphql-shield": {
       "permission_entries": 8,

@@ -525,6 +525,9 @@
     .lat-bar span { position: absolute; left: calc(100% + 8px); white-space: nowrap; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
     .lat-bar.before { background: #3a4a63; }
     .lat-bar.after { background: var(--cyan); }
+    .lat-bar.base { background: #6b7a90; }
+    .fi-method-best { color: var(--green); font-weight: 600; }
+    .fi-miss { color: var(--amber); }
     .lat-ci { position: absolute; top: 50%; height: 2px; background: var(--text); opacity: .8; }
     .lat-legend { display: flex; gap: 16px; font-size: 12px; color: var(--muted); }
     .lat-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
@@ -832,7 +835,7 @@
               <span class="research-status-pill loaded" id="modelStatusPill"><span class="status-dot"></span><span id="modelStatusText">Loading XGBoost Model…</span></span>
             </div>
             <div style="font-size:11px; color:var(--muted);">
-              Artifact: <code id="modelPathText" style="color:var(--cyan); font-size:10px;">results/research_benchmark/behavioral_xgboost/behavioral_xgboost_model.json</code>
+              Artifact: <code id="modelPathText" style="color:var(--cyan); font-size:10px;">app/models/behavioral/behavioral_xgboost_model.json</code>
             </div>
           </div>
 
@@ -1075,13 +1078,33 @@
             </div>
             <div class="evidence-block">
               <div class="panel-title" style="font-size:14px;">Latency per protected request</div>
-              <div class="panel-subtitle">Both layers on, in-process, 5 × 200 requests; bars show the mean, the line the 95% confidence interval.</div>
+              <div class="panel-subtitle">In-process, 5 × 200 requests per bar; bars show the mean, the line the 95% confidence interval. Overhead is against the unprotected endpoint.</div>
               <div id="latencyChart" class="latency-chart">Loading…</div>
             </div>
             <div class="evidence-block">
               <div class="panel-title" style="font-size:14px;">Blind-spot predictor across random seeds</div>
               <div class="panel-subtitle">Fresh request sets per seed on the fixed Layer 1: the model and the simple rule are equally accurate.</div>
               <div class="table-wrap"><table style="min-width:0"><thead><tr><th>Measure</th><th>Mean ± std</th></tr></thead><tbody id="seedsBody"><tr><td class="empty" colspan="2">Loading…</td></tr></tbody></table></div>
+            </div>
+            <div class="evidence-block wide">
+              <div class="panel-title" style="font-size:14px;">Fault injection: does the cross-layer evidence find Layer 1 bugs?</div>
+              <div class="panel-subtitle">17 realistic bugs planted in Layer 1, each run on 5 seeds of 1,000 requests with Layer 2 on. Detection: did the bug leave evidence? Prediction: which requests does it affect? Localisation: does the top-ranked feature name the broken construct?</div>
+              <div class="mini-stats">
+                <div><span id="fiDetected">—</span><small>bugs detected from the evidence alone</small></div>
+                <div><span id="fiControl">—</span><small>false alarms on the unmodified Layer 1</small></div>
+                <div><span id="fiLocalised">—</span><small>nameable bugs localised first by logistic regression and XGBoost</small></div>
+              </div>
+              <div class="table-wrap"><table style="min-width:0"><thead><tr><th>Method</th><th>Mean F1 (prediction)</th><th>Top-1 localisation (14 nameable)</th><th>Top-1 localisation (all 17)</th></tr></thead><tbody id="fiMethodsBody"><tr><td class="empty" colspan="4">Loading…</td></tr></tbody></table></div>
+              <details>
+                <summary class="console-note" style="cursor:pointer">Per-bug results</summary>
+                <div class="table-wrap"><table style="min-width:0"><thead><tr><th>Injected bug</th><th>Gaps per run</th><th>Evidence rule F1</th><th>Logistic F1</th><th>XGBoost F1</th><th>Localised (XGBoost)</th></tr></thead><tbody id="fiFaultsBody"></tbody></table></div>
+              </details>
+              <p class="console-note">The value is in the evidence, not the model: a one-line rule over it is almost as good, and XGBoost is no better than logistic regression. Three bugs have no feature that names them, so they are detected but cannot be localised.</p>
+            </div>
+            <div class="evidence-block">
+              <div class="panel-title" style="font-size:14px;">Latency as responses grow</div>
+              <div class="panel-subtitle">A folder with N children, one in ten owned by someone else. Layer 2 checks the list one item at a time, or with one batched owner lookup and one audit transaction (current).</div>
+              <div class="table-wrap"><table style="min-width:0"><thead><tr><th>Children</th><th>Unprotected</th><th>One by one</th><th>Batched</th></tr></thead><tbody id="scalingBody"><tr><td class="empty" colspan="4">Loading…</td></tr></tbody></table></div>
             </div>
           </div>
         </section>
@@ -1839,6 +1862,8 @@
       const ABLATION_LABELS = {direct: 'Direct', nested: 'Nested lookup', inline_fragment: 'Inline fragment', relationship: 'Relationship', batch: 'Batch', mutation_update: 'Update mutation'};
       const REQUEST_LABELS = {own_lookup: 'Own lookup', own_relationship: 'Relationship', own_update: 'Own update'};
 
+      const ms = (value) => Number(value + 1e-9).toFixed(1);
+
       function textCell(text, className) {
         const td = document.createElement('td'); td.textContent = text; if (className) td.className = className; return td;
       }
@@ -1875,38 +1900,91 @@
         }));
         const size = data.configuration_size || {};
         const ours = size['GraphQL Shield'] || {}, theirs = size['graphql-shield'] || {};
-        setText('comparisonNote', `Configuration written: GraphQL-Shield ${ours.owned_types} owned types + ${ours.mutation_entries_not_derivable_from_schema} mutation entry the schema cannot supply; graphql-shield ${theirs.permission_entries} permission entries + ${theirs.rule_functions} rule functions. graphql-shield’s failed normal request is GraphQL null propagation hiding the owner’s own folder.`);
+        const ourParts = [`${ours.owned_types} owned types`, `${ours.mutation_entries_not_derivable_from_schema} mutation entry the schema cannot supply`];
+        if (ours.aggregate_fields) ourParts.push(`${ours.aggregate_fields} aggregate field`);
+        if (ours.owner_lookup_functions) ourParts.push(`${ours.owner_lookup_functions} owner-lookup function`);
+        setText('comparisonNote', `Configuration written: GraphQL-Shield ${ourParts.join(', ')}; graphql-shield ${theirs.permission_entries} permission entries + ${theirs.rule_functions} rule functions. graphql-shield’s failed normal request is GraphQL null propagation hiding the owner’s own folder. With one owned type left out of its configuration, GraphQL-Shield leaks up to 9 of 13 attacks; the startup lint warns about that.`);
       }
 
       function renderLatency(data) {
         const max = Math.max(...data.rows.map(r => r.both_layers_no_pool_mean_ms));
         const chart = $('latencyChart');
         chart.replaceChildren();
+        const bar = (className, value, text, title) => {
+          const el = document.createElement('div'); el.className = `lat-bar ${className}`;
+          el.style.width = `${(value / max) * 72}%`; el.title = title;
+          const label = document.createElement('span'); label.textContent = text; el.appendChild(label);
+          return el;
+        };
         for (const r of data.rows) {
-          const pooled = r.both_layers_pooled;
+          const pooled = r.both_layers_pooled, base = r.insecure_pooled_mean_ms;
           const row = document.createElement('div'); row.className = 'lat-row';
           const label = document.createElement('div'); label.textContent = REQUEST_LABELS[r.request] || r.request;
           const bars = document.createElement('div'); bars.className = 'lat-bars';
-          const before = document.createElement('div'); before.className = 'lat-bar before';
-          before.style.width = `${(r.both_layers_no_pool_mean_ms / max) * 78}%`;
-          before.title = `Without pooling: ${r.both_layers_no_pool_mean_ms.toFixed(1)} ms`;
-          const beforeLabel = document.createElement('span'); beforeLabel.textContent = `${r.both_layers_no_pool_mean_ms.toFixed(1)} ms`; before.appendChild(beforeLabel);
-          const after = document.createElement('div'); after.className = 'lat-bar after';
-          after.style.width = `${(pooled.mean_ms / max) * 78}%`;
-          after.title = `With pooling: ${pooled.mean_ms.toFixed(1)} ms, 95% CI ${pooled.ci95_ms[0].toFixed(1)}–${pooled.ci95_ms[1].toFixed(1)}`;
+          const before = bar('before', r.both_layers_no_pool_mean_ms, `${ms(r.both_layers_no_pool_mean_ms)} ms`,
+            `Both layers without pooling: ${ms(r.both_layers_no_pool_mean_ms)} ms`);
+          const overhead = pooled.overhead_pct !== undefined ? Number(pooled.overhead_pct + 1e-9).toFixed(0) : Math.round((pooled.mean_ms / base - 1) * 100);
+          const after = bar('after', pooled.mean_ms,
+            `${ms(pooled.mean_ms)} ms [${ms(pooled.ci95_ms[0])}, ${ms(pooled.ci95_ms[1])}] · +${overhead}%`,
+            `Both layers with pooling: ${ms(pooled.mean_ms)} ms, 95% CI ${ms(pooled.ci95_ms[0])}–${ms(pooled.ci95_ms[1])}; ${(r.both_layers_no_pool_mean_ms / pooled.mean_ms).toFixed(1)}× faster than without pooling`);
           const ci = document.createElement('div'); ci.className = 'lat-ci';
           ci.style.left = `${(pooled.ci95_ms[0] / pooled.mean_ms) * 100}%`;
           ci.style.width = `${((pooled.ci95_ms[1] - pooled.ci95_ms[0]) / pooled.mean_ms) * 100}%`;
-          const afterLabel = document.createElement('span');
-          afterLabel.textContent = `${pooled.mean_ms.toFixed(1)} ms [${pooled.ci95_ms[0].toFixed(1)}, ${pooled.ci95_ms[1].toFixed(1)}] · ${(r.both_layers_no_pool_mean_ms / pooled.mean_ms).toFixed(1)}× faster`;
-          after.append(ci, afterLabel);
-          bars.append(before, after);
+          after.prepend(ci);
+          const unprotected = bar('base', base, `${ms(base)} ms`, `Unprotected endpoint: ${ms(base)} ms`);
+          bars.append(before, after, unprotected);
           row.append(label, bars);
           chart.appendChild(row);
         }
         const legend = document.createElement('div'); legend.className = 'lat-legend';
-        legend.innerHTML = '<span><i style="background:#3a4a63"></i>Without connection pooling</span><span><i style="background:var(--cyan)"></i>With pooling (current)</span>';
+        legend.innerHTML = '<span><i style="background:#3a4a63"></i>Both layers, no pooling</span><span><i style="background:var(--cyan)"></i>Both layers, pooled (current)</span><span><i style="background:#6b7a90"></i>Unprotected</span>';
         chart.appendChild(legend);
+      }
+
+      const FI_METHODS = [
+        ['relationship_rule', 'Relationship rule', null],
+        ['evidence_rule', 'Evidence rule (one line)', null],
+        ['decision_tree_structural', 'Decision tree', 'decision_tree'],
+        ['logistic_structural', 'Logistic regression', 'logistic'],
+        ['xgboost_structural', 'XGBoost (structural features)', 'xgboost'],
+        ['xgboost_all_features', 'XGBoost (all features)', null],
+      ];
+
+      function renderFaultInjection(data) {
+        const o = data.overall;
+        setText('fiDetected', `${o.detected_by_evidence_alone} / ${o.faults}`);
+        setText('fiControl', data.control_seeds_with_evidence === 0 ? `0 / ${data.seeds}` : String(data.control_seeds_with_evidence ?? '—'));
+        const nameable = o.localisation_over_nameable_faults;
+        const both = Math.min(nameable.logistic.top1, nameable.xgboost.top1);
+        setText('fiLocalised', `${Math.round(both * o.faults_with_a_naming_feature)} / ${o.faults_with_a_naming_feature}`);
+        const pct = (v) => v === undefined ? '—' : `${Number(v * 100 + 1e-9).toFixed(1)}%`;
+        const rows = FI_METHODS.map(([key, label, loc]) => {
+          const tr = document.createElement('tr');
+          tr.append(textCell(label, 'primary-cell'), textCell(o.mean_f1[key] === undefined ? '—' : o.mean_f1[key].toFixed(3)),
+            textCell(loc ? pct(nameable[loc].top1) : '—'), textCell(loc ? pct(o.localisation_over_all_faults[loc].top1) : '—'));
+          return tr;
+        });
+        const lift = document.createElement('tr');
+        lift.append(textCell('Lift statistic', 'primary-cell'), textCell('—'), textCell(pct(nameable.lift.top1)), textCell(pct(o.localisation_over_all_faults.lift.top1)));
+        $('fiMethodsBody').replaceChildren(...rows, lift);
+        const faults = Object.entries(data.faults).sort((a, b) => b[1].residual_gaps - a[1].residual_gaps);
+        $('fiFaultsBody').replaceChildren(...faults.map(([name, f]) => {
+          const tr = document.createElement('tr');
+          const localised = f.expected_features.length === 0 ? 'no feature names it' : pct(f.localised_top1.xgboost);
+          tr.append(textCell(name.replaceAll('_', ' '), 'primary-cell'), textCell(f.residual_gaps.toFixed(0)),
+            textCell(f.f1.evidence_rule.toFixed(3)), textCell(f.f1.logistic_structural.toFixed(3)), textCell(f.f1.xgboost_structural.toFixed(3)),
+            textCell(localised, f.expected_features.length === 0 ? 'fi-miss' : ''));
+          return tr;
+        }));
+      }
+
+      function renderScaling(data) {
+        $('scalingBody').replaceChildren(...data.rows.map(r => {
+          const tr = document.createElement('tr');
+          tr.append(textCell(String(r.children), 'primary-cell'), textCell(`${ms(r.unprotected)} ms`),
+            textCell(`${ms(r.one_by_one)} ms`), textCell(`${ms(r.batched)} ms`, 'fi-method-best'));
+          return tr;
+        }));
       }
 
       function renderSeeds(data) {
@@ -1941,9 +2019,11 @@
           if (data.tool_comparison) renderComparison(data.tool_comparison);
           if (data.latency) renderLatency(data.latency);
           if (data.blind_spot_seeds) renderSeeds(data.blind_spot_seeds);
+          if (data.fault_injection) renderFaultInjection(data.fault_injection);
+          if (data.scaling) renderScaling(data.scaling);
         } catch (error) {
           setText('evidenceBuilt', 'NOT BUILT');
-          for (const id of ['ablationBody', 'comparisonBody', 'seedsBody']) {
+          for (const id of ['ablationBody', 'comparisonBody', 'seedsBody', 'fiMethodsBody', 'scalingBody']) {
             const tr = document.createElement('tr'); const td = textCell('Run python -m scripts.build_dashboard_results to add the experiment results.', 'empty'); td.colSpan = 7; tr.appendChild(td); $(id).replaceChildren(tr);
           }
           setText('latencyChart', 'Not available yet.');
