@@ -43,6 +43,18 @@ def pytest_sessionfinish(session, exitstatus):
     _write_test_report()
 
 
+def _still_exists(node_id: str) -> bool:
+    """Whether a test recorded by an earlier run still exists, so tests that were
+    renamed or removed stop counting in the report."""
+    path, _, name = node_id.partition("::")
+    function = name.split("[")[0].split("::")[-1]
+    try:
+        with open(os.path.join(os.path.dirname(__file__), "..", path), encoding="utf-8") as file:
+            return f"def {function}(" in file.read()
+    except OSError:
+        return False
+
+
 def _write_test_report() -> None:
     """Save this run's results, merged with earlier runs' per-test outcomes, so a
     partial run updates only the tests it ran."""
@@ -53,11 +65,18 @@ def _write_test_report() -> None:
             previous = json.load(file).get("tests", {})
     except (OSError, ValueError):
         previous = {}
-    counts = {status: sum(1 for s in _outcomes.values() if s == status) for status in ("passed", "failed", "skipped")}
+    previous = {node: outcome for node, outcome in previous.items() if _still_exists(node)}
+    merged = {**previous, **_outcomes}
+
+    def count(outcomes):
+        totals = {status: sum(1 for s in outcomes.values() if s == status) for status in ("passed", "failed", "skipped")}
+        return {**totals, "total": len(outcomes)}
+
     report = {
         "finished_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "last_run": {**counts, "total": len(_outcomes)},
-        "tests": {**previous, **_outcomes},
+        "last_run": count(_outcomes),
+        "all_tests": count(merged),
+        "tests": merged,
     }
     try:
         os.makedirs(os.path.dirname(TEST_REPORT), exist_ok=True)

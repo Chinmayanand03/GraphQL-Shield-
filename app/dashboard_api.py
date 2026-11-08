@@ -26,16 +26,35 @@ FAVICON = os.path.join(PROJECT_ROOT, "app", "static", "favicon.svg")
 
 # Each non-interference card on the dashboard and the real tests that verify it.
 NON_INTERFERENCE_FILE = "tests/test_non_interference.py"
+PROPERTIES_FILE = "tests/test_properties.py"
+LEAK_FILE = "tests/test_leak_channels.py"
+# Property card -> tests that verify it, as "file::test". A test name also matches its
+# parametrised cases ("test[case]"); a bare file name matches every test in it.
 PROPERTY_TESTS = {
-    "Single Resource Access": ["test_legitimate_single_resource_access_not_interfered"],
-    "Nested Hierarchy Access": ["test_legitimate_children_traversal_not_interfered"],
-    "Insecure Endpoint Isolation": ["test_insecure_endpoint_not_interfered"],
-    "High-to-Low Confidentiality": ["test_protected_response_is_independent_of_foreign_secret_change"],
-    "Secret Mutation Independence": ["test_protected_response_is_independent_of_foreign_secret_change",
-                                     "test_vulnerable_baseline_exposes_foreign_secret_change"],
-    "Derived-Value Independence": ["test_protected_count_does_not_reveal_foreign_child",
-                                   "test_insecure_count_reveals_foreign_child"],
+    "P1 Safety": [f"{PROPERTIES_FILE}::test_p1_no_response_contains_a_foreign_object"],
+    "P2 Non-interference": [f"{PROPERTIES_FILE}::test_p2_other_users_data_cannot_change_the_response",
+                            f"{PROPERTIES_FILE}::test_p2_also_holds_when_a_foreign_child_is_added_or_a_foreign_object_removed",
+                            f"{PROPERTIES_FILE}::test_deleting_a_folder_does_not_reveal_a_hidden_child"],
+    "P3 Write Safety": [f"{PROPERTIES_FILE}::test_p3_no_request_changes_a_foreign_object"],
+    "P4 Availability": [f"{PROPERTIES_FILE}::test_p4_a_request_for_own_objects_is_never_denied"],
+    "Properties Fail Without Protection": [f"{PROPERTIES_FILE}::test_the_properties_fail_without_protection"],
+    "Leak Channels Closed": [LEAK_FILE],
+    "Single Resource Access": [f"{NON_INTERFERENCE_FILE}::test_legitimate_single_resource_access_not_interfered"],
+    "Nested Hierarchy Access": [f"{NON_INTERFERENCE_FILE}::test_legitimate_children_traversal_not_interfered"],
+    "Insecure Endpoint Isolation": [f"{NON_INTERFERENCE_FILE}::test_insecure_endpoint_not_interfered"],
+    "High-to-Low Confidentiality": [f"{NON_INTERFERENCE_FILE}::test_protected_response_is_independent_of_foreign_secret_change"],
+    "Secret Mutation Independence": [f"{NON_INTERFERENCE_FILE}::test_protected_response_is_independent_of_foreign_secret_change",
+                                     f"{NON_INTERFERENCE_FILE}::test_vulnerable_baseline_exposes_foreign_secret_change"],
+    "Derived-Value Independence": [f"{NON_INTERFERENCE_FILE}::test_protected_count_does_not_reveal_foreign_child",
+                                   f"{NON_INTERFERENCE_FILE}::test_insecure_count_reveals_foreign_child"],
 }
+
+
+def _outcomes_for(spec: str, tests: dict) -> list:
+    """Outcomes of the recorded tests a spec names (see PROPERTY_TESTS)."""
+    if "::" not in spec:
+        return [outcome for node, outcome in tests.items() if node.startswith(f"{spec}::")]
+    return [outcome for node, outcome in tests.items() if node == spec or node.startswith(f"{spec}[")]
 
 router = APIRouter()
 
@@ -104,18 +123,21 @@ def test_report():
     tests = data.get("tests", {})
     properties = []
     for name, functions in PROPERTY_TESTS.items():
-        outcomes = [tests.get(f"{NON_INTERFERENCE_FILE}::{function}") for function in functions]
+        per_spec = [_outcomes_for(spec, tests) for spec in functions]
+        outcomes = [o for found in per_spec for o in found]
         if any(o == "failed" for o in outcomes):
             status = "FAIL"
-        elif outcomes and all(o == "passed" for o in outcomes):
+        elif all(per_spec) and all(o == "passed" for o in outcomes):
             status = "PASS"
         else:
             status = "NOT RUN"
-        properties.append({"name": name, "status": status, "tests": functions})
+        properties.append({"name": name, "status": status, "tests": [spec.split("::")[-1] for spec in functions],
+                           "count": len(outcomes)})
     return {
         "available": True,
         "finished_at": data.get("finished_at"),
         "last_run": data.get("last_run", {}),
+        "all_tests": data.get("all_tests"),
         "properties": properties,
     }
 
@@ -148,7 +170,9 @@ def audit_timeline(
         """,
         (window,),
     ).fetchall()
-    return {"bucket": bucket, "span": span, "timezone": "UTC", "points": [dict(row) for row in rows]}
+    latest = db.execute("SELECT MAX(timestamp) FROM audit_logs").fetchone()[0]
+    return {"bucket": bucket, "span": span, "timezone": "UTC", "points": [dict(row) for row in rows],
+            "latest_decision": latest}
 
 
 @router.get("/api/v1/audit-logs")

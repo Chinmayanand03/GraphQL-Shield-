@@ -3,7 +3,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
 [![Strawberry GraphQL](https://img.shields.io/badge/GraphQL-Strawberry-e535ab.svg?logo=graphql)](https://strawberry.rocks/)
-[![Tests Passing](https://img.shields.io/badge/tests-390%20passed-brightgreen.svg)]()
+[![Tests Passing](https://img.shields.io/badge/tests-392%20passed-brightgreen.svg)]()
 [![Security Standard](https://img.shields.io/badge/OWASP-API1%3A2023%20BOLA-red.svg)](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -501,7 +501,7 @@ python -m pytest -v
 
 Expected output:
 ```text
-386 passed, 4 skipped   (the 4 Graphene tests run in their own environment, see "Other frameworks")
+388 passed, 4 skipped   (the 4 Graphene tests run in their own environment, see "Other frameworks")
 ```
 
 ---
@@ -555,7 +555,7 @@ GraphQL-Shield/
 ├── evaluation/               # Tracked results: fault injection, latency, scaling
 ├── paper/                    # IEEE paper source (LaTeX)
 ├── scripts/                  # Benchmarking, training, and fault-injection scripts
-├── tests/                    # 390 unit, integration, property and security tests
+├── tests/                    # 392 unit, integration, property and security tests
 ├── requirements.txt
 └── README.md
 ```

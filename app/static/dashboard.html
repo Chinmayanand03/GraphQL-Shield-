@@ -1150,7 +1150,7 @@
         <section class="panel section-gap" id="decision-timeline">
           <div class="panel-head">
             <div><div class="panel-title">Decisions over time</div><div class="panel-subtitle">Allowed and denied authorization decisions per day or per hour, from the audit log (times in UTC).</div></div>
-            <div class="layer-actions"><button class="btn" id="timelineDays" type="button">Last 14 days</button><button class="btn" id="timelineHours" type="button">Last 24 hours</button></div>
+            <div class="layer-actions"><button class="btn" id="timelineQuarter" type="button">Last 90 days</button><button class="btn" id="timelineDays" type="button">Last 14 days</button><button class="btn" id="timelineHours" type="button">Last 24 hours</button></div>
           </div>
           <div id="timelineChart" class="timeline-chart">Loading…</div>
         </section>
@@ -1159,13 +1159,19 @@
         <section class="panel section-gap">
           <div class="panel-head" style="margin-bottom:10px;">
             <div>
-              <div class="panel-title" style="font-size:13px;">Verified Non-Interference Property Tests</div>
-              <div class="panel-subtitle" style="font-size:10px;">Property tests verified passing in <code>tests/test_non_interference.py</code> for information flow security and isolation</div>
+              <div class="panel-title" style="font-size:13px;">Verified Security Property Tests</div>
+              <div class="panel-subtitle" style="font-size:10px;">The paper’s properties P1–P4 (<code>tests/test_properties.py</code>), the leak-channel tests (<code>tests/test_leak_channels.py</code>) and the earlier non-interference tests (<code>tests/test_non_interference.py</code>)</div>
             </div>
             <span class="val-pill" id="nonInterferenceBadge">CHECKING LAST TEST RUN…</span>
           </div>
           <p class="console-note" id="testRunInfo" style="margin:8px 0 0">Reading the last recorded pytest run…</p>
           <div class="property-cards" id="nonInterferenceGrid">
+            <div class="property-card"><div class="property-head"><span class="property-title">P1 Safety</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">No response contains an object the caller does not own (Hypothesis, generated worlds and requests).</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">P2 Non-interference</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">Changing only other users’ objects never changes the response, including folder deletes.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">P3 Write Safety</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">No request changes the owner or content of an object the caller does not own.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">P4 Availability</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">A request that names only the caller’s own objects returns them.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">Properties Fail Without Protection</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">With both layers off, P1–P3 fail, so the property tests can catch a violation.</p></div>
+            <div class="property-card"><div class="property-head"><span class="property-title">Leak Channels Closed</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">Same reply for foreign and missing IDs, interfaces and unions, counts, timing and lint.</p></div>
             <div class="property-card"><div class="property-head"><span class="property-title">Single Resource Access</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">Authorized single-object queries succeed without interference or false positives.</p></div>
             <div class="property-card"><div class="property-head"><span class="property-title">Nested Hierarchy Access</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">Authorized traversals across user-owned folders and children are preserved.</p></div>
             <div class="property-card"><div class="property-head"><span class="property-title">Insecure Endpoint Isolation</span><span class="val-pill" data-property-status>…</span></div><p class="property-desc">Controlled endpoint /graphql-insecure bypasses gateway for research baseline.</p></div>
@@ -1791,13 +1797,14 @@
             const status = item ? item.status : 'NOT RUN';
             pill.textContent = status;
             pill.className = 'val-pill ' + (status === 'PASS' ? 'best' : status === 'FAIL' ? 'fail' : 'notrun');
-            if (item) pill.title = `Verified by: ${item.tests.join(', ')}`;
+            if (item) pill.title = `Verified by ${item.count} test${item.count === 1 ? '' : 's'}: ${item.tests.join(', ')}`;
             if (status === 'PASS') passing += 1;
           }
           setText('nonInterferenceBadge', `${passing}/${cards.length} PROPERTY TESTS PASSING`);
           $('nonInterferenceBadge').className = 'val-pill ' + (passing === cards.length ? 'best' : 'fail');
           const run = data.last_run || {};
-          setText('testRunInfo', `From the last recorded pytest run (${formatTime(data.finished_at)} IST): ${run.passed} passed, ${run.failed} failed of ${run.total} tests. Hover a status to see the tests that verify it.`);
+          const all = data.all_tests || run;
+          setText('testRunInfo', `Latest result of every test: ${all.passed} passed, ${all.failed} failed, ${all.skipped || 0} skipped of ${all.total}. Last pytest run ${formatTime(data.finished_at)} IST covered ${run.total} tests. Hover a status to see the tests that verify it.`);
         } catch (_) {
           setText('testRunInfo', 'The test report is unavailable.');
         }
@@ -1827,7 +1834,12 @@
           const response = await fetch(`/api/v1/audit/timeline?bucket=${timelineMode.bucket}&span=${timelineMode.span}`, {headers: {'Accept': 'application/json'}, cache: 'no-store'});
           const data = await response.json();
           const chart = $('timelineChart');
-          if (!data.points.length) { chart.textContent = 'No decisions in this period.'; return; }
+          if (!data.points.length) {
+            chart.textContent = data.latest_decision
+              ? `No decisions in this period. The most recent was on ${String(data.latest_decision).slice(0, 10)} (UTC); try a longer range.`
+              : 'No decisions recorded yet.';
+            return;
+          }
           const max = Math.max(...data.points.map(p => p.allowed + p.denied));
           const bars = document.createElement('div'); bars.className = 'tl-bars';
           const labels = document.createElement('div'); labels.className = 'tl-labels';
@@ -2966,6 +2978,7 @@
           loadAuditLogs();
         });
         $('loadMoreButton').addEventListener('click', () => loadAuditLogs({append: true}));
+        $('timelineQuarter').addEventListener('click', () => loadTimeline({bucket: 'day', span: 90}));
         $('timelineDays').addEventListener('click', () => loadTimeline({bucket: 'day', span: 14}));
         $('timelineHours').addEventListener('click', () => loadTimeline({bucket: 'hour', span: 24}));
         $('autoRefreshButton').addEventListener('click', toggleAutoRefresh);

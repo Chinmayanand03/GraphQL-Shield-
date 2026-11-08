@@ -115,10 +115,36 @@ def test_live_predictor_recall_counts():
 
 
 def test_test_report_lists_every_property():
+    from app.dashboard_api import PROPERTY_TESTS
+
     data = client.get("/api/v1/verification/test-report").json()
     if data["available"]:
-        assert len(data["properties"]) == 6
+        assert [p["name"] for p in data["properties"]] == list(PROPERTY_TESTS)
         assert all(p["status"] in ("PASS", "FAIL", "NOT RUN") for p in data["properties"])
+
+
+def test_every_property_card_names_tests_that_exist():
+    """A renamed test would leave its dashboard card stuck at NOT RUN."""
+    import os
+
+    from app.dashboard_api import PROPERTY_TESTS
+
+    root = os.path.join(os.path.dirname(__file__), "..")
+    for specs in PROPERTY_TESTS.values():
+        for spec in specs:
+            path, _, name = spec.partition("::")
+            source = open(os.path.join(root, path), encoding="utf-8").read()
+            assert not name or f"def {name}(" in source, spec
+
+
+def test_every_property_card_on_the_dashboard_has_tests():
+    import re
+
+    from app.dashboard_api import PROPERTY_TESTS
+
+    html = open("app/static/dashboard.html", encoding="utf-8").read()
+    titles = re.findall(r'<span class="property-title">([^<]+)</span>', html)
+    assert titles and set(titles) == set(PROPERTY_TESTS)
 
 
 def test_favicon_is_served():
