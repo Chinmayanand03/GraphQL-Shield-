@@ -3,7 +3,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
 [![Strawberry GraphQL](https://img.shields.io/badge/GraphQL-Strawberry-e535ab.svg?logo=graphql)](https://strawberry.rocks/)
-[![Tests Passing](https://img.shields.io/badge/tests-386%20passed-brightgreen.svg)]()
+[![Tests Passing](https://img.shields.io/badge/tests-390%20passed-brightgreen.svg)]()
 [![Security Standard](https://img.shields.io/badge/OWASP-API1%3A2023%20BOLA-red.svg)](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -76,7 +76,8 @@ While REST architectures feature rigid, predictable resource hierarchies (e.g. `
   - **Aggregate fields**: declared counts (e.g. `childrenCount`) are answered by Layer 2 from the objects the caller may see.
   - **Batched checks**: a list is checked with one owner lookup and audited in one transaction.
 - **Uniform denials**: a foreign object and a missing one get the same `ACCESS_DENIED` response; the exact reason stays in the hash-chained audit log.
-- **Startup lint**: warns about schema types with owner-like fields that the configuration leaves unprotected, and about undeclared aggregate fields.
+- **Startup lint**: warns about schema types with owner-like fields (`ownerId`, `belongsTo`, `createdBy`, …) that the configuration leaves unprotected, about any type fetched by ID from a root query that is neither owned nor declared in `public_types`, and about undeclared aggregate fields.
+- **No timing channel**: a missing object is checked and audited like a foreign one, so a denial takes the same time either way (`scripts/run_timing_channel.py`).
 - **Framework support**: the same `OwnershipMiddleware` protects Strawberry, plain graphql-core, Graphene and Ariadne servers.
 - **Layer 1 Blind Spot Auditing**:
   - Automatically identifies and logs when Layer 2 catches an unauthorized object that Layer 1 could not parse from raw query text.
@@ -405,26 +406,30 @@ graphql-shield's failure is GraphQL null propagation: in `children: [ResourceTyp
 Neither approach dominates: GraphQL Shield needs far less configuration and fails closed on mutations, but a missing owned type is a single point of failure; graphql-shield's overlapping per-field rules tolerate one missing read rule but need much more configuration, and cost availability under null propagation.
 
 ### Latency
-`scripts/run_latency_benchmark.py` measures each configuration in-process (FastAPI TestClient, no network): 30 warm-up requests, then 5 repeats of 200, reporting the mean with a 95% confidence interval across repeats, and p50/p95/p99. Two fixes found by profiling: SQLite connections are pooled (`--no-pool` reproduces the old behaviour), and the risk engine's recent-denial check now uses an index and an existence probe instead of counting the whole audit log for every checked object, which had made latency grow with the log. Same machine, back to back (`evaluation/latency_*.json`):
+`scripts/run_latency_benchmark.py` measures in-process (FastAPI TestClient, no network). All configurations are interleaved: after 30 warm-up requests, each of 10 repeats times 100 requests of every configuration in a fresh random order. Drift on the machine then affects them all alike, and the overhead is the per-repeat difference to the unprotected endpoint, with a 95% confidence interval.
 
-| Request | Unprotected | Both layers, no pooling | Both layers, pooled | Overhead (pooled) |
+| Request | Unprotected | Both layers, no pooling | Both layers, pooled | Paired overhead [95% CI] |
 | :--- | :--- | :--- | :--- | :--- |
-| Own lookup | 14.8 ms | 60.2 ms | 19.7 ms [19.2, 20.1] | +33% |
-| Relationship (`children`) | 14.2 ms | 132.4 ms | 21.6 ms [21.3, 21.9] | +53% |
-| Own update | 14.9 ms | 71.8 ms | 18.8 ms [17.9, 19.8] | +26% |
+| Own lookup | 9.4 ms | 32.6 ms | 10.4 ms | +0.99 ms [−0.36, +2.35] |
+| Relationship (`children`) | 10.2 ms | 66.1 ms | 11.0 ms | +0.86 ms [+0.32, +1.40] |
+| Own update | 10.4 ms | 35.5 ms | 10.4 ms | +0.00 ms [−1.28, +1.29] |
 
-Layer 2 alone adds 4–17%; most of the cost is Layer 1's parse and schema walk.
+Protection costs about 1 ms per request (at most 2.4 ms). Three fixes found by profiling got it there:
 
-**Scaling** (`python -m scripts.run_scaling_benchmark`, `evaluation/latency_scaling.json`): a folder with N children, 10% foreign.
+- SQLite connections are pooled (`--no-pool` reproduces the old behaviour): 3.1–6.0× faster.
+- The risk engine's recent-denial check uses an index and an existence probe, instead of counting the whole audit log for every checked object, which had made latency grow with the log.
+- The advisory blind-spot predictor cost about 4.4 ms of Layer 1's 5.3 ms, mostly starting XGBoost's thread pool for one row. It now scores on one thread and caches the probability per feature vector, and parsed queries are cached.
+
+**Scaling** (`python -m scripts.run_scaling_benchmark`, `evaluation/latency_scaling.json`, also interleaved): a folder with N children, 10% foreign.
 
 | Children | Unprotected | Layer 2 one by one | Layer 2 batched |
 | :--- | :--- | :--- | :--- |
-| 1 | 14.5 ms | 20.5 ms | 20.2 ms |
-| 10 | 15.4 ms | 24.7 ms | 23.0 ms |
-| 50 | 16.6 ms | 47.9 ms | 32.6 ms |
-| 200 | 28.0 ms | 127.5 ms | 73.5 ms |
+| 1 | 6.9 ms | 8.8 ms | 7.8 ms |
+| 10 | 8.5 ms | 9.9 ms | 9.2 ms |
+| 50 | 9.2 ms | 18.1 ms | 12.8 ms |
+| 200 | 11.7 ms | 44.6 ms | 26.3 ms |
 
-Numbers come from a Windows laptop with background load and vary between runs; report the confidence intervals, not single means.
+Numbers come from a Windows laptop and vary between runs; compare configurations within a run, not across runs.
 
 ### Determinism
 The ablation, the tool comparison and the security test suite are deterministic: the same code and data always give the same outcome, so they are reported as counts, not with confidence intervals. Latency and the blind-spot predictor (new request sets per seed, `scripts/run_blind_spot_seeds.py`) are repeated.
@@ -465,7 +470,14 @@ The evidence rule is "a relationship field, or an ID argument Layer 1 did not re
 - **P3 Write safety**: no request changes an object the caller does not own.
 - **P4 Availability**: a request naming only the caller's objects returns them.
 
-With protection off, all four fail, which shows the tests can catch a violation. Writing P2 exposed three leak channels, now fixed and covered by `tests/test_leak_channels.py`: different denial reasons for foreign and missing objects (plus owner IDs in the explainer), foreign objects returned through interfaces and unions, and `childrenCount` counting foreign children. **Known remaining channel:** deleting a folder that holds a hidden foreign child fails on the foreign-key constraint, which reveals that the child exists.
+With protection off, all four fail, which shows the tests can catch a violation. Writing P2 exposed four leak channels, now fixed and covered by `tests/test_leak_channels.py` and `tests/test_properties.py`:
+
+- different denial reasons for foreign and missing objects (plus owner IDs in the explainer);
+- foreign objects returned through interfaces and unions;
+- `childrenCount` counting foreign children;
+- deleting a folder that held a hidden foreign child failed on the foreign-key constraint, revealing the child. A deleted folder's children now move to the top level (they keep their owner and content), so the result no longer depends on them.
+
+**Timing.** `python -m scripts.run_timing_channel` sends 1,500 interleaved pairs of requests for a foreign and a missing object and compares their medians (`evaluation/timing_channel.json`). With Layer 2 alone, a foreign read used to take 0.352 ms longer (95% CI 0.193–0.554 ms, p = 2×10⁻⁸), because a lookup that found nothing skipped the check (`--without-missing-check` reproduces it, `evaluation/timing_channel_before_fix.json`). Layer 2 now checks those lookups too, and no setting shows a difference: every 95% interval contains zero and every p ≥ 0.68. The measurement is in-process, with a resolution of about 0.1 ms.
 
 ### Other frameworks
 `tests/test_frameworks.py` protects a Graphene app (Relay `Node`, lists, mutations) and an Ariadne app with the same middleware. Graphene needs graphql-core < 3.3, so run it in a separate environment:
@@ -489,7 +501,7 @@ python -m pytest -v
 
 Expected output:
 ```text
-382 passed, 4 skipped   (the 4 Graphene tests run in their own environment, see "Other frameworks")
+386 passed, 4 skipped   (the 4 Graphene tests run in their own environment, see "Other frameworks")
 ```
 
 ---
@@ -543,7 +555,7 @@ GraphQL-Shield/
 ├── evaluation/               # Tracked results: fault injection, latency, scaling
 ├── paper/                    # IEEE paper source (LaTeX)
 ├── scripts/                  # Benchmarking, training, and fault-injection scripts
-├── tests/                    # 386 unit, integration, property and security tests
+├── tests/                    # 390 unit, integration, property and security tests
 ├── requirements.txt
 └── README.md
 ```

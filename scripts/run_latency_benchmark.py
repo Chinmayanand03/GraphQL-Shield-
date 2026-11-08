@@ -17,6 +17,7 @@ import json
 import logging
 import math
 import os
+import random
 import statistics
 import sys
 import tempfile
@@ -34,9 +35,11 @@ from app.core.security import create_access_token
 from app.security.layers import set_layers
 
 OUTPUT_DIR = os.path.join(PROJECT_ROOT, "results", "latency")
-REQUESTS = 200
-REPEATS = 5
+REQUESTS = 100
+REPEATS = 10
 WARMUP = 30
+# Requests sent after switching configuration and before timing a block.
+BLOCK_WARMUP = 10
 # Two-sided 95% Student's t critical values by degrees of freedom.
 T_95 = {1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262}
 
@@ -99,22 +102,42 @@ def main() -> None:
 
         client = TestClient(app)
         headers = {"Authorization": f"Bearer {create_access_token(user_id=101, role='user')}"}
+        # Configurations are interleaved: every repeat times one block of each, in a
+        # fresh random order, so a machine that speeds up or slows down during the
+        # run affects all configurations alike instead of biasing the comparison.
+        order_rng = random.Random(20261108)
         for request_name, body in REQUEST_TYPES.items():
-            results[request_name] = {}
             for config_name, (path, layers) in CONFIGURATIONS.items():
                 set_layers(*layers)
                 for _ in range(WARMUP):
                     client.post(path, json=body, headers=headers)
-                runs = []
-                for _ in range(REPEATS):
+            runs = {config_name: [] for config_name in CONFIGURATIONS}
+            for _ in range(REPEATS):
+                order = list(CONFIGURATIONS)
+                order_rng.shuffle(order)
+                for config_name in order:
+                    path, layers = CONFIGURATIONS[config_name]
+                    set_layers(*layers)
+                    for _ in range(BLOCK_WARMUP):
+                        client.post(path, json=body, headers=headers)
                     timings = []
                     for _ in range(REQUESTS):
                         start = time.perf_counter()
                         response = client.post(path, json=body, headers=headers)
                         timings.append((time.perf_counter() - start) * 1000)
                         assert response.status_code == 200, response.text
-                    runs.append(timings)
-                results[request_name][config_name] = summarize(runs)
+                    runs[config_name].append(timings)
+            results[request_name] = {config_name: summarize(runs[config_name]) for config_name in CONFIGURATIONS}
+            # Paired overhead: within each repeat every configuration was timed next to
+            # the insecure baseline, so the per-repeat difference cancels machine drift.
+            baseline_means = [statistics.fmean(run) for run in runs["insecure"]]
+            for config_name in CONFIGURATIONS:
+                diffs = [statistics.fmean(run) - base for run, base in zip(runs[config_name], baseline_means)]
+                mean_diff = statistics.fmean(diffs)
+                half = T_95[REPEATS - 1] * statistics.stdev(diffs) / math.sqrt(REPEATS)
+                results[request_name][config_name]["paired_overhead_ms"] = round(mean_diff, 3)
+                results[request_name][config_name]["paired_overhead_ci95_ms"] = [round(mean_diff - half, 3),
+                                                                                 round(mean_diff + half, 3)]
             baseline = results[request_name]["insecure"]["mean_ms"]
             for config_name, summary in results[request_name].items():
                 summary["overhead_ms"] = round(summary["mean_ms"] - baseline, 3)
@@ -127,7 +150,9 @@ def main() -> None:
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "label": args.label,
         "connection_pooling": not args.no_pool,
-        "method": f"in-process TestClient; {WARMUP} warm-up, {REPEATS} repeats x {REQUESTS} requests; 95% CI of the mean across repeats (t, df={REPEATS - 1})",
+        "method": (f"in-process TestClient; {WARMUP} warm-up, then {REPEATS} repeats, each timing {REQUESTS} requests per "
+                   f"configuration in random order after {BLOCK_WARMUP} untimed ones; "
+                   f"95% CI of the mean across repeats (t, df={REPEATS - 1})"),
         "results": results,
     }
     os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -139,7 +164,8 @@ def main() -> None:
         print(f"\n{request_name}")
         for config_name, s in configs.items():
             print(f"  {config_name:12} mean {s['mean_ms']:7.2f} ms  CI95 [{s['ci95_ms'][0]:.2f}, {s['ci95_ms'][1]:.2f}]  "
-                  f"p95 {s['p95_ms']:7.2f}  p99 {s['p99_ms']:7.2f}  overhead {s['overhead_pct']:+6.1f}%")
+                  f"p95 {s['p95_ms']:7.2f}  p99 {s['p99_ms']:7.2f}  overhead {s['overhead_pct']:+6.1f}%  "
+                  f"paired {s['paired_overhead_ms']:+.2f} ms [{s['paired_overhead_ci95_ms'][0]:+.2f}, {s['paired_overhead_ci95_ms'][1]:+.2f}]")
     print(f"\nWrote {output}")
 
 

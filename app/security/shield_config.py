@@ -77,6 +77,9 @@ class ShieldConfig:
     # Optional (ownership key, ids) -> {id: owner}. Lets Layer 2 check a list in one
     # query; without it, each list item takes one owner_lookup call.
     owners_lookup: Callable[[str, list], dict] | None = None
+    # Object types anyone may read, such as a product catalogue. Only the startup
+    # lint uses this, to stay quiet about lookups by ID that are public on purpose.
+    public_types: frozenset[str] = frozenset()
 
     def graphql_schema(self) -> GraphQLSchema:
         return self.schema()
@@ -153,20 +156,32 @@ def _concrete_type_name(abstract_type, value: Any, info: Any) -> str | None:
 
 
 # Field names that suggest a type is owned, or a value summarises other objects.
-_OWNER_FIELD = re.compile(r"^(owner|author|creator|user|patient|doctor|customer|account|tenant|createdBy)(_?id)?$", re.I)
+_OWNER_FIELD = re.compile(
+    r"^(owner|owned_?by|belongs_?to|created_?by|author|creator|uploader|submitter|assignee|member|user|"
+    r"customer|account|tenant|patient|doctor)(_?id)?$|_?owner(_?id)?$", re.I)
 _AGGREGATE_FIELD = re.compile(r"(count|total|sum|size|number)$|^(count|total|num|has)", re.I)
 
 
 def lint_config(config: ShieldConfig) -> list[dict]:
     """Findings for parts of the schema the configuration may have left unprotected.
 
-    These are heuristics over field names, so a finding is a prompt to look, and a
-    clean result does not prove the configuration is complete.
+    Two kinds of evidence are used. Field names (an ``ownerId``, ``createdBy`` or a
+    field of an owned type) suggest a type is owned. Independently of naming, a root
+    query that fetches one object of a type by ID suggests the type is a per-user
+    object, unless it is configured as owned or declared public. A finding is a
+    prompt to look, and a clean result does not prove the configuration is complete.
     """
     schema = config.graphql_schema()
     roots = {t.name for t in (schema.query_type, schema.mutation_type, schema.subscription_type) if t}
     owned_names = set(config.owned_types)
     findings = []
+    if schema.query_type is not None:
+        for field_name, field_def in schema.query_type.fields.items():
+            named, is_list = unwrap_type(field_def.type)
+            if (not is_list and isinstance(named, GraphQLObjectType) and named.name not in owned_names
+                    and named.name not in config.public_types and named.name not in roots
+                    and any(argument in field_def.args for argument in config.id_arguments)):
+                findings.append({"kind": "unowned_id_lookup", "type": named.name, "field": f"Query.{field_name}"})
     for name, graphql_type in schema.type_map.items():
         if name.startswith("__") or name in roots or not isinstance(graphql_type, GraphQLObjectType):
             continue

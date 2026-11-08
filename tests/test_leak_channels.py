@@ -196,3 +196,49 @@ def test_lint_reports_each_clinic_owned_type_when_removed(owned_type):
 
     findings = lint_config(_without(CLINIC_CONFIG, owned_type))
     assert owned_type in {f["type"] for f in findings if f["kind"] == "possible_unowned_type"}
+
+
+def test_layer2_checks_a_missing_lookup_like_a_found_one():
+    """With Layer 1 off, a lookup that finds nothing still goes through the owner lookup,
+    policy and audit, so it costs the same as a foreign object (no timing channel)."""
+    from app.security.layers import set_layers
+
+    set_layers(layer1=False, layer2=True)
+    try:
+        response = client.post("/graphql", json={"query": "{ resource(id: 987654) { id } }"}, headers=headers())
+    finally:
+        set_layers(layer1=True, layer2=True)
+    assert response.json()["data"]["resource"] is None
+    conn = get_db_connection()
+    row = conn.execute("SELECT reason, layer FROM audit_logs WHERE object_id = 987654 ORDER BY id DESC LIMIT 1").fetchone()
+    conn.close()
+    assert (row["reason"], row["layer"]) == ("OBJECT_NOT_FOUND", "L2")
+
+
+LOOKUP_SDL = """
+type Invoice { id: ID! holder: ID! total: Int! }
+type Product { id: ID! title: String! }
+type Ticket { id: ID! belongsTo: ID! }
+type Query { invoice(id: ID!): Invoice product(id: ID!): Product ticket(id: ID!): Ticket }
+"""
+
+
+def _lookup_findings(**extra):
+    lookup_schema = build_schema(LOOKUP_SDL)
+    config = ShieldConfig(schema=lambda: lookup_schema, owned_types={}, owner_lookup=lambda *_: None, **extra)
+    return lint_config(config)
+
+
+def test_lint_finds_an_owned_type_whose_owner_field_has_an_unusual_name():
+    # "holder" matches no owner-like name; the lookup by ID still gives Invoice away.
+    assert {"kind": "unowned_id_lookup", "type": "Invoice", "field": "Query.invoice"} in _lookup_findings()
+
+
+def test_lint_knows_more_owner_field_names():
+    assert {"kind": "possible_unowned_type", "type": "Ticket", "field": "belongsTo"} in _lookup_findings()
+
+
+def test_lint_is_quiet_about_types_declared_public():
+    findings = _lookup_findings(public_types=frozenset({"Product"}))
+    assert all(f["type"] != "Product" for f in findings)
+    assert any(f["type"] == "Product" for f in _lookup_findings())

@@ -9,6 +9,7 @@ empty panels. This keeps a small, tracked summary of:
   - the multi-seed blind-spot evaluation (scripts/run_blind_spot_seeds.py)
   - fault injection into Layer 1         (scripts/run_fault_injection.py)
   - latency as responses grow            (scripts/run_scaling_benchmark.py)
+  - the foreign-versus-missing timing channel (scripts/run_timing_channel.py)
 
 Each result is read from the tracked evaluation/ folder when it is there, and
 from results/ otherwise.
@@ -139,6 +140,17 @@ def scaling():
                      for size, row in data["results"].items()]}
 
 
+def timing_channel():
+    after = _read(os.path.join(EVALUATION, "timing_channel.json"))
+    if not after:
+        return None
+    before = _read(os.path.join(EVALUATION, "timing_channel_before_fix.json"))
+    keep = ("median_gap_ms", "median_gap_ci95_ms", "mann_whitney_p")
+    return {"generated_at": after["generated_at"], "method": after["method"],
+            "after": {k: {f: v[f] for f in keep} for k, v in after["results"].items()},
+            "before": {k: {f: v[f] for f in keep} for k, v in before["results"].items()} if before else None}
+
+
 def main() -> None:
     report = {
         "built_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -148,6 +160,7 @@ def main() -> None:
         "blind_spot_seeds": seeds(),
         "fault_injection": fault_injection(),
         "scaling": scaling(),
+        "timing_channel": timing_channel(),
     }
     with open(OUTPUT, "w", encoding="utf-8") as file:
         json.dump(report, file, indent=1)

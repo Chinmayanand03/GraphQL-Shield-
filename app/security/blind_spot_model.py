@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import logging
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -47,9 +48,11 @@ def load_model(force_reload: bool = False):
     try:
         from xgboost import XGBClassifier
 
-        model = XGBClassifier()
+        # One thread: scoring one row, starting a thread pool costs more than it saves.
+        model = XGBClassifier(n_jobs=1)
         model.load_model(str(MODEL_PATH))
         _model, _model_error = model, None
+        _probability.cache_clear()
     except Exception as exc:  # missing file or optional ML packages not installed
         _model, _model_error = None, str(exc)
     return _model
@@ -60,6 +63,15 @@ def model_status() -> dict[str, Any]:
     from app.core.paths import public_message, public_path
 
     return {"loaded": _model is not None, "path": public_path(MODEL_PATH), "error": public_message(_model_error)}
+
+
+@lru_cache(maxsize=4096)
+def _probability(row: tuple[float, ...]) -> float:
+    """Model probability for one feature vector. Features are small counts and the
+    same query shapes recur, so most requests are answered from this cache."""
+    import numpy as np
+
+    return float(_model.predict_proba(np.array([row], dtype=float))[0, 1])
 
 
 def predict(features: dict[str, int], *, explain: bool = False) -> dict[str, Any]:
@@ -74,14 +86,14 @@ def predict(features: dict[str, int], *, explain: bool = False) -> dict[str, Any
     if model is None:
         return result
 
-    import numpy as np
-
-    row = np.array([[features[name] for name in FEATURE_NAMES]], dtype=float)
-    probability = float(model.predict_proba(row)[0, 1])
+    values = tuple(float(features[name]) for name in FEATURE_NAMES)
+    probability = _probability(values)
     result["probability"] = round(probability, 4)
     result["prediction"] = int(probability >= DECISION_THRESHOLD)
     if explain:
-        result["contributions"] = explain_row(model, row)
+        import numpy as np
+
+        result["contributions"] = explain_row(model, np.array([values], dtype=float))
     return result
 
 

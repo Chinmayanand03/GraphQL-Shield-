@@ -51,11 +51,16 @@ class Mutation:
     def delete_resource(self, id: int) -> bool:
         conn = get_db_connection()
         try:
+            # A deleted folder's children move to the top level, whoever owns them.
+            # Refusing the delete instead would tell the caller that a hidden child
+            # exists. The children keep their owner and content; only their place in
+            # the deleted folder, which belonged to the folder's owner, goes away.
+            conn.execute("UPDATE objects SET parent_id = NULL WHERE parent_id = ?", (id,))
             cursor = conn.execute("DELETE FROM objects WHERE id = ?", (id,))
             conn.commit()
             return cursor.rowcount > 0
         except Exception:
-            # e.g. a folder that still has children (foreign key constraint)
+            conn.rollback()
             return False
         finally:
             conn.close()

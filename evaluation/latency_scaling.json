@@ -1,97 +1,97 @@
 {
-  "generated_at": "2026-11-07T10:02:36.231837+00:00",
-  "method": "in-process TestClient; 10 warm-up, 5 repeats x 40 requests; 95% CI across repeats",
+  "generated_at": "2026-11-08T14:39:47.356477+00:00",
+  "method": "in-process TestClient; 8 repeats, each timing 40 requests per variant in random order after 10 untimed ones; 95% CI across repeats",
   "foreign_share": 0.1,
   "results": {
     "1": {
       "unprotected": {
-        "mean_ms": 14.485,
+        "mean_ms": 6.89,
         "ci95_ms": [
-          12.946,
-          16.024
+          5.907,
+          7.872
         ]
       },
       "batched": {
-        "mean_ms": 20.16,
+        "mean_ms": 7.752,
         "ci95_ms": [
-          18.701,
-          21.619
+          6.957,
+          8.547
         ]
       },
       "one_by_one": {
-        "mean_ms": 20.489,
+        "mean_ms": 8.757,
         "ci95_ms": [
-          19.22,
-          21.759
+          7.177,
+          10.337
         ]
       }
     },
     "10": {
       "unprotected": {
-        "mean_ms": 15.42,
+        "mean_ms": 8.478,
         "ci95_ms": [
-          14.504,
-          16.336
+          6.817,
+          10.14
         ]
       },
       "batched": {
-        "mean_ms": 22.995,
+        "mean_ms": 9.222,
         "ci95_ms": [
-          20.18,
-          25.81
+          8.217,
+          10.228
         ]
       },
       "one_by_one": {
-        "mean_ms": 24.687,
+        "mean_ms": 9.882,
         "ci95_ms": [
-          23.819,
-          25.554
+          9.089,
+          10.675
         ]
       }
     },
     "50": {
       "unprotected": {
-        "mean_ms": 16.595,
+        "mean_ms": 9.216,
         "ci95_ms": [
-          15.694,
-          17.495
+          6.948,
+          11.485
         ]
       },
       "batched": {
-        "mean_ms": 32.592,
+        "mean_ms": 12.826,
         "ci95_ms": [
-          31.572,
-          33.611
+          11.866,
+          13.787
         ]
       },
       "one_by_one": {
-        "mean_ms": 47.86,
+        "mean_ms": 18.087,
         "ci95_ms": [
-          44.72,
-          51.0
+          16.537,
+          19.637
         ]
       }
     },
     "200": {
       "unprotected": {
-        "mean_ms": 28.022,
+        "mean_ms": 11.727,
         "ci95_ms": [
-          24.011,
-          32.032
+          9.723,
+          13.731
         ]
       },
       "batched": {
-        "mean_ms": 73.545,
+        "mean_ms": 26.283,
         "ci95_ms": [
-          71.447,
-          75.643
+          24.87,
+          27.697
         ]
       },
       "one_by_one": {
-        "mean_ms": 127.503,
+        "mean_ms": 44.587,
         "ci95_ms": [
-          122.844,
-          132.162
+          43.115,
+          46.059
         ]
       }
     }

@@ -38,7 +38,7 @@
 \maketitle
 
 \begin{abstract}
-Broken Object Level Authorization (BOLA) is the top risk in the OWASP API Security Top~10, and GraphQL makes it harder to stop: one request can reach an object by identifier, through nested lookups, fragments, variables and batches, or through relationship fields that never name the object. We present GraphQL-Shield, which enforces object ownership at two independent points: a schema-aware layer that checks every identifier it can resolve before execution, and an execution-time layer that checks every object resolvers return and every mutation target the engine coerces. The second layer records each object the first never evaluated, so the gateway measures its own pre-execution coverage. We test this evidence by fault injection: 17 realistic bugs planted in the first layer, each run on 5 seeds of 1,000 composed requests. The evidence revealed all 17 and raised no alarm on the unmodified layer. A one-line rule over the evidence predicted the affected requests with mean F1 0.966; logistic regression and XGBoost both named the broken construct first for all 14 faults our features can express, and XGBoost was no better than the simple models. We state four security properties and check them with property-based testing, close three leak channels the tests exposed (an existence oracle, objects behind interfaces and unions, and aggregate fields), and run the same layers on Strawberry, plain graphql-core, Graphene and Ariadne. On the same schema and 13 attacks, graphql-shield also leaks nothing but loses an owner's own data to GraphQL null propagation; GraphQL-Shield loses none, but a type left out of its configuration leaks up to 9 of 13 attacks.
+Broken Object Level Authorization (BOLA) is the top risk in the OWASP API Security Top~10, and GraphQL makes it harder to stop: one request can reach an object by identifier, through nested lookups, fragments, variables and batches, or through relationship fields that never name the object. We present GraphQL-Shield, which enforces object ownership at two independent points: a schema-aware layer that checks every identifier it can resolve before execution, and an execution-time layer that checks every object resolvers return and every mutation target the engine coerces. The second layer records each object the first never evaluated, so the gateway measures its own pre-execution coverage. We test this evidence by fault injection: 17 realistic bugs planted in the first layer, each run on 5 seeds of 1,000 composed requests. The evidence revealed all 17 and raised no alarm on the unmodified layer. A one-line rule over the evidence predicted the affected requests with mean F1 0.966; logistic regression and XGBoost both named the broken construct first for all 14 faults our features can express, and XGBoost was no better than the simple models. We state four security properties and check them with property-based testing, close four leak channels the tests exposed (an existence oracle, objects behind interfaces and unions, aggregate fields, and a refused folder deletion), measure no timing difference between foreign and missing objects, and run the same layers on Strawberry, plain graphql-core, Graphene and Ariadne. On the same schema and 13 attacks, graphql-shield also leaks nothing but loses an owner's own data to GraphQL null propagation; GraphQL-Shield loses none, but a type left out of its configuration leaks up to 9 of 13 attacks.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -56,7 +56,7 @@ Two families of defence exist, and each misses something. Checks that analyse th
 \begin{enumerate}
 \item \textbf{Dual-layer enforcement with cross-layer evidence.} A pre-execution layer and an execution-time layer enforce ownership independently, configured from the schema and a small ownership map. The second records every object the first never evaluated, which turns defence in depth into a coverage measurement.
 \item \textbf{A fault-injection evaluation of that evidence.} We plant 17 bugs in the pre-execution layer and measure detection, prediction and localisation. The evidence detects every fault; simple models over it are as good as gradient boosting.
-\item \textbf{Stated properties and closed leak channels.} We define safety, non-interference, write safety and availability, check them on generated data and requests, show they fail with protection off, and fix three channels that returned or revealed foreign data in an earlier version.
+\item \textbf{Stated properties and closed leak channels.} We define safety, non-interference, write safety and availability, check them on generated data and requests, show they fail with protection off, and fix four channels that returned or revealed foreign data in an earlier version.
 \item \textbf{Portability and comparison.} The same layers run on four Python GraphQL frameworks and a second, unrelated application. We compare with graphql-shield on the same schema, including configuration mistakes, and report latency with confidence intervals.
 \end{enumerate}
 
@@ -107,13 +107,13 @@ We found no prior work that enforces BOLA in GraphQL at two layers and uses one 
 % ===================================================================
 \section{Threat Model and Properties}
 
-The attacker is an authenticated user who wants to read or change objects owned by someone else. They hold a valid token for their own account, can send any syntactically valid request, know or can guess other users' identifiers, and can read the schema. Authentication is sound and the owner lookup is trusted: ownership comes from the data store, never from client input or from the object a resolver returns. Resolvers may contain no authorization checks. An owned object is accessible to its owner and to administrators, and objects reached through relationships are checked individually: owning a parent grants nothing about its children. Out of scope are authentication flaws, function-level authorization, injection, denial of service beyond the depth, alias, token and batch limits we apply, timing side channels, and policies richer than owner-or-administrator.
+The attacker is an authenticated user who wants to read or change objects owned by someone else. They hold a valid token for their own account, can send any syntactically valid request, know or can guess other users' identifiers, and can read the schema. Authentication is sound and the owner lookup is trusted: ownership comes from the data store, never from client input or from the object a resolver returns. Resolvers may contain no authorization checks. An owned object is accessible to its owner and to administrators, and objects reached through relationships are checked individually: owning a parent grants nothing about its children. Out of scope are authentication flaws, function-level authorization, injection, denial of service beyond the depth, alias, token and batch limits we apply, timing channels other than the foreign-versus-missing comparison we measure, and policies richer than owner-or-administrator.
 
 For a non-administrator caller $u$ and any request $q$ we require:
 \begin{description}
 \item[P1 Safety.] The response to $q$ contains no object $u$ does not own.
 \item[P2 Non-interference.] Changing only objects $u$ does not own (their content, existence, or children placed under $u$'s folders) does not change the response to $q$.
-\item[P3 Write safety.] $q$ changes no object $u$ does not own.
+\item[P3 Write safety.] $q$ changes the owner or content of no object $u$ does not own, and deletes none.
 \item[P4 Availability.] If $q$ names only objects $u$ owns, they are returned.
 \end{description}
 P2 is stronger than P1: it rules out answers that reveal foreign data indirectly, such as an error that differs for a foreign object and a missing one, or a count that includes foreign children.
@@ -155,7 +155,7 @@ Fig.~\ref{fig:arch} shows the architecture: two independent checks around the Gr
 \subsection{Per-application configuration}
 A \code{ShieldConfig} describes the protected application: its schema; which object types are owned, each mapped to an ownership key; an owner-lookup function from (key, identifier) to owner, optionally with a batched form; the arguments that carry identifiers and a decoder for them (for example, Relay global identifiers); targets for mutations whose return type does not reveal what they change; and aggregate fields, such as a child count, that summarise owned objects. Everything else is derived from the schema. The demo application needs two owned types, one mutation entry (\code{deleteResource} returns \code{Boolean}), one aggregate entry and its owner lookup.
 
-At startup a lint pass compares the configuration with the schema. It reports object types not configured as owned that have an owner-like field (\code{ownerId}, \code{author}, \code{createdBy}, \ldots) or a field of an owned type, and scalar fields on owned types named like counts or totals (\code{childrenCount}, \code{hasChildren}) that are not declared as aggregates. Removing any one of the five owned types across our two applications produces a finding for that type, and the complete configurations produce none. The lint is a heuristic: a type whose owner is held under an unusual name is not reported.
+At startup a lint pass compares the configuration with the schema. It reports object types not configured as owned that have an owner-like field (\code{ownerId}, \code{author}, \code{createdBy}, \ldots) or a field of an owned type, and scalar fields on owned types named like counts or totals (\code{childrenCount}, \code{hasChildren}) that are not declared as aggregates. Independently of naming, it also reports every root query that fetches a single object of a type by identifier when that type is neither owned nor declared public, since a per-user lookup is the usual sign of an owned type. Removing any one of the five owned types across our two applications produces a finding for that type, and the complete configurations produce none. The lint remains a heuristic: a type with an unusually named owner field that is reachable only through relationships is not reported.
 
 \subsection{Layer 1: schema-aware pre-execution gate}
 Layer 1 parses the request before the engine runs and walks it against the schema. For every field with an identifier argument it takes the object type from the schema---the owned type the field returns, the type embedded in a global identifier when the field returns an interface or union, or a root mutation's configured target---rather than from the field's name. It resolves values as the engine will: literals, variables, declared defaults, lists, named and inline fragments, aliases, and each operation of a batch. A global identifier whose embedded type differs from the expected type is checked as both. One denial rejects the whole request with HTTP 403, so a write never starts.
@@ -164,7 +164,7 @@ Layer 1 parses the request before the engine runs and walks it against the schem
 Layer 2 runs inside the engine as graphql-core middleware or a Strawberry extension. Before a root mutation's resolver runs, it checks the target argument the engine coerced; a denial raises an error and the resolver never executes. After each resolver returns, it decides whether the value is an owned object from the field's GraphQL type, not the value's class, so it works with typed objects, dictionaries or ORM rows. For an interface or union it resolves the concrete type the way the engine does (\code{\_\_typename}, \code{resolve\_type} or \code{is\_type\_of}). A denied single object becomes \code{null}; a denied list item is removed before non-null types are enforced, so the caller keeps their own items. A list is checked with one batched owner lookup and its decisions are written in one audit transaction. A declared aggregate field is answered by Layer 2 itself as the number of related objects the caller may see. A mutation with no derivable or configured target is denied unless explicitly listed as unguarded.
 
 \subsection{Uniform denials}
-Every denial a non-administrator sees carries the same reason, \code{ACCESS\_DENIED}, whether the object belongs to someone else or does not exist; the exact reason and risk score are kept only in the audit log. An earlier version returned \code{OWNERSHIP\_MISMATCH} or \code{OBJECT\_NOT\_FOUND}, and its request explainer returned the owner's identifier, which together let any user enumerate which objects exist and who owns them.
+Every denial a non-administrator sees carries the same reason, \code{ACCESS\_DENIED}, whether the object belongs to someone else or does not exist; the exact reason and risk score are kept only in the audit log. An earlier version returned \code{OWNERSHIP\_MISMATCH} or \code{OBJECT\_NOT\_FOUND}, and its request explainer returned the owner's identifier, which together let any user enumerate which objects exist and who owns them. Denials also take the same time: when a lookup by identifier finds nothing, Layer~2 still performs the owner lookup, policy decision and audit write it performs for a foreign object.
 
 \subsection{Cross-layer evidence and the advisory predictor}
 Layer 1 marks every (type, identifier) it evaluated. Layer 2 writes an audit record only for objects Layer 1 never marked, so each such record is direct evidence of a Layer 1 coverage gap, and no decision is counted twice. When Layer 2 also denies such an object it records a blind-spot event: an attack only Layer 2 stopped. The audit log is hash-chained, so a deleted or edited record is detectable.
@@ -174,7 +174,7 @@ The evidence labels requests without manual effort. For each request Layer 1 all
 % ===================================================================
 \section{Implementation}
 
-GraphQL-Shield is written in Python on FastAPI and graphql-core~3.3, with SQLite (write-ahead logging) for ownership data and audit records. Layer~1 is a dependency on the protected route; Layer~2 is \code{OwnershipMiddleware(config)} for any graphql-core server or a Strawberry extension. Every request is limited to depth 10, 15 aliases, 2,000 tokens and 5 batched operations. Database connections are pooled. The test suite has 386 tests.
+GraphQL-Shield is written in Python on FastAPI and graphql-core~3.3, with SQLite (write-ahead logging) for ownership data and audit records. Layer~1 is a dependency on the protected route; Layer~2 is \code{OwnershipMiddleware(config)} for any graphql-core server or a Strawberry extension. Every request is limited to depth 10, 15 aliases, 2,000 tokens and 5 batched operations. Database connections are pooled, parsed queries are cached, and the advisory score is cached per feature vector. The test suite has 390 tests.
 
 We evaluate on two applications. The \emph{demo} application (Strawberry, code-first) has users, documents and folders with integer identifiers. The \emph{clinic} application shares no code with it: a schema-first SDL on plain graphql-core, dictionary resolvers, Relay global identifiers, and patients, records and prescriptions with independent owners. In both, resolvers contain no authorization checks, and each exposes an unprotected endpoint used only as a baseline. To test framework independence we also protect small Graphene (Relay \code{Node}, lists, mutations) and Ariadne (schema-first) applications with the same middleware and configuration type.
 
@@ -247,7 +247,28 @@ The lesson is that the contribution is the evidence, not the model. A gateway wi
 \subsection{RQ3: Properties and leak channels}
 We check P1--P4 with Hypothesis~\cite{hypothesis}. Each example draws a world---owners for three folders and six documents among three users, and a parent for each document---a caller, and a request composed as in Section~\ref{sec:faults}; each property runs 120 examples. P2 compares the response in two worlds that agree on the caller's objects and differ arbitrarily in everyone else's. All four properties hold. With both layers off, each property fails, so the tests can detect a violation.
 
-Writing P2 exposed three channels through which an earlier version revealed foreign data, all now closed. \emph{Existence oracle:} Layer~1, Layer~2 and the explainer reported different reasons for a foreign object and a missing one, and the explainer returned the owner's identifier; responses are now identical apart from the requested identifier. \emph{Abstract types:} Layer~2 read only the declared return type, so \code{node(id:2)} or a union search returned a foreign object's content; it now resolves the concrete type. \emph{Aggregates:} \code{childrenCount} counted foreign children, and was protected only by a hand-written check in its resolver; Layer~2 now answers declared aggregates from the visible objects. One channel remains: deleting a folder that holds a hidden foreign child fails on the foreign-key constraint and so reveals the child exists. We document it as a known violation of P2 and test that it behaves as described.
+Writing P2 exposed four channels through which an earlier version revealed foreign data, all now closed. \emph{Existence oracle:} Layer~1, Layer~2 and the explainer reported different reasons for a foreign object and a missing one, and the explainer returned the owner's identifier; responses are now identical apart from the requested identifier. \emph{Abstract types:} Layer~2 read only the declared return type, so \code{node(id:2)} or a union search returned a foreign object's content; it now resolves the concrete type. \emph{Aggregates:} \code{childrenCount} counted foreign children, and was protected only by a hand-written check in its resolver; Layer~2 now answers declared aggregates from the visible objects. \emph{Refused deletion:} deleting a folder that held a hidden foreign child failed on the foreign-key constraint, revealing the child; a deleted folder's children now move to the top level, keeping their owner and content, so the response no longer depends on them.
+
+\textbf{Timing.} Identical responses can still differ in time. For each of four settings we sent 1,500 interleaved pairs of requests for a foreign object and a missing one in random order, and compared the medians with a bootstrap 95\% interval and a Mann--Whitney test (Table~\ref{tab:timing}). With Layer~2 alone, a foreign read took 0.352\,ms longer than a missing one (CI [0.193, 0.554], $p=2\times10^{-8}$), because a lookup that found nothing skipped the check. After Layer~2 began checking missing lookups too, no setting showed a difference: every interval contains zero and every $p\geq0.68$. The measurement is in-process; its resolution, about 0.1\,ms, bounds what it can rule out.
+
+\begin{table}[t]
+\caption{Median time of a foreign minus a missing object (ms), 1,500 pairs each}
+\label{tab:timing}
+\centering
+\footnotesize
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Setting & Gap & 95\% CI & $p$ \\
+\midrule
+Read, both layers & $+0.021$ & $[-0.024, 0.060]$ & 0.98 \\
+Update, both layers & $+0.011$ & $[-0.049, 0.065]$ & 0.87 \\
+Read, Layer~2 only & $-0.005$ & $[-0.134, 0.122]$ & 0.68 \\
+Update, Layer~2 only & $+0.013$ & $[-0.171, 0.223]$ & 0.70 \\
+\midrule
+Read, Layer~2 only, before fix & $+0.352$ & $[0.193, 0.554]$ & $2\times10^{-8}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{RQ4: Comparison with graphql-shield}\label{sec:comparison}
 We rebuilt the demo schema, seed data and unchecked resolvers in Node.js and protected them with graphql-shield~7.6.5 in its documented style: argument rules on lookups, type-wide rules on owned types, and rules on each mutation. Both systems ran the same 13 attack and 5 benign scenarios, judged by one oracle: an attack leaks if a non-owned object is returned or the victim object changes; a benign request fails if the caller's own objects are missing.
@@ -276,31 +297,33 @@ With deny fallback & --- & 0 leaks; 1--4 of 5 legitimate requests blocked \\
 Both systems stop all 13 attacks when fully configured. graphql-shield's failure is availability: in \code{children: [ResourceType!]!}, denying the one foreign child cannot null that item, so the error nulls the whole folder and its owner loses their own two documents. Layer~2 removes the item before nullability is enforced. Under configuration mistakes neither approach dominates (Table~\ref{tab:comparison}). GraphQL-Shield fails closed on mutations, but an owned type left out is a single point of failure that leaks up to 9 of 13 attacks; the startup lint reports such omissions. graphql-shield's overlapping rules tolerate one missing read rule, but a missing mutation rule executes the write under its default allow fallback, and its deny fallback blocks legitimate requests instead.
 
 \subsection{RQ5: Latency}
-Each configuration ran 30 warm-up requests, then 5 repeats of 200; we report the mean with a 95\% confidence interval across repeats ($t$-distribution, 4 degrees of freedom). With both layers, an owned lookup took 19.7\,ms (CI [19.2, 20.1]) against 14.8\,ms unprotected (+33\%), a relationship query 21.6\,ms (CI [21.3, 21.9]) against 14.2\,ms (+53\%), and an update 18.8\,ms (CI [17.9, 19.8]) against 14.9\,ms (+26\%). Layer~2 alone added 4--17\%; most of the cost is Layer~1's parse and schema walk. Fig.~\ref{fig:latency} shows the effect of two engineering fixes. Pooling database connections cut both-layer latency 3.1 to 6.1 times, measured back to back. Profiling the scaling benchmark found that the risk score ran an unindexed count over the whole audit log for every checked object, so latency grew with the log; an index and an existence probe made it constant.
+All configurations of one request type are timed in the same run and interleaved: after 30 warm-up requests, each of 10 repeats times 100 requests of every configuration, in a fresh random order, after 10 untimed ones. Drift on the machine then affects every configuration alike, and the overhead is estimated from the per-repeat difference to the unprotected endpoint, with a 95\% confidence interval ($t$, 9 degrees of freedom). An earlier, sequential version of this benchmark produced overheads that changed sign between runs.
+
+With both layers, an owned lookup took 10.4\,ms against 9.4\,ms unprotected, a paired overhead of $+0.99$\,ms (CI $[-0.36, 2.35]$); a relationship query $+0.86$\,ms ($[0.32, 1.40]$); and an update $+0.00$\,ms ($[-1.28, 1.29]$). Protection therefore costs about 1\,ms per request on this machine, and at most 2.4\,ms. Three fixes found by profiling brought it there. Pooling database connections cut both-layer latency 3.1 to 6.0 times (Fig.~\ref{fig:latency}). The risk score ran an unindexed count over the whole audit log for every checked object, so latency grew with the log; an index and an existence probe made it constant. Finally, the advisory predictor cost about 4.4\,ms of Layer~1's 5.3\,ms, mostly starting XGBoost's thread pool for a one-row prediction; scoring on one thread and caching the probability per feature vector, together with caching parsed queries, removed nearly all of it.
 
 \begin{figure}[t]
 \centering
 \begin{tikzpicture}
 \begin{axis}[
   ybar=1pt, bar width=8pt, width=\columnwidth, height=4.8cm,
-  ymin=0, ymax=165, ylabel={ms per request}, ylabel style={font=\scriptsize},
+  ymin=0, ymax=80, ylabel={ms per request}, ylabel style={font=\scriptsize},
   symbolic x coords={Own lookup, Relationship, Own update}, xtick=data,
   tick label style={font=\scriptsize}, axis lines*=left, ytick=\empty, axis y line=none,
-  nodes near coords, nodes near coords style={font=\tiny, rotate=90, anchor=west},
+  nodes near coords={\pgfmathprintnumber[fixed,fixed zerofill,precision=1]{\pgfplotspointmeta}}, nodes near coords style={font=\tiny, rotate=90, anchor=west},
   legend style={font=\scriptsize, at={(0.5,1.03)}, anchor=south, draw=none, legend columns=3, /tikz/every even column/.append style={column sep=6pt}},
   enlarge x limits=0.2
 ]
-\addplot[fill=shieldgrey, draw=none] coordinates {(Own lookup,60.2) (Relationship,132.4) (Own update,71.8)};
-\addplot[fill=shieldteal, draw=none] coordinates {(Own lookup,19.7) (Relationship,21.6) (Own update,18.8)};
-\addplot[fill=shieldnavy!40, draw=none] coordinates {(Own lookup,14.8) (Relationship,14.2) (Own update,14.9)};
+\addplot[fill=shieldgrey, draw=none] coordinates {(Own lookup,32.6) (Relationship,66.1) (Own update,35.5)};
+\addplot[fill=shieldteal, draw=none] coordinates {(Own lookup,10.4) (Relationship,11.0) (Own update,10.4)};
+\addplot[fill=shieldnavy!40, draw=none] coordinates {(Own lookup,9.4) (Relationship,10.2) (Own update,10.4)};
 \legend{{Both layers, no pooling},{Both layers, pooled},{Unprotected}}
 \end{axis}
 \end{tikzpicture}
-\caption{Mean latency per request, in-process (5$\times$200 requests each).}
+\caption{Mean latency per request, in-process (10$\times$100 interleaved requests each).}
 \label{fig:latency}
 \end{figure}
 
-\textbf{Scaling.} A folder with $N$ children, one in ten foreign, was queried with Layer~2 checking the list one item at a time or with one batched owner lookup and one audit transaction (Table~\ref{tab:scaling}). Batching matters as lists grow: at 200 children it cut the protected request from 127.5\,ms to 73.5\,ms, against 28.0\,ms unprotected. The remaining cost grows linearly with the number of returned objects.
+\textbf{Scaling.} A folder with $N$ children, one in ten foreign, was queried with Layer~2 checking the list one item at a time or with one batched owner lookup and one audit transaction, interleaved with the unprotected endpoint (Table~\ref{tab:scaling}). Batching matters as lists grow: at 200 children it cut the protected request from 44.6\,ms to 26.3\,ms, against 11.7\,ms unprotected. The remaining cost grows linearly with the number of returned objects, because each is checked and audited.
 
 \begin{table}[t]
 \caption{Latency (ms) as a request returns more objects}
@@ -311,10 +334,10 @@ Each configuration ran 30 warm-up requests, then 5 repeats of 200; we report the
 \toprule
 Children & Unprotected & One by one & Batched \\
 \midrule
-1 & 14.5 & 20.5 & 20.2 \\
-10 & 15.4 & 24.7 & 23.0 \\
-50 & 16.6 & 47.9 & 32.6 \\
-200 & 28.0 & 127.5 & 73.5 \\
+1 & 6.9 & 8.8 & 7.8 \\
+10 & 8.5 & 9.9 & 9.2 \\
+50 & 9.2 & 18.1 & 12.8 \\
+200 & 11.7 & 44.6 & 26.3 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -328,16 +351,16 @@ For reference, graphql-shield on Node.js added 15\% to an owned lookup, 62\% to 
 
 \textbf{Synthetic traffic.} The predictor and the fault-injection study use generated requests from a small world. In this world a coverage gap follows almost entirely from query structure, so F1 near 1.0 reflects an easy target, not real-world accuracy. The fault study measures whether the evidence carries the signal, not how often real Layer~1 bugs occur.
 
-\textbf{Configuration.} An owned type left out is unprotected by both layers. The lint narrows this but is a naming heuristic. Only owner-or-administrator policies are supported; sharing, teams and attribute-based rules fit into Layer~2's per-object check but are not implemented.
+\textbf{Configuration.} An owned type left out is unprotected by both layers. The lint narrows this, but it combines naming with lookups by identifier and can still miss a type reached only through relationships. Only owner-or-administrator policies are supported; sharing, teams and attribute-based rules fit into Layer~2's per-object check but are not implemented.
 
-\textbf{Residual channels.} The foreign-key refusal on folder deletion reveals a hidden child. Timing differences between foreign and missing objects were not measured.
+\textbf{Residual channels.} The timing measurement is in-process; over a network an attacker averages more samples but also faces more noise, which we did not model. Moving a deleted folder's foreign children to the top level changes where they are filed, a choice the folder's owner makes for their own folder, but their owners may not expect it.
 
-\textbf{Measurement.} Latency was measured in-process on a laptop with background load. graphql-shield was reimplemented on a copy of our schema in its documented style; other rule sets could perform differently, and its Node.js latency is not comparable in absolute terms with our Python numbers.
+\textbf{Measurement.} Latency was measured in-process on a laptop; network latency, absent here, would make the roughly 1\,ms overhead relatively smaller. graphql-shield was reimplemented on a copy of our schema in its documented style; other rule sets could perform differently, and its Node.js latency is not comparable in absolute terms with our Python numbers.
 
 % ===================================================================
 \section{Conclusion}
 
-Enforcing GraphQL object ownership at two independent points stops BOLA in every form we tested and lets a gateway measure its own coverage. A pre-execution layer alone misses objects reached through relationships; an execution-time layer catches them and records each object the first layer never saw. Planting 17 bugs in the first layer showed that this record detects every one, that a one-line rule over it predicts the affected requests, and that simple models name the broken construct as reliably as gradient boosting. Stating non-interference exposed and closed three leak channels in our own system. The layers are configured from the schema and a small ownership map, run on four Python GraphQL frameworks, and avoid the availability loss per-field rules suffer under null propagation. Evaluating on third-party applications with independently written attacks is the next step.
+Enforcing GraphQL object ownership at two independent points stops BOLA in every form we tested and lets a gateway measure its own coverage. A pre-execution layer alone misses objects reached through relationships; an execution-time layer catches them and records each object the first layer never saw. Planting 17 bugs in the first layer showed that this record detects every one, that a one-line rule over it predicts the affected requests, and that simple models name the broken construct as reliably as gradient boosting. Stating non-interference exposed and closed four leak channels in our own system, and the remaining responses show no timing difference. The layers are configured from the schema and a small ownership map, run on four Python GraphQL frameworks, and avoid the availability loss per-field rules suffer under null propagation. Evaluating on third-party applications with independently written attacks is the next step.
 
 \section*{Availability}
 Source code, the fault-injection harness and the results reported here are released under the MIT licence.

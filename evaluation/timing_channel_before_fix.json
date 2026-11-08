@@ -1,0 +1,85 @@
+{
+  "generated_at": "2026-11-08T14:44:43.306666+00:00",
+  "method": "in-process TestClient; 50 warm-up, 1500 interleaved pairs in random order; median gap with 2000-sample bootstrap 95% CI; two-sided Mann-Whitney U",
+  "missing_lookup_checked": false,
+  "foreign_id": 102,
+  "missing_id": 99999,
+  "results": {
+    "read_layer1": {
+      "foreign_median_ms": 6.2395,
+      "missing_median_ms": 6.1913,
+      "median_gap_ms": 0.0482,
+      "median_gap_ci95_ms": [
+        -0.1188,
+        0.2276
+      ],
+      "relative_gap_pct": 0.78,
+      "mann_whitney_p": 0.892,
+      "status_codes": {
+        "foreign": [
+          403
+        ],
+        "missing": [
+          403
+        ]
+      }
+    },
+    "update_layer1": {
+      "foreign_median_ms": 5.8843,
+      "missing_median_ms": 5.8879,
+      "median_gap_ms": -0.0037,
+      "median_gap_ci95_ms": [
+        -0.1327,
+        0.1165
+      ],
+      "relative_gap_pct": -0.06,
+      "mann_whitney_p": 0.857,
+      "status_codes": {
+        "foreign": [
+          403
+        ],
+        "missing": [
+          403
+        ]
+      }
+    },
+    "read_layer2_only": {
+      "foreign_median_ms": 9.5672,
+      "missing_median_ms": 9.2154,
+      "median_gap_ms": 0.3518,
+      "median_gap_ci95_ms": [
+        0.1929,
+        0.5541
+      ],
+      "relative_gap_pct": 3.82,
+      "mann_whitney_p": 2.34e-08,
+      "status_codes": {
+        "foreign": [
+          200
+        ],
+        "missing": [
+          200
+        ]
+      }
+    },
+    "update_layer2_only": {
+      "foreign_median_ms": 9.0059,
+      "missing_median_ms": 9.0746,
+      "median_gap_ms": -0.0687,
+      "median_gap_ci95_ms": [
+        -0.2499,
+        0.1002
+      ],
+      "relative_gap_pct": -0.76,
+      "mann_whitney_p": 0.516,
+      "status_codes": {
+        "foreign": [
+          200
+        ],
+        "missing": [
+          200
+        ]
+      }
+    }
+  }
+}

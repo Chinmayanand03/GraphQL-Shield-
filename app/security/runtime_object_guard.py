@@ -195,11 +195,11 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
 
             async def resolve_and_check():
                 resolved = await result
-                return self._guard_result(resolved, root, info)
+                return self._guard_result(resolved, root, info, kwargs)
 
             return resolve_and_check()
 
-        return self._guard_result(result, root, info)
+        return self._guard_result(result, root, info, kwargs)
 
     def _count_visible(self, relationship: str, root: Any, info: Any) -> int:
         """Answer an aggregate field from its relationship, counting only the objects
@@ -493,9 +493,53 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
         }
         sec_state.provenance.append(provenance_entry)
 
-    def _guard_result(self, result: Any, root: Any, info: Any) -> Any:
+    def _missing_target(self, info: Any, arguments: dict | None) -> tuple[str, Any] | None:
+        """The owned type and ID a lookup asked for when its resolver found nothing.
+
+        Checking it the same way as a found object keeps a missing object from being
+        answered faster than a foreign one, which would reveal which IDs exist. Root
+        mutations are left out: their targets were already checked before they ran."""
+        if not arguments:
+            return None
+        schema = getattr(info, "schema", None)
+        mutation_type = getattr(schema, "mutation_type", None)
+        if mutation_type is not None and getattr(info, "parent_type", None) is mutation_type:
+            return None
+        return_type = getattr(info, "return_type", None)
+        if not isinstance(return_type, GraphQLType):
+            return None
+        named, is_list = unwrap_type(return_type)
+        if is_list:
+            return None
+        key = self._config().owned_types.get(getattr(named, "name", None))
+        if key is None:
+            return None
+        for argument in self._config().id_arguments:
+            if arguments.get(argument) is not None:
+                return key, _OwnedRef(arguments[argument], self._config())
+        return None
+
+    def _guard_result(self, result: Any, root: Any, info: Any, arguments: dict | None = None) -> Any:
         if not self._should_enforce(info):
             return result
+
+        if result is None:
+            target = self._missing_target(info, arguments)
+            if target is not None:
+                object_type, ref = target
+                is_auth, decision_info = self._check_resource_authorization(ref, info, object_type)
+                if not is_auth:
+                    request = self._get_request(info)
+                    self._record_evidence_and_provenance(
+                        sec_state=get_request_security_state({"request": request}),
+                        resource=ref, root=root,
+                        field_name=str(getattr(info, "field_name", "") or ""),
+                        decision_info=decision_info, enforcement="denied", emitted_path=None,
+                        object_type=object_type,
+                    )
+                    self._record_denial(request, decision_info, object_type, ref,
+                                        self._format_path_list(getattr(info, "path", None)))
+            return None
 
         request = self._get_request(info)
         sec_state = get_request_security_state({"request": request})

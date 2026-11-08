@@ -75,7 +75,10 @@ const resolvers = {
       if (object) object.name = name;
       return object ?? null;
     },
-    deleteResource: (_, { id }) => (children(id).length ? false : db.objects.delete(id)),
+    deleteResource: (_, { id }) => {
+      for (const child of children(id)) child.parentId = null; // same rule as the Python app
+      return db.objects.delete(id);
+    },
     transferOwnership: (_, { id, newOwnerId }) => {
       const object = db.objects.get(id);
       if (object && db.users.has(newOwnerId)) object.ownerId = newOwnerId;

@@ -195,13 +195,29 @@ def test_the_properties_fail_without_protection(prop):
         set_layers(layer1=True, layer2=True)
 
 
-def test_known_channel_deleting_a_folder_reveals_a_hidden_child():
-    """Not a guarantee but a documented limit (paper, Section VII): the database refuses
-    to delete a folder that still has children, and the caller can see that refusal."""
+def test_deleting_a_folder_does_not_reveal_a_hidden_child():
+    """Deleting a folder once failed on the foreign-key constraint when it held a hidden
+    foreign child, which told the caller the child existed. Children now move to the top
+    level, so the response is the same and the foreign child survives unchanged."""
     without_child = {"owners": {201: 101}, "parents": {}}
     with_foreign_child = {"owners": {201: 101, 301: 102}, "parents": {301: 201}}
+    with_own_child = {"owners": {201: 101, 302: 101}, "parents": {302: 201}}
     query = {"query": "mutation { deleteResource(id: 201) }"}
-    install(without_child)
-    assert json.loads(send(101, query)[1])["data"]["deleteResource"] is True
+    responses = []
+    for world in (without_child, with_foreign_child, with_own_child):
+        install(world)
+        responses.append(send(101, query))
+    assert responses[0] == responses[1] == responses[2]
+    assert json.loads(responses[0][1])["data"]["deleteResource"] is True
+
+    conn = get_db_connection()
+    child = conn.execute("SELECT owner_id, name, parent_id FROM objects WHERE id = 302").fetchone()
+    conn.close()
+    assert tuple(child) == (101, name_of(302), None)
+
     install(with_foreign_child)
-    assert json.loads(send(101, query)[1])["data"]["deleteResource"] is False
+    send(101, query)
+    conn = get_db_connection()
+    foreign = conn.execute("SELECT owner_id, name, parent_id FROM objects WHERE id = 301").fetchone()
+    conn.close()
+    assert tuple(foreign) == (102, name_of(301), None)

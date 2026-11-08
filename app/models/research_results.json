@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-08T10:36:48+00:00",
+ "built_at": "2026-11-08T14:52:53+00:00",
  "ablation": {
   "generated_at": "2026-11-07T09:57:35.610553+00:00",
   "scenarios": [
@@ -66,7 +66,7 @@
   ]
  },
  "tool_comparison": {
-  "generated_at": "2026-11-08T10:36:33.366020+00:00",
+  "generated_at": "2026-11-08T14:52:42.406047+00:00",
   "configuration_size": {
    "GraphQL Shield": {
     "owned_types": 2,
@@ -342,62 +342,77 @@
   }
  },
  "latency": {
-  "generated_at": "2026-11-07T10:06:19.757200+00:00",
-  "method": "in-process TestClient; 30 warm-up, 5 repeats x 200 requests; 95% CI of the mean across repeats (t, df=4)",
+  "generated_at": "2026-11-08T14:42:33.065120+00:00",
+  "method": "in-process TestClient; 30 warm-up, then 10 repeats, each timing 100 requests per configuration in random order after 10 untimed ones; 95% CI of the mean across repeats (t, df=9)",
   "rows": [
    {
     "request": "own_lookup",
     "both_layers_pooled": {
-     "mean_ms": 19.65,
+     "mean_ms": 10.425,
      "ci95_ms": [
-      19.219,
-      20.08
+      9.089,
+      11.761
      ],
-     "p50_ms": 18.67,
-     "p95_ms": 24.144,
-     "p99_ms": 40.039,
+     "p50_ms": 9.167,
+     "p95_ms": 16.695,
+     "p99_ms": 19.93,
      "requests": 1000,
-     "overhead_ms": 4.873,
-     "overhead_pct": 33.0
+     "paired_overhead_ms": 0.99,
+     "paired_overhead_ci95_ms": [
+      -0.364,
+      2.345
+     ],
+     "overhead_ms": 0.99,
+     "overhead_pct": 10.5
     },
-    "both_layers_no_pool_mean_ms": 60.236,
-    "insecure_pooled_mean_ms": 14.777
+    "both_layers_no_pool_mean_ms": 32.587,
+    "insecure_pooled_mean_ms": 9.435
    },
    {
     "request": "own_relationship",
     "both_layers_pooled": {
-     "mean_ms": 21.593,
+     "mean_ms": 11.029,
      "ci95_ms": [
-      21.31,
-      21.877
+      10.254,
+      11.804
      ],
-     "p50_ms": 20.683,
-     "p95_ms": 25.011,
-     "p99_ms": 37.003,
+     "p50_ms": 10.104,
+     "p95_ms": 17.21,
+     "p99_ms": 20.688,
      "requests": 1000,
-     "overhead_ms": 7.433,
-     "overhead_pct": 52.5
+     "paired_overhead_ms": 0.86,
+     "paired_overhead_ci95_ms": [
+      0.317,
+      1.403
+     ],
+     "overhead_ms": 0.86,
+     "overhead_pct": 8.5
     },
-    "both_layers_no_pool_mean_ms": 132.432,
-    "insecure_pooled_mean_ms": 14.16
+    "both_layers_no_pool_mean_ms": 66.066,
+    "insecure_pooled_mean_ms": 10.169
    },
    {
     "request": "own_update",
     "both_layers_pooled": {
-     "mean_ms": 18.847,
+     "mean_ms": 10.399,
      "ci95_ms": [
-      17.897,
-      19.798
+      9.114,
+      11.684
      ],
-     "p50_ms": 18.065,
-     "p95_ms": 22.624,
-     "p99_ms": 32.579,
+     "p50_ms": 9.476,
+     "p95_ms": 16.656,
+     "p99_ms": 20.917,
      "requests": 1000,
-     "overhead_ms": 3.902,
-     "overhead_pct": 26.1
+     "paired_overhead_ms": 0.003,
+     "paired_overhead_ci95_ms": [
+      -1.281,
+      1.288
+     ],
+     "overhead_ms": 0.004,
+     "overhead_pct": 0.0
     },
-    "both_layers_no_pool_mean_ms": 71.747,
-    "insecure_pooled_mean_ms": 14.945
+    "both_layers_no_pool_mean_ms": 35.48,
+    "insecure_pooled_mean_ms": 10.395
    }
   ]
  },
@@ -859,34 +874,106 @@
   }
  },
  "scaling": {
-  "generated_at": "2026-11-07T10:02:36.231837+00:00",
-  "method": "in-process TestClient; 10 warm-up, 5 repeats x 40 requests; 95% CI across repeats",
+  "generated_at": "2026-11-08T14:39:47.356477+00:00",
+  "method": "in-process TestClient; 8 repeats, each timing 40 requests per variant in random order after 10 untimed ones; 95% CI across repeats",
   "foreign_share": 0.1,
   "rows": [
    {
     "children": 1,
-    "unprotected": 14.485,
-    "batched": 20.16,
-    "one_by_one": 20.489
+    "unprotected": 6.89,
+    "batched": 7.752,
+    "one_by_one": 8.757
    },
    {
     "children": 10,
-    "unprotected": 15.42,
-    "batched": 22.995,
-    "one_by_one": 24.687
+    "unprotected": 8.478,
+    "batched": 9.222,
+    "one_by_one": 9.882
    },
    {
     "children": 50,
-    "unprotected": 16.595,
-    "batched": 32.592,
-    "one_by_one": 47.86
+    "unprotected": 9.216,
+    "batched": 12.826,
+    "one_by_one": 18.087
    },
    {
     "children": 200,
-    "unprotected": 28.022,
-    "batched": 73.545,
-    "one_by_one": 127.503
+    "unprotected": 11.727,
+    "batched": 26.283,
+    "one_by_one": 44.587
    }
   ]
+ },
+ "timing_channel": {
+  "generated_at": "2026-11-08T14:28:34.864239+00:00",
+  "method": "in-process TestClient; 50 warm-up, 1500 interleaved pairs in random order; median gap with 2000-sample bootstrap 95% CI; two-sided Mann-Whitney U",
+  "after": {
+   "read_layer1": {
+    "median_gap_ms": 0.0206,
+    "median_gap_ci95_ms": [
+     -0.0236,
+     0.0597
+    ],
+    "mann_whitney_p": 0.98
+   },
+   "update_layer1": {
+    "median_gap_ms": 0.0105,
+    "median_gap_ci95_ms": [
+     -0.0489,
+     0.0652
+    ],
+    "mann_whitney_p": 0.865
+   },
+   "read_layer2_only": {
+    "median_gap_ms": -0.0055,
+    "median_gap_ci95_ms": [
+     -0.1335,
+     0.1216
+    ],
+    "mann_whitney_p": 0.682
+   },
+   "update_layer2_only": {
+    "median_gap_ms": 0.0129,
+    "median_gap_ci95_ms": [
+     -0.1714,
+     0.2226
+    ],
+    "mann_whitney_p": 0.704
+   }
+  },
+  "before": {
+   "read_layer1": {
+    "median_gap_ms": 0.0482,
+    "median_gap_ci95_ms": [
+     -0.1188,
+     0.2276
+    ],
+    "mann_whitney_p": 0.892
+   },
+   "update_layer1": {
+    "median_gap_ms": -0.0037,
+    "median_gap_ci95_ms": [
+     -0.1327,
+     0.1165
+    ],
+    "mann_whitney_p": 0.857
+   },
+   "read_layer2_only": {
+    "median_gap_ms": 0.3518,
+    "median_gap_ci95_ms": [
+     0.1929,
+     0.5541
+    ],
+    "mann_whitney_p": 2.34e-08
+   },
+   "update_layer2_only": {
+    "median_gap_ms": -0.0687,
+    "median_gap_ci95_ms": [
+     -0.2499,
+     0.1002
+    ],
+    "mann_whitney_p": 0.516
+   }
+  }
  }
 }

@@ -1078,7 +1078,7 @@
             </div>
             <div class="evidence-block">
               <div class="panel-title" style="font-size:14px;">Latency per protected request</div>
-              <div class="panel-subtitle">In-process, 5 × 200 requests per bar; bars show the mean, the line the 95% confidence interval. Overhead is against the unprotected endpoint.</div>
+              <div class="panel-subtitle">In-process; configurations interleaved, 10 × 100 requests each. Bars show the mean, the line its 95% confidence interval. Overhead is the paired difference to the unprotected endpoint, with its 95% interval.</div>
               <div id="latencyChart" class="latency-chart">Loading…</div>
             </div>
             <div class="evidence-block">
@@ -1105,6 +1105,12 @@
               <div class="panel-title" style="font-size:14px;">Latency as responses grow</div>
               <div class="panel-subtitle">A folder with N children, one in ten owned by someone else. Layer 2 checks the list one item at a time, or with one batched owner lookup and one audit transaction (current).</div>
               <div class="table-wrap"><table style="min-width:0"><thead><tr><th>Children</th><th>Unprotected</th><th>One by one</th><th>Batched</th></tr></thead><tbody id="scalingBody"><tr><td class="empty" colspan="4">Loading…</td></tr></tbody></table></div>
+            </div>
+            <div class="evidence-block">
+              <div class="panel-title" style="font-size:14px;">Timing channel: foreign vs missing object</div>
+              <div class="panel-subtitle">Responses are identical; this checks that denials also take the same time. 1,500 interleaved pairs per setting; median gap with a bootstrap 95% interval.</div>
+              <div class="table-wrap"><table style="min-width:0"><thead><tr><th>Setting</th><th>Gap (ms)</th><th>95% CI</th><th>p</th></tr></thead><tbody id="timingBody"><tr><td class="empty" colspan="4">Loading…</td></tr></tbody></table></div>
+              <p class="console-note">Before the fix, Layer 2 skipped lookups that found nothing, so a foreign object was slower to deny. It now checks and audits them like a foreign one.</p>
             </div>
           </div>
         </section>
@@ -1923,9 +1929,12 @@
           const bars = document.createElement('div'); bars.className = 'lat-bars';
           const before = bar('before', r.both_layers_no_pool_mean_ms, `${ms(r.both_layers_no_pool_mean_ms)} ms`,
             `Both layers without pooling: ${ms(r.both_layers_no_pool_mean_ms)} ms`);
-          const overhead = pooled.overhead_pct !== undefined ? Number(pooled.overhead_pct + 1e-9).toFixed(0) : Math.round((pooled.mean_ms / base - 1) * 100);
+          const sign = (v) => `${v >= 0 ? '+' : '−'}${Math.abs(v).toFixed(2)}`;
+          const overheadText = pooled.paired_overhead_ms !== undefined
+            ? `${sign(pooled.paired_overhead_ms)} ms [${sign(pooled.paired_overhead_ci95_ms[0])}, ${sign(pooled.paired_overhead_ci95_ms[1])}]`
+            : `+${Math.round((pooled.mean_ms / base - 1) * 100)}%`;
           const after = bar('after', pooled.mean_ms,
-            `${ms(pooled.mean_ms)} ms [${ms(pooled.ci95_ms[0])}, ${ms(pooled.ci95_ms[1])}] · +${overhead}%`,
+            `${ms(pooled.mean_ms)} ms · overhead ${overheadText}`,
             `Both layers with pooling: ${ms(pooled.mean_ms)} ms, 95% CI ${ms(pooled.ci95_ms[0])}–${ms(pooled.ci95_ms[1])}; ${(r.both_layers_no_pool_mean_ms / pooled.mean_ms).toFixed(1)}× faster than without pooling`);
           const ci = document.createElement('div'); ci.className = 'lat-ci';
           ci.style.left = `${(pooled.ci95_ms[0] / pooled.mean_ms) * 100}%`;
@@ -1978,6 +1987,22 @@
         }));
       }
 
+      const TIMING_LABELS = {read_layer1: 'Read, both layers', update_layer1: 'Update, both layers',
+        read_layer2_only: 'Read, Layer 2 only', update_layer2_only: 'Update, Layer 2 only'};
+
+      function renderTiming(data) {
+        const row = (label, v, cls) => {
+          const tr = document.createElement('tr');
+          const f = (x) => `${x >= 0 ? '+' : '−'}${Math.abs(x).toFixed(3)}`;
+          tr.append(textCell(label, 'primary-cell'), textCell(f(v.median_gap_ms), cls),
+            textCell(`[${f(v.median_gap_ci95_ms[0])}, ${f(v.median_gap_ci95_ms[1])}]`), textCell(String(v.mann_whitney_p), cls));
+          return tr;
+        };
+        const rows = Object.entries(data.after).map(([k, v]) => row(TIMING_LABELS[k] || k, v, ''));
+        if (data.before && data.before.read_layer2_only) rows.push(row('Read, Layer 2 only — before fix', data.before.read_layer2_only, 'cell-leak'));
+        $('timingBody').replaceChildren(...rows);
+      }
+
       function renderScaling(data) {
         $('scalingBody').replaceChildren(...data.rows.map(r => {
           const tr = document.createElement('tr');
@@ -2021,9 +2046,10 @@
           if (data.blind_spot_seeds) renderSeeds(data.blind_spot_seeds);
           if (data.fault_injection) renderFaultInjection(data.fault_injection);
           if (data.scaling) renderScaling(data.scaling);
+          if (data.timing_channel) renderTiming(data.timing_channel);
         } catch (error) {
           setText('evidenceBuilt', 'NOT BUILT');
-          for (const id of ['ablationBody', 'comparisonBody', 'seedsBody', 'fiMethodsBody', 'scalingBody']) {
+          for (const id of ['ablationBody', 'comparisonBody', 'seedsBody', 'fiMethodsBody', 'scalingBody', 'timingBody']) {
             const tr = document.createElement('tr'); const td = textCell('Run python -m scripts.build_dashboard_results to add the experiment results.', 'empty'); td.colSpan = 7; tr.appendChild(td); $(id).replaceChildren(tr);
           }
           setText('latencyChart', 'Not available yet.');

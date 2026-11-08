@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import random
 import sqlite3
 import statistics
 import sys
@@ -35,7 +36,7 @@ from scripts.run_latency_benchmark import T_95
 
 OUTPUT = os.path.join(PROJECT_ROOT, "evaluation", "latency_scaling.json")
 SIZES = [1, 10, 50, 200]
-REPEATS = 5
+REPEATS = 8
 REQUESTS = 40
 WARMUP = 10
 FOLDER = 9000
@@ -52,21 +53,40 @@ def fill_folder(db_file: str, size: int) -> None:
     conn.close()
 
 
-def measure(client: TestClient, path: str, headers: dict) -> dict:
+# name -> (endpoint, batch the list check)
+VARIANTS = {"unprotected": ("/graphql-insecure", True), "batched": ("/graphql", True), "one_by_one": ("/graphql", False)}
+
+
+def time_block(client: TestClient, path: str, headers: dict) -> float:
     body = {"query": f"{{ resource(id: {FOLDER}) {{ id children {{ id name }} }} }}"}
     for _ in range(WARMUP):
         client.post(path, json=body, headers=headers)
-    means = []
+    start = time.perf_counter()
+    for _ in range(REQUESTS):
+        response = client.post(path, json=body, headers=headers)
+        if response.status_code != 200:
+            raise RuntimeError(f"{path} returned {response.status_code}: {response.text[:300]}")
+    return (time.perf_counter() - start) * 1000 / REQUESTS
+
+
+def measure_size(client: TestClient, headers: dict, rng: random.Random) -> dict:
+    """Every repeat times each variant once, in random order, so drift on the
+    machine affects all three alike."""
+    means = {name: [] for name in VARIANTS}
     for _ in range(REPEATS):
-        start = time.perf_counter()
-        for _ in range(REQUESTS):
-            response = client.post(path, json=body, headers=headers)
-            if response.status_code != 200:
-                raise RuntimeError(f"{path} returned {response.status_code}: {response.text[:300]}")
-        means.append((time.perf_counter() - start) * 1000 / REQUESTS)
-    mean = statistics.fmean(means)
-    half_width = T_95[REPEATS - 1] * statistics.stdev(means) / REPEATS ** 0.5
-    return {"mean_ms": round(mean, 3), "ci95_ms": [round(mean - half_width, 3), round(mean + half_width, 3)]}
+        order = list(VARIANTS)
+        rng.shuffle(order)
+        for name in order:
+            path, batched = VARIANTS[name]
+            runtime_object_guard.BATCH_LIST_CHECKS = batched
+            means[name].append(time_block(client, path, headers))
+    runtime_object_guard.BATCH_LIST_CHECKS = True
+    row = {}
+    for name, values in means.items():
+        mean = statistics.fmean(values)
+        half_width = T_95[REPEATS - 1] * statistics.stdev(values) / REPEATS ** 0.5
+        row[name] = {"mean_ms": round(mean, 3), "ci95_ms": [round(mean - half_width, 3), round(mean + half_width, 3)]}
+    return row
 
 
 def main() -> None:
@@ -85,21 +105,18 @@ def main() -> None:
         client = TestClient(app)
         headers = {"Authorization": f"Bearer {create_access_token(user_id=101, role='user')}"}
         set_layers(True, True)
+        rng = random.Random(20261108)
         for size in SIZES:
             fill_folder(db_file, size)
-            row = {"unprotected": measure(client, "/graphql-insecure", headers)}
-            runtime_object_guard.BATCH_LIST_CHECKS = True
-            row["batched"] = measure(client, "/graphql", headers)
-            runtime_object_guard.BATCH_LIST_CHECKS = False
-            row["one_by_one"] = measure(client, "/graphql", headers)
-            runtime_object_guard.BATCH_LIST_CHECKS = True
+            row = measure_size(client, headers, rng)
             results[str(size)] = row
             print(size, {name: value["mean_ms"] for name, value in row.items()}, flush=True)
     finally:
         settings.DATABASE_URL = original_url
 
     report = {"generated_at": datetime.now(timezone.utc).isoformat(),
-              "method": f"in-process TestClient; {WARMUP} warm-up, {REPEATS} repeats x {REQUESTS} requests; 95% CI across repeats",
+              "method": (f"in-process TestClient; {REPEATS} repeats, each timing {REQUESTS} requests per variant in random "
+                         f"order after {WARMUP} untimed ones; 95% CI across repeats"),
               "foreign_share": 0.1, "results": results}
     os.makedirs(os.path.dirname(OUTPUT), exist_ok=True)
     with open(OUTPUT, "w", encoding="utf-8") as handle:
