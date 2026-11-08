@@ -5,7 +5,7 @@ from app.config import settings
 from app.core.dependencies import get_current_user
 from .object_extractor import normalize_query
 from .ownership import get_object_owner
-from .shield_config import ShieldConfig
+from .shield_config import ShieldConfig, default_config
 from .authorization import PUBLIC_DENIAL_REASON, AuthorizationContext, PolicyEngine
 from .audit import log_decision
 from .layers import (
@@ -49,6 +49,10 @@ async def enforce_request(request: Request, current_user: dict, config: ShieldCo
     except Exception:
         # Fail closed: a body this gate cannot read is not forwarded unchecked.
         raise HTTPException(status_code=400, detail={"error": "MALFORMED_REQUEST", "reason": "Request body is not valid JSON."})
+
+    # Kept for the self-repair module, which replays recent requests offline.
+    request.state.shield_operations = data if isinstance(data, list) else [data]
+    request.state.shield_config_name = (config or default_config()).name
 
     # Query batching: a JSON array of operations is checked operation by operation.
     if isinstance(data, list):

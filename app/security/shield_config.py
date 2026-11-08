@@ -80,6 +80,8 @@ class ShieldConfig:
     # Object types anyone may read, such as a product catalogue. Only the startup
     # lint uses this, to stay quiet about lookups by ID that are public on purpose.
     public_types: frozenset[str] = frozenset()
+    # Name of the protected application; repairs and evidence are kept per name.
+    name: str = "app"
 
     def graphql_schema(self) -> GraphQLSchema:
         return self.schema()
@@ -202,6 +204,28 @@ def warn_about_config(config: ShieldConfig) -> None:
 
 _default: ShieldConfig | None = None
 
+# Live configurations by name, and each one's parts as first registered, so the
+# self-repair module (app/security/repair.py) can change a running configuration
+# and restore it.
+REGISTRY: dict[str, ShieldConfig] = {}
+ORIGINAL: dict[str, dict] = {}
+REPAIRABLE_FIELDS = ("id_arguments", "mutation_targets", "owned_types")
+
+
+def register(config: ShieldConfig) -> ShieldConfig:
+    REGISTRY[config.name] = config
+    ORIGINAL.setdefault(config.name, {field: _copy(getattr(config, field)) for field in REPAIRABLE_FIELDS})
+    return config
+
+
+def restore_original(config: ShieldConfig) -> None:
+    for field, value in ORIGINAL.get(config.name, {}).items():
+        setattr(config, field, _copy(value))
+
+
+def _copy(value):
+    return dict(value) if isinstance(value, dict) else tuple(value)
+
 
 def default_config() -> ShieldConfig:
     """Configuration for the GraphQL Shield demo application in this repository."""
@@ -220,7 +244,9 @@ def default_config() -> ShieldConfig:
             owned_types={"ResourceType": "Resource", "UserType": "User"},
             owner_lookup=get_object_owner,
             owners_lookup=get_object_owners,
-            mutation_targets=MUTATION_TARGETS,
+            mutation_targets=dict(MUTATION_TARGETS),
             aggregate_fields={"ResourceType.childrenCount": "children"},
+            name="demo",
         )
+        register(_default)
     return _default

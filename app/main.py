@@ -26,6 +26,8 @@ from app.security.shield_config import default_config, warn_about_config
 from app.clinic.api import CLINIC_CONFIG, router as clinic_router
 from app.clinic.data import init_clinic
 from app.dashboard_api import router as dashboard_router
+from app.security import repair
+from app.security.shield_config import REGISTRY
 
 logger = logging.getLogger("graphql_shield.auth")
 
@@ -39,6 +41,9 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     init_clinic()
     warn_about_config(default_config())
     warn_about_config(CLINIC_CONFIG)
+    reapplied = repair.reapply_stored_repairs()
+    if reapplied:
+        logger.warning("Re-applied %d stored configuration repair(s)", reapplied)
     yield
 
 
@@ -51,6 +56,19 @@ app = FastAPI(
     ),
     lifespan=lifespan,
 )
+
+
+@app.middleware("http")
+async def sample_for_self_repair(request: Request, call_next):
+    """Keep recent protected requests in memory so a proposed configuration repair
+    can be replayed against them before anyone applies it."""
+    response = await call_next(request)
+    operations = getattr(request.state, "shield_operations", None)
+    if operations:
+        repair.record_sample(getattr(request.state, "shield_config_name", "demo"),
+                             getattr(request.state, "current_user", None), operations, response.status_code,
+                             getattr(request.state, "shield_layer2_denied", False))
+    return response
 
 
 # Basic REST health check
@@ -103,6 +121,72 @@ def login(request: LoginRequest, http_request: Request):
     record_success(request.username)
     access_token = create_access_token(user_id=user["id"], role=user["role"])
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+class RepairRequest(BaseModel):
+    config: str
+    kind: str
+    payload: dict
+
+
+class FaultRequest(BaseModel):
+    config: str
+    fault: str | None = None
+
+
+def _require_admin(current_user: dict) -> None:
+    if not is_admin(current_user):
+        raise HTTPException(status_code=403, detail="Admin only")
+
+
+@app.get("/api/v1/security/repairs")
+def list_repairs(current_user: dict = Depends(get_current_user)):
+    """ADMIN: configuration repairs proposed from Layer 2's evidence, each verified by
+    replaying recorded requests offline, plus the repairs already applied."""
+    _require_admin(current_user)
+    return {"configs": [repair.analyse(config) for config in REGISTRY.values()],
+            "applied": repair.applied_repairs(),
+            "faults": {name: sorted(faults) for name, faults in repair.FAULTS.items()},
+            "fault_demo_enabled": settings.ENABLE_LAYER_TOGGLE}
+
+
+@app.post("/api/v1/security/repairs/apply")
+def apply_repair(body: RepairRequest, current_user: dict = Depends(get_current_user)):
+    """ADMIN: apply one repair. It is verified again first; nothing is applied automatically."""
+    _require_admin(current_user)
+    try:
+        return repair.apply_repair(body.config, body.kind, body.payload, applied_by=current_user["user_id"])
+    except KeyError as error:
+        raise HTTPException(status_code=404, detail=str(error))
+    except ValueError as error:
+        raise HTTPException(status_code=409, detail=str(error))
+
+
+@app.post("/api/v1/security/repairs/{row_id}/revert")
+def revert_repair(row_id: int, current_user: dict = Depends(get_current_user)):
+    _require_admin(current_user)
+    try:
+        return repair.revert_repair(row_id)
+    except KeyError as error:
+        raise HTTPException(status_code=404, detail=str(error))
+
+
+@app.post("/api/v1/security/repairs/demo-fault")
+def demo_fault(body: FaultRequest, current_user: dict = Depends(get_current_user)):
+    """ADMIN, demos only (ENABLE_LAYER_TOGGLE): break the live configuration in one
+    realistic way so self-repair can be shown, or restore it (fault omitted)."""
+    _require_admin(current_user)
+    if not settings.ENABLE_LAYER_TOGGLE:
+        raise HTTPException(status_code=403, detail="Set ENABLE_LAYER_TOGGLE=true to use the demonstration switch.")
+    if body.config not in REGISTRY:
+        raise HTTPException(status_code=404, detail="unknown configuration")
+    if body.fault is None:
+        repair.restore(body.config)
+        return {"config": body.config, "restored": True}
+    if body.fault not in repair.FAULTS.get(body.config, {}):
+        raise HTTPException(status_code=404, detail="unknown fault")
+    expected = repair.inject_fault(body.config, body.fault)
+    return {"config": body.config, "fault": body.fault, "expected_repair": repair.describe(expected)}
 
 
 class ChangePasswordRequest(BaseModel):

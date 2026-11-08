@@ -22,7 +22,7 @@ from app.core.dependencies import get_current_user
 from app.database import get_db_connection
 from app.security.enforcement import enforce_request
 from app.security.runtime_object_guard import OwnershipMiddleware
-from app.security.shield_config import ShieldConfig
+from app.security.shield_config import ShieldConfig, register
 
 from .data import from_global_id, init_clinic, owner_of, raw_id, to_global_id
 
@@ -183,7 +183,9 @@ CLINIC_CONFIG = ShieldConfig(
     },
     decode_id=from_global_id,
     protected_paths=("/clinic/graphql",),
+    name="clinic",
 )
+register(CLINIC_CONFIG)
 
 router = APIRouter(prefix="/clinic", tags=["clinic"])
 

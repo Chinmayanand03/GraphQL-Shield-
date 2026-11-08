@@ -151,6 +151,16 @@ def timing_channel():
             "before": {k: {f: v[f] for f in keep} for k, v in before["results"].items()} if before else None}
 
 
+def self_repair():
+    data = _read(os.path.join(EVALUATION, "repair_evaluation.json"))
+    if not data:
+        return None
+    keep = ("app", "fault", "seed", "fault_impact", "first_verified", "first_is_expected", "restored", "rounds",
+            "differences_after_repair", "decoys", "decoys_rejected")
+    return {"generated_at": data["generated_at"], "seeds": data["seeds"], "requests_per_run": data["requests_per_run"],
+            "summary": data["summary"], "runs": [{k: run[k] for k in keep} for run in data["runs"]]}
+
+
 def main() -> None:
     report = {
         "built_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -161,6 +171,7 @@ def main() -> None:
         "fault_injection": fault_injection(),
         "scaling": scaling(),
         "timing_channel": timing_channel(),
+        "self_repair": self_repair(),
     }
     with open(OUTPUT, "w", encoding="utf-8") as file:
         json.dump(report, file, indent=1)

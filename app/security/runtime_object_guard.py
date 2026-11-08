@@ -354,6 +354,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
             # Audit log the decision, unless Layer 1 already logged this object for
             # this request (Layer 1 runs first, so a repeat row would double count).
             if not layer1_saw(request, object_type, object_id):
+                _note_gap(self._config(), request, info, object_type, object_id, decision.get("decision", "DENY"))
                 try:
                     row = dict(
                         user_id=user_id,
@@ -649,6 +650,13 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
         if target_spec is None:
             if field_name in config.unguarded_mutations:
                 return
+            _flag_layer2_denial(self._get_request(info))
+            try:
+                from app.security.repair import record_unregistered_mutation
+
+                record_unregistered_mutation(config, info, kwargs)
+            except Exception:
+                logger.debug("Could not record an unregistered mutation", exc_info=True)
             raise GraphQLError(
                 "GraphQL Shield: mutation has no registered ownership target.",
                 extensions={
@@ -671,6 +679,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
             return
 
         request = self._get_request(info)
+        _flag_layer2_denial(request)
         path = self._format_path_list(getattr(info, "path", None))
         record_layer_event(decision_info.get("user_id"), "L2", EVENT_L2_MUTATION_BLOCKED, object_type,
                            target.id, ".".join(map(str, path)), decision_info.get("reason", "DENY"))
@@ -687,6 +696,7 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
 
     # ------------------------------------------------------------------ cross-layer evidence
     def _record_denial(self, request: Any, decision_info: dict, object_type: str, obj: Any, path: list) -> None:
+        _flag_layer2_denial(request)
         object_id = _object_id(obj, self._config())
         record_layer_event(decision_info.get("user_id"), "L2", EVENT_L2_FILTERED, object_type,
                            object_id, ".".join(map(str, path)), decision_info.get("reason", "DENY"))
@@ -705,6 +715,32 @@ class RuntimeObjectAuthorizationExtension(SchemaExtension):
             detail += f"; predicted p={predicted:.2f}"
         record_layer_event(decision_info.get("user_id"), "L2", EVENT_L1_BLIND_SPOT, object_type, object_id,
                            ".".join(map(str, path)), detail)
+
+
+def _flag_layer2_denial(request: Any) -> None:
+    """Mark the request as one Layer 2 had to deny something in, so the self-repair
+    replay does not count it as a legitimate request."""
+    state = getattr(request, "state", None)
+    if state is not None:
+        try:
+            state.shield_layer2_denied = True
+        except Exception:
+            pass
+
+
+def _note_gap(config: ShieldConfig, request: Any, info: Any, object_type: str, object_id: Any, decision: str) -> None:
+    """Evidence for the self-repair module: Layer 2 evaluated an object Layer 1 never
+    saw. Only meaningful while Layer 1 is running."""
+    if request is None or not is_enabled("layer1"):
+        return
+    if getattr(getattr(request, "state", None), "layer1_checked", None) is None:
+        return
+    try:
+        from app.security.repair import record_gap
+
+        record_gap(config, info, object_type, object_id, decision)
+    except Exception:
+        logger.debug("Could not record a coverage gap", exc_info=True)
 
 
 def _object_id(obj: Any, config: ShieldConfig) -> Any:

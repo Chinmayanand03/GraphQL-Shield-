@@ -1058,6 +1058,35 @@
           </div>
         </section>
 
+        <!-- Self-repairing configuration -->
+        <section class="panel section-gap" id="self-repair">
+          <div class="panel-head">
+            <div><div class="panel-title">Self-repairing configuration</div><div class="panel-subtitle">Layer 2's record of what Layer 1 missed, turned into configuration repairs. Each repair is replayed offline against recorded requests before it is offered, and only an administrator can apply it.</div></div>
+            <button class="btn" id="repairRefresh" type="button">↻ Analyse now</button>
+          </div>
+          <p class="console-note" id="repairStatus">Sign in as admin in the Dual-layer defense panel to see and apply repairs.</p>
+          <div id="repairDemo" class="layer-actions" hidden style="margin:10px 0; flex-wrap:wrap; gap:8px;">
+            <select class="select" id="repairFault" aria-label="Configuration mistake to introduce" style="max-width:360px"></select>
+            <button class="btn" id="repairInject" type="button">Introduce this mistake</button>
+            <button class="btn" id="repairRestore" type="button">Restore original configuration</button>
+          </div>
+          <div id="repairList"></div>
+          <div class="evidence-block" style="margin-top:14px">
+            <div class="panel-title" style="font-size:14px;">Applied repairs</div>
+            <div class="table-wrap"><table style="min-width:0"><thead><tr><th>When (UTC)</th><th>App</th><th>Repair</th><th>Status</th><th></th></tr></thead><tbody id="repairApplied"><tr><td class="empty" colspan="5">—</td></tr></tbody></table></div>
+          </div>
+          <div class="evidence-block" style="margin-top:14px">
+            <div class="panel-title" style="font-size:14px;">Evaluation: 10 configuration mistakes, 3 seeds</div>
+            <div class="panel-subtitle">Each mistake runs the same traffic with the correct configuration, with the mistake, and with the repair, on fresh databases. Restored means the repaired run's responses equal the correct run's.</div>
+            <div class="mini-stats">
+              <div><span id="repairEvalRestored">—</span><small>mistakes fully restored by the first verified repair</small></div>
+              <div><span id="repairEvalDecoys">—</span><small>wrong (decoy) repairs refused by verification</small></div>
+              <div><span id="repairEvalFalse">—</span><small>repairs proposed for the correct configurations</small></div>
+            </div>
+            <div class="table-wrap"><table style="min-width:0"><thead><tr><th>App</th><th>Mistake</th><th>Responses changed by it</th><th>First verified repair</th><th>After repair</th></tr></thead><tbody id="repairEvalBody"><tr><td class="empty" colspan="5">Run python -m scripts.run_repair_evaluation</td></tr></tbody></table></div>
+          </div>
+        </section>
+
         <!-- Research evidence: results of the experiments behind the paper -->
         <section class="panel section-gap" id="research-evidence">
           <div class="panel-head">
@@ -1608,6 +1637,7 @@
           renderStats(state.stats); loadAuditLogs({keep: true}); loadIntegrity(); loadTestReport(); loadTimeline();
           loadLayerPanel();
           loadLiveRecall();
+          loadRepairs();
           if (payload.research_evaluation) {
             renderResearchEvaluation(payload.research_evaluation);
           }
@@ -2024,6 +2054,155 @@
         $('timingBody').replaceChildren(...rows);
       }
 
+      /* SELF-REPAIRING CONFIGURATION */
+      function repairMetric(label, value, bad) {
+        const span = document.createElement('span');
+        span.className = 'val-pill ' + (bad ? 'fail' : 'best');
+        span.textContent = `${label}: ${value}`;
+        span.style.marginRight = '6px';
+        return span;
+      }
+
+      function renderRepairCard(configName, item) {
+        const card = document.createElement('div');
+        card.className = 'evidence-block';
+        card.style.marginTop = '10px';
+        const v = item.verification || {};
+        const title = document.createElement('div'); title.className = 'panel-title'; title.style.fontSize = '14px';
+        title.textContent = `${configName} · ${item.title}`;
+        const why = document.createElement('p'); why.className = 'console-note'; why.textContent = item.why || '';
+        const metrics = document.createElement('div');
+        metrics.append(repairMetric(v.verified ? 'Verified' : 'Not verified', v.verified ? 'yes' : 'no', !v.verified));
+        if (v.gaps_closed) metrics.append(repairMetric('Gaps closed', v.gaps_closed));
+        if (v.attacks_blocked_earlier) metrics.append(repairMetric('Attacks now stopped by Layer 1', v.attacks_blocked_earlier));
+        if (v.owners_unblocked) metrics.append(repairMetric('Owners unblocked', v.owners_unblocked));
+        if (v.non_owners_still_denied) metrics.append(repairMetric('Non-owners still denied', v.non_owners_still_denied));
+        if (v.exposures_found) metrics.append(repairMetric('Exposures it would close', v.exposures_found));
+        metrics.append(repairMetric('Legitimate requests blocked', v.false_blocks ?? 0, (v.false_blocks || 0) > 0));
+        metrics.append(repairMetric('Owner lookup recognised', `${Math.round((v.owner_lookup_resolution || 0) * 100)}%`, (v.owner_lookup_resolution || 0) < 0.9));
+        if (v.key_used_by) metrics.append(repairMetric('Key already used by', v.key_used_by, true));
+        const foot = document.createElement('div'); foot.style.marginTop = '8px';
+        const note = document.createElement('span'); note.className = 'console-note';
+        note.textContent = `Replayed ${v.replayed_requests ?? 0} recorded requests through Layer 1 offline.`;
+        const button = document.createElement('button'); button.className = 'btn'; button.type = 'button';
+        button.textContent = 'Apply repair'; button.disabled = !v.verified; button.style.marginLeft = '10px';
+        button.addEventListener('click', () => applyRepair(configName, item, button));
+        foot.append(note, button);
+        card.append(title, why, metrics, foot);
+        return card;
+      }
+
+      function renderExplanation(configName, item) {
+        const p = document.createElement('p'); p.className = 'console-note';
+        const label = item.kind === 'relationship_traversal' ? 'Expected (no repair)' : 'Layer 1 code gap (developer fix)';
+        const constructs = item.constructs && item.constructs.length ? ` Shared constructs: ${item.constructs.join(', ')}.` : '';
+        p.textContent = `${configName} · ${item.field} · ${label}: ${item.count} gap(s), ${item.attacks} attack(s) stopped by Layer 2. ${item.explanation}${constructs}`;
+        return p;
+      }
+
+      async function loadRepairs() {
+        if (!adminToken) {
+          setText('repairStatus', 'Sign in as admin in the Dual-layer defense panel to see and apply repairs.');
+          $('repairList').replaceChildren(); $('repairDemo').hidden = true;
+          return;
+        }
+        try {
+          const response = await fetch('/api/v1/security/repairs', {headers: authHeaders({'Accept': 'application/json'}), cache: 'no-store'});
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = await response.json();
+          const cards = [];
+          let evidence = 0;
+          for (const config of data.configs) {
+            evidence += config.evidence.gaps + config.evidence.refused_mutations;
+            config.repairs.forEach(item => cards.push(renderRepairCard(config.config, item)));
+            config.explanations.forEach(item => cards.push(renderExplanation(config.config, item)));
+          }
+          $('repairList').replaceChildren(...cards);
+          const repairs = data.configs.reduce((n, c) => n + c.repairs.length, 0);
+          setText('repairStatus', repairs
+            ? `${repairs} repair(s) proposed from ${evidence} piece(s) of evidence. Nothing is applied until you click Apply.`
+            : `No repairs needed: the configurations explain all ${evidence} recorded gap(s). Run some tests to collect more evidence.`);
+          renderApplied(data.applied);
+          const select = $('repairFault');
+          if (data.fault_demo_enabled && !select.options.length) {
+            for (const [name, faults] of Object.entries(data.faults)) {
+              for (const fault of faults) {
+                const option = document.createElement('option'); option.value = `${name}|${fault}`;
+                option.textContent = `${name}: ${fault.replaceAll('_', ' ')}`; select.appendChild(option);
+              }
+            }
+          }
+          $('repairDemo').hidden = !data.fault_demo_enabled;
+        } catch (error) {
+          setText('repairStatus', `Could not load repairs: ${error.message || error}`);
+        }
+      }
+
+      function renderApplied(rows) {
+        if (!rows.length) { const tr = document.createElement('tr'); const td = textCell('No repairs applied yet.', 'empty'); td.colSpan = 5; tr.appendChild(td); $('repairApplied').replaceChildren(tr); return; }
+        $('repairApplied').replaceChildren(...rows.map(row => {
+          const tr = document.createElement('tr');
+          tr.append(textCell(String(row.applied_at || '').replace('T', ' ').slice(0, 19)), textCell(row.config), textCell(row.title, 'primary-cell'),
+            textCell(row.status, row.status === 'applied' ? 'cell-l2' : ''));
+          const td = document.createElement('td');
+          if (row.status === 'applied') {
+            const button = document.createElement('button'); button.className = 'btn'; button.type = 'button'; button.textContent = 'Revert';
+            button.addEventListener('click', () => revertRepair(row.id));
+            td.appendChild(button);
+          }
+          tr.appendChild(td);
+          return tr;
+        }));
+      }
+
+      async function applyRepair(configName, item, button) {
+        button.disabled = true;
+        try {
+          const response = await fetch('/api/v1/security/repairs/apply', {method: 'POST', cache: 'no-store',
+            headers: authHeaders({'Content-Type': 'application/json'}), body: JSON.stringify({config: configName, kind: item.kind, payload: item.payload})});
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(data.detail || `HTTP ${response.status}`);
+          showToast(`Applied: ${data.title}`);
+        } catch (error) { showToast(`Not applied: ${error.message || error}`); }
+        await loadRepairs();
+      }
+
+      async function revertRepair(rowId) {
+        await fetch(`/api/v1/security/repairs/${rowId}/revert`, {method: 'POST', headers: authHeaders(), cache: 'no-store'});
+        showToast('Repair reverted.');
+        await loadRepairs();
+      }
+
+      async function repairDemo(restore) {
+        const [config, fault] = $('repairFault').value.split('|');
+        const response = await fetch('/api/v1/security/repairs/demo-fault', {method: 'POST', cache: 'no-store',
+          headers: authHeaders({'Content-Type': 'application/json'}), body: JSON.stringify(restore ? {config} : {config, fault})});
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) { showToast(data.detail || `HTTP ${response.status}`); return; }
+        showToast(restore ? `Restored the ${config} configuration.` : `Mistake introduced in ${config}. Run some tests, then Analyse now. Expected repair: ${data.expected_repair}`);
+        await loadRepairs();
+      }
+
+      function renderRepairEvaluation(data) {
+        const s = data.summary;
+        setText('repairEvalRestored', `${s.restored} / ${s.fault_runs}`);
+        setText('repairEvalDecoys', `${s.decoy_repairs_rejected} / ${s.decoy_repairs}`);
+        setText('repairEvalFalse', String(s.false_repairs_on_controls));
+        const seen = new Set();
+        $('repairEvalBody').replaceChildren(...data.runs.filter(r => r.fault !== 'none').filter(r => {
+          const key = `${r.app}|${r.fault}`; if (seen.has(key)) return false; seen.add(key); return true;
+        }).map(r => {
+          const runs = data.runs.filter(x => x.app === r.app && x.fault === r.fault);
+          const restored = runs.filter(x => x.restored).length;
+          const impact = runs.map(x => x.fault_impact);
+          const tr = document.createElement('tr');
+          tr.append(textCell(r.app), textCell(r.fault.replaceAll('_', ' '), 'primary-cell'),
+            textCell(`${Math.min(...impact)}–${Math.max(...impact)}`), textCell(r.first_verified || '—'),
+            textCell(`restored in ${restored}/${runs.length} runs`, restored === runs.length ? 'cell-l2' : 'cell-leak'));
+          return tr;
+        }));
+      }
+
       function renderScaling(data) {
         $('scalingBody').replaceChildren(...data.rows.map(r => {
           const tr = document.createElement('tr');
@@ -2068,6 +2247,7 @@
           if (data.fault_injection) renderFaultInjection(data.fault_injection);
           if (data.scaling) renderScaling(data.scaling);
           if (data.timing_channel) renderTiming(data.timing_channel);
+          if (data.self_repair) renderRepairEvaluation(data.self_repair);
         } catch (error) {
           setText('evidenceBuilt', 'NOT BUILT');
           for (const id of ['ablationBody', 'comparisonBody', 'seedsBody', 'fiMethodsBody', 'scalingBody', 'timingBody']) {
@@ -2963,6 +3143,9 @@
         $('testEndpoint').addEventListener('change', setScenarioFields);
         $('adminSignInButton').addEventListener('click', adminSignIn);
         $('blindSpotScoreButton').addEventListener('click', scoreBlindSpotQuery);
+        $('repairRefresh').addEventListener('click', loadRepairs);
+        $('repairInject').addEventListener('click', () => repairDemo(false));
+        $('repairRestore').addEventListener('click', () => repairDemo(true));
         loadBlindSpotPanel();
         loadResearchEvidence();
         setAdminToken(adminToken);
