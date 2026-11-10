@@ -1,0 +1,617 @@
+{
+  "report_version": "2.0",
+  "generated_at_utc": "2026-10-11T19:19:27.687889+00:00",
+  "benchmark_scope": "Synthetic local GraphQL BOLA benchmark. No external endpoints are called.",
+  "dataset": {
+    "dataset_version": "1.2",
+    "count": 100,
+    "bola_count": 53,
+    "legitimate_count": 47,
+    "scenario_counts": {
+      "admin_access": 8,
+      "direct_bola": 23,
+      "direct_legitimate": 12,
+      "nested_bola": 16,
+      "nested_legitimate": 15,
+      "relationship_bola": 14,
+      "relationship_legitimate": 12
+    },
+    "sha256": "40edab69868395e51a8fad230a1707de15ce667aa40774d54601ed155ff3dbe4",
+    "path": "results\\relationship_detection_smoke\\benchmark_dataset.jsonl",
+    "seed": 20261011,
+    "loaded_from_existing_dataset": false,
+    "ground_truth_method": "app.benchmarks.ground_truth.label_case_with_oracle",
+    "labels_recomputed_from_ownership_and_path_metadata": true,
+    "actual_count": 100,
+    "ground_truth_reason_counts": {
+      "administrator_access": 8,
+      "object_owned_by_another_subject": 53,
+      "subject_owns_object": 39
+    },
+    "labels_recomputed_independently": true
+  },
+  "endpoint_summary": {
+    "baseline_graphql_insecure": {
+      "latency": {
+        "count": 100,
+        "mean_ms": 17.4667,
+        "median_ms": 15.5122,
+        "p95_ms": 28.578,
+        "p99_ms": 37.9382,
+        "min_ms": 11.5781,
+        "max_ms": 45.9516
+      },
+      "confirmed_bola_exposures": 53,
+      "bola_exposure_rate": 1.0
+    },
+    "protected_graphql": {
+      "latency": {
+        "count": 100,
+        "mean_ms": 23.9792,
+        "median_ms": 23.1264,
+        "p95_ms": 40.2073,
+        "p99_ms": 56.8868,
+        "min_ms": 8.5417,
+        "max_ms": 69.2896
+      },
+      "authorization_latency_overhead_ms": 6.5125,
+      "authorization_latency_overhead_percent": 37.2852,
+      "bola_requests_blocked": 39,
+      "bola_block_rate": 0.735849,
+      "bola_target_nonexposure_count": 53,
+      "bola_target_nonexposure_rate": 1.0,
+      "legitimate_requests_blocked": 0,
+      "legitimate_false_block_rate": 0.0
+    },
+    "analysis_pipeline": {
+      "latency": {
+        "count": 100,
+        "mean_ms": 6.6208,
+        "median_ms": 5.6412,
+        "p95_ms": 11.5439,
+        "p99_ms": 16.2986,
+        "min_ms": 2.878,
+        "max_ms": 24.1565
+      }
+    }
+  },
+  "detection_metrics": {
+    "overall": {
+      "taint_source_only": {
+        "sample_count": 100,
+        "tp": 53,
+        "fp": 47,
+        "tn": 0,
+        "fn": 0,
+        "accuracy": 0.53,
+        "precision": 0.53,
+        "recall": 1.0,
+        "f1": 0.69281,
+        "specificity": 0.0,
+        "false_positive_rate": 1.0,
+        "false_negative_rate": 0.0
+      },
+      "context_sensitive_taint_only": {
+        "sample_count": 100,
+        "tp": 53,
+        "fp": 47,
+        "tn": 0,
+        "fn": 0,
+        "accuracy": 0.53,
+        "precision": 0.53,
+        "recall": 1.0,
+        "f1": 0.69281,
+        "specificity": 0.0,
+        "false_positive_rate": 1.0,
+        "false_negative_rate": 0.0
+      },
+      "authorization_aware_candidate": {
+        "sample_count": 100,
+        "tp": 53,
+        "fp": 0,
+        "tn": 47,
+        "fn": 0,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0
+      }
+    },
+    "by_scenario_group": {
+      "direct_access": {
+        "taint_source_only": {
+          "sample_count": 43,
+          "tp": 23,
+          "fp": 20,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 0.534884,
+          "precision": 0.534884,
+          "recall": 1.0,
+          "f1": 0.69697,
+          "specificity": 0.0,
+          "false_positive_rate": 1.0,
+          "false_negative_rate": 0.0
+        },
+        "context_sensitive_taint_only": {
+          "sample_count": 43,
+          "tp": 23,
+          "fp": 20,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 0.534884,
+          "precision": 0.534884,
+          "recall": 1.0,
+          "f1": 0.69697,
+          "specificity": 0.0,
+          "false_positive_rate": 1.0,
+          "false_negative_rate": 0.0
+        },
+        "authorization_aware_candidate": {
+          "sample_count": 43,
+          "tp": 23,
+          "fp": 0,
+          "tn": 20,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 1.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        }
+      },
+      "nested_access": {
+        "taint_source_only": {
+          "sample_count": 31,
+          "tp": 16,
+          "fp": 15,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 0.516129,
+          "precision": 0.516129,
+          "recall": 1.0,
+          "f1": 0.680851,
+          "specificity": 0.0,
+          "false_positive_rate": 1.0,
+          "false_negative_rate": 0.0
+        },
+        "context_sensitive_taint_only": {
+          "sample_count": 31,
+          "tp": 16,
+          "fp": 15,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 0.516129,
+          "precision": 0.516129,
+          "recall": 1.0,
+          "f1": 0.680851,
+          "specificity": 0.0,
+          "false_positive_rate": 1.0,
+          "false_negative_rate": 0.0
+        },
+        "authorization_aware_candidate": {
+          "sample_count": 31,
+          "tp": 16,
+          "fp": 0,
+          "tn": 15,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 1.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        }
+      },
+      "implicit_relationship_access": {
+        "taint_source_only": {
+          "sample_count": 26,
+          "tp": 14,
+          "fp": 12,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 0.538462,
+          "precision": 0.538462,
+          "recall": 1.0,
+          "f1": 0.7,
+          "specificity": 0.0,
+          "false_positive_rate": 1.0,
+          "false_negative_rate": 0.0
+        },
+        "context_sensitive_taint_only": {
+          "sample_count": 26,
+          "tp": 14,
+          "fp": 12,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 0.538462,
+          "precision": 0.538462,
+          "recall": 1.0,
+          "f1": 0.7,
+          "specificity": 0.0,
+          "false_positive_rate": 1.0,
+          "false_negative_rate": 0.0
+        },
+        "authorization_aware_candidate": {
+          "sample_count": 26,
+          "tp": 14,
+          "fp": 0,
+          "tn": 12,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 1.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        }
+      },
+      "implicit_relationship_bola_only": {
+        "taint_source_only": {
+          "sample_count": 14,
+          "tp": 14,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "context_sensitive_taint_only": {
+          "sample_count": 14,
+          "tp": 14,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "authorization_aware_candidate": {
+          "sample_count": 14,
+          "tp": 14,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        }
+      },
+      "direct_bola_only": {
+        "taint_source_only": {
+          "sample_count": 23,
+          "tp": 23,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "context_sensitive_taint_only": {
+          "sample_count": 23,
+          "tp": 23,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "authorization_aware_candidate": {
+          "sample_count": 23,
+          "tp": 23,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        }
+      },
+      "nested_bola_only": {
+        "taint_source_only": {
+          "sample_count": 16,
+          "tp": 16,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "context_sensitive_taint_only": {
+          "sample_count": 16,
+          "tp": 16,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "authorization_aware_candidate": {
+          "sample_count": 16,
+          "tp": 16,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        }
+      }
+    },
+    "interpretation": "These are detector predictions compared with benchmark labels. Runtime attack-replay outcomes are reported separately and are not silently substituted for detector predictions. The authorization-aware candidate uses the current policy engine and is not an independent oracle."
+  },
+  "integrated_dynamic_verification": {
+    "method": "labelled_attack_generation_and_dynamic_replay",
+    "labelled_bola_cases": 53,
+    "attack_cases_generated_and_executed": 39,
+    "cases_skipped": 14,
+    "http_requests_for_replays": 78,
+    "baseline_outcomes": {
+      "EXPOSED_CONFIRMED": 39
+    },
+    "protected_outcomes": {
+      "BLOCKED": 39
+    },
+    "verdict_counts": {
+      "PROTECTION_VERIFIED": 39
+    },
+    "baseline_confirmed_exposures": 39,
+    "protected_blocks": 39,
+    "protected_confirmed_exposures": 0,
+    "protection_verified_rate": 1.0,
+    "raw_csv": "results\\relationship_detection_smoke\\integrated_dynamic_verification_raw.csv",
+    "skipped_cases": [
+      {
+        "case_id": "case-000001",
+        "reason": "No variable-backed resource ID source at resource.children"
+      },
+      {
+        "case_id": "case-000002",
+        "reason": "No variable-backed resource ID source at resource.children"
+      },
+      {
+        "case_id": "case-000020",
+        "reason": "No variable-backed resource ID source at resource.children"
+      },
+      {
+        "case_id": "case-000022",
+        "reason": "No variable-backed resource ID source at resource.children"
+      },
+      {
+        "case_id": "case-000027",
+        "reason": "No variable-backed resource ID source at resource.children"
+      },
+      {
+        "case_id": "case-000029",
+        "reason": "No variable-backed resource ID source at resource.children"
+      },
+      {
+        "case_id": "case-000034",
+        "reason": "No variable-backed resource ID source at resource.children"
+      },
+      {
+        "case_id": "case-000042",
+        "reason": "No variable-backed resource ID source at resource.children"
+      },
+      {
+        "case_id": "case-000049",
+        "reason": "No variable-backed resource ID source at resource.children"
+      },
+      {
+        "case_id": "case-000052",
+        "reason": "No variable-backed resource ID source at resource.children"
+      },
+      {
+        "case_id": "case-000058",
+        "reason": "No variable-backed resource ID source at resource.children"
+      },
+      {
+        "case_id": "case-000078",
+        "reason": "No variable-backed resource ID source at resource.children"
+      },
+      {
+        "case_id": "case-000089",
+        "reason": "No variable-backed resource ID source at resource.children"
+      },
+      {
+        "case_id": "case-000091",
+        "reason": "No variable-backed resource ID source at resource.children"
+      }
+    ],
+    "interpretation": "These are observed replay results for labelled synthetic BOLA scenarios. They measure runtime verification and protection for those replay cases, not autonomous detector recall over all possible GraphQL vulnerabilities."
+  },
+  "research_hardening_verification": {
+    "version": "1.0",
+    "methodology": "Independent oracle labels are recomputed from subject, ownership, role and relationship-path metadata. ID-substitution variants come from analyzer findings; implicit relationship probes are generated from parsed, resolved object-valued relationship paths. Replays target only the in-process local app.",
+    "ground_truth": {
+      "labelled_cases": 100,
+      "bola_cases": 53,
+      "legitimate_cases": 47,
+      "reason_counts": {
+        "administrator_access": 8,
+        "object_owned_by_another_subject": 53,
+        "subject_owns_object": 39
+      },
+      "oracle_module": "app.benchmarks.ground_truth",
+      "not_derived_from": [
+        "scenario label",
+        "existing is_bola value",
+        "detector prediction",
+        "PolicyEngine prediction"
+      ]
+    },
+    "finding_variant_generation": {
+      "raw_analyzer_findings": 39,
+      "unique_query_target_findings": 15,
+      "findings_sampled": 15,
+      "variants_generated": 60,
+      "max_generated_variants": 64,
+      "variants_per_finding": 4,
+      "cap_applied": false
+    },
+    "implicit_relationship_analysis": {
+      "unique_operations_inspected": 2,
+      "relationship_probe_count": 5,
+      "unknown_or_incomplete_children_skipped": 0,
+      "relationship_paths_are_implicit_only": true
+    },
+    "replay": {
+      "generated_attack_cases": 65,
+      "executed_attack_cases": 65,
+      "http_requests_for_replays": 130,
+      "skipped_no_token": 0,
+      "skipped_unknown_ground_truth": 0,
+      "verdict_counts": {
+        "LEGITIMATE_ACCESS_PRESERVED": 21,
+        "PROTECTION_VERIFIED": 43,
+        "PROTECTION_VERIFIED_BY_TARGET_ABSENCE": 1
+      },
+      "bola_probe_summary": {
+        "count": 44,
+        "baseline_target_confirmed": 44,
+        "protected_http_blocked": 43,
+        "protected_target_not_visible": 44,
+        "protected_target_confirmed": 0,
+        "protection_verified_by_target_absence": 44,
+        "unexpected_protected_denials": 0
+      },
+      "legitimate_control_summary": {
+        "count": 21,
+        "baseline_target_confirmed": 21,
+        "protected_http_blocked": 0,
+        "protected_target_not_visible": 0,
+        "protected_target_confirmed": 21,
+        "protection_verified_by_target_absence": 0,
+        "unexpected_protected_denials": 0
+      }
+    },
+    "limitations": [
+      "This is a seeded synthetic local workload, not a sample of arbitrary production GraphQL schemas.",
+      "The general attack-variant count is capped for runtime; the report records the cap and sampled count.",
+      "Target absence is reported separately from HTTP 401/403 blocking because field-level GraphQL denial can return HTTP 200.",
+      "Relationship probes only resolve relationships represented by the supplied object catalog or relationship map."
+    ],
+    "artifacts": {
+      "report_json": "results\\relationship_detection_smoke\\research_hardening_verification.json",
+      "raw_csv": "results\\relationship_detection_smoke\\research_hardening_verification_raw.csv"
+    }
+  },
+  "ablation_study": {
+    "meaning": {
+      "taint_source_only": "Flags requests with any tracked object ID.",
+      "context_sensitive_taint_only": "Flags taint reaching the configured sensitive sink.",
+      "authorization_aware_candidate": "Flags requests for which authorization-aware analysis finds a suspected direct or indirect BOLA."
+    },
+    "metrics": {
+      "taint_source_only": {
+        "sample_count": 100,
+        "tp": 53,
+        "fp": 47,
+        "tn": 0,
+        "fn": 0,
+        "accuracy": 0.53,
+        "precision": 0.53,
+        "recall": 1.0,
+        "f1": 0.69281,
+        "specificity": 0.0,
+        "false_positive_rate": 1.0,
+        "false_negative_rate": 0.0
+      },
+      "context_sensitive_taint_only": {
+        "sample_count": 100,
+        "tp": 53,
+        "fp": 47,
+        "tn": 0,
+        "fn": 0,
+        "accuracy": 0.53,
+        "precision": 0.53,
+        "recall": 1.0,
+        "f1": 0.69281,
+        "specificity": 0.0,
+        "false_positive_rate": 1.0,
+        "false_negative_rate": 0.0
+      },
+      "authorization_aware_candidate": {
+        "sample_count": 100,
+        "tp": 53,
+        "fp": 0,
+        "tn": 47,
+        "fn": 0,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0
+      }
+    }
+  },
+  "performance": {
+    "request_cases": 100,
+    "baseline_and_protected_http_calls": 200,
+    "dynamic_replay_http_calls": 78,
+    "research_hardening_replay_http_calls": 130,
+    "total_http_calls": 408,
+    "elapsed_seconds_end_to_end": 8.6942,
+    "cases_per_second_end_to_end": 11.502,
+    "http_calls_per_second_end_to_end": 46.928,
+    "process_cpu_seconds": 8.1875,
+    "tracemalloc_peak_bytes": 1872785,
+    "measurement_note": "In-process FastAPI TestClient latency. The full elapsed time includes dynamic replay calls. tracemalloc affects timing. Run separate uninstrumented trials for publication-quality latency measurements."
+  },
+  "warnings": [
+    "All benchmark cases use synthetic local data.",
+    "Dynamic replay validates labelled cases and a capped set of analyzer-generated variants; it does not by itself establish autonomous discovery recall.",
+    "Implicit relationship probes are resolved against the synthetic object catalog; real applications may require schema- and resolver-specific relationship maps.",
+    "Detector metrics and observed endpoint/replay outcomes are reported separately."
+  ]
+}

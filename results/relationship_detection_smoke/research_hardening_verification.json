@@ -1,0 +1,76 @@
+{
+  "version": "1.0",
+  "methodology": "Independent oracle labels are recomputed from subject, ownership, role and relationship-path metadata. ID-substitution variants come from analyzer findings; implicit relationship probes are generated from parsed, resolved object-valued relationship paths. Replays target only the in-process local app.",
+  "ground_truth": {
+    "labelled_cases": 100,
+    "bola_cases": 53,
+    "legitimate_cases": 47,
+    "reason_counts": {
+      "administrator_access": 8,
+      "object_owned_by_another_subject": 53,
+      "subject_owns_object": 39
+    },
+    "oracle_module": "app.benchmarks.ground_truth",
+    "not_derived_from": [
+      "scenario label",
+      "existing is_bola value",
+      "detector prediction",
+      "PolicyEngine prediction"
+    ]
+  },
+  "finding_variant_generation": {
+    "raw_analyzer_findings": 39,
+    "unique_query_target_findings": 15,
+    "findings_sampled": 15,
+    "variants_generated": 60,
+    "max_generated_variants": 64,
+    "variants_per_finding": 4,
+    "cap_applied": false
+  },
+  "implicit_relationship_analysis": {
+    "unique_operations_inspected": 2,
+    "relationship_probe_count": 5,
+    "unknown_or_incomplete_children_skipped": 0,
+    "relationship_paths_are_implicit_only": true
+  },
+  "replay": {
+    "generated_attack_cases": 65,
+    "executed_attack_cases": 65,
+    "http_requests_for_replays": 130,
+    "skipped_no_token": 0,
+    "skipped_unknown_ground_truth": 0,
+    "verdict_counts": {
+      "LEGITIMATE_ACCESS_PRESERVED": 21,
+      "PROTECTION_VERIFIED": 43,
+      "PROTECTION_VERIFIED_BY_TARGET_ABSENCE": 1
+    },
+    "bola_probe_summary": {
+      "count": 44,
+      "baseline_target_confirmed": 44,
+      "protected_http_blocked": 43,
+      "protected_target_not_visible": 44,
+      "protected_target_confirmed": 0,
+      "protection_verified_by_target_absence": 44,
+      "unexpected_protected_denials": 0
+    },
+    "legitimate_control_summary": {
+      "count": 21,
+      "baseline_target_confirmed": 21,
+      "protected_http_blocked": 0,
+      "protected_target_not_visible": 0,
+      "protected_target_confirmed": 21,
+      "protection_verified_by_target_absence": 0,
+      "unexpected_protected_denials": 0
+    }
+  },
+  "limitations": [
+    "This is a seeded synthetic local workload, not a sample of arbitrary production GraphQL schemas.",
+    "The general attack-variant count is capped for runtime; the report records the cap and sampled count.",
+    "Target absence is reported separately from HTTP 401/403 blocking because field-level GraphQL denial can return HTTP 200.",
+    "Relationship probes only resolve relationships represented by the supplied object catalog or relationship map."
+  ],
+  "artifacts": {
+    "report_json": "results\\relationship_detection_smoke\\research_hardening_verification.json",
+    "raw_csv": "results\\relationship_detection_smoke\\research_hardening_verification_raw.csv"
+  }
+}

@@ -1,0 +1,59 @@
+done first_operation_only 20261102
+done first_batch_operation_only 20261101
+done first_operation_only 20261105
+done first_operation_only 20261104
+done first_operation_only 20261103
+done mutation_targets_skipped 20261101
+done first_batch_operation_only 20261102
+done first_batch_operation_only 20261103
+done first_batch_operation_only 20261105
+done first_batch_operation_only 20261104
+{
+  "faults": 17,
+  "faults_with_a_naming_feature": 14,
+  "detected_by_evidence_alone": 17,
+  "mean_f1": {
+    "decision_tree_structural": 0.9574,
+    "evidence_rule": 0.9664,
+    "logistic_structural": 0.9679,
+    "relationship_rule": 0.6612,
+    "xgboost_all_features": 0.9775,
+    "xgboost_structural": 0.9668
+  },
+  "localisation_over_all_faults": {
+    "lift": {
+      "top1": 0.7647,
+      "top3": 0.7647
+    },
+    "decision_tree": {
+      "top1": 0.7882,
+      "top3": 0.8235
+    },
+    "logistic": {
+      "top1": 0.8235,
+      "top3": 0.8235
+    },
+    "xgboost": {
+      "top1": 0.8235,
+      "top3": 0.8235
+    }
+  },
+  "localisation_over_nameable_faults": {
+    "lift": {
+      "top1": 0.9286,
+      "top3": 0.9286
+    },
+    "decision_tree": {
+      "top1": 0.9571,
+      "top3": 1.0
+    },
+    "logistic": {
+      "top1": 1.0,
+      "top3": 1.0
+    },
+    "xgboost": {
+      "top1": 1.0,
+      "top3": 1.0
+    }
+  }
+}

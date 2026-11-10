@@ -1,0 +1,3595 @@
+{
+  "experiment": "GraphQL Shield multi-seed benchmark",
+  "dataset_count_per_run": 5000,
+  "repeats": 3,
+  "seeds": [
+    20261011,
+    20261012,
+    20261013
+  ],
+  "total_cases": 15000,
+  "confidence_interval": "Approximate 95% Student-t interval across independent run-level measurements. It is not a per-request interval.",
+  "metrics": {
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_without_dynamic_verification.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_without_dynamic_verification.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_without_dynamic_verification.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_without_dynamic_verification.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_without_dynamic_verification.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_without_dynamic_verification.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_without_dynamic_verification.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_without_dynamic_verification.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_without_dynamic_verification.sample_count": {
+      "n": 3,
+      "mean": 3490.3333333333335,
+      "std_dev": 39.55165398985652,
+      "ci95_lower": 3392.0736481239637,
+      "ci95_upper": 3588.5930185427032,
+      "min": 3452.0,
+      "max": 3531.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_without_dynamic_verification.specificity": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_without_dynamic_verification.tn": {
+      "n": 3,
+      "mean": 1992.0,
+      "std_dev": 18.681541692269406,
+      "ci95_lower": 1945.5887321835166,
+      "ci95_upper": 2038.4112678164834,
+      "min": 1972.0,
+      "max": 2009.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_without_dynamic_verification.tp": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.accuracy": {
+      "n": 3,
+      "mean": 0.42927166666666666,
+      "std_dev": 0.0015698411809267046,
+      "ci95_lower": 0.4253716502398916,
+      "ci95_upper": 0.43317168309344173,
+      "min": 0.428039,
+      "max": 0.431039
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.f1": {
+      "n": 3,
+      "mean": 0.6006846666666666,
+      "std_dev": 0.0015361996398038276,
+      "ci95_lower": 0.5968682272058901,
+      "ci95_upper": 0.6045011061274432,
+      "min": 0.599478,
+      "max": 0.602414
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.fp": {
+      "n": 3,
+      "mean": 1992.0,
+      "std_dev": 18.681541692269406,
+      "ci95_lower": 1945.5887321835166,
+      "ci95_upper": 2038.4112678164834,
+      "min": 1972.0,
+      "max": 2009.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.precision": {
+      "n": 3,
+      "mean": 0.42927166666666666,
+      "std_dev": 0.0015698411809267046,
+      "ci95_lower": 0.4253716502398916,
+      "ci95_upper": 0.43317168309344173,
+      "min": 0.428039,
+      "max": 0.431039
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.sample_count": {
+      "n": 3,
+      "mean": 3490.3333333333335,
+      "std_dev": 39.55165398985652,
+      "ci95_lower": 3392.0736481239637,
+      "ci95_upper": 3588.5930185427032,
+      "min": 3452.0,
+      "max": 3531.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.tp": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.existing_gateway_block_signal.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.existing_gateway_block_signal.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.existing_gateway_block_signal.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.existing_gateway_block_signal.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.existing_gateway_block_signal.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.existing_gateway_block_signal.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.existing_gateway_block_signal.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.existing_gateway_block_signal.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.existing_gateway_block_signal.sample_count": {
+      "n": 3,
+      "mean": 3490.3333333333335,
+      "std_dev": 39.55165398985652,
+      "ci95_lower": 3392.0736481239637,
+      "ci95_upper": 3588.5930185427032,
+      "min": 3452.0,
+      "max": 3531.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.existing_gateway_block_signal.specificity": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.existing_gateway_block_signal.tn": {
+      "n": 3,
+      "mean": 1992.0,
+      "std_dev": 18.681541692269406,
+      "ci95_lower": 1945.5887321835166,
+      "ci95_upper": 2038.4112678164834,
+      "min": 1972.0,
+      "max": 2009.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.existing_gateway_block_signal.tp": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.proposed_authorization_aware_plus_dynamic_verification.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.proposed_authorization_aware_plus_dynamic_verification.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.proposed_authorization_aware_plus_dynamic_verification.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.proposed_authorization_aware_plus_dynamic_verification.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.proposed_authorization_aware_plus_dynamic_verification.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.proposed_authorization_aware_plus_dynamic_verification.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.proposed_authorization_aware_plus_dynamic_verification.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.proposed_authorization_aware_plus_dynamic_verification.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.proposed_authorization_aware_plus_dynamic_verification.sample_count": {
+      "n": 3,
+      "mean": 3490.3333333333335,
+      "std_dev": 39.55165398985652,
+      "ci95_lower": 3392.0736481239637,
+      "ci95_upper": 3588.5930185427032,
+      "min": 3452.0,
+      "max": 3531.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.proposed_authorization_aware_plus_dynamic_verification.specificity": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.proposed_authorization_aware_plus_dynamic_verification.tn": {
+      "n": 3,
+      "mean": 1992.0,
+      "std_dev": 18.681541692269406,
+      "ci95_lower": 1945.5887321835166,
+      "ci95_upper": 2038.4112678164834,
+      "min": 1972.0,
+      "max": 2009.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.proposed_authorization_aware_plus_dynamic_verification.tp": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.accuracy": {
+      "n": 3,
+      "mean": 0.42927166666666666,
+      "std_dev": 0.0015698411809267046,
+      "ci95_lower": 0.4253716502398916,
+      "ci95_upper": 0.43317168309344173,
+      "min": 0.428039,
+      "max": 0.431039
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.f1": {
+      "n": 3,
+      "mean": 0.6006846666666666,
+      "std_dev": 0.0015361996398038276,
+      "ci95_lower": 0.5968682272058901,
+      "ci95_upper": 0.6045011061274432,
+      "min": 0.599478,
+      "max": 0.602414
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.fp": {
+      "n": 3,
+      "mean": 1992.0,
+      "std_dev": 18.681541692269406,
+      "ci95_lower": 1945.5887321835166,
+      "ci95_upper": 2038.4112678164834,
+      "min": 1972.0,
+      "max": 2009.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.precision": {
+      "n": 3,
+      "mean": 0.42927166666666666,
+      "std_dev": 0.0015698411809267046,
+      "ci95_lower": 0.4253716502398916,
+      "ci95_upper": 0.43317168309344173,
+      "min": 0.428039,
+      "max": 0.431039
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.sample_count": {
+      "n": 3,
+      "mean": 3490.3333333333335,
+      "std_dev": 39.55165398985652,
+      "ci95_lower": 3392.0736481239637,
+      "ci95_upper": 3588.5930185427032,
+      "min": 3452.0,
+      "max": 3531.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.tp": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.vulnerable_endpoint_exposure_signal.accuracy": {
+      "n": 3,
+      "mean": 0.42927166666666666,
+      "std_dev": 0.0015698411809267046,
+      "ci95_lower": 0.4253716502398916,
+      "ci95_upper": 0.43317168309344173,
+      "min": 0.428039,
+      "max": 0.431039
+    },
+    "detection_metrics.by_scenario_group.direct_access.vulnerable_endpoint_exposure_signal.f1": {
+      "n": 3,
+      "mean": 0.6006846666666666,
+      "std_dev": 0.0015361996398038276,
+      "ci95_lower": 0.5968682272058901,
+      "ci95_upper": 0.6045011061274432,
+      "min": 0.599478,
+      "max": 0.602414
+    },
+    "detection_metrics.by_scenario_group.direct_access.vulnerable_endpoint_exposure_signal.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.vulnerable_endpoint_exposure_signal.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.vulnerable_endpoint_exposure_signal.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.vulnerable_endpoint_exposure_signal.fp": {
+      "n": 3,
+      "mean": 1992.0,
+      "std_dev": 18.681541692269406,
+      "ci95_lower": 1945.5887321835166,
+      "ci95_upper": 2038.4112678164834,
+      "min": 1972.0,
+      "max": 2009.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.vulnerable_endpoint_exposure_signal.precision": {
+      "n": 3,
+      "mean": 0.42927166666666666,
+      "std_dev": 0.0015698411809267046,
+      "ci95_lower": 0.4253716502398916,
+      "ci95_upper": 0.43317168309344173,
+      "min": 0.428039,
+      "max": 0.431039
+    },
+    "detection_metrics.by_scenario_group.direct_access.vulnerable_endpoint_exposure_signal.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.vulnerable_endpoint_exposure_signal.sample_count": {
+      "n": 3,
+      "mean": 3490.3333333333335,
+      "std_dev": 39.55165398985652,
+      "ci95_lower": 3392.0736481239637,
+      "ci95_upper": 3588.5930185427032,
+      "min": 3452.0,
+      "max": 3531.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.vulnerable_endpoint_exposure_signal.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.vulnerable_endpoint_exposure_signal.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.vulnerable_endpoint_exposure_signal.tp": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_without_dynamic_verification.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_without_dynamic_verification.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_without_dynamic_verification.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_without_dynamic_verification.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_without_dynamic_verification.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_without_dynamic_verification.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_without_dynamic_verification.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_without_dynamic_verification.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_without_dynamic_verification.sample_count": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_without_dynamic_verification.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_without_dynamic_verification.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_without_dynamic_verification.tp": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.sample_count": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.tp": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.existing_gateway_block_signal.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.existing_gateway_block_signal.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.existing_gateway_block_signal.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.existing_gateway_block_signal.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.existing_gateway_block_signal.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.existing_gateway_block_signal.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.existing_gateway_block_signal.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.existing_gateway_block_signal.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.existing_gateway_block_signal.sample_count": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.existing_gateway_block_signal.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.existing_gateway_block_signal.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.existing_gateway_block_signal.tp": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.proposed_authorization_aware_plus_dynamic_verification.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.proposed_authorization_aware_plus_dynamic_verification.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.proposed_authorization_aware_plus_dynamic_verification.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.proposed_authorization_aware_plus_dynamic_verification.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.proposed_authorization_aware_plus_dynamic_verification.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.proposed_authorization_aware_plus_dynamic_verification.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.proposed_authorization_aware_plus_dynamic_verification.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.proposed_authorization_aware_plus_dynamic_verification.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.proposed_authorization_aware_plus_dynamic_verification.sample_count": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.proposed_authorization_aware_plus_dynamic_verification.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.proposed_authorization_aware_plus_dynamic_verification.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.proposed_authorization_aware_plus_dynamic_verification.tp": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.sample_count": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.tp": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.vulnerable_endpoint_exposure_signal.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.vulnerable_endpoint_exposure_signal.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.vulnerable_endpoint_exposure_signal.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.vulnerable_endpoint_exposure_signal.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.vulnerable_endpoint_exposure_signal.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.vulnerable_endpoint_exposure_signal.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.vulnerable_endpoint_exposure_signal.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.vulnerable_endpoint_exposure_signal.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.vulnerable_endpoint_exposure_signal.sample_count": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.vulnerable_endpoint_exposure_signal.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.vulnerable_endpoint_exposure_signal.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.vulnerable_endpoint_exposure_signal.tp": {
+      "n": 3,
+      "mean": 1498.3333333333333,
+      "std_dev": 21.501937897160186,
+      "ci95_lower": 1444.9152474624307,
+      "ci95_upper": 1551.7514192042358,
+      "min": 1480.0,
+      "max": 1522.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_without_dynamic_verification.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_without_dynamic_verification.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_without_dynamic_verification.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_without_dynamic_verification.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_without_dynamic_verification.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_without_dynamic_verification.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_without_dynamic_verification.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_without_dynamic_verification.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_without_dynamic_verification.sample_count": {
+      "n": 3,
+      "mean": 1509.6666666666667,
+      "std_dev": 39.55165398985652,
+      "ci95_lower": 1411.406981457297,
+      "ci95_upper": 1607.9263518760365,
+      "min": 1469.0,
+      "max": 1548.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_without_dynamic_verification.specificity": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_without_dynamic_verification.tn": {
+      "n": 3,
+      "mean": 755.3333333333334,
+      "std_dev": 33.54598833442433,
+      "ci95_lower": 671.9937527781667,
+      "ci95_upper": 838.6729138885,
+      "min": 734.0,
+      "max": 794.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_without_dynamic_verification.tp": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.accuracy": {
+      "n": 3,
+      "mean": 0.499775,
+      "std_dev": 0.012422140516030258,
+      "ci95_lower": 0.46891420168686937,
+      "ci95_upper": 0.5306357983131307,
+      "min": 0.48708,
+      "max": 0.511905
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.f1": {
+      "n": 3,
+      "mean": 0.6664056666666667,
+      "std_dev": 0.011051773130739424,
+      "ci95_lower": 0.6389493244082537,
+      "ci95_upper": 0.6938620089250797,
+      "min": 0.655083,
+      "max": 0.677165
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.fp": {
+      "n": 3,
+      "mean": 755.3333333333334,
+      "std_dev": 33.54598833442433,
+      "ci95_lower": 671.9937527781667,
+      "ci95_upper": 838.6729138885,
+      "min": 734.0,
+      "max": 794.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.precision": {
+      "n": 3,
+      "mean": 0.499775,
+      "std_dev": 0.012422140516030258,
+      "ci95_lower": 0.46891420168686937,
+      "ci95_upper": 0.5306357983131307,
+      "min": 0.48708,
+      "max": 0.511905
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.sample_count": {
+      "n": 3,
+      "mean": 1509.6666666666667,
+      "std_dev": 39.55165398985652,
+      "ci95_lower": 1411.406981457297,
+      "ci95_upper": 1607.9263518760365,
+      "min": 1469.0,
+      "max": 1548.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.tp": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.existing_gateway_block_signal.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.existing_gateway_block_signal.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.existing_gateway_block_signal.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.existing_gateway_block_signal.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.existing_gateway_block_signal.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.existing_gateway_block_signal.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.existing_gateway_block_signal.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.existing_gateway_block_signal.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.existing_gateway_block_signal.sample_count": {
+      "n": 3,
+      "mean": 1509.6666666666667,
+      "std_dev": 39.55165398985652,
+      "ci95_lower": 1411.406981457297,
+      "ci95_upper": 1607.9263518760365,
+      "min": 1469.0,
+      "max": 1548.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.existing_gateway_block_signal.specificity": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.existing_gateway_block_signal.tn": {
+      "n": 3,
+      "mean": 755.3333333333334,
+      "std_dev": 33.54598833442433,
+      "ci95_lower": 671.9937527781667,
+      "ci95_upper": 838.6729138885,
+      "min": 734.0,
+      "max": 794.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.existing_gateway_block_signal.tp": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.proposed_authorization_aware_plus_dynamic_verification.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.proposed_authorization_aware_plus_dynamic_verification.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.proposed_authorization_aware_plus_dynamic_verification.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.proposed_authorization_aware_plus_dynamic_verification.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.proposed_authorization_aware_plus_dynamic_verification.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.proposed_authorization_aware_plus_dynamic_verification.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.proposed_authorization_aware_plus_dynamic_verification.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.proposed_authorization_aware_plus_dynamic_verification.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.proposed_authorization_aware_plus_dynamic_verification.sample_count": {
+      "n": 3,
+      "mean": 1509.6666666666667,
+      "std_dev": 39.55165398985652,
+      "ci95_lower": 1411.406981457297,
+      "ci95_upper": 1607.9263518760365,
+      "min": 1469.0,
+      "max": 1548.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.proposed_authorization_aware_plus_dynamic_verification.specificity": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.proposed_authorization_aware_plus_dynamic_verification.tn": {
+      "n": 3,
+      "mean": 755.3333333333334,
+      "std_dev": 33.54598833442433,
+      "ci95_lower": 671.9937527781667,
+      "ci95_upper": 838.6729138885,
+      "min": 734.0,
+      "max": 794.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.proposed_authorization_aware_plus_dynamic_verification.tp": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.accuracy": {
+      "n": 3,
+      "mean": 0.499775,
+      "std_dev": 0.012422140516030258,
+      "ci95_lower": 0.46891420168686937,
+      "ci95_upper": 0.5306357983131307,
+      "min": 0.48708,
+      "max": 0.511905
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.f1": {
+      "n": 3,
+      "mean": 0.6664056666666667,
+      "std_dev": 0.011051773130739424,
+      "ci95_lower": 0.6389493244082537,
+      "ci95_upper": 0.6938620089250797,
+      "min": 0.655083,
+      "max": 0.677165
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.fp": {
+      "n": 3,
+      "mean": 755.3333333333334,
+      "std_dev": 33.54598833442433,
+      "ci95_lower": 671.9937527781667,
+      "ci95_upper": 838.6729138885,
+      "min": 734.0,
+      "max": 794.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.precision": {
+      "n": 3,
+      "mean": 0.499775,
+      "std_dev": 0.012422140516030258,
+      "ci95_lower": 0.46891420168686937,
+      "ci95_upper": 0.5306357983131307,
+      "min": 0.48708,
+      "max": 0.511905
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.sample_count": {
+      "n": 3,
+      "mean": 1509.6666666666667,
+      "std_dev": 39.55165398985652,
+      "ci95_lower": 1411.406981457297,
+      "ci95_upper": 1607.9263518760365,
+      "min": 1469.0,
+      "max": 1548.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.tp": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.vulnerable_endpoint_exposure_signal.accuracy": {
+      "n": 3,
+      "mean": 0.499775,
+      "std_dev": 0.012422140516030258,
+      "ci95_lower": 0.46891420168686937,
+      "ci95_upper": 0.5306357983131307,
+      "min": 0.48708,
+      "max": 0.511905
+    },
+    "detection_metrics.by_scenario_group.nested_access.vulnerable_endpoint_exposure_signal.f1": {
+      "n": 3,
+      "mean": 0.6664056666666667,
+      "std_dev": 0.011051773130739424,
+      "ci95_lower": 0.6389493244082537,
+      "ci95_upper": 0.6938620089250797,
+      "min": 0.655083,
+      "max": 0.677165
+    },
+    "detection_metrics.by_scenario_group.nested_access.vulnerable_endpoint_exposure_signal.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.vulnerable_endpoint_exposure_signal.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.vulnerable_endpoint_exposure_signal.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.vulnerable_endpoint_exposure_signal.fp": {
+      "n": 3,
+      "mean": 755.3333333333334,
+      "std_dev": 33.54598833442433,
+      "ci95_lower": 671.9937527781667,
+      "ci95_upper": 838.6729138885,
+      "min": 734.0,
+      "max": 794.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.vulnerable_endpoint_exposure_signal.precision": {
+      "n": 3,
+      "mean": 0.499775,
+      "std_dev": 0.012422140516030258,
+      "ci95_lower": 0.46891420168686937,
+      "ci95_upper": 0.5306357983131307,
+      "min": 0.48708,
+      "max": 0.511905
+    },
+    "detection_metrics.by_scenario_group.nested_access.vulnerable_endpoint_exposure_signal.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.vulnerable_endpoint_exposure_signal.sample_count": {
+      "n": 3,
+      "mean": 1509.6666666666667,
+      "std_dev": 39.55165398985652,
+      "ci95_lower": 1411.406981457297,
+      "ci95_upper": 1607.9263518760365,
+      "min": 1469.0,
+      "max": 1548.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.vulnerable_endpoint_exposure_signal.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.vulnerable_endpoint_exposure_signal.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.vulnerable_endpoint_exposure_signal.tp": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_without_dynamic_verification.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_without_dynamic_verification.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_without_dynamic_verification.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_without_dynamic_verification.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_without_dynamic_verification.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_without_dynamic_verification.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_without_dynamic_verification.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_without_dynamic_verification.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_without_dynamic_verification.sample_count": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_without_dynamic_verification.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_without_dynamic_verification.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_without_dynamic_verification.tp": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.sample_count": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.tp": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.existing_gateway_block_signal.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.existing_gateway_block_signal.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.existing_gateway_block_signal.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.existing_gateway_block_signal.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.existing_gateway_block_signal.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.existing_gateway_block_signal.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.existing_gateway_block_signal.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.existing_gateway_block_signal.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.existing_gateway_block_signal.sample_count": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.existing_gateway_block_signal.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.existing_gateway_block_signal.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.existing_gateway_block_signal.tp": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.proposed_authorization_aware_plus_dynamic_verification.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.proposed_authorization_aware_plus_dynamic_verification.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.proposed_authorization_aware_plus_dynamic_verification.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.proposed_authorization_aware_plus_dynamic_verification.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.proposed_authorization_aware_plus_dynamic_verification.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.proposed_authorization_aware_plus_dynamic_verification.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.proposed_authorization_aware_plus_dynamic_verification.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.proposed_authorization_aware_plus_dynamic_verification.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.proposed_authorization_aware_plus_dynamic_verification.sample_count": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.proposed_authorization_aware_plus_dynamic_verification.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.proposed_authorization_aware_plus_dynamic_verification.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.proposed_authorization_aware_plus_dynamic_verification.tp": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.sample_count": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.tp": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.vulnerable_endpoint_exposure_signal.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.vulnerable_endpoint_exposure_signal.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.vulnerable_endpoint_exposure_signal.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.vulnerable_endpoint_exposure_signal.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.vulnerable_endpoint_exposure_signal.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.vulnerable_endpoint_exposure_signal.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.vulnerable_endpoint_exposure_signal.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.vulnerable_endpoint_exposure_signal.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.vulnerable_endpoint_exposure_signal.sample_count": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.vulnerable_endpoint_exposure_signal.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.vulnerable_endpoint_exposure_signal.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.vulnerable_endpoint_exposure_signal.tp": {
+      "n": 3,
+      "mean": 754.3333333333334,
+      "std_dev": 19.5021366350801,
+      "ci95_lower": 705.8834301468689,
+      "ci95_upper": 802.7832365197978,
+      "min": 735.0,
+      "max": 774.0
+    },
+    "detection_metrics.overall.authorization_aware_without_dynamic_verification.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.authorization_aware_without_dynamic_verification.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.authorization_aware_without_dynamic_verification.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.authorization_aware_without_dynamic_verification.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.authorization_aware_without_dynamic_verification.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.authorization_aware_without_dynamic_verification.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.authorization_aware_without_dynamic_verification.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.authorization_aware_without_dynamic_verification.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.authorization_aware_without_dynamic_verification.sample_count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "detection_metrics.overall.authorization_aware_without_dynamic_verification.specificity": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.authorization_aware_without_dynamic_verification.tn": {
+      "n": 3,
+      "mean": 2747.3333333333335,
+      "std_dev": 16.921386861996073,
+      "ci95_lower": 2705.2948854142624,
+      "ci95_upper": 2789.3717812524046,
+      "min": 2733.0,
+      "max": 2766.0
+    },
+    "detection_metrics.overall.authorization_aware_without_dynamic_verification.tp": {
+      "n": 3,
+      "mean": 2252.6666666666665,
+      "std_dev": 16.921386861996073,
+      "ci95_lower": 2210.6282187475954,
+      "ci95_upper": 2294.7051145857376,
+      "min": 2234.0,
+      "max": 2267.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.accuracy": {
+      "n": 3,
+      "mean": 0.45053333333333334,
+      "std_dev": 0.0033842773723992423,
+      "ci95_lower": 0.44212564374951907,
+      "ci95_upper": 0.4589410229171476,
+      "min": 0.4468,
+      "max": 0.4534
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.f1": {
+      "n": 3,
+      "mean": 0.6211916666666667,
+      "std_dev": 0.0032194385121218335,
+      "ci95_lower": 0.613193492561656,
+      "ci95_upper": 0.6291898407716774,
+      "min": 0.617639,
+      "max": 0.623916
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.fp": {
+      "n": 3,
+      "mean": 2747.3333333333335,
+      "std_dev": 16.921386861996073,
+      "ci95_lower": 2705.2948854142624,
+      "ci95_upper": 2789.3717812524046,
+      "min": 2733.0,
+      "max": 2766.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.precision": {
+      "n": 3,
+      "mean": 0.45053333333333334,
+      "std_dev": 0.0033842773723992423,
+      "ci95_lower": 0.44212564374951907,
+      "ci95_upper": 0.4589410229171476,
+      "min": 0.4468,
+      "max": 0.4534
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.sample_count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.tp": {
+      "n": 3,
+      "mean": 2252.6666666666665,
+      "std_dev": 16.921386861996073,
+      "ci95_lower": 2210.6282187475954,
+      "ci95_upper": 2294.7051145857376,
+      "min": 2234.0,
+      "max": 2267.0
+    },
+    "detection_metrics.overall.existing_gateway_block_signal.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.existing_gateway_block_signal.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.existing_gateway_block_signal.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.existing_gateway_block_signal.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.existing_gateway_block_signal.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.existing_gateway_block_signal.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.existing_gateway_block_signal.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.existing_gateway_block_signal.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.existing_gateway_block_signal.sample_count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "detection_metrics.overall.existing_gateway_block_signal.specificity": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.existing_gateway_block_signal.tn": {
+      "n": 3,
+      "mean": 2747.3333333333335,
+      "std_dev": 16.921386861996073,
+      "ci95_lower": 2705.2948854142624,
+      "ci95_upper": 2789.3717812524046,
+      "min": 2733.0,
+      "max": 2766.0
+    },
+    "detection_metrics.overall.existing_gateway_block_signal.tp": {
+      "n": 3,
+      "mean": 2252.6666666666665,
+      "std_dev": 16.921386861996073,
+      "ci95_lower": 2210.6282187475954,
+      "ci95_upper": 2294.7051145857376,
+      "min": 2234.0,
+      "max": 2267.0
+    },
+    "detection_metrics.overall.proposed_authorization_aware_plus_dynamic_verification.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.proposed_authorization_aware_plus_dynamic_verification.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.proposed_authorization_aware_plus_dynamic_verification.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.proposed_authorization_aware_plus_dynamic_verification.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.proposed_authorization_aware_plus_dynamic_verification.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.proposed_authorization_aware_plus_dynamic_verification.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.proposed_authorization_aware_plus_dynamic_verification.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.proposed_authorization_aware_plus_dynamic_verification.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.proposed_authorization_aware_plus_dynamic_verification.sample_count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "detection_metrics.overall.proposed_authorization_aware_plus_dynamic_verification.specificity": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.proposed_authorization_aware_plus_dynamic_verification.tn": {
+      "n": 3,
+      "mean": 2747.3333333333335,
+      "std_dev": 16.921386861996073,
+      "ci95_lower": 2705.2948854142624,
+      "ci95_upper": 2789.3717812524046,
+      "min": 2733.0,
+      "max": 2766.0
+    },
+    "detection_metrics.overall.proposed_authorization_aware_plus_dynamic_verification.tp": {
+      "n": 3,
+      "mean": 2252.6666666666665,
+      "std_dev": 16.921386861996073,
+      "ci95_lower": 2210.6282187475954,
+      "ci95_upper": 2294.7051145857376,
+      "min": 2234.0,
+      "max": 2267.0
+    },
+    "detection_metrics.overall.taint_source_only.accuracy": {
+      "n": 3,
+      "mean": 0.45053333333333334,
+      "std_dev": 0.0033842773723992423,
+      "ci95_lower": 0.44212564374951907,
+      "ci95_upper": 0.4589410229171476,
+      "min": 0.4468,
+      "max": 0.4534
+    },
+    "detection_metrics.overall.taint_source_only.f1": {
+      "n": 3,
+      "mean": 0.6211916666666667,
+      "std_dev": 0.0032194385121218335,
+      "ci95_lower": 0.613193492561656,
+      "ci95_upper": 0.6291898407716774,
+      "min": 0.617639,
+      "max": 0.623916
+    },
+    "detection_metrics.overall.taint_source_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.taint_source_only.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.taint_source_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.taint_source_only.fp": {
+      "n": 3,
+      "mean": 2747.3333333333335,
+      "std_dev": 16.921386861996073,
+      "ci95_lower": 2705.2948854142624,
+      "ci95_upper": 2789.3717812524046,
+      "min": 2733.0,
+      "max": 2766.0
+    },
+    "detection_metrics.overall.taint_source_only.precision": {
+      "n": 3,
+      "mean": 0.45053333333333334,
+      "std_dev": 0.0033842773723992423,
+      "ci95_lower": 0.44212564374951907,
+      "ci95_upper": 0.4589410229171476,
+      "min": 0.4468,
+      "max": 0.4534
+    },
+    "detection_metrics.overall.taint_source_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.taint_source_only.sample_count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "detection_metrics.overall.taint_source_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.taint_source_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.taint_source_only.tp": {
+      "n": 3,
+      "mean": 2252.6666666666665,
+      "std_dev": 16.921386861996073,
+      "ci95_lower": 2210.6282187475954,
+      "ci95_upper": 2294.7051145857376,
+      "min": 2234.0,
+      "max": 2267.0
+    },
+    "detection_metrics.overall.vulnerable_endpoint_exposure_signal.accuracy": {
+      "n": 3,
+      "mean": 0.45053333333333334,
+      "std_dev": 0.0033842773723992423,
+      "ci95_lower": 0.44212564374951907,
+      "ci95_upper": 0.4589410229171476,
+      "min": 0.4468,
+      "max": 0.4534
+    },
+    "detection_metrics.overall.vulnerable_endpoint_exposure_signal.f1": {
+      "n": 3,
+      "mean": 0.6211916666666667,
+      "std_dev": 0.0032194385121218335,
+      "ci95_lower": 0.613193492561656,
+      "ci95_upper": 0.6291898407716774,
+      "min": 0.617639,
+      "max": 0.623916
+    },
+    "detection_metrics.overall.vulnerable_endpoint_exposure_signal.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.vulnerable_endpoint_exposure_signal.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.vulnerable_endpoint_exposure_signal.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.vulnerable_endpoint_exposure_signal.fp": {
+      "n": 3,
+      "mean": 2747.3333333333335,
+      "std_dev": 16.921386861996073,
+      "ci95_lower": 2705.2948854142624,
+      "ci95_upper": 2789.3717812524046,
+      "min": 2733.0,
+      "max": 2766.0
+    },
+    "detection_metrics.overall.vulnerable_endpoint_exposure_signal.precision": {
+      "n": 3,
+      "mean": 0.45053333333333334,
+      "std_dev": 0.0033842773723992423,
+      "ci95_lower": 0.44212564374951907,
+      "ci95_upper": 0.4589410229171476,
+      "min": 0.4468,
+      "max": 0.4534
+    },
+    "detection_metrics.overall.vulnerable_endpoint_exposure_signal.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.vulnerable_endpoint_exposure_signal.sample_count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "detection_metrics.overall.vulnerable_endpoint_exposure_signal.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.vulnerable_endpoint_exposure_signal.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.vulnerable_endpoint_exposure_signal.tp": {
+      "n": 3,
+      "mean": 2252.6666666666665,
+      "std_dev": 16.921386861996073,
+      "ci95_lower": 2210.6282187475954,
+      "ci95_upper": 2294.7051145857376,
+      "min": 2234.0,
+      "max": 2267.0
+    },
+    "endpoint_summary.analysis_pipeline.latency.count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "endpoint_summary.analysis_pipeline.latency.max_ms": {
+      "n": 3,
+      "mean": 114.25226666666666,
+      "std_dev": 55.50821858124554,
+      "ci95_lower": -23.64892163066412,
+      "ci95_upper": 252.15345496399743,
+      "min": 63.7992,
+      "max": 173.7137
+    },
+    "endpoint_summary.analysis_pipeline.latency.mean_ms": {
+      "n": 3,
+      "mean": 8.4739,
+      "std_dev": 1.1173796355760202,
+      "ci95_lower": 5.697951078136509,
+      "ci95_upper": 11.249848921863492,
+      "min": 7.8074,
+      "max": 9.7639
+    },
+    "endpoint_summary.analysis_pipeline.latency.median_ms": {
+      "n": 3,
+      "mean": 7.1537,
+      "std_dev": 1.0952108883680802,
+      "ci95_lower": 4.432825743855846,
+      "ci95_upper": 9.874574256144154,
+      "min": 6.2049,
+      "max": 8.3522
+    },
+    "endpoint_summary.analysis_pipeline.latency.min_ms": {
+      "n": 3,
+      "mean": 2.7216666666666667,
+      "std_dev": 0.19253945915924178,
+      "ci95_lower": 2.243333531667524,
+      "ci95_upper": 3.1999998016658093,
+      "min": 2.5691,
+      "max": 2.938
+    },
+    "endpoint_summary.analysis_pipeline.latency.p95_ms": {
+      "n": 3,
+      "mean": 17.585366666666665,
+      "std_dev": 1.97632396467111,
+      "ci95_lower": 12.675509529209911,
+      "ci95_upper": 22.49522380412342,
+      "min": 15.4773,
+      "max": 19.3963
+    },
+    "endpoint_summary.analysis_pipeline.latency.p99_ms": {
+      "n": 3,
+      "mean": 26.43316666666667,
+      "std_dev": 3.9729345707339987,
+      "ci95_lower": 16.563053513425018,
+      "ci95_upper": 36.30327981990832,
+      "min": 21.8478,
+      "max": 28.8484
+    },
+    "endpoint_summary.baseline_graphql_insecure.bola_exposure_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "endpoint_summary.baseline_graphql_insecure.confirmed_bola_exposures": {
+      "n": 3,
+      "mean": 2252.6666666666665,
+      "std_dev": 16.921386861996073,
+      "ci95_lower": 2210.6282187475954,
+      "ci95_upper": 2294.7051145857376,
+      "min": 2234.0,
+      "max": 2267.0
+    },
+    "endpoint_summary.baseline_graphql_insecure.latency.count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "endpoint_summary.baseline_graphql_insecure.latency.max_ms": {
+      "n": 3,
+      "mean": 198.3945,
+      "std_dev": 87.56364263088876,
+      "ci95_lower": -19.143203047854144,
+      "ci95_upper": 415.93220304785416,
+      "min": 131.6487,
+      "max": 297.5408
+    },
+    "endpoint_summary.baseline_graphql_insecure.latency.mean_ms": {
+      "n": 3,
+      "mean": 21.757033333333332,
+      "std_dev": 2.4054311138200006,
+      "ci95_lower": 15.78112890978145,
+      "ci95_upper": 27.732937756885214,
+      "min": 19.9802,
+      "max": 24.4943
+    },
+    "endpoint_summary.baseline_graphql_insecure.latency.median_ms": {
+      "n": 3,
+      "mean": 19.662133333333333,
+      "std_dev": 3.853669712538081,
+      "ci95_lower": 10.088314424218021,
+      "ci95_upper": 29.235952242448647,
+      "min": 16.211,
+      "max": 23.8204
+    },
+    "endpoint_summary.baseline_graphql_insecure.latency.min_ms": {
+      "n": 3,
+      "mean": 9.985333333333333,
+      "std_dev": 1.030752125068551,
+      "ci95_lower": 7.424596445715446,
+      "ci95_upper": 12.54607022095122,
+      "min": 9.3476,
+      "max": 11.1745
+    },
+    "endpoint_summary.baseline_graphql_insecure.latency.p95_ms": {
+      "n": 3,
+      "mean": 37.10746666666667,
+      "std_dev": 2.347583390070167,
+      "ci95_lower": 31.275275553491007,
+      "ci95_upper": 42.93965777984233,
+      "min": 34.6766,
+      "max": 39.3618
+    },
+    "endpoint_summary.baseline_graphql_insecure.latency.p99_ms": {
+      "n": 3,
+      "mean": 53.9685,
+      "std_dev": 9.128998683864513,
+      "ci95_lower": 31.288979765945378,
+      "ci95_upper": 76.64802023405463,
+      "min": 44.1588,
+      "max": 62.2149
+    },
+    "endpoint_summary.protected_graphql.authorization_latency_overhead_ms": {
+      "n": 3,
+      "mean": 8.434066666666666,
+      "std_dev": 0.7542276667779649,
+      "ci95_lower": 6.56031005631589,
+      "ci95_upper": 10.307823277017443,
+      "min": 7.8574,
+      "max": 9.2876
+    },
+    "endpoint_summary.protected_graphql.authorization_latency_overhead_percent": {
+      "n": 3,
+      "mean": 38.82233333333333,
+      "std_dev": 0.7853594484905186,
+      "ci95_lower": 36.87123484818089,
+      "ci95_upper": 40.773431818485776,
+      "min": 37.9174,
+      "max": 39.3259
+    },
+    "endpoint_summary.protected_graphql.bola_block_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "endpoint_summary.protected_graphql.bola_requests_blocked": {
+      "n": 3,
+      "mean": 2252.6666666666665,
+      "std_dev": 16.921386861996073,
+      "ci95_lower": 2210.6282187475954,
+      "ci95_upper": 2294.7051145857376,
+      "min": 2234.0,
+      "max": 2267.0
+    },
+    "endpoint_summary.protected_graphql.latency.count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "endpoint_summary.protected_graphql.latency.max_ms": {
+      "n": 3,
+      "mean": 212.65726666666666,
+      "std_dev": 58.04320747308278,
+      "ci95_lower": 68.45830860767035,
+      "ci95_upper": 356.85622472566297,
+      "min": 147.9288,
+      "max": 260.0775
+    },
+    "endpoint_summary.protected_graphql.latency.mean_ms": {
+      "n": 3,
+      "mean": 30.1911,
+      "std_dev": 3.1594080284129182,
+      "ci95_lower": 22.342061919331474,
+      "ci95_upper": 38.04013808066852,
+      "min": 27.8376,
+      "max": 33.7819
+    },
+    "endpoint_summary.protected_graphql.latency.median_ms": {
+      "n": 3,
+      "mean": 26.3022,
+      "std_dev": 4.164791471370446,
+      "ci95_lower": 15.955449417976801,
+      "ci95_upper": 36.6489505820232,
+      "min": 22.7782,
+      "max": 30.8982
+    },
+    "endpoint_summary.protected_graphql.latency.min_ms": {
+      "n": 3,
+      "mean": 7.7724,
+      "std_dev": 0.9115411181071312,
+      "ci95_lower": 5.5078235718290225,
+      "ci95_upper": 10.036976428170977,
+      "min": 7.1515,
+      "max": 8.8189
+    },
+    "endpoint_summary.protected_graphql.latency.p95_ms": {
+      "n": 3,
+      "mean": 62.611466666666665,
+      "std_dev": 3.870637679160031,
+      "ci95_lower": 52.99549358975489,
+      "ci95_upper": 72.22743974357843,
+      "min": 59.2969,
+      "max": 66.8653
+    },
+    "endpoint_summary.protected_graphql.latency.p99_ms": {
+      "n": 3,
+      "mean": 85.9261,
+      "std_dev": 8.634051841980105,
+      "ci95_lower": 64.4761951163276,
+      "ci95_upper": 107.37600488367241,
+      "min": 76.0382,
+      "max": 91.9741
+    },
+    "endpoint_summary.protected_graphql.legitimate_false_block_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "endpoint_summary.protected_graphql.legitimate_requests_blocked": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "performance.cases_per_second_end_to_end": {
+      "n": 3,
+      "mean": 16.614,
+      "std_dev": 1.7351763599127326,
+      "ci95_lower": 12.303235070890047,
+      "ci95_upper": 20.924764929109955,
+      "min": 14.642,
+      "max": 17.907
+    },
+    "performance.elapsed_seconds_end_to_end": {
+      "n": 3,
+      "mean": 303.2807666666667,
+      "std_dev": 33.461046596353405,
+      "ci95_lower": 220.152210116871,
+      "ci95_upper": 386.4093232164624,
+      "min": 279.2138,
+      "max": 341.4911
+    },
+    "performance.http_calls_per_second_end_to_end": {
+      "n": 3,
+      "mean": 33.228,
+      "std_dev": 3.471293562924344,
+      "ci95_lower": 24.604132769321513,
+      "ci95_upper": 41.851867230678494,
+      "min": 29.283,
+      "max": 35.815
+    },
+    "performance.http_requests": {
+      "n": 3,
+      "mean": 10000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 10000.0,
+      "ci95_upper": 10000.0,
+      "min": 10000.0,
+      "max": 10000.0
+    },
+    "performance.process_cpu_seconds": {
+      "n": 3,
+      "mean": 272.75,
+      "std_dev": 29.304205302993644,
+      "ci95_lower": 199.94844310123258,
+      "ci95_upper": 345.55155689876744,
+      "min": 249.4688,
+      "max": 305.6562
+    },
+    "performance.request_cases": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "performance.tracemalloc_peak_bytes": {
+      "n": 3,
+      "mean": 12021946.0,
+      "std_dev": 176973.03633039695,
+      "ci95_lower": 11582285.124001468,
+      "ci95_upper": 12461606.875998532,
+      "min": 11820668.0,
+      "max": 12153160.0
+    }
+  },
+  "runs": [
+    {
+      "seed": 20261011,
+      "output_dir": "results\\repeated_benchmark_5000x3\\seed_20261011",
+      "actual_cases": 5000
+    },
+    {
+      "seed": 20261012,
+      "output_dir": "results\\repeated_benchmark_5000x3\\seed_20261012",
+      "actual_cases": 5000
+    },
+    {
+      "seed": 20261013,
+      "output_dir": "results\\repeated_benchmark_5000x3\\seed_20261013",
+      "actual_cases": 5000
+    }
+  ]
+}

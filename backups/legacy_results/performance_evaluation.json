@@ -1,0 +1,25 @@
+{
+    "evaluation_parameters": {
+        "iterations_per_type": 500,
+        "total_requests": 2000
+    },
+    "performance_latency_ms": {
+        "without_gateway_avg_ms": 7.876,
+        "with_gateway_avg_ms": 17.503,
+        "authorization_decision_overhead_ms": 9.627
+    },
+    "security_metrics": {
+        "total_legitimate_requests": 500,
+        "total_bola_attempts": 500,
+        "insecure_endpoint": {
+            "blocked_bola": 0,
+            "detection_rate_percent": 0.0
+        },
+        "secure_gateway": {
+            "blocked_bola": 500,
+            "detection_rate_percent": 100.0,
+            "false_positives": 0,
+            "false_positive_rate_percent": 0.0
+        }
+    }
+}

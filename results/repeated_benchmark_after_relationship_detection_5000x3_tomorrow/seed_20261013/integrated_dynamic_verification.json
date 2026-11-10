@@ -1,0 +1,1892 @@
+{
+  "method": "labelled_attack_generation_and_dynamic_replay",
+  "labelled_bola_cases": 2237,
+  "attack_cases_generated_and_executed": 1770,
+  "cases_skipped": 467,
+  "http_requests_for_replays": 3540,
+  "baseline_outcomes": {
+    "EXPOSED_CONFIRMED": 1770
+  },
+  "protected_outcomes": {
+    "BLOCKED": 1770
+  },
+  "verdict_counts": {
+    "PROTECTION_VERIFIED": 1770
+  },
+  "baseline_confirmed_exposures": 1770,
+  "protected_blocks": 1770,
+  "protected_confirmed_exposures": 0,
+  "protection_verified_rate": 1.0,
+  "raw_csv": "results\\repeated_benchmark_after_relationship_detection_5000x3_tomorrow\\seed_20261013\\integrated_dynamic_verification_raw.csv",
+  "skipped_cases": [
+    {
+      "case_id": "case-000007",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000034",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000038",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000052",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000056",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000059",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000068",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000082",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000103",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000104",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000111",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000120",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000149",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000157",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000168",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000169",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000172",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000175",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000181",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000229",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000243",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000257",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000279",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000292",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000305",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000313",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000326",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000336",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000339",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000359",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000368",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000380",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000391",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000411",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000415",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000440",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000443",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000451",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000455",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000473",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000476",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000496",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000501",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000511",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000514",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000547",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000556",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000562",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000584",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000618",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000663",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000668",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000682",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000683",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000684",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000685",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000688",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000689",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000704",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000736",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000769",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000783",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000798",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000823",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000826",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000828",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000839",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000852",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000853",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000859",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000861",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000871",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000899",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000906",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000914",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000921",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000960",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000974",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000980",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000986",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000987",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-000994",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001001",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001008",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001014",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001039",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001051",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001061",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001065",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001078",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001080",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001090",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001094",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001101",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001167",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001171",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001172",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001212",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001229",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001231",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001233",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001239",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001249",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001258",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001263",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001266",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001290",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001302",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001322",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001334",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001335",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001339",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001377",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001382",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001392",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001401",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001408",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001429",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001442",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001452",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001478",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001499",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001522",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001525",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001531",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001536",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001543",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001554",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001564",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001567",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001569",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001576",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001584",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001600",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001615",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001626",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001633",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001638",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001643",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001649",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001675",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001712",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001732",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001741",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001773",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001780",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001782",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001810",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001812",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001821",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001868",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001872",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001900",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001905",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001919",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001921",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001926",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001934",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001945",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001949",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001951",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001953",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001982",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001994",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-001996",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002028",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002033",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002035",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002043",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002048",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002064",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002068",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002070",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002071",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002077",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002079",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002085",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002100",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002105",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002117",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002127",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002137",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002141",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002150",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002165",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002166",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002192",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002198",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002219",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002224",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002261",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002263",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002274",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002284",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002288",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002296",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002312",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002340",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002359",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002376",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002401",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002412",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002416",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002418",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002422",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002432",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002433",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002446",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002448",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002462",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002471",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002475",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002477",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002490",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002534",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002550",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002551",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002553",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002568",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002570",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002571",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002587",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002588",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002597",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002614",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002620",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002632",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002646",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002650",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002654",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002658",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002673",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002685",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002713",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002722",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002725",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002726",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002728",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002734",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002735",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002737",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002746",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002750",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002758",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002778",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002790",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002794",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002796",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002801",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002805",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002815",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002816",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002817",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002824",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002832",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002834",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002861",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002862",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002875",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002886",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002891",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002896",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002911",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002922",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002926",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002937",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002948",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002950",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002952",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002953",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002958",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002963",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002971",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002979",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-002989",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003007",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003012",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003020",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003052",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003056",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003090",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003094",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003118",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003138",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003141",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003154",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003160",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003168",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003174",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003187",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003188",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003207",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003209",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003225",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003227",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003241",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003278",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003282",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003285",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003290",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003295",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003300",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003304",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003309",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003339",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003376",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003377",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003379",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003394",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003400",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003418",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003424",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003430",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003443",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003469",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003496",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003504",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003531",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003545",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003583",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003606",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003628",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003635",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003648",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003669",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003694",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003701",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003703",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003711",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003712",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003717",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003718",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003720",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003723",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003731",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003754",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003756",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003763",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003769",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003774",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003818",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003819",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003826",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003829",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003835",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003843",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003848",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003858",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003864",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003878",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003882",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003908",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003951",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003954",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003966",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003969",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003971",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003983",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003984",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003988",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003991",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-003994",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004002",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004008",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004012",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004038",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004044",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004054",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004057",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004067",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004068",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004070",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004081",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004087",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004110",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004115",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004122",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004125",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004130",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004135",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004171",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004172",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004181",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004207",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004210",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004214",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004244",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004246",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004269",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004285",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004287",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004288",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004294",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004295",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004331",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004335",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004341",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004347",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004352",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004366",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004367",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004382",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004397",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004416",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004436",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004441",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004447",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004452",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004457",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004460",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004462",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004467",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004468",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004516",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004520",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004523",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004538",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004552",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004571",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004573",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004598",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004606",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004608",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004635",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004638",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004646",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004648",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004652",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004654",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004669",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004673",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004674",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004677",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004679",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004687",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004698",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004704",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004709",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004711",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004713",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004715",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004733",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004734",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004735",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004745",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004746",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004748",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004758",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004779",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004780",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004781",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004799",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004838",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004867",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004875",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004898",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004899",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004902",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004906",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004926",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004958",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004959",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004965",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004976",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004980",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004991",
+      "reason": "No variable-backed resource ID source at resource.children"
+    },
+    {
+      "case_id": "case-004997",
+      "reason": "No variable-backed resource ID source at resource.children"
+    }
+  ],
+  "interpretation": "These are observed replay results for labelled synthetic BOLA scenarios. They measure runtime verification and protection for those replay cases, not autonomous detector recall over all possible GraphQL vulnerabilities."
+}

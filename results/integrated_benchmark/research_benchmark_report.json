@@ -1,0 +1,357 @@
+{
+  "report_version": "1.0",
+  "generated_at_utc": "2026-10-11T16:13:00.110277+00:00",
+  "benchmark_scope": "Synthetic local GraphQL BOLA dataset; no external endpoints are called.",
+  "dataset": {
+    "dataset_version": "1.0",
+    "count": 1000,
+    "bola_count": 462,
+    "legitimate_count": 538,
+    "scenario_counts": {
+      "admin_access": 98,
+      "direct_bola": 306,
+      "direct_legitimate": 282,
+      "nested_bola": 156,
+      "nested_legitimate": 158
+    },
+    "sha256": "7c4f4ef24eae44e7b6f1e5d022b140f5c0db9e8fc7b0e26bbeb3c4f71ea5240a",
+    "path": "results\\integrated_benchmark\\benchmark_dataset.jsonl",
+    "seed": 20261011,
+    "loaded_from_existing_dataset": false,
+    "actual_count": 1000
+  },
+  "endpoint_summary": {
+    "baseline_graphql_insecure": {
+      "latency": {
+        "count": 1000,
+        "mean_ms": 20.0124,
+        "median_ms": 17.7289,
+        "p95_ms": 37.138,
+        "p99_ms": 49.6865,
+        "min_ms": 11.413,
+        "max_ms": 83.1206
+      },
+      "confirmed_bola_exposures": 462,
+      "bola_exposure_rate": 1.0
+    },
+    "protected_graphql": {
+      "latency": {
+        "count": 1000,
+        "mean_ms": 27.4748,
+        "median_ms": 24.5451,
+        "p95_ms": 55.716,
+        "p99_ms": 80.0883,
+        "min_ms": 8.9467,
+        "max_ms": 114.1806
+      },
+      "authorization_latency_overhead_ms": 7.4624,
+      "authorization_latency_overhead_percent": 37.2889,
+      "bola_requests_blocked": 462,
+      "bola_block_rate": 1.0,
+      "legitimate_requests_blocked": 0,
+      "legitimate_false_block_rate": 0.0
+    },
+    "analysis_pipeline": {
+      "latency": {
+        "count": 1000,
+        "mean_ms": 7.1769,
+        "median_ms": 6.1791,
+        "p95_ms": 14.3061,
+        "p99_ms": 21.7019,
+        "min_ms": 2.7996,
+        "max_ms": 63.7923
+      }
+    }
+  },
+  "detection_metrics": {
+    "overall": {
+      "taint_source_only": {
+        "sample_count": 1000,
+        "tp": 462,
+        "fp": 538,
+        "tn": 0,
+        "fn": 0,
+        "accuracy": 0.462,
+        "precision": 0.462,
+        "recall": 1.0,
+        "f1": 0.632011,
+        "specificity": 0.0,
+        "false_positive_rate": 1.0,
+        "false_negative_rate": 0.0
+      },
+      "context_sensitive_taint_only": {
+        "sample_count": 1000,
+        "tp": 462,
+        "fp": 538,
+        "tn": 0,
+        "fn": 0,
+        "accuracy": 0.462,
+        "precision": 0.462,
+        "recall": 1.0,
+        "f1": 0.632011,
+        "specificity": 0.0,
+        "false_positive_rate": 1.0,
+        "false_negative_rate": 0.0
+      },
+      "authorization_aware_candidate": {
+        "sample_count": 1000,
+        "tp": 462,
+        "fp": 0,
+        "tn": 538,
+        "fn": 0,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0
+      }
+    },
+    "by_scenario_group": {
+      "direct_access": {
+        "taint_source_only": {
+          "sample_count": 686,
+          "tp": 306,
+          "fp": 380,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 0.446064,
+          "precision": 0.446064,
+          "recall": 1.0,
+          "f1": 0.616935,
+          "specificity": 0.0,
+          "false_positive_rate": 1.0,
+          "false_negative_rate": 0.0
+        },
+        "context_sensitive_taint_only": {
+          "sample_count": 686,
+          "tp": 306,
+          "fp": 380,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 0.446064,
+          "precision": 0.446064,
+          "recall": 1.0,
+          "f1": 0.616935,
+          "specificity": 0.0,
+          "false_positive_rate": 1.0,
+          "false_negative_rate": 0.0
+        },
+        "authorization_aware_candidate": {
+          "sample_count": 686,
+          "tp": 306,
+          "fp": 0,
+          "tn": 380,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 1.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        }
+      },
+      "nested_access": {
+        "taint_source_only": {
+          "sample_count": 314,
+          "tp": 156,
+          "fp": 158,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 0.496815,
+          "precision": 0.496815,
+          "recall": 1.0,
+          "f1": 0.66383,
+          "specificity": 0.0,
+          "false_positive_rate": 1.0,
+          "false_negative_rate": 0.0
+        },
+        "context_sensitive_taint_only": {
+          "sample_count": 314,
+          "tp": 156,
+          "fp": 158,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 0.496815,
+          "precision": 0.496815,
+          "recall": 1.0,
+          "f1": 0.66383,
+          "specificity": 0.0,
+          "false_positive_rate": 1.0,
+          "false_negative_rate": 0.0
+        },
+        "authorization_aware_candidate": {
+          "sample_count": 314,
+          "tp": 156,
+          "fp": 0,
+          "tn": 158,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 1.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        }
+      },
+      "direct_bola_only": {
+        "taint_source_only": {
+          "sample_count": 306,
+          "tp": 306,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "context_sensitive_taint_only": {
+          "sample_count": 306,
+          "tp": 306,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "authorization_aware_candidate": {
+          "sample_count": 306,
+          "tp": 306,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        }
+      },
+      "nested_bola_only": {
+        "taint_source_only": {
+          "sample_count": 156,
+          "tp": 156,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "context_sensitive_taint_only": {
+          "sample_count": 156,
+          "tp": 156,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "authorization_aware_candidate": {
+          "sample_count": 156,
+          "tp": 156,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        }
+      }
+    },
+    "interpretation": "These are detector predictions evaluated against the benchmark labels. Endpoint outcomes and labelled attack replay verification are reported separately. The current authorization-aware candidate uses the project's existing policy engine and is not an independent security oracle."
+  },
+  "ablation_study": {
+    "meaning": {
+      "taint_source_only": "Flags requests containing a tracked object-ID source.",
+      "context_sensitive_taint_only": "Flags requests where tracked taint reaches the configured sensitive sink path.",
+      "authorization_aware_candidate": "Flags requests for which authorization-aware analysis produces a suspected direct or indirect BOLA finding."
+    },
+    "metrics": {
+      "taint_source_only": {
+        "sample_count": 1000,
+        "tp": 462,
+        "fp": 538,
+        "tn": 0,
+        "fn": 0,
+        "accuracy": 0.462,
+        "precision": 0.462,
+        "recall": 1.0,
+        "f1": 0.632011,
+        "specificity": 0.0,
+        "false_positive_rate": 1.0,
+        "false_negative_rate": 0.0
+      },
+      "context_sensitive_taint_only": {
+        "sample_count": 1000,
+        "tp": 462,
+        "fp": 538,
+        "tn": 0,
+        "fn": 0,
+        "accuracy": 0.462,
+        "precision": 0.462,
+        "recall": 1.0,
+        "f1": 0.632011,
+        "specificity": 0.0,
+        "false_positive_rate": 1.0,
+        "false_negative_rate": 0.0
+      },
+      "authorization_aware_candidate": {
+        "sample_count": 1000,
+        "tp": 462,
+        "fp": 0,
+        "tn": 538,
+        "fn": 0,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0
+      }
+    }
+  },
+  "performance": {
+    "request_cases": 1000,
+    "http_requests": 2000,
+    "elapsed_seconds_end_to_end": 54.8919,
+    "cases_per_second_end_to_end": 18.218,
+    "http_calls_per_second_end_to_end": 36.435,
+    "process_cpu_seconds": 50.6094,
+    "tracemalloc_peak_bytes": 6357875,
+    "measurement_note": "Latency is in-process FastAPI TestClient latency. tracemalloc is enabled and perturbs timings; use repeated uninstrumented runs for publication-quality latency values."
+  },
+  "warnings": [
+    "This evaluates only the local synthetic application.",
+    "The detector results are limited by the implemented taint and authorization semantics.",
+    "A confirmed target ID is evidence for this synthetic test case, not a third-party service."
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "generated_at": "2026-11-08T17:46:01.129234+00:00",
+  "label": "pooled",
+  "connection_pooling": true,
+  "method": "in-process TestClient; 30 warm-up, then 10 repeats, each timing 100 requests per configuration in random order after 10 untimed ones; 95% CI of the mean across repeats (t, df=9)",
+  "results": {
+    "own_lookup": {
+      "insecure": {
+        "mean_ms": 16.854,
+        "ci95_ms": [
+          14.649,
+          19.059
+        ],
+        "p50_ms": 14.739,
+        "p95_ms": 27.835,
+        "p99_ms": 58.996,
+        "requests": 1000,
+        "paired_overhead_ms": 0.0,
+        "paired_overhead_ci95_ms": [
+          0.0,
+          0.0
+        ],
+        "overhead_ms": 0.0,
+        "overhead_pct": 0.0
+      },
+      "layer1_only": {
+        "mean_ms": 17.108,
+        "ci95_ms": [
+          14.815,
+          19.402
+        ],
+        "p50_ms": 15.525,
+        "p95_ms": 28.3,
+        "p99_ms": 42.583,
+        "requests": 1000,
+        "paired_overhead_ms": 0.254,
+        "paired_overhead_ci95_ms": [
+          -1.546,
+          2.055
+        ],
+        "overhead_ms": 0.254,
+        "overhead_pct": 1.5
+      },
+      "layer2_only": {
+        "mean_ms": 17.329,
+        "ci95_ms": [
+          15.351,
+          19.307
+        ],
+        "p50_ms": 15.755,
+        "p95_ms": 27.161,
+        "p99_ms": 45.717,
+        "requests": 1000,
+        "paired_overhead_ms": 0.475,
+        "paired_overhead_ci95_ms": [
+          -1.603,
+          2.553
+        ],
+        "overhead_ms": 0.475,
+        "overhead_pct": 2.8
+      },
+      "both_layers": {
+        "mean_ms": 16.967,
+        "ci95_ms": [
+          13.912,
+          20.021
+        ],
+        "p50_ms": 15.585,
+        "p95_ms": 28.144,
+        "p99_ms": 49.25,
+        "requests": 1000,
+        "paired_overhead_ms": 0.113,
+        "paired_overhead_ci95_ms": [
+          -2.47,
+          2.696
+        ],
+        "overhead_ms": 0.113,
+        "overhead_pct": 0.7
+      }
+    },
+    "own_relationship": {
+      "insecure": {
+        "mean_ms": 19.315,
+        "ci95_ms": [
+          17.163,
+          21.466
+        ],
+        "p50_ms": 17.597,
+        "p95_ms": 30.335,
+        "p99_ms": 57.935,
+        "requests": 1000,
+        "paired_overhead_ms": 0.0,
+        "paired_overhead_ci95_ms": [
+          0.0,
+          0.0
+        ],
+        "overhead_ms": 0.0,
+        "overhead_pct": 0.0
+      },
+      "layer1_only": {
+        "mean_ms": 18.714,
+        "ci95_ms": [
+          16.879,
+          20.549
+        ],
+        "p50_ms": 17.127,
+        "p95_ms": 29.746,
+        "p99_ms": 44.92,
+        "requests": 1000,
+        "paired_overhead_ms": -0.6,
+        "paired_overhead_ci95_ms": [
+          -3.201,
+          2.001
+        ],
+        "overhead_ms": -0.601,
+        "overhead_pct": -3.1
+      },
+      "layer2_only": {
+        "mean_ms": 21.33,
+        "ci95_ms": [
+          20.11,
+          22.551
+        ],
+        "p50_ms": 19.124,
+        "p95_ms": 32.205,
+        "p99_ms": 66.03,
+        "requests": 1000,
+        "paired_overhead_ms": 2.016,
+        "paired_overhead_ci95_ms": [
+          -0.115,
+          4.146
+        ],
+        "overhead_ms": 2.015,
+        "overhead_pct": 10.4
+      },
+      "both_layers": {
+        "mean_ms": 21.621,
+        "ci95_ms": [
+          20.166,
+          23.077
+        ],
+        "p50_ms": 19.99,
+        "p95_ms": 33.49,
+        "p99_ms": 55.498,
+        "requests": 1000,
+        "paired_overhead_ms": 2.306,
+        "paired_overhead_ci95_ms": [
+          -0.397,
+          5.01
+        ],
+        "overhead_ms": 2.306,
+        "overhead_pct": 11.9
+      }
+    },
+    "own_update": {
+      "insecure": {
+        "mean_ms": 18.139,
+        "ci95_ms": [
+          15.866,
+          20.411
+        ],
+        "p50_ms": 16.757,
+        "p95_ms": 29.358,
+        "p99_ms": 38.814,
+        "requests": 1000,
+        "paired_overhead_ms": 0.0,
+        "paired_overhead_ci95_ms": [
+          0.0,
+          0.0
+        ],
+        "overhead_ms": 0.0,
+        "overhead_pct": 0.0
+      },
+      "layer1_only": {
+        "mean_ms": 18.332,
+        "ci95_ms": [
+          14.368,
+          22.296
+        ],
+        "p50_ms": 15.999,
+        "p95_ms": 32.588,
+        "p99_ms": 43.723,
+        "requests": 1000,
+        "paired_overhead_ms": 0.193,
+        "paired_overhead_ci95_ms": [
+          -2.708,
+          3.095
+        ],
+        "overhead_ms": 0.193,
+        "overhead_pct": 1.1
+      },
+      "layer2_only": {
+        "mean_ms": 18.011,
+        "ci95_ms": [
+          15.224,
+          20.799
+        ],
+        "p50_ms": 17.049,
+        "p95_ms": 28.47,
+        "p99_ms": 44.181,
+        "requests": 1000,
+        "paired_overhead_ms": -0.127,
+        "paired_overhead_ci95_ms": [
+          -2.332,
+          2.077
+        ],
+        "overhead_ms": -0.128,
+        "overhead_pct": -0.7
+      },
+      "both_layers": {
+        "mean_ms": 17.88,
+        "ci95_ms": [
+          15.474,
+          20.286
+        ],
+        "p50_ms": 16.638,
+        "p95_ms": 27.724,
+        "p99_ms": 43.812,
+        "requests": 1000,
+        "paired_overhead_ms": -0.259,
+        "paired_overhead_ci95_ms": [
+          -2.846,
+          2.328
+        ],
+        "overhead_ms": -0.259,
+        "overhead_pct": -1.4
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+
+GraphQL Shield
+  complete                                     leaked  0/13  benign failed 0/5  leaks: -  false blocks: -
+  without owned type Resource                  leaked  9/13  benign failed 0/5  leaks: direct, variable, variable_default, alias, named_fragment, inline_fragment, nested_lookup, relationship, batch  false blocks: -
+  without owned type User                      leaked  1/13  benign failed 0/5  leaks: foreign_user  false blocks: -
+  without mutation target updateResource       leaked  0/13  benign failed 0/5  leaks: -  false blocks: -
+  without mutation target deleteResource       leaked  0/13  benign failed 0/5  leaks: -  false blocks: -
+  without mutation target transferOwnership    leaked  0/13  benign failed 0/5  leaks: -  false blocks: -
+
+graphql-shield
+  complete                                     leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  fallback_deny                                leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  without:Query.user                           leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  without:Query.resource                       leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  without:UserType.resource                    leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  without:UserType.*                           leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  without:ResourceType.*                       leaked  1/13  benign failed 0/5  leaks: relationship  false blocks: -
+  without:Mutation.updateResource              leaked  1/13  benign failed 1/5  leaks: update  false blocks: own_relationship
+  without:Mutation.deleteResource              leaked  1/13  benign failed 1/5  leaks: delete  false blocks: own_relationship
+  without:Mutation.transferOwnership           leaked  1/13  benign failed 1/5  leaks: transfer  false blocks: own_relationship
+  fallback_deny,without:Query.user             leaked  0/13  benign failed 2/5  leaks: -  false blocks: own_relationship, own_user
+  fallback_deny,without:Query.resource         leaked  0/13  benign failed 3/5  leaks: -  false blocks: own_direct, own_relationship, admin_relationship
+  fallback_deny,without:UserType.resource      leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  fallback_deny,without:UserType.*             leaked  0/13  benign failed 2/5  leaks: -  false blocks: own_relationship, own_user
+  fallback_deny,without:ResourceType.*         leaked  0/13  benign failed 4/5  leaks: -  false blocks: own_direct, own_relationship, own_update, admin_relationship
+  fallback_deny,without:Mutation.updateResource leaked  0/13  benign failed 2/5  leaks: -  false blocks: own_relationship, own_update
+  fallback_deny,without:Mutation.deleteResource leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  fallback_deny,without:Mutation.transferOwnership leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+
+Wrote C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\results\tool_comparison\results.json

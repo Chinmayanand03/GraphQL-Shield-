@@ -1,0 +1,57 @@
+=== latency_pooled 19:48:12
+
+own_lookup
+  insecure     mean    7.00 ms  CI95 [6.78, 7.22]  p95   11.49  p99   14.13  overhead   +0.0%
+  layer1_only  mean    7.97 ms  CI95 [7.52, 8.42]  p95   12.73  p99   15.75  overhead  +13.8%
+  layer2_only  mean    7.77 ms  CI95 [6.97, 8.58]  p95   12.46  p99   15.81  overhead  +11.0%
+  both_layers  mean   10.27 ms  CI95 [8.19, 12.34]  p95   17.29  p99   19.46  overhead  +46.6%
+
+own_relationship
+  insecure     mean    9.65 ms  CI95 [8.79, 10.51]  p95   15.93  p99   18.57  overhead   +0.0%
+  layer1_only  mean    9.77 ms  CI95 [8.92, 10.63]  p95   16.10  p99   19.98  overhead   +1.3%
+  layer2_only  mean   12.19 ms  CI95 [10.05, 14.33]  p95   19.35  p99   21.72  overhead  +26.3%
+  both_layers  mean   10.37 ms  CI95 [8.63, 12.11]  p95   17.22  p99   21.34  overhead   +7.5%
+
+own_update
+  insecure     mean   10.17 ms  CI95 [8.94, 11.41]  p95   16.74  p99   19.96  overhead   +0.0%
+  layer1_only  mean    8.83 ms  CI95 [7.69, 9.97]  p95   13.62  p99   18.69  overhead  -13.2%
+  layer2_only  mean    8.32 ms  CI95 [7.22, 9.41]  p95   13.52  p99   16.06  overhead  -18.2%
+  both_layers  mean    9.30 ms  CI95 [7.66, 10.94]  p95   14.89  p99   17.63  overhead   -8.6%
+
+Wrote C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\results\latency\latency_pooled.json
+--- exit 0
+=== latency_no_pool 19:50:12
+
+own_lookup
+  insecure     mean   13.47 ms  CI95 [12.10, 14.84]  p95   22.09  p99   27.44  overhead   +0.0%
+  layer1_only  mean   26.30 ms  CI95 [24.78, 27.82]  p95   42.86  p99   48.41  overhead  +95.2%
+  layer2_only  mean   22.82 ms  CI95 [22.26, 23.38]  p95   37.40  p99   44.24  overhead  +69.4%
+  both_layers  mean   31.09 ms  CI95 [26.58, 35.60]  p95   52.67  p99   59.89  overhead +130.8%
+
+own_relationship
+  insecure     mean   16.35 ms  CI95 [15.44, 17.26]  p95   26.51  p99   30.51  overhead   +0.0%
+  layer1_only  mean   34.62 ms  CI95 [29.69, 39.55]  p95   57.76  p99   64.71  overhead +111.7%
+  layer2_only  mean   48.32 ms  CI95 [45.49, 51.16]  p95   76.26  p99   92.01  overhead +195.6%
+  both_layers  mean   60.06 ms  CI95 [58.84, 61.28]  p95   88.49  p99  116.33  overhead +267.3%
+
+own_update
+  insecure     mean   12.36 ms  CI95 [9.51, 15.21]  p95   20.02  p99   23.53  overhead   +0.0%
+  layer1_only  mean   22.31 ms  CI95 [19.26, 25.36]  p95   36.52  p99   43.67  overhead  +80.5%
+  layer2_only  mean   33.77 ms  CI95 [30.83, 36.72]  p95   54.53  p99   62.04  overhead +173.3%
+  both_layers  mean   35.24 ms  CI95 [33.24, 37.24]  p95   56.95  p99   64.89  overhead +185.1%
+
+Wrote C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\results\latency\latency_no_pool.json
+--- exit 0
+=== scaling 19:56:24
+1 {'unprotected': 7.602, 'batched': 8.732, 'one_by_one': 8.03}
+10 {'unprotected': 7.871, 'batched': 8.838, 'one_by_one': 10.328}
+50 {'unprotected': 8.183, 'batched': 13.552, 'one_by_one': 18.315}
+200 {'unprotected': 11.945, 'batched': 25.446, 'one_by_one': 41.617}
+--- exit 0
+=== timing 19:57:03
+read_layer1          foreign 4.271 ms  missing 4.251 ms  gap +0.021 ms [-0.0236, 0.0597]  p=0.98
+update_layer1        foreign 4.093 ms  missing 4.083 ms  gap +0.011 ms [-0.0489, 0.0652]  p=0.865
+read_layer2_only     foreign 7.345 ms  missing 7.350 ms  gap -0.005 ms [-0.1335, 0.1216]  p=0.682
+update_layer2_only   foreign 7.497 ms  missing 7.484 ms  gap +0.013 ms [-0.1714, 0.2226]  p=0.704
+--- exit 0
+=== ALL DONE 19:58:35

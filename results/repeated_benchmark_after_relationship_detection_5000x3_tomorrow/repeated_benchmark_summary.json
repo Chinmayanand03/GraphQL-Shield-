@@ -1,0 +1,2668 @@
+{
+  "experiment": "GraphQL Shield multi-seed benchmark",
+  "dataset_count_per_run": 5000,
+  "repeats": 3,
+  "seeds": [
+    20261011,
+    20261012,
+    20261013
+  ],
+  "total_cases": 15000,
+  "confidence_interval": "Approximate 95% Student-t interval across independent run-level measurements. It is not a per-request interval.",
+  "metrics": {
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_candidate.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_candidate.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_candidate.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_candidate.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_candidate.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_candidate.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_candidate.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_candidate.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_candidate.sample_count": {
+      "n": 3,
+      "mean": 2502.0,
+      "std_dev": 37.749172176353746,
+      "ci95_lower": 2408.2182892297224,
+      "ci95_upper": 2595.7817107702776,
+      "min": 2462.0,
+      "max": 2537.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_candidate.specificity": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_candidate.tn": {
+      "n": 3,
+      "mean": 1499.3333333333333,
+      "std_dev": 10.016652800877813,
+      "ci95_lower": 1474.4485800606074,
+      "ci95_upper": 1524.2180866060592,
+      "min": 1488.0,
+      "max": 1507.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.authorization_aware_candidate.tp": {
+      "n": 3,
+      "mean": 1002.6666666666666,
+      "std_dev": 41.956326499508194,
+      "ci95_lower": 898.4329616630653,
+      "ci95_upper": 1106.900371670268,
+      "min": 955.0,
+      "max": 1034.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.accuracy": {
+      "n": 3,
+      "mean": 0.400642,
+      "std_dev": 0.011052203219268076,
+      "ci95_lower": 0.3731845892562223,
+      "ci95_upper": 0.4280994107437777,
+      "min": 0.387896,
+      "max": 0.407568
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.f1": {
+      "n": 3,
+      "mean": 0.5720236666666666,
+      "std_dev": 0.011318594538781455,
+      "ci95_lower": 0.5439044497894563,
+      "ci95_upper": 0.6001428835438769,
+      "min": 0.55897,
+      "max": 0.579109
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.fp": {
+      "n": 3,
+      "mean": 1499.3333333333333,
+      "std_dev": 10.016652800877813,
+      "ci95_lower": 1474.4485800606074,
+      "ci95_upper": 1524.2180866060592,
+      "min": 1488.0,
+      "max": 1507.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.precision": {
+      "n": 3,
+      "mean": 0.400642,
+      "std_dev": 0.011052203219268076,
+      "ci95_lower": 0.3731845892562223,
+      "ci95_upper": 0.4280994107437777,
+      "min": 0.387896,
+      "max": 0.407568
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.sample_count": {
+      "n": 3,
+      "mean": 2502.0,
+      "std_dev": 37.749172176353746,
+      "ci95_lower": 2408.2182892297224,
+      "ci95_upper": 2595.7817107702776,
+      "min": 2462.0,
+      "max": 2537.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.context_sensitive_taint_only.tp": {
+      "n": 3,
+      "mean": 1002.6666666666666,
+      "std_dev": 41.956326499508194,
+      "ci95_lower": 898.4329616630653,
+      "ci95_upper": 1106.900371670268,
+      "min": 955.0,
+      "max": 1034.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.accuracy": {
+      "n": 3,
+      "mean": 0.400642,
+      "std_dev": 0.011052203219268076,
+      "ci95_lower": 0.3731845892562223,
+      "ci95_upper": 0.4280994107437777,
+      "min": 0.387896,
+      "max": 0.407568
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.f1": {
+      "n": 3,
+      "mean": 0.5720236666666666,
+      "std_dev": 0.011318594538781455,
+      "ci95_lower": 0.5439044497894563,
+      "ci95_upper": 0.6001428835438769,
+      "min": 0.55897,
+      "max": 0.579109
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.fp": {
+      "n": 3,
+      "mean": 1499.3333333333333,
+      "std_dev": 10.016652800877813,
+      "ci95_lower": 1474.4485800606074,
+      "ci95_upper": 1524.2180866060592,
+      "min": 1488.0,
+      "max": 1507.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.precision": {
+      "n": 3,
+      "mean": 0.400642,
+      "std_dev": 0.011052203219268076,
+      "ci95_lower": 0.3731845892562223,
+      "ci95_upper": 0.4280994107437777,
+      "min": 0.387896,
+      "max": 0.407568
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.sample_count": {
+      "n": 3,
+      "mean": 2502.0,
+      "std_dev": 37.749172176353746,
+      "ci95_lower": 2408.2182892297224,
+      "ci95_upper": 2595.7817107702776,
+      "min": 2462.0,
+      "max": 2537.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_access.taint_source_only.tp": {
+      "n": 3,
+      "mean": 1002.6666666666666,
+      "std_dev": 41.956326499508194,
+      "ci95_lower": 898.4329616630653,
+      "ci95_upper": 1106.900371670268,
+      "min": 955.0,
+      "max": 1034.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_candidate.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_candidate.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_candidate.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_candidate.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_candidate.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_candidate.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_candidate.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_candidate.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_candidate.sample_count": {
+      "n": 3,
+      "mean": 1002.6666666666666,
+      "std_dev": 41.956326499508194,
+      "ci95_lower": 898.4329616630653,
+      "ci95_upper": 1106.900371670268,
+      "min": 955.0,
+      "max": 1034.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_candidate.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_candidate.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.authorization_aware_candidate.tp": {
+      "n": 3,
+      "mean": 1002.6666666666666,
+      "std_dev": 41.956326499508194,
+      "ci95_lower": 898.4329616630653,
+      "ci95_upper": 1106.900371670268,
+      "min": 955.0,
+      "max": 1034.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.sample_count": {
+      "n": 3,
+      "mean": 1002.6666666666666,
+      "std_dev": 41.956326499508194,
+      "ci95_lower": 898.4329616630653,
+      "ci95_upper": 1106.900371670268,
+      "min": 955.0,
+      "max": 1034.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.context_sensitive_taint_only.tp": {
+      "n": 3,
+      "mean": 1002.6666666666666,
+      "std_dev": 41.956326499508194,
+      "ci95_lower": 898.4329616630653,
+      "ci95_upper": 1106.900371670268,
+      "min": 955.0,
+      "max": 1034.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.sample_count": {
+      "n": 3,
+      "mean": 1002.6666666666666,
+      "std_dev": 41.956326499508194,
+      "ci95_lower": 898.4329616630653,
+      "ci95_upper": 1106.900371670268,
+      "min": 955.0,
+      "max": 1034.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.direct_bola_only.taint_source_only.tp": {
+      "n": 3,
+      "mean": 1002.6666666666666,
+      "std_dev": 41.956326499508194,
+      "ci95_lower": 898.4329616630653,
+      "ci95_upper": 1106.900371670268,
+      "min": 955.0,
+      "max": 1034.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.authorization_aware_candidate.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.authorization_aware_candidate.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.authorization_aware_candidate.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.authorization_aware_candidate.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.authorization_aware_candidate.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.authorization_aware_candidate.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.authorization_aware_candidate.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.authorization_aware_candidate.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.authorization_aware_candidate.sample_count": {
+      "n": 3,
+      "mean": 1012.6666666666666,
+      "std_dev": 22.368132093076824,
+      "ci95_lower": 957.0966614590209,
+      "ci95_upper": 1068.2366718743124,
+      "min": 987.0,
+      "max": 1028.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.authorization_aware_candidate.specificity": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.authorization_aware_candidate.tn": {
+      "n": 3,
+      "mean": 514.3333333333334,
+      "std_dev": 21.07921567168317,
+      "ci95_lower": 461.96543243869075,
+      "ci95_upper": 566.701234227976,
+      "min": 491.0,
+      "max": 532.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.authorization_aware_candidate.tp": {
+      "n": 3,
+      "mean": 498.3333333333333,
+      "std_dev": 35.5715241918776,
+      "ci95_lower": 409.9616366551673,
+      "ci95_upper": 586.7050300114993,
+      "min": 467.0,
+      "max": 537.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.context_sensitive_taint_only.accuracy": {
+      "n": 3,
+      "mean": 0.4918286666666667,
+      "std_dev": 0.02667127792838831,
+      "ci95_lower": 0.4255681918443708,
+      "ci95_upper": 0.5580891414889626,
+      "min": 0.473151,
+      "max": 0.522374
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.context_sensitive_taint_only.f1": {
+      "n": 3,
+      "mean": 0.6590803333333334,
+      "std_dev": 0.02374633665080436,
+      "ci95_lower": 0.6000864018840403,
+      "ci95_upper": 0.7180742647826265,
+      "min": 0.642366,
+      "max": 0.686262
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.context_sensitive_taint_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.context_sensitive_taint_only.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.context_sensitive_taint_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.context_sensitive_taint_only.fp": {
+      "n": 3,
+      "mean": 514.3333333333334,
+      "std_dev": 21.07921567168317,
+      "ci95_lower": 461.96543243869075,
+      "ci95_upper": 566.701234227976,
+      "min": 491.0,
+      "max": 532.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.context_sensitive_taint_only.precision": {
+      "n": 3,
+      "mean": 0.4918286666666667,
+      "std_dev": 0.02667127792838831,
+      "ci95_lower": 0.4255681918443708,
+      "ci95_upper": 0.5580891414889626,
+      "min": 0.473151,
+      "max": 0.522374
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.context_sensitive_taint_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.context_sensitive_taint_only.sample_count": {
+      "n": 3,
+      "mean": 1012.6666666666666,
+      "std_dev": 22.368132093076824,
+      "ci95_lower": 957.0966614590209,
+      "ci95_upper": 1068.2366718743124,
+      "min": 987.0,
+      "max": 1028.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.context_sensitive_taint_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.context_sensitive_taint_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.context_sensitive_taint_only.tp": {
+      "n": 3,
+      "mean": 498.3333333333333,
+      "std_dev": 35.5715241918776,
+      "ci95_lower": 409.9616366551673,
+      "ci95_upper": 586.7050300114993,
+      "min": 467.0,
+      "max": 537.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.taint_source_only.accuracy": {
+      "n": 3,
+      "mean": 0.4918286666666667,
+      "std_dev": 0.02667127792838831,
+      "ci95_lower": 0.4255681918443708,
+      "ci95_upper": 0.5580891414889626,
+      "min": 0.473151,
+      "max": 0.522374
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.taint_source_only.f1": {
+      "n": 3,
+      "mean": 0.6590803333333334,
+      "std_dev": 0.02374633665080436,
+      "ci95_lower": 0.6000864018840403,
+      "ci95_upper": 0.7180742647826265,
+      "min": 0.642366,
+      "max": 0.686262
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.taint_source_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.taint_source_only.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.taint_source_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.taint_source_only.fp": {
+      "n": 3,
+      "mean": 514.3333333333334,
+      "std_dev": 21.07921567168317,
+      "ci95_lower": 461.96543243869075,
+      "ci95_upper": 566.701234227976,
+      "min": 491.0,
+      "max": 532.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.taint_source_only.precision": {
+      "n": 3,
+      "mean": 0.4918286666666667,
+      "std_dev": 0.02667127792838831,
+      "ci95_lower": 0.4255681918443708,
+      "ci95_upper": 0.5580891414889626,
+      "min": 0.473151,
+      "max": 0.522374
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.taint_source_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.taint_source_only.sample_count": {
+      "n": 3,
+      "mean": 1012.6666666666666,
+      "std_dev": 22.368132093076824,
+      "ci95_lower": 957.0966614590209,
+      "ci95_upper": 1068.2366718743124,
+      "min": 987.0,
+      "max": 1028.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.taint_source_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.taint_source_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_access.taint_source_only.tp": {
+      "n": 3,
+      "mean": 498.3333333333333,
+      "std_dev": 35.5715241918776,
+      "ci95_lower": 409.9616366551673,
+      "ci95_upper": 586.7050300114993,
+      "min": 467.0,
+      "max": 537.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.authorization_aware_candidate.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.authorization_aware_candidate.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.authorization_aware_candidate.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.authorization_aware_candidate.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.authorization_aware_candidate.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.authorization_aware_candidate.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.authorization_aware_candidate.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.authorization_aware_candidate.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.authorization_aware_candidate.sample_count": {
+      "n": 3,
+      "mean": 498.3333333333333,
+      "std_dev": 35.5715241918776,
+      "ci95_lower": 409.9616366551673,
+      "ci95_upper": 586.7050300114993,
+      "min": 467.0,
+      "max": 537.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.authorization_aware_candidate.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.authorization_aware_candidate.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.authorization_aware_candidate.tp": {
+      "n": 3,
+      "mean": 498.3333333333333,
+      "std_dev": 35.5715241918776,
+      "ci95_lower": 409.9616366551673,
+      "ci95_upper": 586.7050300114993,
+      "min": 467.0,
+      "max": 537.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.context_sensitive_taint_only.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.context_sensitive_taint_only.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.context_sensitive_taint_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.context_sensitive_taint_only.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.context_sensitive_taint_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.context_sensitive_taint_only.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.context_sensitive_taint_only.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.context_sensitive_taint_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.context_sensitive_taint_only.sample_count": {
+      "n": 3,
+      "mean": 498.3333333333333,
+      "std_dev": 35.5715241918776,
+      "ci95_lower": 409.9616366551673,
+      "ci95_upper": 586.7050300114993,
+      "min": 467.0,
+      "max": 537.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.context_sensitive_taint_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.context_sensitive_taint_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.context_sensitive_taint_only.tp": {
+      "n": 3,
+      "mean": 498.3333333333333,
+      "std_dev": 35.5715241918776,
+      "ci95_lower": 409.9616366551673,
+      "ci95_upper": 586.7050300114993,
+      "min": 467.0,
+      "max": 537.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.taint_source_only.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.taint_source_only.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.taint_source_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.taint_source_only.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.taint_source_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.taint_source_only.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.taint_source_only.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.taint_source_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.taint_source_only.sample_count": {
+      "n": 3,
+      "mean": 498.3333333333333,
+      "std_dev": 35.5715241918776,
+      "ci95_lower": 409.9616366551673,
+      "ci95_upper": 586.7050300114993,
+      "min": 467.0,
+      "max": 537.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.taint_source_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.taint_source_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.implicit_relationship_bola_only.taint_source_only.tp": {
+      "n": 3,
+      "mean": 498.3333333333333,
+      "std_dev": 35.5715241918776,
+      "ci95_lower": 409.9616366551673,
+      "ci95_upper": 586.7050300114993,
+      "min": 467.0,
+      "max": 537.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_candidate.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_candidate.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_candidate.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_candidate.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_candidate.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_candidate.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_candidate.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_candidate.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_candidate.sample_count": {
+      "n": 3,
+      "mean": 1485.3333333333333,
+      "std_dev": 26.27419519858474,
+      "ci95_lower": 1420.0593463085536,
+      "ci95_upper": 1550.607320358113,
+      "min": 1465.0,
+      "max": 1515.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_candidate.specificity": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_candidate.tn": {
+      "n": 3,
+      "mean": 745.6666666666666,
+      "std_dev": 12.503332889007368,
+      "ci95_lower": 714.6041590391245,
+      "ci95_upper": 776.7291742942087,
+      "min": 737.0,
+      "max": 760.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.authorization_aware_candidate.tp": {
+      "n": 3,
+      "mean": 739.6666666666666,
+      "std_dev": 13.868429375143148,
+      "ci95_lower": 705.21279768057,
+      "ci95_upper": 774.1205356527632,
+      "min": 728.0,
+      "max": 755.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.accuracy": {
+      "n": 3,
+      "mean": 0.49797433333333335,
+      "std_dev": 0.0009180775203289547,
+      "ci95_lower": 0.49569351827137775,
+      "ci95_upper": 0.500255148395289,
+      "min": 0.496928,
+      "max": 0.498645
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.f1": {
+      "n": 3,
+      "mean": 0.6648633333333334,
+      "std_dev": 0.0008180625485458032,
+      "ci95_lower": 0.662830989287183,
+      "ci95_upper": 0.6668956773794837,
+      "min": 0.663931,
+      "max": 0.665461
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.fp": {
+      "n": 3,
+      "mean": 745.6666666666666,
+      "std_dev": 12.503332889007368,
+      "ci95_lower": 714.6041590391245,
+      "ci95_upper": 776.7291742942087,
+      "min": 737.0,
+      "max": 760.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.precision": {
+      "n": 3,
+      "mean": 0.49797433333333335,
+      "std_dev": 0.0009180775203289547,
+      "ci95_lower": 0.49569351827137775,
+      "ci95_upper": 0.500255148395289,
+      "min": 0.496928,
+      "max": 0.498645
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.sample_count": {
+      "n": 3,
+      "mean": 1485.3333333333333,
+      "std_dev": 26.27419519858474,
+      "ci95_lower": 1420.0593463085536,
+      "ci95_upper": 1550.607320358113,
+      "min": 1465.0,
+      "max": 1515.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.context_sensitive_taint_only.tp": {
+      "n": 3,
+      "mean": 739.6666666666666,
+      "std_dev": 13.868429375143148,
+      "ci95_lower": 705.21279768057,
+      "ci95_upper": 774.1205356527632,
+      "min": 728.0,
+      "max": 755.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.accuracy": {
+      "n": 3,
+      "mean": 0.49797433333333335,
+      "std_dev": 0.0009180775203289547,
+      "ci95_lower": 0.49569351827137775,
+      "ci95_upper": 0.500255148395289,
+      "min": 0.496928,
+      "max": 0.498645
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.f1": {
+      "n": 3,
+      "mean": 0.6648633333333334,
+      "std_dev": 0.0008180625485458032,
+      "ci95_lower": 0.662830989287183,
+      "ci95_upper": 0.6668956773794837,
+      "min": 0.663931,
+      "max": 0.665461
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.fp": {
+      "n": 3,
+      "mean": 745.6666666666666,
+      "std_dev": 12.503332889007368,
+      "ci95_lower": 714.6041590391245,
+      "ci95_upper": 776.7291742942087,
+      "min": 737.0,
+      "max": 760.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.precision": {
+      "n": 3,
+      "mean": 0.49797433333333335,
+      "std_dev": 0.0009180775203289547,
+      "ci95_lower": 0.49569351827137775,
+      "ci95_upper": 0.500255148395289,
+      "min": 0.496928,
+      "max": 0.498645
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.sample_count": {
+      "n": 3,
+      "mean": 1485.3333333333333,
+      "std_dev": 26.27419519858474,
+      "ci95_lower": 1420.0593463085536,
+      "ci95_upper": 1550.607320358113,
+      "min": 1465.0,
+      "max": 1515.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_access.taint_source_only.tp": {
+      "n": 3,
+      "mean": 739.6666666666666,
+      "std_dev": 13.868429375143148,
+      "ci95_lower": 705.21279768057,
+      "ci95_upper": 774.1205356527632,
+      "min": 728.0,
+      "max": 755.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_candidate.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_candidate.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_candidate.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_candidate.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_candidate.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_candidate.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_candidate.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_candidate.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_candidate.sample_count": {
+      "n": 3,
+      "mean": 739.6666666666666,
+      "std_dev": 13.868429375143148,
+      "ci95_lower": 705.21279768057,
+      "ci95_upper": 774.1205356527632,
+      "min": 728.0,
+      "max": 755.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_candidate.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_candidate.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.authorization_aware_candidate.tp": {
+      "n": 3,
+      "mean": 739.6666666666666,
+      "std_dev": 13.868429375143148,
+      "ci95_lower": 705.21279768057,
+      "ci95_upper": 774.1205356527632,
+      "min": 728.0,
+      "max": 755.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.sample_count": {
+      "n": 3,
+      "mean": 739.6666666666666,
+      "std_dev": 13.868429375143148,
+      "ci95_lower": 705.21279768057,
+      "ci95_upper": 774.1205356527632,
+      "min": 728.0,
+      "max": 755.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.context_sensitive_taint_only.tp": {
+      "n": 3,
+      "mean": 739.6666666666666,
+      "std_dev": 13.868429375143148,
+      "ci95_lower": 705.21279768057,
+      "ci95_upper": 774.1205356527632,
+      "min": 728.0,
+      "max": 755.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.sample_count": {
+      "n": 3,
+      "mean": 739.6666666666666,
+      "std_dev": 13.868429375143148,
+      "ci95_lower": 705.21279768057,
+      "ci95_upper": 774.1205356527632,
+      "min": 728.0,
+      "max": 755.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.by_scenario_group.nested_bola_only.taint_source_only.tp": {
+      "n": 3,
+      "mean": 739.6666666666666,
+      "std_dev": 13.868429375143148,
+      "ci95_lower": 705.21279768057,
+      "ci95_upper": 774.1205356527632,
+      "min": 728.0,
+      "max": 755.0
+    },
+    "detection_metrics.overall.authorization_aware_candidate.accuracy": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.authorization_aware_candidate.f1": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.authorization_aware_candidate.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.authorization_aware_candidate.false_positive_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.authorization_aware_candidate.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.authorization_aware_candidate.fp": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.authorization_aware_candidate.precision": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.authorization_aware_candidate.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.authorization_aware_candidate.sample_count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "detection_metrics.overall.authorization_aware_candidate.specificity": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.authorization_aware_candidate.tn": {
+      "n": 3,
+      "mean": 2759.3333333333335,
+      "std_dev": 41.621308645131926,
+      "ci95_lower": 2655.9319259858294,
+      "ci95_upper": 2862.7347406808376,
+      "min": 2716.0,
+      "max": 2799.0
+    },
+    "detection_metrics.overall.authorization_aware_candidate.tp": {
+      "n": 3,
+      "mean": 2240.6666666666665,
+      "std_dev": 41.621308645131926,
+      "ci95_lower": 2137.2652593191624,
+      "ci95_upper": 2344.0680740141706,
+      "min": 2201.0,
+      "max": 2284.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.accuracy": {
+      "n": 3,
+      "mean": 0.44813333333333333,
+      "std_dev": 0.008324261729026384,
+      "ci95_lower": 0.42745305186383253,
+      "ci95_upper": 0.4688136148028341,
+      "min": 0.4402,
+      "max": 0.4568
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.f1": {
+      "n": 3,
+      "mean": 0.6188813333333333,
+      "std_dev": 0.007933205489166017,
+      "ci95_lower": 0.5991725678221207,
+      "ci95_upper": 0.6385900988445459,
+      "min": 0.611304,
+      "max": 0.627128
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.fp": {
+      "n": 3,
+      "mean": 2759.3333333333335,
+      "std_dev": 41.621308645131926,
+      "ci95_lower": 2655.9319259858294,
+      "ci95_upper": 2862.7347406808376,
+      "min": 2716.0,
+      "max": 2799.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.precision": {
+      "n": 3,
+      "mean": 0.44813333333333333,
+      "std_dev": 0.008324261729026384,
+      "ci95_lower": 0.42745305186383253,
+      "ci95_upper": 0.4688136148028341,
+      "min": 0.4402,
+      "max": 0.4568
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.sample_count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.context_sensitive_taint_only.tp": {
+      "n": 3,
+      "mean": 2240.6666666666665,
+      "std_dev": 41.621308645131926,
+      "ci95_lower": 2137.2652593191624,
+      "ci95_upper": 2344.0680740141706,
+      "min": 2201.0,
+      "max": 2284.0
+    },
+    "detection_metrics.overall.taint_source_only.accuracy": {
+      "n": 3,
+      "mean": 0.44813333333333333,
+      "std_dev": 0.008324261729026384,
+      "ci95_lower": 0.42745305186383253,
+      "ci95_upper": 0.4688136148028341,
+      "min": 0.4402,
+      "max": 0.4568
+    },
+    "detection_metrics.overall.taint_source_only.f1": {
+      "n": 3,
+      "mean": 0.6188813333333333,
+      "std_dev": 0.007933205489166017,
+      "ci95_lower": 0.5991725678221207,
+      "ci95_upper": 0.6385900988445459,
+      "min": 0.611304,
+      "max": 0.627128
+    },
+    "detection_metrics.overall.taint_source_only.false_negative_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.taint_source_only.false_positive_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.taint_source_only.fn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.taint_source_only.fp": {
+      "n": 3,
+      "mean": 2759.3333333333335,
+      "std_dev": 41.621308645131926,
+      "ci95_lower": 2655.9319259858294,
+      "ci95_upper": 2862.7347406808376,
+      "min": 2716.0,
+      "max": 2799.0
+    },
+    "detection_metrics.overall.taint_source_only.precision": {
+      "n": 3,
+      "mean": 0.44813333333333333,
+      "std_dev": 0.008324261729026384,
+      "ci95_lower": 0.42745305186383253,
+      "ci95_upper": 0.4688136148028341,
+      "min": 0.4402,
+      "max": 0.4568
+    },
+    "detection_metrics.overall.taint_source_only.recall": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "detection_metrics.overall.taint_source_only.sample_count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "detection_metrics.overall.taint_source_only.specificity": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.taint_source_only.tn": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "detection_metrics.overall.taint_source_only.tp": {
+      "n": 3,
+      "mean": 2240.6666666666665,
+      "std_dev": 41.621308645131926,
+      "ci95_lower": 2137.2652593191624,
+      "ci95_upper": 2344.0680740141706,
+      "min": 2201.0,
+      "max": 2284.0
+    },
+    "endpoint_summary.analysis_pipeline.latency.count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "endpoint_summary.analysis_pipeline.latency.max_ms": {
+      "n": 3,
+      "mean": 63.800133333333335,
+      "std_dev": 61.699333079485825,
+      "ci95_lower": -89.48187726407802,
+      "ci95_upper": 217.08214393074468,
+      "min": 20.9496,
+      "max": 134.5172
+    },
+    "endpoint_summary.analysis_pipeline.latency.mean_ms": {
+      "n": 3,
+      "mean": 7.015666666666666,
+      "std_dev": 3.2115124666320907,
+      "ci95_lower": -0.9628164606929515,
+      "ci95_upper": 14.994149794026285,
+      "min": 5.1583,
+      "max": 10.724
+    },
+    "endpoint_summary.analysis_pipeline.latency.median_ms": {
+      "n": 3,
+      "mean": 6.4901,
+      "std_dev": 2.956784752057545,
+      "ci95_lower": -0.8555533333232885,
+      "ci95_upper": 13.83575333332329,
+      "min": 4.7808,
+      "max": 9.9043
+    },
+    "endpoint_summary.analysis_pipeline.latency.min_ms": {
+      "n": 3,
+      "mean": 2.6548333333333334,
+      "std_dev": 0.01992117801068338,
+      "ci95_lower": 2.6053423896465895,
+      "ci95_upper": 2.7043242770200773,
+      "min": 2.6363,
+      "max": 2.6759
+    },
+    "endpoint_summary.analysis_pipeline.latency.p95_ms": {
+      "n": 3,
+      "mean": 12.073633333333333,
+      "std_dev": 7.16321434995026,
+      "ci95_lower": -5.7222137706554115,
+      "ci95_upper": 29.86948043732208,
+      "min": 7.9348,
+      "max": 20.345
+    },
+    "endpoint_summary.analysis_pipeline.latency.p99_ms": {
+      "n": 3,
+      "mean": 17.32893333333333,
+      "std_dev": 11.549987740397535,
+      "ci95_lower": -11.36514251579803,
+      "ci95_upper": 46.02300918246469,
+      "min": 10.5819,
+      "max": 30.6654
+    },
+    "endpoint_summary.baseline_graphql_insecure.bola_exposure_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "endpoint_summary.baseline_graphql_insecure.confirmed_bola_exposures": {
+      "n": 3,
+      "mean": 2240.6666666666665,
+      "std_dev": 41.621308645131926,
+      "ci95_lower": 2137.2652593191624,
+      "ci95_upper": 2344.0680740141706,
+      "min": 2201.0,
+      "max": 2284.0
+    },
+    "endpoint_summary.baseline_graphql_insecure.latency.count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "endpoint_summary.baseline_graphql_insecure.latency.max_ms": {
+      "n": 3,
+      "mean": 109.76643333333334,
+      "std_dev": 77.2584776192447,
+      "ci95_lower": -82.16975453302052,
+      "ci95_upper": 301.7026211996872,
+      "min": 62.2866,
+      "max": 198.9137
+    },
+    "endpoint_summary.baseline_graphql_insecure.latency.mean_ms": {
+      "n": 3,
+      "mean": 17.309233333333335,
+      "std_dev": 6.486478659745466,
+      "ci95_lower": 1.1946265614561682,
+      "ci95_upper": 33.4238401052105,
+      "min": 13.4776,
+      "max": 24.7985
+    },
+    "endpoint_summary.baseline_graphql_insecure.latency.median_ms": {
+      "n": 3,
+      "mean": 17.0129,
+      "std_dev": 6.397899704590561,
+      "ci95_lower": 1.1183533108674926,
+      "ci95_upper": 32.907446689132506,
+      "min": 13.2407,
+      "max": 24.4
+    },
+    "endpoint_summary.baseline_graphql_insecure.latency.min_ms": {
+      "n": 3,
+      "mean": 9.4795,
+      "std_dev": 0.7777285966196693,
+      "ci95_lower": 7.54735913171236,
+      "ci95_upper": 11.41164086828764,
+      "min": 8.5848,
+      "max": 9.9939
+    },
+    "endpoint_summary.baseline_graphql_insecure.latency.p95_ms": {
+      "n": 3,
+      "mean": 25.305033333333334,
+      "std_dev": 12.2326016571837,
+      "ci95_lower": -5.08488635080289,
+      "ci95_upper": 55.69495301746956,
+      "min": 18.0578,
+      "max": 39.4284
+    },
+    "endpoint_summary.baseline_graphql_insecure.latency.p99_ms": {
+      "n": 3,
+      "mean": 35.622299999999996,
+      "std_dev": 19.443138957483175,
+      "ci95_lower": -12.681033001808096,
+      "ci95_upper": 83.92563300180808,
+      "min": 24.2805,
+      "max": 58.0729
+    },
+    "endpoint_summary.protected_graphql.authorization_latency_overhead_ms": {
+      "n": 3,
+      "mean": 7.288366666666667,
+      "std_dev": 3.5431772187308574,
+      "ci95_lower": -1.5140838766858788,
+      "ci95_upper": 16.09081721001921,
+      "min": 5.21,
+      "max": 11.3795
+    },
+    "endpoint_summary.protected_graphql.authorization_latency_overhead_percent": {
+      "n": 3,
+      "mean": 41.063066666666664,
+      "std_dev": 4.178432615626743,
+      "ci95_lower": 30.6824268687623,
+      "ci95_upper": 51.44370646457103,
+      "min": 38.6446,
+      "max": 45.8879
+    },
+    "endpoint_summary.protected_graphql.bola_block_rate": {
+      "n": 3,
+      "mean": 0.7776813333333333,
+      "std_dev": 0.013192486396935713,
+      "ci95_lower": 0.744906735314645,
+      "ci95_upper": 0.8104559313520217,
+      "min": 0.764886,
+      "max": 0.791238
+    },
+    "endpoint_summary.protected_graphql.bola_requests_blocked": {
+      "n": 3,
+      "mean": 1742.3333333333333,
+      "std_dev": 30.2709982216202,
+      "ci95_lower": 1667.1299358472859,
+      "ci95_upper": 1817.5367308193806,
+      "min": 1710.0,
+      "max": 1770.0
+    },
+    "endpoint_summary.protected_graphql.bola_target_nonexposure_count": {
+      "n": 3,
+      "mean": 2240.6666666666665,
+      "std_dev": 41.621308645131926,
+      "ci95_lower": 2137.2652593191624,
+      "ci95_upper": 2344.0680740141706,
+      "min": 2201.0,
+      "max": 2284.0
+    },
+    "endpoint_summary.protected_graphql.bola_target_nonexposure_rate": {
+      "n": 3,
+      "mean": 1.0,
+      "std_dev": 0.0,
+      "ci95_lower": 1.0,
+      "ci95_upper": 1.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "endpoint_summary.protected_graphql.latency.count": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "endpoint_summary.protected_graphql.latency.max_ms": {
+      "n": 3,
+      "mean": 119.77556666666666,
+      "std_dev": 87.29320757391915,
+      "ci95_lower": -97.09028423628783,
+      "ci95_upper": 336.6414175696211,
+      "min": 63.2574,
+      "max": 220.3145
+    },
+    "endpoint_summary.protected_graphql.latency.mean_ms": {
+      "n": 3,
+      "mean": 24.5976,
+      "std_dev": 10.02963609309929,
+      "ci95_lower": -0.31940816166158115,
+      "ci95_upper": 49.514608161661585,
+      "min": 18.6876,
+      "max": 36.178
+    },
+    "endpoint_summary.protected_graphql.latency.median_ms": {
+      "n": 3,
+      "mean": 24.285866666666667,
+      "std_dev": 9.542670840143934,
+      "ci95_lower": 0.5786448890477303,
+      "ci95_upper": 47.993088444285604,
+      "min": 18.7199,
+      "max": 35.3046
+    },
+    "endpoint_summary.protected_graphql.latency.min_ms": {
+      "n": 3,
+      "mean": 7.3998,
+      "std_dev": 0.05317179703564674,
+      "ci95_lower": 7.2677032730191495,
+      "ci95_upper": 7.53189672698085,
+      "min": 7.362,
+      "max": 7.4606
+    },
+    "endpoint_summary.protected_graphql.latency.p95_ms": {
+      "n": 3,
+      "mean": 41.72743333333333,
+      "std_dev": 21.398183532564936,
+      "ci95_lower": -11.432891605324905,
+      "ci95_upper": 94.88775827199157,
+      "min": 29.2815,
+      "max": 66.4357
+    },
+    "endpoint_summary.protected_graphql.latency.p99_ms": {
+      "n": 3,
+      "mean": 55.94166666666667,
+      "std_dev": 31.647164466083428,
+      "ci95_lower": -22.68059320150507,
+      "ci95_upper": 134.5639265348384,
+      "min": 36.9435,
+      "max": 92.4749
+    },
+    "endpoint_summary.protected_graphql.legitimate_false_block_rate": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "endpoint_summary.protected_graphql.legitimate_requests_blocked": {
+      "n": 3,
+      "mean": 0.0,
+      "std_dev": 0.0,
+      "ci95_lower": 0.0,
+      "ci95_upper": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "performance.baseline_and_protected_http_calls": {
+      "n": 3,
+      "mean": 10000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 10000.0,
+      "ci95_upper": 10000.0,
+      "min": 10000.0,
+      "max": 10000.0
+    },
+    "performance.cases_per_second_end_to_end": {
+      "n": 3,
+      "mean": 16.98166666666667,
+      "std_dev": 5.788946046849404,
+      "ci95_lower": 2.599966816558542,
+      "ci95_upper": 31.363366516774796,
+      "min": 10.301,
+      "max": 20.518
+    },
+    "performance.dynamic_replay_http_calls": {
+      "n": 3,
+      "mean": 3484.6666666666665,
+      "std_dev": 60.5419964432404,
+      "ci95_lower": 3334.2598716945718,
+      "ci95_upper": 3635.0734616387613,
+      "min": 3420.0,
+      "max": 3540.0
+    },
+    "performance.elapsed_seconds_end_to_end": {
+      "n": 3,
+      "mean": 325.84593333333333,
+      "std_dev": 138.2086594842137,
+      "ci95_lower": -17.51112014439616,
+      "ci95_upper": 669.2029868110628,
+      "min": 243.6938,
+      "max": 485.4121
+    },
+    "performance.http_calls_per_second_end_to_end": {
+      "n": 3,
+      "mean": 46.230333333333334,
+      "std_dev": 15.648669602663777,
+      "ci95_lower": 7.353745530013647,
+      "ci95_upper": 85.10692113665303,
+      "min": 28.178,
+      "max": 55.939
+    },
+    "performance.process_cpu_seconds": {
+      "n": 3,
+      "mean": 301.2760666666667,
+      "std_dev": 115.03971687179751,
+      "ci95_lower": 15.47850256740469,
+      "ci95_upper": 587.0736307659287,
+      "min": 232.9375,
+      "max": 434.0938
+    },
+    "performance.request_cases": {
+      "n": 3,
+      "mean": 5000.0,
+      "std_dev": 0.0,
+      "ci95_lower": 5000.0,
+      "ci95_upper": 5000.0,
+      "min": 5000.0,
+      "max": 5000.0
+    },
+    "performance.research_hardening_replay_http_calls": {
+      "n": 3,
+      "mean": 138.0,
+      "std_dev": 0.0,
+      "ci95_lower": 138.0,
+      "ci95_upper": 138.0,
+      "min": 138.0,
+      "max": 138.0
+    },
+    "performance.total_http_calls": {
+      "n": 3,
+      "mean": 13622.666666666666,
+      "std_dev": 60.5419964432404,
+      "ci95_lower": 13472.25987169457,
+      "ci95_upper": 13773.073461638762,
+      "min": 13558.0,
+      "max": 13678.0
+    },
+    "performance.tracemalloc_peak_bytes": {
+      "n": 3,
+      "mean": 15538929.666666666,
+      "std_dev": 347328.11261447484,
+      "ci95_lower": 14676049.165673826,
+      "ci95_upper": 16401810.167659506,
+      "min": 15291778.0,
+      "max": 15936045.0
+    }
+  },
+  "runs": [
+    {
+      "seed": 20261011,
+      "output_dir": "results\\repeated_benchmark_after_relationship_detection_5000x3_tomorrow\\seed_20261011",
+      "actual_cases": 5000
+    },
+    {
+      "seed": 20261012,
+      "output_dir": "results\\repeated_benchmark_after_relationship_detection_5000x3_tomorrow\\seed_20261012",
+      "actual_cases": 5000
+    },
+    {
+      "seed": 20261013,
+      "output_dir": "results\\repeated_benchmark_after_relationship_detection_5000x3_tomorrow\\seed_20261013",
+      "actual_cases": 5000
+    }
+  ]
+}

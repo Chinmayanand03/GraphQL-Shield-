@@ -1,0 +1,21 @@
+{
+  "dataset_version": "1.2",
+  "count": 5000,
+  "bola_count": 2284,
+  "legitimate_count": 2716,
+  "scenario_counts": {
+    "admin_access": 500,
+    "direct_bola": 1019,
+    "direct_legitimate": 988,
+    "nested_bola": 728,
+    "nested_legitimate": 737,
+    "relationship_bola": 537,
+    "relationship_legitimate": 491
+  },
+  "sha256": "6a1cb5e83f416664f6f12a9c884c766ecf0c6ef26f78a8aab845018b56af3d50",
+  "path": "results\\repeated_benchmark_after_relationship_detection_5000x3\\seed_20261011\\benchmark_dataset.jsonl",
+  "seed": 20261011,
+  "loaded_from_existing_dataset": false,
+  "ground_truth_method": "app.benchmarks.ground_truth.label_case_with_oracle",
+  "labels_recomputed_from_ownership_and_path_metadata": true
+}

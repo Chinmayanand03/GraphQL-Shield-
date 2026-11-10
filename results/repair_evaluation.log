@@ -1,0 +1,3121 @@
+20261109 demo   none                                 impact   0  proposed 0  verified 0  first ok False  rounds 0  after 0  decoys rejected 0/0
+20261109 demo   wrong_id_argument_name               impact 186  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 544) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 511) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 535) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 558) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 533) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 557) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 532) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 541) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 502) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 550) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 559) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 534) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 503) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 541) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 503) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 528) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 545) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 521) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 519) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 558) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 551) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 557) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 559) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 515) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 558) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 557) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 530) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 503) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 524) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 519) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 557) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 548) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 521) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 505) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 522) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 514) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 555) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 522) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 519) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 530) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 514) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 540) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 529) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 501) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 543) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 524) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 513) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 544) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 530) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 533) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 559) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 553) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 554) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 525) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 529) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 538) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 542) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 520) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 521) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 558) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 552) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 531) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 543) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 508) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 513) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 534) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 534) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 555) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 505) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 534) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 526) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 544) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 515) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 518) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+20261109 demo   missing_delete_target                impact  74  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261109 demo   missing_resource_type                impact 172  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261109 demo   missing_user_type                    impact  33  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261109 clinic none                                 impact   0  proposed 0  verified 0  first ok False  rounds 0  after 0  decoys rejected 0/0
+20261109 clinic missing_id_argument                  impact 198  proposed 2  verified 2  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261109 clinic missing_create_record_target         impact 117  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 2/2
+20261109 clinic missing_delete_prescription_target   impact  56  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261109 clinic missing_patient_type                 impact  56  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261109 clinic missing_record_type                  impact 142  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261109 clinic missing_prescription_type            impact  24  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261110 demo   none                                 impact   0  proposed 0  verified 0  first ok False  rounds 0  after 0  decoys rejected 0/0
+20261110 demo   wrong_id_argument_name               impact 193  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 546) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 540) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 536) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 504) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 511) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 557) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 525) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 554) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 535) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 537) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 550) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 546) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 513) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 506) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 553) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 551) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 503) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 556) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 550) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 530) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 538) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 511) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 515) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 532) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 537) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 540) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 540) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 523) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 549) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 509) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 514) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 520) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 550) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 512) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 517) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 554) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 548) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 555) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 547) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 517) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 539) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 552) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 547) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 552) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 502) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 533) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 549) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 520) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 523) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 529) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 559) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 557) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 511) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 528) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 521) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 557) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 533) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 518) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 516) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 513) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 507) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 528) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+20261110 demo   missing_delete_target                impact  62  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261110 demo   missing_resource_type                impact 169  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261110 demo   missing_user_type                    impact  44  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261110 clinic none                                 impact   0  proposed 0  verified 0  first ok False  rounds 0  after 0  decoys rejected 0/0
+20261110 clinic missing_id_argument                  impact 202  proposed 2  verified 2  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261110 clinic missing_create_record_target         impact  94  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 2/2
+20261110 clinic missing_delete_prescription_target   impact  54  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261110 clinic missing_patient_type                 impact  75  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261110 clinic missing_record_type                  impact 121  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261110 clinic missing_prescription_type            impact  23  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261111 demo   none                                 impact   0  proposed 0  verified 0  first ok False  rounds 0  after 0  decoys rejected 0/0
+20261111 demo   wrong_id_argument_name               impact 183  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 511) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 514) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 533) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 513) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 517) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 513) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 555) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 548) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 517) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 524) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 558) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 500) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 501) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 516) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 501) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 555) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 537) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 514) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 555) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 504) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 539) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 534) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 550) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 544) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 521) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 531) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 548) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 549) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 538) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 548) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 515) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 536) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 557) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 557) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 506) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 507) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 559) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 503) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 549) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 511) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 503) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 512) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 549) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 509) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 510) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 514) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 532) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 518) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 507) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 504) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 535) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 503) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 535) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 501) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 508) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+GraphQL Shield: mutation has no registered ownership target.
+
+GraphQL request:1:12
+1 | mutation { deleteResource(id: 552) }
+  |            ^
+Traceback (most recent call last):
+  File "C:\Users\CHINMAYANAND\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\graphql\execution\executor.py", line 967, in execute_field
+    result = resolve_fn(source, info, **args)
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 187, in resolve
+    self._guard_mutation_arguments(info, kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\security\runtime_object_guard.py", line 660, in _guard_mutation_arguments
+    raise GraphQLError(
+    ...<6 lines>...
+    )
+graphql.error.graphql_error.GraphQLError: GraphQL Shield: mutation has no registered ownership target.
+20261111 demo   missing_delete_target                impact  56  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261111 demo   missing_resource_type                impact 172  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261111 demo   missing_user_type                    impact  32  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261111 clinic none                                 impact   0  proposed 0  verified 0  first ok False  rounds 0  after 0  decoys rejected 0/0
+20261111 clinic missing_id_argument                  impact 207  proposed 2  verified 2  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261111 clinic missing_create_record_target         impact 103  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 2/2
+20261111 clinic missing_delete_prescription_target   impact  57  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261111 clinic missing_patient_type                 impact  65  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261111 clinic missing_record_type                  impact 142  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+20261111 clinic missing_prescription_type            impact  29  proposed 1  verified 1  first ok True   rounds 1  after 0  decoys rejected 1/1
+{
+  "fault_runs": 30,
+  "faults_with_impact": 30,
+  "detected": 30,
+  "first_verified_repair_is_the_expected_one": 30,
+  "restored": 30,
+  "restored_in_one_round": 30,
+  "control_runs": 6,
+  "false_repairs_on_controls": 0,
+  "false_blocks_in_verified_repairs": 0,
+  "decoy_repairs": 33,
+  "decoy_repairs_rejected": 33
+}

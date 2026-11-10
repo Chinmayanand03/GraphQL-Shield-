@@ -1,0 +1,34 @@
+Rc files read (in order):
+  NONE
+Latexmk: Run number 1 of rule 'pdflatex'
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex.fmt)
+ restricted \write18 enabled.
+entering extended mode
+pdflatex: major issue: So far, you have not checked for MiKTeX updates.
+Latexmk: Getting log file 'main.log'
+Latexmk: Using bibtex to make bibliography file(s).
+  ===Source file 'main.bbl' for 'pdflatex'
+kpsewhich: major issue: So far, you have not checked for MiKTeX updates.
+kpsewhich: major issue: So far, you have not checked for MiKTeX updates.
+Latexmk: Run number 1 of rule 'bibtex main'
+This is BibTeX, Version 0.99e (MiKTeX 25.12)
+The top-level auxiliary file: main.aux
+The style file: IEEEtran.bst
+Database file #1: references.bib
+-- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+
+Done.
+Latexmk: Run number 2 of rule 'pdflatex'
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex.fmt)
+ restricted \write18 enabled.
+entering extended mode
+pdflatex: major issue: So far, you have not checked for MiKTeX updates.
+Latexmk: Getting log file 'main.log'
+Latexmk: Using bibtex to make bibliography file(s).
+  ===Source file 'main.bbl' for 'pdflatex'
+kpsewhich: major issue: So far, you have not checked for MiKTeX updates.
+kpsewhich: major issue: So far, you have not checked for MiKTeX updates.
+
+latexmk: major issue: So far, you have not checked for MiKTeX updates.

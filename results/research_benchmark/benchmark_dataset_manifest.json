@@ -1,0 +1,18 @@
+{
+  "dataset_version": "1.3",
+  "count": 1000,
+  "bola_count": 487,
+  "legitimate_count": 513,
+  "scenario_counts": {
+    "admin_access": 98,
+    "direct_bola": 204,
+    "direct_legitimate": 178,
+    "nested_bola": 166,
+    "nested_legitimate": 153,
+    "relationship_bola": 117,
+    "relationship_legitimate": 84
+  },
+  "sha256": "babe930a3d5285e451b54b36db327ff59cda21536a95235a457c76e2d479ede8",
+  "path": "results\\research_benchmark\\benchmark_dataset.jsonl",
+  "seed": 20261011
+}

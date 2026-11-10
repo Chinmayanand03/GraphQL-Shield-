@@ -1,0 +1,154 @@
+=== latency_pooled 00:34:43
+
+own_lookup
+  insecure     mean   12.54 ms  CI95 [10.44, 14.64]  p95   19.08  p99   35.06  overhead   +0.0%
+  layer1_only  mean   18.40 ms  CI95 [18.31, 18.48]  p95   22.86  p99   33.63  overhead  +46.7%
+  layer2_only  mean   15.41 ms  CI95 [15.27, 15.55]  p95   23.00  p99   47.26  overhead  +22.9%
+  both_layers  mean   19.64 ms  CI95 [19.02, 20.26]  p95   24.30  p99   39.99  overhead  +56.6%
+
+own_relationship
+  insecure     mean   14.87 ms  CI95 [13.69, 16.05]  p95   21.70  p99   37.59  overhead   +0.0%
+  layer1_only  mean   19.91 ms  CI95 [19.54, 20.27]  p95   24.48  p99   34.75  overhead  +33.9%
+  layer2_only  mean   20.58 ms  CI95 [18.97, 22.19]  p95   33.67  p99   63.02  overhead  +38.4%
+  both_layers  mean   54.13 ms  CI95 [50.15, 58.10]  p95   67.20  p99  108.91  overhead +263.9%
+
+own_update
+  insecure     mean   20.80 ms  CI95 [16.64, 24.95]  p95   39.73  p99   78.53  overhead   +0.0%
+  layer1_only  mean   31.20 ms  CI95 [24.96, 37.44]  p95   44.50  p99  108.44  overhead  +50.0%
+  layer2_only  mean   40.58 ms  CI95 [35.94, 45.21]  p95   64.42  p99  126.28  overhead  +95.1%
+  both_layers  mean   51.65 ms  CI95 [50.54, 52.76]  p95   61.45  p99   94.67  overhead +148.4%
+
+Wrote C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\results\latency\latency_pooled.json
+--- exit 0
+=== latency_no_pool 00:40:18
+=== latency_no_pool 13:58:10
+
+own_lookup
+  insecure     mean   20.58 ms  CI95 [19.71, 21.44]  p95   28.63  p99   63.17  overhead   +0.0%
+  layer1_only  mean   57.26 ms  CI95 [48.13, 66.39]  p95   81.23  p99  130.11  overhead +178.3%
+  layer2_only  mean   52.70 ms  CI95 [50.96, 54.43]  p95   78.78  p99  114.02  overhead +156.1%
+  both_layers  mean   63.56 ms  CI95 [62.66, 64.46]  p95   81.94  p99  110.54  overhead +208.9%
+
+own_relationship
+  insecure     mean   28.96 ms  CI95 [25.16, 32.76]  p95   42.91  p99   77.97  overhead   +0.0%
+  layer1_only  mean   75.63 ms  CI95 [70.25, 81.01]  p95  112.54  p99  199.27  overhead +161.2%
+  layer2_only  mean  127.85 ms  CI95 [123.81, 131.89]  p95  177.47  p99  253.81  overhead +341.5%
+  both_layers  mean  179.42 ms  CI95 [170.74, 188.10]  p95  228.01  p99  311.88  overhead +519.6%
+
+own_update
+  insecure     mean   20.01 ms  CI95 [15.80, 24.21]  p95   29.86  p99   41.31  overhead   +0.0%
+  layer1_only  mean   64.01 ms  CI95 [55.80, 72.22]  p95   90.62  p99  152.10  overhead +219.9%
+  layer2_only  mean  109.79 ms  CI95 [96.70, 122.89]  p95  163.15  p99  209.97  overhead +448.8%
+  both_layers  mean  109.26 ms  CI95 [107.79, 110.73]  p95  133.43  p99  188.02  overhead +446.1%
+
+Wrote C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\results\latency\latency_no_pool.json
+--- exit 0
+=== scaling 14:14:44
+1 {'unprotected': 12.511, 'batched': 19.681, 'one_by_one': 19.024}
+10 {'unprotected': 15.241, 'batched': 25.687, 'one_by_one': 32.72}
+50 {'unprotected': 16.89, 'batched': 402.917, 'one_by_one': 838.686}
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\scripts\run_scaling_benchmark.py", line 108, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\scripts\run_scaling_benchmark.py", line 92, in main
+    row["one_by_one"] = measure(client, "/graphql", headers)
+                        ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\scripts\run_scaling_benchmark.py", line 63, in measure
+    assert client.post(path, json=body, headers=headers).status_code == 200
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+--- exit 1
+=== node_latency 15:15:04
+--- exit 0
+=== discovery 15:15:23
+4000 requests (discovery run): 1415 blocked by Layer 1, 1261 coverage gaps, 401 attacks caught only by Layer 2
+  random_test      rows=  568 gaps= 277 attacks= 79  xgboost F1=1.000 attack-recall=1.0  |  rule F1=0.639 attack-recall=0.2278
+  held_out_family  rows=  315 gaps= 162 attacks= 63  xgboost F1=1.000 attack-recall=1.0  |  rule F1=1.000 attack-recall=1.0
+  top features: relationship_field_count=4.4953, l1_resolved_id_count=3.4141, variable_count=0.2822, field_count=0.1082, batch_size=0.0456
+  coverage gaps by family (Layer 1 allowed):
+    mutation_variable_default  gaps  300/300  attacks  128  missed by rule: 300
+    relationship               gaps  159/159  attacks   55  missed by rule: 0
+    variable_default           gaps  285/285  attacks  135  missed by rule: 285
+    relationship_in_fragment   gaps  162/162  attacks   63  missed by rule: 0
+    user_resources             gaps  287/287  attacks    0  missed by rule: 0
+    batch                      gaps   68/136  attacks   20  missed by rule: 0
+--- exit 0
+=== deployed 15:18:39
+4000 requests (deployed run): 1678 blocked by Layer 1, 676 coverage gaps, 138 attacks caught only by Layer 2
+  random_test      rows=  502 gaps= 124 attacks= 20  xgboost F1=0.996 attack-recall=1.0  |  rule F1=0.996 attack-recall=1.0
+  held_out_family  rows=  315 gaps= 162 attacks= 63  xgboost F1=1.000 attack-recall=1.0  |  rule F1=1.000 attack-recall=1.0
+  top features: relationship_field_count=6.2131, batch_size=0.0, is_mutation=0.0, caller_is_admin=0.0, max_depth=0.0
+  coverage gaps by family (Layer 1 allowed):
+    relationship               gaps  159/159  attacks   55  missed by rule: 0
+    relationship_in_fragment   gaps  162/162  attacks   63  missed by rule: 0
+    user_resources             gaps  287/287  attacks    0  missed by rule: 0
+    batch                      gaps   68/136  attacks   20  missed by rule: 0
+--- exit 0
+=== seeds 15:21:22
+seed 1001: gaps 0.274, attacks only L2 86, XGB F1 0.992, rule F1 0.992, top relationship_field_count
+seed 1002: gaps 0.289, attacks only L2 77, XGB F1 1.000, rule F1 1.000, top relationship_field_count
+seed 1003: gaps 0.312, attacks only L2 79, XGB F1 0.994, rule F1 0.994, top relationship_field_count
+seed 1004: gaps 0.287, attacks only L2 74, XGB F1 0.983, rule F1 0.983, top relationship_field_count
+seed 1005: gaps 0.282, attacks only L2 62, XGB F1 0.991, rule F1 0.991, top relationship_field_count
+
+mean ± std across seeds:
+  random_test.xgboost.f1_score         0.992 ± 0.0061
+  random_test.xgboost.attack_recall    1.0 ± 0.0
+  random_test.rule_baseline.f1_score   0.992 ± 0.0061
+  random_test.rule_baseline.attack_recall 1.0 ± 0.0
+  held_out_family.xgboost.f1_score     1.0 ± 0.0
+  held_out_family.rule_baseline.f1_score 1.0 ± 0.0
+  coverage_gap_rate                    0.2888 ± 0.0145
+  attacks_caught_only_by_layer2        75.6 ± 8.792
+Wrote C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\results\blind_spot\seeds.json
+--- exit 0
+=== ablation 15:27:28
+scenario         L1=on  L2=on   L1=on  L2=off  L1=off L2=on   L1=off L2=off
+direct           L1             L1             L2             LEAKED       
+nested           L1             L1             L2             LEAKED       
+inline_fragment  L1             L1             L2             LEAKED       
+relationship     L2             LEAKED         L2             LEAKED       
+batch            L1             L1             L2             LEAKED       
+mutation_update  L1             L1             L2             LEAKED       
+
+Wrote C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\results\layer_ablation\results.json
+--- exit 0
+=== tool_comparison 15:27:36
+
+GraphQL Shield
+  complete                                     leaked  0/13  benign failed 0/5  leaks: -  false blocks: -
+  without owned type Resource                  leaked  9/13  benign failed 0/5  leaks: direct, variable, variable_default, alias, named_fragment, inline_fragment, nested_lookup, relationship, batch  false blocks: -
+  without owned type User                      leaked  1/13  benign failed 0/5  leaks: foreign_user  false blocks: -
+  without mutation target updateResource       leaked  0/13  benign failed 0/5  leaks: -  false blocks: -
+  without mutation target deleteResource       leaked  0/13  benign failed 0/5  leaks: -  false blocks: -
+  without mutation target transferOwnership    leaked  0/13  benign failed 0/5  leaks: -  false blocks: -
+
+graphql-shield
+  complete                                     leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  fallback_deny                                leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  without:Query.user                           leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  without:Query.resource                       leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  without:UserType.resource                    leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  without:UserType.*                           leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  without:ResourceType.*                       leaked  1/13  benign failed 0/5  leaks: relationship  false blocks: -
+  without:Mutation.updateResource              leaked  1/13  benign failed 1/5  leaks: update  false blocks: own_relationship
+  without:Mutation.deleteResource              leaked  1/13  benign failed 1/5  leaks: delete  false blocks: own_relationship
+  without:Mutation.transferOwnership           leaked  1/13  benign failed 1/5  leaks: transfer  false blocks: own_relationship
+  fallback_deny,without:Query.user             leaked  0/13  benign failed 2/5  leaks: -  false blocks: own_relationship, own_user
+  fallback_deny,without:Query.resource         leaked  0/13  benign failed 3/5  leaks: -  false blocks: own_direct, own_relationship, admin_relationship
+  fallback_deny,without:UserType.resource      leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  fallback_deny,without:UserType.*             leaked  0/13  benign failed 2/5  leaks: -  false blocks: own_relationship, own_user
+  fallback_deny,without:ResourceType.*         leaked  0/13  benign failed 4/5  leaks: -  false blocks: own_direct, own_relationship, own_update, admin_relationship
+  fallback_deny,without:Mutation.updateResource leaked  0/13  benign failed 2/5  leaks: -  false blocks: own_relationship, own_update
+  fallback_deny,without:Mutation.deleteResource leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+  fallback_deny,without:Mutation.transferOwnership leaked  0/13  benign failed 1/5  leaks: -  false blocks: own_relationship
+
+Wrote C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\results\tool_comparison\results.json
+--- exit 0
+=== dashboard 15:28:12
+Wrote C:\Users\CHINMAYANAND\Downloads\GraphQL-Shield\app\models\research_results.json with: ablation, tool_comparison, latency, blind_spot_seeds
+--- exit 0
+=== ALL DONE 15:28:12

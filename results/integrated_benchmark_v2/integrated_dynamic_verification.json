@@ -1,0 +1,23 @@
+{
+  "method": "labelled_attack_generation_and_dynamic_replay",
+  "labelled_bola_cases": 462,
+  "attack_cases_generated_and_executed": 462,
+  "cases_skipped": 0,
+  "http_requests_for_replays": 924,
+  "baseline_outcomes": {
+    "EXPOSED_CONFIRMED": 462
+  },
+  "protected_outcomes": {
+    "BLOCKED": 462
+  },
+  "verdict_counts": {
+    "PROTECTION_VERIFIED": 462
+  },
+  "baseline_confirmed_exposures": 462,
+  "protected_blocks": 462,
+  "protected_confirmed_exposures": 0,
+  "protection_verified_rate": 1.0,
+  "raw_csv": "results\\integrated_benchmark_v2\\integrated_dynamic_verification_raw.csv",
+  "skipped_cases": [],
+  "interpretation": "These are observed replay results for labelled synthetic BOLA scenarios. They measure runtime verification and protection for those replay cases, not autonomous detector recall over all possible GraphQL vulnerabilities."
+}

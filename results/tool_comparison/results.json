@@ -1,0 +1,2810 @@
+{
+  "generated_at": "2026-11-08T14:52:42.406047+00:00",
+  "scenarios": [
+    {
+      "name": "direct",
+      "kind": "attack"
+    },
+    {
+      "name": "variable",
+      "kind": "attack"
+    },
+    {
+      "name": "variable_default",
+      "kind": "attack"
+    },
+    {
+      "name": "alias",
+      "kind": "attack"
+    },
+    {
+      "name": "named_fragment",
+      "kind": "attack"
+    },
+    {
+      "name": "inline_fragment",
+      "kind": "attack"
+    },
+    {
+      "name": "nested_lookup",
+      "kind": "attack"
+    },
+    {
+      "name": "foreign_user",
+      "kind": "attack"
+    },
+    {
+      "name": "relationship",
+      "kind": "attack"
+    },
+    {
+      "name": "batch",
+      "kind": "attack"
+    },
+    {
+      "name": "update",
+      "kind": "attack"
+    },
+    {
+      "name": "delete",
+      "kind": "attack"
+    },
+    {
+      "name": "transfer",
+      "kind": "attack"
+    },
+    {
+      "name": "own_direct",
+      "kind": "benign"
+    },
+    {
+      "name": "own_relationship",
+      "kind": "benign"
+    },
+    {
+      "name": "own_user",
+      "kind": "benign"
+    },
+    {
+      "name": "own_update",
+      "kind": "benign"
+    },
+    {
+      "name": "admin_relationship",
+      "kind": "benign"
+    }
+  ],
+  "configuration_size": {
+    "GraphQL Shield": {
+      "owned_types": 2,
+      "mutation_registry_entries": 3,
+      "mutation_entries_not_derivable_from_schema": 1,
+      "aggregate_fields": 1,
+      "owner_lookup_functions": 1
+    },
+    "graphql-shield": {
+      "permission_entries": 8,
+      "rule_functions": 4
+    }
+  },
+  "systems": {
+    "GraphQL Shield": {
+      "complete": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 0,
+        "benign": 5,
+        "failed_benign_scenarios": [],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": true
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "without owned type Resource": {
+        "attacks_leaked": 9,
+        "attacks": 13,
+        "leaked_scenarios": [
+          "direct",
+          "variable",
+          "variable_default",
+          "alias",
+          "named_fragment",
+          "inline_fragment",
+          "nested_lookup",
+          "relationship",
+          "batch"
+        ],
+        "benign_failed": 0,
+        "benign": 5,
+        "failed_benign_scenarios": [],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": true,
+            "exposed": [
+              [
+                "Resource",
+                102
+              ]
+            ],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": true,
+            "exposed": [
+              [
+                "Resource",
+                102
+              ]
+            ],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": true,
+            "exposed": [
+              [
+                "Resource",
+                102
+              ]
+            ],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": true,
+            "exposed": [
+              [
+                "Resource",
+                102
+              ]
+            ],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": true,
+            "exposed": [
+              [
+                "Resource",
+                102
+              ]
+            ],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": true,
+            "exposed": [
+              [
+                "Resource",
+                102
+              ]
+            ],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": true,
+            "exposed": [
+              [
+                "Resource",
+                102
+              ]
+            ],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": true,
+            "exposed": [
+              [
+                "Resource",
+                204
+              ]
+            ],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": true,
+            "exposed": [
+              [
+                "Resource",
+                102
+              ]
+            ],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": true
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "without owned type User": {
+        "attacks_leaked": 1,
+        "attacks": 13,
+        "leaked_scenarios": [
+          "foreign_user"
+        ],
+        "benign_failed": 0,
+        "benign": 5,
+        "failed_benign_scenarios": [],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": true,
+            "exposed": [
+              [
+                "User",
+                102
+              ]
+            ],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": true
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "without mutation target updateResource": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 0,
+        "benign": 5,
+        "failed_benign_scenarios": [],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": true
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "without mutation target deleteResource": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 0,
+        "benign": 5,
+        "failed_benign_scenarios": [],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": true
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "without mutation target transferOwnership": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 0,
+        "benign": 5,
+        "failed_benign_scenarios": [],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": true
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      }
+    },
+    "graphql-shield": {
+      "complete": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 1,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "fallback_deny": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 1,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "without:Query.user": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 1,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "without:Query.resource": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 1,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "without:UserType.resource": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 1,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "without:UserType.*": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 1,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "without:ResourceType.*": {
+        "attacks_leaked": 1,
+        "attacks": 13,
+        "leaked_scenarios": [
+          "relationship"
+        ],
+        "benign_failed": 0,
+        "benign": 5,
+        "failed_benign_scenarios": [],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": true,
+            "exposed": [
+              [
+                "Resource",
+                204
+              ]
+            ],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": true
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "without:Mutation.updateResource": {
+        "attacks_leaked": 1,
+        "attacks": 13,
+        "leaked_scenarios": [
+          "update"
+        ],
+        "benign_failed": 1,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": true,
+            "exposed": [],
+            "victim_changed": true
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "without:Mutation.deleteResource": {
+        "attacks_leaked": 1,
+        "attacks": 13,
+        "leaked_scenarios": [
+          "delete"
+        ],
+        "benign_failed": 1,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": true,
+            "exposed": [],
+            "victim_changed": true
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "without:Mutation.transferOwnership": {
+        "attacks_leaked": 1,
+        "attacks": 13,
+        "leaked_scenarios": [
+          "transfer"
+        ],
+        "benign_failed": 1,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": true,
+            "exposed": [
+              [
+                "Resource",
+                102
+              ]
+            ],
+            "victim_changed": true
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "fallback_deny,without:Query.user": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 2,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship",
+          "own_user"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": false
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "fallback_deny,without:Query.resource": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 3,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_direct",
+          "own_relationship",
+          "admin_relationship"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": false
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": false
+          }
+        ]
+      },
+      "fallback_deny,without:UserType.resource": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 1,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "fallback_deny,without:UserType.*": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 2,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship",
+          "own_user"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": false
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "fallback_deny,without:ResourceType.*": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 4,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_direct",
+          "own_relationship",
+          "own_update",
+          "admin_relationship"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": false
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": false
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": false
+          }
+        ]
+      },
+      "fallback_deny,without:Mutation.updateResource": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 2,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship",
+          "own_update"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": false
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "fallback_deny,without:Mutation.deleteResource": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 1,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      },
+      "fallback_deny,without:Mutation.transferOwnership": {
+        "attacks_leaked": 0,
+        "attacks": 13,
+        "leaked_scenarios": [],
+        "benign_failed": 1,
+        "benign": 5,
+        "failed_benign_scenarios": [
+          "own_relationship"
+        ],
+        "rows": [
+          {
+            "scenario": "direct",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "variable_default",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "alias",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "named_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "inline_fragment",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "nested_lookup",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "foreign_user",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "relationship",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "batch",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "update",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "delete",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "transfer",
+            "leaked": false,
+            "exposed": [],
+            "victim_changed": false
+          },
+          {
+            "scenario": "own_direct",
+            "ok": true
+          },
+          {
+            "scenario": "own_relationship",
+            "ok": false
+          },
+          {
+            "scenario": "own_user",
+            "ok": true
+          },
+          {
+            "scenario": "own_update",
+            "ok": true
+          },
+          {
+            "scenario": "admin_relationship",
+            "ok": true
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,382 @@
+{
+  "report_version": "2.0",
+  "generated_at_utc": "2026-10-11T16:28:42.063450+00:00",
+  "benchmark_scope": "Synthetic local GraphQL BOLA benchmark. No external endpoints are called.",
+  "dataset": {
+    "dataset_version": "1.0",
+    "count": 1000,
+    "bola_count": 462,
+    "legitimate_count": 538,
+    "scenario_counts": {
+      "admin_access": 98,
+      "direct_bola": 306,
+      "direct_legitimate": 282,
+      "nested_bola": 156,
+      "nested_legitimate": 158
+    },
+    "sha256": "7c4f4ef24eae44e7b6f1e5d022b140f5c0db9e8fc7b0e26bbeb3c4f71ea5240a",
+    "path": "results\\integrated_benchmark_v2\\benchmark_dataset.jsonl",
+    "seed": 20261011,
+    "loaded_from_existing_dataset": false,
+    "actual_count": 1000
+  },
+  "endpoint_summary": {
+    "baseline_graphql_insecure": {
+      "latency": {
+        "count": 1000,
+        "mean_ms": 25.0308,
+        "median_ms": 24.2504,
+        "p95_ms": 38.6847,
+        "p99_ms": 56.1406,
+        "min_ms": 11.1079,
+        "max_ms": 115.6507
+      },
+      "confirmed_bola_exposures": 462,
+      "bola_exposure_rate": 1.0
+    },
+    "protected_graphql": {
+      "latency": {
+        "count": 1000,
+        "mean_ms": 34.4896,
+        "median_ms": 31.8917,
+        "p95_ms": 65.931,
+        "p99_ms": 88.9912,
+        "min_ms": 8.4273,
+        "max_ms": 175.3611
+      },
+      "authorization_latency_overhead_ms": 9.4588,
+      "authorization_latency_overhead_percent": 37.7886,
+      "bola_requests_blocked": 462,
+      "bola_block_rate": 1.0,
+      "legitimate_requests_blocked": 0,
+      "legitimate_false_block_rate": 0.0
+    },
+    "analysis_pipeline": {
+      "latency": {
+        "count": 1000,
+        "mean_ms": 9.2074,
+        "median_ms": 8.2041,
+        "p95_ms": 18.0298,
+        "p99_ms": 25.04,
+        "min_ms": 2.8039,
+        "max_ms": 53.8853
+      }
+    }
+  },
+  "detection_metrics": {
+    "overall": {
+      "taint_source_only": {
+        "sample_count": 1000,
+        "tp": 462,
+        "fp": 538,
+        "tn": 0,
+        "fn": 0,
+        "accuracy": 0.462,
+        "precision": 0.462,
+        "recall": 1.0,
+        "f1": 0.632011,
+        "specificity": 0.0,
+        "false_positive_rate": 1.0,
+        "false_negative_rate": 0.0
+      },
+      "context_sensitive_taint_only": {
+        "sample_count": 1000,
+        "tp": 462,
+        "fp": 538,
+        "tn": 0,
+        "fn": 0,
+        "accuracy": 0.462,
+        "precision": 0.462,
+        "recall": 1.0,
+        "f1": 0.632011,
+        "specificity": 0.0,
+        "false_positive_rate": 1.0,
+        "false_negative_rate": 0.0
+      },
+      "authorization_aware_candidate": {
+        "sample_count": 1000,
+        "tp": 462,
+        "fp": 0,
+        "tn": 538,
+        "fn": 0,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0
+      }
+    },
+    "by_scenario_group": {
+      "direct_access": {
+        "taint_source_only": {
+          "sample_count": 686,
+          "tp": 306,
+          "fp": 380,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 0.446064,
+          "precision": 0.446064,
+          "recall": 1.0,
+          "f1": 0.616935,
+          "specificity": 0.0,
+          "false_positive_rate": 1.0,
+          "false_negative_rate": 0.0
+        },
+        "context_sensitive_taint_only": {
+          "sample_count": 686,
+          "tp": 306,
+          "fp": 380,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 0.446064,
+          "precision": 0.446064,
+          "recall": 1.0,
+          "f1": 0.616935,
+          "specificity": 0.0,
+          "false_positive_rate": 1.0,
+          "false_negative_rate": 0.0
+        },
+        "authorization_aware_candidate": {
+          "sample_count": 686,
+          "tp": 306,
+          "fp": 0,
+          "tn": 380,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 1.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        }
+      },
+      "nested_access": {
+        "taint_source_only": {
+          "sample_count": 314,
+          "tp": 156,
+          "fp": 158,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 0.496815,
+          "precision": 0.496815,
+          "recall": 1.0,
+          "f1": 0.66383,
+          "specificity": 0.0,
+          "false_positive_rate": 1.0,
+          "false_negative_rate": 0.0
+        },
+        "context_sensitive_taint_only": {
+          "sample_count": 314,
+          "tp": 156,
+          "fp": 158,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 0.496815,
+          "precision": 0.496815,
+          "recall": 1.0,
+          "f1": 0.66383,
+          "specificity": 0.0,
+          "false_positive_rate": 1.0,
+          "false_negative_rate": 0.0
+        },
+        "authorization_aware_candidate": {
+          "sample_count": 314,
+          "tp": 156,
+          "fp": 0,
+          "tn": 158,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 1.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        }
+      },
+      "direct_bola_only": {
+        "taint_source_only": {
+          "sample_count": 306,
+          "tp": 306,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "context_sensitive_taint_only": {
+          "sample_count": 306,
+          "tp": 306,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "authorization_aware_candidate": {
+          "sample_count": 306,
+          "tp": 306,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        }
+      },
+      "nested_bola_only": {
+        "taint_source_only": {
+          "sample_count": 156,
+          "tp": 156,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "context_sensitive_taint_only": {
+          "sample_count": 156,
+          "tp": 156,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        },
+        "authorization_aware_candidate": {
+          "sample_count": 156,
+          "tp": 156,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "specificity": 0.0,
+          "false_positive_rate": 0.0,
+          "false_negative_rate": 0.0
+        }
+      }
+    },
+    "interpretation": "These are detector predictions compared with benchmark labels. Runtime attack-replay outcomes are reported separately and are not silently substituted for detector predictions. The authorization-aware candidate uses the current policy engine and is not an independent oracle."
+  },
+  "integrated_dynamic_verification": {
+    "method": "labelled_attack_generation_and_dynamic_replay",
+    "labelled_bola_cases": 462,
+    "attack_cases_generated_and_executed": 462,
+    "cases_skipped": 0,
+    "http_requests_for_replays": 924,
+    "baseline_outcomes": {
+      "EXPOSED_CONFIRMED": 462
+    },
+    "protected_outcomes": {
+      "BLOCKED": 462
+    },
+    "verdict_counts": {
+      "PROTECTION_VERIFIED": 462
+    },
+    "baseline_confirmed_exposures": 462,
+    "protected_blocks": 462,
+    "protected_confirmed_exposures": 0,
+    "protection_verified_rate": 1.0,
+    "raw_csv": "results\\integrated_benchmark_v2\\integrated_dynamic_verification_raw.csv",
+    "skipped_cases": [],
+    "interpretation": "These are observed replay results for labelled synthetic BOLA scenarios. They measure runtime verification and protection for those replay cases, not autonomous detector recall over all possible GraphQL vulnerabilities."
+  },
+  "ablation_study": {
+    "meaning": {
+      "taint_source_only": "Flags requests with any tracked object ID.",
+      "context_sensitive_taint_only": "Flags taint reaching the configured sensitive sink.",
+      "authorization_aware_candidate": "Flags requests for which authorization-aware analysis finds a suspected direct or indirect BOLA."
+    },
+    "metrics": {
+      "taint_source_only": {
+        "sample_count": 1000,
+        "tp": 462,
+        "fp": 538,
+        "tn": 0,
+        "fn": 0,
+        "accuracy": 0.462,
+        "precision": 0.462,
+        "recall": 1.0,
+        "f1": 0.632011,
+        "specificity": 0.0,
+        "false_positive_rate": 1.0,
+        "false_negative_rate": 0.0
+      },
+      "context_sensitive_taint_only": {
+        "sample_count": 1000,
+        "tp": 462,
+        "fp": 538,
+        "tn": 0,
+        "fn": 0,
+        "accuracy": 0.462,
+        "precision": 0.462,
+        "recall": 1.0,
+        "f1": 0.632011,
+        "specificity": 0.0,
+        "false_positive_rate": 1.0,
+        "false_negative_rate": 0.0
+      },
+      "authorization_aware_candidate": {
+        "sample_count": 1000,
+        "tp": 462,
+        "fp": 0,
+        "tn": 538,
+        "fn": 0,
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "specificity": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0
+      }
+    }
+  },
+  "performance": {
+    "request_cases": 1000,
+    "baseline_and_protected_http_calls": 2000,
+    "dynamic_replay_http_calls": 924,
+    "total_http_calls": 2924,
+    "elapsed_seconds_end_to_end": 85.4177,
+    "cases_per_second_end_to_end": 11.707,
+    "http_calls_per_second_end_to_end": 34.232,
+    "process_cpu_seconds": 76.8438,
+    "tracemalloc_peak_bytes": 4786364,
+    "measurement_note": "In-process FastAPI TestClient latency. The full elapsed time includes dynamic replay calls. tracemalloc affects timing. Run separate uninstrumented trials for publication-quality latency measurements."
+  },
+  "warnings": [
+    "All benchmark cases use synthetic local data.",
+    "Dynamic replay validates labelled attack scenarios; it does not by itself establish autonomous discovery recall.",
+    "Detector metrics and observed endpoint/replay outcomes are reported separately."
+  ]
+}

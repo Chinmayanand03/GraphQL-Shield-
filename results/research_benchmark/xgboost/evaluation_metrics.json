@@ -1,0 +1,73 @@
+{
+  "dataset": "results\\research_benchmark\\benchmark_dataset.jsonl",
+  "total_cases": 1000,
+  "training_cases": 799,
+  "held_out_cases": 201,
+  "held_out_family": "relationship",
+  "class_counts": {
+    "all": {
+      "0": 513,
+      "1": 487
+    },
+    "training": {
+      "0": 429,
+      "1": 370
+    },
+    "held_out": {
+      "0": 84,
+      "1": 117
+    }
+  },
+  "xgboost": {
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "pr_auc_average_precision": 1.0,
+    "false_positive_rate": 0.0,
+    "confusion_matrix": {
+      "true_negative": 84,
+      "false_positive": 0,
+      "false_negative": 0,
+      "true_positive": 117
+    }
+  },
+  "rule_baseline": {
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "pr_auc_average_precision": 1.0,
+    "false_positive_rate": 0.0,
+    "confusion_matrix": {
+      "true_negative": 84,
+      "false_positive": 0,
+      "false_negative": 0,
+      "true_positive": 117
+    }
+  },
+  "xgboost_inference_latency": {
+    "average_ms_per_batch": 7.1736,
+    "average_ms_per_case": 0.035689,
+    "batch_size": 201,
+    "repetitions": 100
+  },
+  "feature_names": [
+    "query_length",
+    "field_count",
+    "max_field_depth",
+    "alias_count",
+    "identifier_argument_count",
+    "variable_definition_count",
+    "runtime_variable_count",
+    "path_depth",
+    "role_is_admin",
+    "owner_matches_principal",
+    "has_children_field",
+    "has_user_field",
+    "has_nested_resource_path",
+    "has_relationship_path"
+  ],
+  "note": "Synthetic per-request benchmark. The rule baseline omits recent-denial history. Results do not establish superiority on real-world traffic.",
+  "model_path": "results\\research_benchmark\\xgboost\\bola_xgboost_model.json"
+}

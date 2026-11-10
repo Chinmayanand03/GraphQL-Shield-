@@ -1,0 +1,40 @@
+{
+  "dataset_version": "1.0",
+  "dataset_type": "behavioral_session",
+  "record_count": 4000,
+  "class_distribution": {
+    "1": 2000,
+    "0": 2000
+  },
+  "scenario_distribution": {
+    "legitimate_high_activity": 500,
+    "legitimate_nested": 500,
+    "mixed_normal": 500,
+    "normal_steady": 500,
+    "rapid_enumeration": 500,
+    "repeated_cross_owner": 500,
+    "repeated_denials": 500,
+    "suspicious_nested_probing": 500
+  },
+  "family_distribution": {
+    "nested_relational": 1000,
+    "standard_steady": 1000,
+    "targeted_denial": 1000,
+    "volumetric": 1000
+  },
+  "feature_schema": {
+    "requests_per_window": "integer, total GraphQL requests in session observation window (15 min)",
+    "distinct_objects_count": "integer, count of unique resource object IDs requested in the window",
+    "requests_per_minute": "float, average request throughput per minute (requests_per_window / 15.0)",
+    "repeated_target_count": "integer, count of requests targeting previously accessed IDs in session",
+    "recent_denials_count": "integer, authorization denials (403 Forbidden) logged in observation window",
+    "cross_owner_attempts_count": "integer, requests targeting resources owned by other principals",
+    "nested_relationship_count": "integer, queries requesting nested relationship selections (e.g., children)",
+    "max_query_depth": "integer, maximum GraphQL AST selection depth observed in session",
+    "enumeration_score": "float [0.0, 1.0], consecutive/incremental object ID traversal pattern score",
+    "request_burst_rate": "float, peak request throughput observed in any 60-second window (req/min)"
+  },
+  "sha256": "d4aaf19b95ad82bf084bca962b69dadc07f46f7e5c7eb72ccd2c398f4b6835b7",
+  "csv_path": "results\\research_benchmark\\behavioral_sessions.csv",
+  "seed": 20261015
+}

@@ -1,0 +1,70 @@
+{
+  "dataset": "results\\research_benchmark\\behavioral_sessions.csv",
+  "total_sessions": 4000,
+  "training_sessions": 3000,
+  "held_out_sessions": 1000,
+  "held_out_family": "nested_relational",
+  "split_methodology": "Family-isolated partition holding out 'nested_relational'. Neither normal nor suspicious scenario templates in the held-out family were seen during model training.",
+  "class_counts": {
+    "all": {
+      "1": 2000,
+      "0": 2000
+    },
+    "training": {
+      "1": 1500,
+      "0": 1500
+    },
+    "held_out": {
+      "0": 500,
+      "1": 500
+    }
+  },
+  "feature_names": [
+    "requests_per_window",
+    "distinct_objects_count",
+    "requests_per_minute",
+    "repeated_target_count",
+    "recent_denials_count",
+    "cross_owner_attempts_count",
+    "nested_relationship_count",
+    "max_query_depth",
+    "enumeration_score",
+    "request_burst_rate"
+  ],
+  "xgboost": {
+    "accuracy": 0.992,
+    "precision": 1.0,
+    "recall": 0.984,
+    "f1_score": 0.9919,
+    "pr_auc_average_precision": 0.997,
+    "false_positive_rate": 0.0,
+    "confusion_matrix": {
+      "true_negative": 500,
+      "false_positive": 0,
+      "false_negative": 8,
+      "true_positive": 492
+    }
+  },
+  "rule_baseline": {
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "pr_auc_average_precision": 1.0,
+    "false_positive_rate": 0.0,
+    "confusion_matrix": {
+      "true_negative": 500,
+      "false_positive": 0,
+      "false_negative": 0,
+      "true_positive": 500
+    }
+  },
+  "xgboost_inference_latency": {
+    "average_ms_per_batch": 3.1404,
+    "average_ms_per_session": 0.00314,
+    "batch_size": 1000,
+    "repetitions": 100
+  },
+  "note": "Phase 4.1 behavioural session experiment. Features aggregate server-observable request statistics over 15-minute windows without raw IDs or direct ownership flags. The ML model is an offline classifier and does NOT override PolicyEngine decisions.",
+  "model_path": "results\\research_benchmark\\behavioral_xgboost\\behavioral_xgboost_model.json"
+}
