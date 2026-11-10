@@ -35,6 +35,11 @@ from typing import Any
 from graphql import DocumentNode, GraphQLList, GraphQLNonNull, print_ast
 from graphql.execution.values import get_argument_values
 
+try:  # graphql-core >= 3.3
+    from graphql.execution.values import VariableValues
+except ImportError:  # older graphql-core takes a plain dict
+    VariableValues = None
+
 from app.database import get_db_connection
 from app.security.shield_config import (
     ORIGINAL, REGISTRY, ShieldConfig, lint_config, restore_original, unwrap_type,
@@ -90,7 +95,13 @@ def _variables(info) -> dict:
 def _arguments(info) -> dict:
     try:
         field_def = info.parent_type.fields[info.field_name]
-        return get_argument_values(field_def, info.field_nodes[0], info.variable_values)
+        variables = info.variable_values
+        if isinstance(variables, dict) and VariableValues is not None:
+            # Strawberry passes a plain dict; graphql-core 3.3 expects VariableValues.
+            # Without this, arguments given as variables were silently dropped, so a
+            # gap on `resource(id: $id)` looked like relationship traversal.
+            variables = VariableValues(sources={}, coerced=variables)
+        return get_argument_values(field_def, info.field_nodes[0], variables)
     except Exception:
         return {}
 
@@ -506,6 +517,27 @@ def init_repair_tables(cursor) -> None:
     """)
 
 
+def _drop_resolved_evidence(config: ShieldConfig) -> None:
+    """After a repair, forget gaps Layer 1 now sees and refusals the configuration
+    now covers. Otherwise old evidence is re-read against the repaired configuration
+    and misreported (for example, as a Layer 1 code gap)."""
+    with _lock:
+        gaps = list(GAPS[config.name])
+        mutations = list(UNREGISTERED[config.name])
+    still_open = []
+    for gap in gaps:
+        try:
+            seen, _ = layer1_view(config, gap["query"], gap["variables"], gap["user_id"], gap["role"])
+        except Exception:
+            seen = set()
+        if (gap["object_type"], str(gap["object_id"])) not in seen:
+            still_open.append(gap)
+    open_mutations = [m for m in mutations if m["mutation"] not in config.mutation_targets]
+    with _lock:
+        GAPS[config.name].clear(); GAPS[config.name].extend(still_open)
+        UNREGISTERED[config.name].clear(); UNREGISTERED[config.name].extend(open_mutations)
+
+
 def apply_repair(name: str, kind: str, payload: dict, applied_by) -> dict:
     """Re-verify a repair against the current evidence, then apply and store it."""
     config = REGISTRY.get(name)
@@ -516,6 +548,7 @@ def apply_repair(name: str, kind: str, payload: dict, applied_by) -> dict:
     if not check["verified"]:
         raise ValueError("The repair did not pass verification against the recorded requests.")
     _apply_in_place(config, repair)
+    _drop_resolved_evidence(config)
     conn = get_db_connection()
     try:
         cursor = conn.execute(

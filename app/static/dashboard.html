@@ -149,6 +149,7 @@
     .metric.amber { --accent:var(--amber); --glow:rgba(255,198,109,.10); }
     .metrics.four { grid-template-columns:repeat(4,minmax(0,1fr)); }
     .layer-actions { display:flex; gap:8px; align-items:flex-end; flex-wrap:wrap; }
+    [hidden] { display:none !important; }
 
     .grid-two { display:grid; grid-template-columns:minmax(0,1.02fr) minmax(0,1.38fr); gap:16px; margin-bottom:18px; }
     .panel { padding:20px; min-width:0; }
@@ -222,7 +223,7 @@
     .console-note { color:var(--muted); font-size:11px; }
     .console-result { margin-top:14px; border:1px solid var(--line); border-radius:12px; overflow:hidden; }
     .console-result-head { display:flex; justify-content:space-between; gap:10px; align-items:center; padding:10px 13px; background:rgba(9,16,29,.45); border-bottom:1px solid var(--line); font-size:11px; }
-    .console-result pre { margin:0; padding:14px; max-height:260px; overflow:auto; color:var(--text); font:11px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .console-result pre { margin:0; padding:14px; max-height:640px; overflow:auto; color:var(--text); font:11px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace; white-space:pre-wrap; overflow-wrap:anywhere; }
     .taint-flow { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
     .taint-step { border:1px solid var(--line); background:rgba(9,16,29,.25); border-radius:12px; padding:12px; min-height:120px; }
     .taint-step b { display:block; font-size:12px; margin-bottom:6px; }
@@ -486,6 +487,8 @@
     #clinicHint { margin: 10px 0 0; line-height: 1.5; }
     .verdict { padding: 11px 15px; border-bottom: 1px solid var(--line); font-size: 13.5px; font-weight: 600; display: flex; gap: 10px; align-items: baseline; }
     .verdict small { font-weight: 400; color: var(--muted); font-size: 12.5px; }
+    .verdict { flex-wrap: wrap; }
+    .who-line { flex-basis: 100%; margin: 4px 0 6px; padding: 6px 10px; border-left: 3px solid var(--cyan); background: rgba(76,195,224,.08); color: var(--text); font-size: 13.5px; font-weight: 600; }
     .verdict.pass { color: var(--green); background: rgba(60,203,143,.07); }
     .verdict.fail { color: var(--red); background: rgba(240,101,122,.08); }
     .verdict.warn { color: var(--amber); background: rgba(242,181,91,.07); }
@@ -498,7 +501,7 @@
     .compare-box { border: 1px solid var(--line); border-radius: 12px; background: var(--panel-2); overflow: hidden; }
     .compare-title { padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 13px; font-weight: 600; background: #0c131f; }
     .compare-body { padding: 12px 14px; font-size: 13px; line-height: 1.55; }
-    .compare-body pre { margin: 8px 0 0; max-height: 200px; overflow: auto; font: 12px/1.5 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; color: var(--muted); }
+    .compare-body pre { margin: 8px 0 0; max-height: 640px; overflow: auto; font: 12px/1.5 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; color: var(--muted); }
     .layer-banner { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin: -8px 0 18px; padding: 12px 16px; border: 1px solid rgba(240,101,122,.45); border-radius: 10px; background: rgba(240,101,122,.10); color: var(--text); font-size: 13.5px; font-weight: 500; }
     .layer-banner[hidden] { display: none; }
     body.light .compare-title { background: #f7f9fc; }
@@ -634,9 +637,9 @@
       <div>
         <div class="nav-label">Dashboard Views</div>
         <nav class="nav" aria-label="Main navigation">
-          <a class="active" href="#testing" id="side-testing" data-tab="tab-testing"><span class="nav-icon">⚡</span>Security Testing</a>
-          <a href="#research" id="side-research" data-tab="tab-research"><span class="nav-icon">🔬</span>Research & ML</a>
-          <a href="#audit" id="side-audit" data-tab="tab-audit"><span class="nav-icon">🛡</span>Audit & Verification</a>
+          <a class="active" href="#testing" id="side-testing" data-tab="tab-testing">Security Testing</a>
+          <a href="#research" id="side-research" data-tab="tab-research">Research & ML</a>
+          <a href="#audit" id="side-audit" data-tab="tab-audit">Audit & Verification</a>
         </nav>
       </div>
       <div class="side-bottom">
@@ -660,7 +663,7 @@
           <button class="btn" id="themeButton" type="button" aria-label="Toggle color theme">☼ Theme</button>
           <button class="btn" id="autoRefreshButton" type="button" title="The dashboard refreshes every 30 seconds">⏸ Pause auto-refresh</button>
           <button class="btn" id="refreshButton" type="button">↻ Refresh</button>
-          <button class="btn primary" id="exportButtonTop" type="button">⇩ Export CSV</button>
+          <button class="btn primary" id="exportButtonTop" type="button">Export CSV</button>
         </div>
       </header>
 
@@ -671,15 +674,12 @@
       </div>
       <nav class="dashboard-tabs" role="tablist" aria-label="Dashboard primary views">
         <button role="tab" id="tab-testing" class="tab-btn active" aria-selected="true" aria-controls="panel-testing" tabindex="0">
-          <span class="tab-icon">⚡</span>
           <span class="tab-label">Security Testing</span>
         </button>
         <button role="tab" id="tab-research" class="tab-btn" aria-selected="false" aria-controls="panel-research" tabindex="-1">
-          <span class="tab-icon">🔬</span>
           <span class="tab-label">Research & ML Evaluation</span>
         </button>
         <button role="tab" id="tab-audit" class="tab-btn" aria-selected="false" aria-controls="panel-audit" tabindex="-1">
-          <span class="tab-icon">🛡</span>
           <span class="tab-label">Audit & Security Verification</span>
         </button>
       </nav>
@@ -921,14 +921,14 @@
               </div>
 
               <div class="limits-card" style="border-color:rgba(87,215,232,.25); background:rgba(87,215,232,.04); margin-top:10px;">
-                <strong style="color:var(--cyan);">🛡 Strict Zero-Trust Enforcement Boundary</strong>
+                <strong style="color:var(--cyan);">Strict Zero-Trust Enforcement Boundary</strong>
                 <p>
                   The behavioural ML model is strictly an <b>offline telemetry observer</b> and <b>NEVER overrides PolicyEngine or RuntimeObjectAuthorizationExtension allow/deny decisions</b>. The vulnerable <code>/graphql-insecure</code> endpoint is isolated for controlled comparison only.
                 </p>
               </div>
 
               <div class="limits-card" style="border-color:rgba(117,167,255,.25); background:rgba(117,167,255,.04); margin-top:10px;">
-                <strong style="color:var(--blue);">🔬 Held-out Family Isolation</strong>
+                <strong style="color:var(--blue);">Held-out Family Isolation</strong>
                 <p>
                   Evaluated on 1,000 sessions belonging to the <code>nested_relational</code> family (500 <code>legitimate_nested</code> and 500 <code>suspicious_nested_probing</code>). Neither template was seen during training.
                 </p>
@@ -996,7 +996,7 @@
               <div class="field"><label>Enumeration Score</label><input class="input" type="number" step="0.01" id="scEnumScore" value="0.05" min="0" max="1"></div>
               <div class="field"><label>Burst Rate (req/min)</label><input class="input" type="number" step="0.1" id="scBurstRate" value="2.5" min="0"></div>
               <div class="field" style="justify-content:flex-end;">
-                <button class="btn primary" id="scoreTelemetryButton" type="submit" style="width:100%; height:37px;">⚡ Score Telemetry</button>
+                <button class="btn primary" id="scoreTelemetryButton" type="submit" style="width:100%; height:37px;">Score Telemetry</button>
               </div>
             </form>
 
@@ -1250,7 +1250,7 @@
             <select class="select" id="layerFilter" aria-label="Filter by layer"><option value="all">All layers</option><option value="L1">Layer 1</option><option value="L2">Layer 2</option></select>
             <select class="select" id="userFilter" aria-label="Filter by user"><option value="all">All users</option><option value="101">101 · Balanilavan</option><option value="102">102 · Kapilesh</option><option value="103">103 · Sakthivel</option><option value="104">104 · Admin</option></select>
             <button class="btn" id="clearFiltersButton" type="button">Clear filters</button>
-            <button class="btn" id="exportButton" type="button">⇩ Export visible</button>
+            <button class="btn" id="exportButton" type="button">Export visible</button>
           </div>
           <div class="table-wrap">
             <table>
@@ -2430,7 +2430,7 @@
         }
         const parentId = positiveInteger('testParentId', 'Parent/folder ID');
         return {
-          query: 'query DashboardImplicitRelationship($parentId: Int!) { resource(id: $parentId) { id name ownerId children { id name ownerId parentId } } }',
+          query: 'query DashboardImplicitRelationship($parentId: Int!) { resource(id: $parentId) { id name ownerId children { id name ownerId parentId } childrenCount } }',
           variables: { parentId }
         };
       }
@@ -2708,11 +2708,30 @@
         return {cls: 'pass', text: insecure ? 'No other user’s data in this response' : 'PASS · Only your own data', detail: 'No object owned by another user appears in the response.'};
       }
 
-      function showVerdict(element, verdict) {
+      // "Who asked for what": shown on every result so a screenshot names the caller and the target.
+      function whoLine(endpoint, scenario) {
+        const v = id => $(id).value;
+        const clinic = isClinic(endpoint);
+        const thing = clinic ? (MUTATION_SCENARIOS.includes(scenario) ? 'record' : 'patient') : 'resource';
+        const targets = {
+          direct: `${thing} ${v('testResourceId')}`,
+          nested: `user ${v('testUserId')} → resource ${v('testResourceId')}`,
+          relationship: `children of ${clinic ? 'patient' : 'folder'} ${v('testParentId')}`,
+          inline_fragment: `user ${v('testUserId')} (via inline fragment)`,
+          batch: `resource ${v('testResourceId')} (batched request)`,
+          mutation_update: `rename ${thing} ${v('testResourceId')}`,
+          mutation_delete: `delete ${thing} ${v('testResourceId')}`,
+        };
+        const role = String(consoleSession.role || '').toUpperCase();
+        return `Requested by: ${consoleSession.username} (user ${consoleSession.userId}, ${role})  ·  Target: ${targets[scenario] || scenario}  ·  Endpoint: ${endpoint}`;
+      }
+
+      function showVerdict(element, verdict, who) {
         element.hidden = false;
         element.className = 'verdict ' + verdict.cls;
         element.replaceChildren(document.createTextNode(verdict.text + ' '));
         const small = document.createElement('small'); small.textContent = verdict.detail; element.appendChild(small);
+        if (who) { const w = document.createElement('div'); w.className = 'who-line'; w.textContent = who; element.appendChild(w); }
       }
 
       async function runSelectedTest() {
@@ -2741,7 +2760,7 @@
           $('testResultTitle').textContent = 'GraphQL request completed';
           $('testResultStatus').textContent = `HTTP ${result.status}${parsedBody && parsedBody.errors ? ' · GraphQL errors returned' : ''}`;
           $('testResultStatus').className = 'status-inline ' + (result.status < 400 && !(parsedBody && parsedBody.errors) ? 'ok' : 'bad');
-          showVerdict($('testVerdict'), evaluateResult(endpoint, scenario, result, consoleSession.userId, consoleSession.role));
+          showVerdict($('testVerdict'), evaluateResult(endpoint, scenario, result, consoleSession.userId, consoleSession.role), whoLine(endpoint, scenario));
           $('testResultBody').textContent = JSON.stringify({endpoint, scenario, query: batch ? undefined : query, variables: batch ? undefined : variables, batch, http_status: result.status, response: parsedBody}, null, 2);
 
           let analysis = null;
@@ -2850,8 +2869,9 @@
         head.className = 'verdict ' + verdict.cls; head.style.border = '0'; head.style.padding = '0 0 6px';
         head.textContent = `HTTP ${result.status} · ${verdict.text}`;
         const detail = document.createElement('div'); detail.textContent = verdict.detail;
+        const who = document.createElement('div'); who.className = 'who-line'; who.textContent = whoLine(endpoint, $('testScenario').value);
         const pre = document.createElement('pre'); pre.textContent = JSON.stringify(result.body, null, 2);
-        element.append(head, detail, pre);
+        element.append(head, who, detail, pre);
       }
 
       async function compareEndpoints() {
@@ -3107,7 +3127,7 @@
         } catch (err) {
           showToast('Failed to score telemetry: ' + err.message);
         } finally {
-          btn.disabled = false; btn.textContent = '⚡ Score Telemetry';
+          btn.disabled = false; btn.textContent = 'Score Telemetry';
         }
       }
 

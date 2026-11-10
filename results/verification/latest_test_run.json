@@ -1,15 +1,15 @@
 {
- "finished_at": "2026-11-08T19:12:20+00:00",
+ "finished_at": "2026-11-10T18:19:04+00:00",
  "last_run": {
-  "passed": 6,
+  "passed": 423,
   "failed": 0,
-  "skipped": 0,
-  "total": 6
+  "skipped": 4,
+  "total": 427
  },
  "all_tests": {
-  "passed": 427,
+  "passed": 423,
   "failed": 0,
-  "skipped": 0,
+  "skipped": 4,
   "total": 427
  },
  "tests": {
@@ -358,10 +358,10 @@
   "tests/test_leak_channels.py::test_lint_is_clean_on_the_demo_configuration": "passed",
   "tests/test_leak_channels.py::test_lint_reports_an_owned_type_left_out": "passed",
   "tests/test_leak_channels.py::test_lint_reports_an_undeclared_aggregate": "passed",
-  "tests/test_frameworks.py::test_graphene_relay_node_field_denies_a_foreign_object": "passed",
-  "tests/test_frameworks.py::test_graphene_list_is_filtered": "passed",
-  "tests/test_frameworks.py::test_graphene_foreign_mutation_never_runs": "passed",
-  "tests/test_frameworks.py::test_layer1_reads_a_graphene_schema": "passed",
+  "tests/test_frameworks.py::test_graphene_relay_node_field_denies_a_foreign_object": "skipped",
+  "tests/test_frameworks.py::test_graphene_list_is_filtered": "skipped",
+  "tests/test_frameworks.py::test_graphene_foreign_mutation_never_runs": "skipped",
+  "tests/test_frameworks.py::test_layer1_reads_a_graphene_schema": "skipped",
   "tests/test_frameworks.py::test_ariadne_single_object_and_list": "passed",
   "tests/test_frameworks.py::test_ariadne_foreign_mutation_never_runs": "passed",
   "tests/test_fault_injection.py::test_fault_still_applies_and_compiles[no_variable_defaults]": "passed",
