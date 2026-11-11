@@ -2705,7 +2705,20 @@
             ? {cls: 'warn', text: 'Change executed on the baseline', detail: 'The unprotected baseline has no ownership checks, so the change really happened.'}
             : {cls: 'pass', text: 'PASS · Allowed', detail: 'GraphQL-Shield allowed this change, so you own the target object.'};
         }
+        if (!insecure && !MUTATION_SCENARIOS.includes(scenario) && scenario !== 'relationship' && bodies.some(b => removedTarget(b && b.data))) {
+          return {cls: 'pass', text: 'PASS · Blocked by Layer 2', detail: 'Layer 1 let the request through, but Layer 2 removed the object at execution time (it is not yours, or it does not exist).'};
+        }
+        if (!insecure && scenario === 'relationship') {
+          return {cls: 'pass', text: 'PASS · Only your own data (Layer 2 filtered the children)', detail: 'Children carry no ID in the query, so Layer 1 cannot see them; Layer 2 checked each child and removed any you do not own.'};
+        }
         return {cls: 'pass', text: insecure ? 'No other user’s data in this response' : 'PASS · Only your own data', detail: 'No object owned by another user appears in the response.'};
+      }
+
+      // True when a looked-up object came back as null: Layer 2 replaces a denied object with null.
+      function removedTarget(value) {
+        if (!value || typeof value !== 'object') return false;
+        return Object.entries(value).some(([key, v]) =>
+          (v === null && ['resource', 'user', 'patient', 'record', 'node'].includes(key)) || removedTarget(v));
       }
 
       // "Who asked for what": shown on every result so a screenshot names the caller and the target.
